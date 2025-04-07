@@ -334,25 +334,72 @@ const Products: React.FC = () => {
                 }}
                 viewport={{ once: true }}
                 className="w-full border-collapse"
+                whileHover={{ 
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+                  transition: { duration: 0.3 }
+                }}
               >
                 <motion.thead
                   variants={clipPathReveal(0.2)}
                 >
-                  <tr className="bg-blue-50 dark:bg-blue-900/20">
-                    <th className="border border-blue-100 dark:border-blue-800/30 p-4 text-left text-gray-800 dark:text-white">Features</th>
-                    <th className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-blue-700 dark:text-blue-300 font-bold">Entry-E</th>
-                    <th className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-blue-700 dark:text-blue-300 font-bold">Business in a Box</th>
-                  </tr>
+                  <motion.tr 
+                    className="bg-blue-50 dark:bg-blue-900/20"
+                    initial={{ opacity: 0, y: -10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    <motion.th 
+                      className="border border-blue-100 dark:border-blue-800/30 p-4 text-left text-gray-800 dark:text-white"
+                      whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.1)" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Features
+                    </motion.th>
+                    <motion.th 
+                      className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-blue-700 dark:text-blue-300 font-bold"
+                      whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.1)" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Entry-E
+                    </motion.th>
+                    <motion.th 
+                      className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-blue-700 dark:text-blue-300 font-bold"
+                      whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.1)" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Business in a Box
+                    </motion.th>
+                  </motion.tr>
                 </motion.thead>
                 <motion.tbody
                   variants={staggerChildren(0.05)}
                 >
                   <motion.tr
                     variants={fadeInUp(10, 0.5, 0.1)}
+                    whileHover={{ 
+                      backgroundColor: "rgba(59, 130, 246, 0.05)",
+                      transition: { duration: 0.2 }
+                    }}
                   >
-                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white">Core Functionality</td>
-                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">Event Management</td>
-                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">Business Operations</td>
+                    <motion.td 
+                      className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white"
+                      whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.1)" }}
+                    >
+                      Core Functionality
+                    </motion.td>
+                    <motion.td 
+                      className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      Event Management
+                    </motion.td>
+                    <motion.td 
+                      className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      Business Operations
+                    </motion.td>
                   </motion.tr>
                   <motion.tr 
                     variants={fadeInUp(10, 0.5, 0.15)}
@@ -370,11 +417,21 @@ const Products: React.FC = () => {
                       <motion.span 
                         initial={{ scale: 0, opacity: 0 }}
                         whileInView={{ scale: 1, opacity: 1 }}
+                        whileHover={{ 
+                          scale: 1.2, 
+                          boxShadow: "0 0 8px rgba(34, 197, 94, 0.5)",
+                          transition: { type: "spring", stiffness: 400, damping: 10 }
+                        }}
                         transition={{ type: "spring", stiffness: 300, delay: 0.4 }}
                         viewport={{ once: true }}
                         className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full"
                       >
-                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                        <motion.div
+                          whileHover={{ rotate: 10 }}
+                          transition={{ type: "spring", stiffness: 400 }}
+                        >
+                          <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                        </motion.div>
                       </motion.span>
                     </td>
                     <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
