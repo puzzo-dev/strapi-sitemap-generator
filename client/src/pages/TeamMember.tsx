@@ -2,12 +2,36 @@ import React from 'react';
 import { Link, useRoute } from 'wouter';
 import { ArrowLeft, Briefcase, Mail, Phone, Linkedin, Twitter, Github, ArrowRight, Calendar, MapPin } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
+import { useTeamMembers } from '@/hooks/useStrapiContent';
+import { TeamMember as TeamMemberType } from '@/lib/types';
 
-// Sample team members data
-const teamMembers = [
+// Extended team member interface
+interface ExtendedTeamMember extends Partial<TeamMemberType> {
+  role?: string;
+  expertise?: string[];
+  location?: string;
+  joinDate?: string;
+  email?: string;
+  phone?: string;
+  socialMedia?: {
+    linkedin?: string;
+    twitter?: string;
+    github?: string;
+  };
+  projects?: Array<{
+    title: string;
+    description: string;
+    year: string;
+  }>;
+  relatedTeamMembers?: number[];
+}
+
+// Extended team members data for fallback and additional info
+const extendedTeamMembers: ExtendedTeamMember[] = [
   {
     id: 1,
     name: "Sarah Johnson",
+    position: "Cloud Solutions Architect",
     role: "Cloud Solutions Architect",
     bio: `Sarah is a passionate cloud solutions architect with over 10 years of experience in designing and implementing scalable cloud infrastructure. She specializes in multi-cloud strategies and digital transformation.
 
@@ -49,6 +73,7 @@ Sarah regularly contributes to our blog, sharing insights on cloud computing tre
   {
     id: 2,
     name: "David Chen",
+    position: "Mobile Development Lead",
     role: "Mobile Development Lead",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
     expertise: ["iOS Development", "Android Development", "React Native", "Flutter", "UI/UX Design"]
@@ -56,6 +81,7 @@ Sarah regularly contributes to our blog, sharing insights on cloud computing tre
   {
     id: 3,
     name: "Emily Roberts",
+    position: "AI Solutions Specialist",
     role: "AI Solutions Specialist",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
     expertise: ["Machine Learning", "Natural Language Processing", "Computer Vision", "Data Science", "AI Ethics"]
@@ -63,18 +89,38 @@ Sarah regularly contributes to our blog, sharing insights on cloud computing tre
   {
     id: 4,
     name: "Michael Anderson",
+    position: "Cybersecurity Director",
     role: "Cybersecurity Director",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
     expertise: ["Security Architecture", "Penetration Testing", "Threat Intelligence", "Compliance", "Risk Management"]
   }
 ];
 
-const TeamMember: React.FC = () => {
+const TeamMemberPage: React.FC = () => {
   const [, params] = useRoute('/team/:id');
   const memberId = params?.id ? parseInt(params.id, 10) : -1;
   
-  // Find the team member by ID
-  const member = teamMembers.find(member => member.id === memberId);
+  // Fetch team members from Strapi
+  const { data: apiTeamMembers, isLoading } = useTeamMembers();
+  
+  // Get base team member from API
+  const apiMember = apiTeamMembers?.find(member => member.id === memberId);
+  
+  // Get extended data
+  const extendedMemberData = extendedTeamMembers.find(member => member.id === memberId);
+  
+  // Combine API data with extended data
+  const member = apiMember 
+    ? { ...extendedMemberData, ...apiMember } 
+    : extendedMemberData;
+  
+  // Combine all team members (for related team members)
+  const allTeamMembers = apiTeamMembers?.length 
+    ? apiTeamMembers.map(m => {
+        const extended = extendedTeamMembers.find(ext => ext.id === m.id);
+        return { ...extended, ...m };
+      })
+    : extendedTeamMembers;
   
   // Handle not found case
   if (!member) {
@@ -98,8 +144,8 @@ const TeamMember: React.FC = () => {
   
   // Get related team members if they exist
   const relatedMembers = member.relatedTeamMembers 
-    ? member.relatedTeamMembers.map(id => teamMembers.find(m => m.id === id)).filter(Boolean)
-    : teamMembers.filter(m => m.id !== member.id).slice(0, 3);
+    ? member.relatedTeamMembers.map(id => allTeamMembers.find(m => m.id === id)).filter(Boolean)
+    : allTeamMembers.filter(m => m.id !== member.id).slice(0, 3);
 
   return (
     <>
@@ -219,7 +265,8 @@ const TeamMember: React.FC = () => {
                     <p key={index}>{paragraph}</p>
                   )) || (
                     <p className="text-gray-600 dark:text-gray-300">
-                      {member.name} is an experienced {member.role.toLowerCase()} at I-Varse Limited, specializing in {member.expertise?.join(', ').toLowerCase()}.
+                      {member.name} is an experienced {member.role?.toLowerCase() || member.position?.toLowerCase() || 'professional'} at I-Varse Limited
+                      {member.expertise && member.expertise.length > 0 ? `, specializing in ${member.expertise.join(', ').toLowerCase()}.` : '.'}
                     </p>
                   )}
                 </div>
@@ -246,7 +293,7 @@ const TeamMember: React.FC = () => {
               
               {/* Contact CTA */}
               <div className="card p-6 md:p-8 gradient-bg text-white">
-                <h2 className="text-2xl font-bold mb-4">Work with {member.name.split(' ')[0]}</h2>
+                <h2 className="text-2xl font-bold mb-4">Work with {member.name?.split(' ')[0] || 'Our Team'}</h2>
                 <p className="mb-6 text-white/90">
                   Interested in collaborating or have questions about our services? Reach out directly to discuss your project needs.
                 </p>
@@ -362,4 +409,4 @@ const TeamMember: React.FC = () => {
   );
 };
 
-export default TeamMember;
+export default TeamMemberPage;

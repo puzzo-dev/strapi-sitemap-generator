@@ -19,7 +19,11 @@ import {
   TeamMember,
   ClientLogo,
   JobListing,
-  Benefit
+  Benefit,
+  BlogPost,
+  BlogCategory,
+  BlogAuthor,
+  BlogComment
 } from '@/lib/types';
 import type { SiteContent } from '@shared/schema';
 import { apiRequest } from './queryClient';
@@ -544,4 +548,124 @@ export async function getJobById(id: number): Promise<JobListing | undefined> {
 export async function getBenefits(): Promise<Benefit[]> {
   // Using the benefits data from data.ts as fallback
   return fetchData<Benefit[]>('benefits', localBenefits);
+}
+
+/**
+ * ERPNext Blog API functions
+ */
+
+// Base URL for ERPNext API - should be stored in an environment variable
+const ERPNEXT_API_BASE_URL = import.meta.env.VITE_ERPNEXT_API_URL || 'https://erp.ivarse.com';
+
+/**
+ * Fetch data from ERPNext API with error handling
+ */
+async function fetchERPNextData<T>(endpoint: string, fallbackData: T): Promise<T> {
+  try {
+    // Check if ERPNext API token is available
+    const erpnextToken = import.meta.env.VITE_ERPNEXT_API_TOKEN;
+    if (!erpnextToken) {
+      console.warn('No ERPNext API token provided, using fallback data');
+      return fallbackData;
+    }
+
+    const response = await fetch(`${ERPNEXT_API_BASE_URL}/api/${endpoint}`, {
+      headers: {
+        'Authorization': `Bearer ${erpnextToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`ERPNext API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.data || fallbackData;
+  } catch (error) {
+    console.error(`Error fetching from ERPNext API: ${error}`);
+    return fallbackData;
+  }
+}
+
+/**
+ * Get all blog posts from ERPNext API
+ */
+export async function getBlogPosts(params: { 
+  limit?: number; 
+  category?: string; 
+  featured?: boolean;
+  tag?: string;
+} = {}): Promise<BlogPost[]> {
+  // Create query parameters
+  const queryParams = new URLSearchParams();
+  if (params.limit) queryParams.append('limit', params.limit.toString());
+  if (params.category) queryParams.append('category', params.category);
+  if (params.featured !== undefined) queryParams.append('featured', params.featured.toString());
+  if (params.tag) queryParams.append('tag', params.tag);
+  
+  const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+  
+  // Use an empty array as fallback since we don't have predefined blog posts
+  return fetchERPNextData<BlogPost[]>(`blogger/posts${queryString}`, []);
+}
+
+/**
+ * Get a single blog post by slug
+ */
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  // Use null as fallback since we don't have a predefined blog post
+  return fetchERPNextData<BlogPost | null>(`blogger/posts/${slug}`, null);
+}
+
+/**
+ * Get all blog categories
+ */
+export async function getBlogCategories(): Promise<BlogCategory[]> {
+  // Use empty array as fallback
+  return fetchERPNextData<BlogCategory[]>('blogger/categories', []);
+}
+
+/**
+ * Submit a blog comment to ERPNext
+ */
+export async function submitBlogComment(postId: string, comment: {
+  name: string;
+  email: string;
+  comment: string;
+}): Promise<any> {
+  try {
+    // Check if ERPNext API token is available
+    const erpnextToken = import.meta.env.VITE_ERPNEXT_API_TOKEN;
+    if (!erpnextToken) {
+      console.warn('No ERPNext API token provided, comment submission failed');
+      throw new Error('API token not available');
+    }
+
+    const response = await fetch(`${ERPNEXT_API_BASE_URL}/api/blogger/posts/${postId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${erpnextToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(comment)
+    });
+
+    if (!response.ok) {
+      throw new Error(`ERPNext API error: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Error submitting comment to ERPNext API: ${error}`);
+    throw error;
+  }
+}
+
+/**
+ * Get comments for a specific blog post
+ */
+export async function getBlogComments(postId: string): Promise<BlogComment[]> {
+  // Use empty array as fallback
+  return fetchERPNextData<BlogComment[]>(`blogger/posts/${postId}/comments`, []);
 }

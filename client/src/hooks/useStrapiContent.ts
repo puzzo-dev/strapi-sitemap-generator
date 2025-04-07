@@ -15,7 +15,11 @@ import {
   getClientLogos,
   getJobListings,
   getJobById,
-  getBenefits
+  getBenefits,
+  getBlogPosts,
+  getBlogPostBySlug,
+  getBlogCategories,
+  getBlogComments
 } from '@/lib/strapi';
 import { 
   NavItem, 
@@ -29,7 +33,10 @@ import {
   TestimonialProps,
   ClientLogo,
   JobListing,
-  Benefit
+  Benefit,
+  BlogPost,
+  BlogCategory,
+  BlogComment
 } from '@/lib/types';
 
 /**
@@ -238,5 +245,52 @@ export function useBenefits() {
   return useQuery<Benefit[]>({
     queryKey: ['benefits'],
     queryFn: getBenefits
+  });
+}
+
+/**
+ * Custom hook to fetch blog posts
+ */
+export function useBlogPosts(params?: { 
+  limit?: number; 
+  category?: string; 
+  featured?: boolean;
+  tag?: string;
+}) {
+  return useQuery<BlogPost[]>({
+    queryKey: ['blog-posts', params],
+    queryFn: () => getBlogPosts(params || {}),
+  });
+}
+
+/**
+ * Custom hook to fetch a blog post by slug
+ */
+export function useBlogPostBySlug(slug: string) {
+  return useQuery<BlogPost | null>({
+    queryKey: ['blog-post', slug],
+    queryFn: () => getBlogPostBySlug(slug),
+    enabled: !!slug, // Only run the query if a slug is provided
+  });
+}
+
+/**
+ * Custom hook to fetch blog categories
+ */
+export function useBlogCategories() {
+  return useQuery<BlogCategory[]>({
+    queryKey: ['blog-categories'],
+    queryFn: getBlogCategories,
+  });
+}
+
+/**
+ * Custom hook to fetch blog comments for a post
+ */
+export function useBlogComments(postId: string) {
+  return useQuery<BlogComment[]>({
+    queryKey: ['blog-comments', postId],
+    queryFn: () => getBlogComments(postId),
+    enabled: !!postId, // Only run the query if a postId is provided
   });
 }

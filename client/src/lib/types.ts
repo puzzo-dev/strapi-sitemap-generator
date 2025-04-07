@@ -120,3 +120,49 @@ export interface Benefit {
   description: string;
   icon: string;
 }
+
+// ERPNext Blog Content Types
+export interface BlogCategory {
+  name: string;
+  title: string;
+  slug: string;
+  description?: string;
+}
+
+export interface BlogAuthor {
+  name: string;
+  full_name: string;
+  user_image?: string;
+  bio?: string;
+  email?: string;
+}
+
+export interface BlogPost {
+  name: string;
+  title: string;
+  slug: string;
+  blog_category: string;
+  blog_intro: string;
+  content: string;
+  published_date: string;
+  published: boolean;
+  featured: boolean;
+  meta_image?: string;
+  meta_title?: string;
+  meta_description?: string;
+  author?: string;
+  authorDetails?: BlogAuthor;
+  categories?: BlogCategory[];
+  readTime?: number;
+  tags?: string[];
+}
+
+export interface BlogComment {
+  id: number;
+  post_id: string;
+  name: string;
+  email: string;
+  comment: string;
+  created_date: string;
+  approved: boolean;
+}
