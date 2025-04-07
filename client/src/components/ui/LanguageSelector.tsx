@@ -14,6 +14,7 @@ const languageNames: Record<string, string> = {
   en: 'English',
   yo: 'Yorùbá',
   ig: 'Igbo',
+  ha: 'Hausa',
   fr: 'Français',
   es: 'Español',
   sw: 'Kiswahili',
@@ -24,6 +25,7 @@ const languageFlags: Record<string, string> = {
   en: '🇬🇧',
   yo: '🇳🇬',
   ig: '🇳🇬',
+  ha: '🇳🇬',
   fr: '🇫🇷',
   es: '🇪🇸',
   sw: '🇰🇪',
@@ -45,24 +47,29 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className = '' }) =
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={`focus:outline-none ${className}`}>
-        <div className="flex items-center space-x-1 px-2 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-          <Globe className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-          <span className="text-sm text-gray-600 dark:text-gray-300">
-            {languageFlags[currentLanguage]} {languageNames[currentLanguage]}
-          </span>
+      <DropdownMenuTrigger className={`focus:outline-none w-full ${className}`}>
+        <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors w-full">
+          <div className="flex items-center space-x-2">
+            <Globe className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+            <span className="text-sm md:text-base text-gray-700 dark:text-gray-200 font-medium">
+              {languageFlags[currentLanguage]} {languageNames[currentLanguage]}
+            </span>
+          </div>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-500 dark:text-gray-400">
+            <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent className="min-w-[180px]" align="center">
         {SUPPORTED_LANGUAGES.map((lng) => (
           <DropdownMenuItem
             key={lng}
-            className="flex items-center justify-between cursor-pointer"
+            className="flex items-center justify-between cursor-pointer py-2"
             onClick={() => changeLanguage(lng)}
           >
             <div className="flex items-center">
-              <span className="mr-2">{languageFlags[lng]}</span>
-              <span>{t(`language.${lng}`, languageNames[lng])}</span>
+              <span className="mr-2 text-base">{languageFlags[lng]}</span>
+              <span className="text-sm md:text-base">{t(`language.${lng}`, languageNames[lng])}</span>
             </div>
             {currentLanguage === lng && (
               <Check className="h-4 w-4 ml-2 text-blue-600" />

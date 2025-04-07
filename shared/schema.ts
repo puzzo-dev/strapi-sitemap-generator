@@ -3,7 +3,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // Define supported languages
-export const SUPPORTED_LANGUAGES = ['en', 'yo', 'ig', 'fr', 'es', 'sw'] as const;
+export const SUPPORTED_LANGUAGES = ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'] as const;
 export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
 
 export const users = pgTable("users", {
