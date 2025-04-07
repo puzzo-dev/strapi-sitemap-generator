@@ -1,78 +1,75 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { SUPPORTED_LANGUAGES } from '@shared/schema';
-import { Check, Globe } from 'lucide-react';
+import { useLanguage } from '@/components/context/LanguageContext'; 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Globe } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-// Language name map
-const languageNames: Record<string, string> = {
-  en: 'English',
-  yo: 'Yorùbá',
-  ig: 'Igbo',
-  ha: 'Hausa',
-  fr: 'Français',
-  es: 'Español',
-  sw: 'Kiswahili',
-};
+const LanguageSelector: React.FC = () => {
+  const { t } = useTranslation();
+  const { currentLanguage, setLanguage, supportedLanguages } = useLanguage();
 
-// Language flag code map (for flag emojis)
-const languageFlags: Record<string, string> = {
-  en: '🇬🇧',
-  yo: '🇳🇬',
-  ig: '🇳🇬',
-  ha: '🇳🇬',
-  fr: '🇫🇷',
-  es: '🇪🇸',
-  sw: '🇰🇪',
-};
+  // Function to get flag emoji based on language code
+  const getFlag = (lang: string) => {
+    switch (lang) {
+      case 'en': return '🇬🇧';
+      case 'yo': 
+      case 'ig': 
+      case 'ha': return '🇳🇬';
+      case 'fr': return '🇫🇷';
+      case 'es': return '🇪🇸';
+      case 'sw': return '🇰🇪';
+      default: return '🌐';
+    }
+  };
 
-interface LanguageSelectorProps {
-  className?: string;
-}
-
-const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className = '' }) => {
-  const { i18n, t } = useTranslation();
-  const currentLanguage = i18n.language.split('-')[0]; // Handle cases like 'en-US'
-
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-    // Optionally save language preference
-    localStorage.setItem('preferredLanguage', lng);
+  // Function to get full language name
+  const getLanguageName = (lang: string) => {
+    switch (lang) {
+      case 'en': return 'English';
+      case 'yo': return 'Yorùbá';
+      case 'ig': return 'Igbo';
+      case 'ha': return 'Hausa';
+      case 'fr': return 'Français';
+      case 'es': return 'Español';
+      case 'sw': return 'Kiswahili';
+      default: return lang;
+    }
   };
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={`focus:outline-none w-full ${className}`}>
-        <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors w-full">
-          <div className="flex items-center space-x-2">
-            <Globe className="h-5 w-5 text-gray-600 dark:text-gray-300" />
-            <span className="text-sm md:text-base text-gray-700 dark:text-gray-200 font-medium">
-              {languageFlags[currentLanguage]} {languageNames[currentLanguage]}
-            </span>
-          </div>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-500 dark:text-gray-400">
-            <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={t('language.select', 'Select language')}
+          className="relative"
+        >
+          <Globe className="h-5 w-5" />
+          <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-[8px] font-medium text-white">
+            {currentLanguage.toUpperCase()}
+          </span>
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-[180px]" align="center">
-        {SUPPORTED_LANGUAGES.map((lng) => (
+      <DropdownMenuContent align="end" className="w-48">
+        {supportedLanguages.map((lang) => (
           <DropdownMenuItem
-            key={lng}
-            className="flex items-center justify-between cursor-pointer py-2"
-            onClick={() => changeLanguage(lng)}
+            key={lang}
+            onClick={() => setLanguage(lang)}
+            className={`flex items-center gap-2 ${
+              currentLanguage === lang ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''
+            }`}
           >
-            <div className="flex items-center">
-              <span className="mr-2 text-base">{languageFlags[lng]}</span>
-              <span className="text-sm md:text-base">{t(`language.${lng}`, languageNames[lng])}</span>
-            </div>
-            {currentLanguage === lng && (
-              <Check className="h-4 w-4 ml-2 text-blue-600" />
+            <span>{getFlag(lang)}</span>
+            <span>{getLanguageName(lang)}</span>
+            {currentLanguage === lang && (
+              <div className="ml-auto h-2 w-2 rounded-full bg-blue-500"></div>
             )}
           </DropdownMenuItem>
         ))}

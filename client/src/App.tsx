@@ -3,6 +3,7 @@ import { Route, Switch } from "wouter";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
+import { LanguageProvider } from "@/components/context/LanguageContext";
 
 // Pages
 import Home from "@/pages/Home";
@@ -37,32 +38,34 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark" storageKey="i-varse-theme">
-        <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white">
-          <Navbar onMenuToggle={toggleMobileMenu} />
-          <main className="flex-grow pt-20">
-            <Switch>
-              <Route path="/" component={Home} />
-              <Route path="/services" component={Services} />
-              <Route path="/services/:id" component={ServiceDetail} />
-              <Route path="/products" component={Products} />
-              <Route path="/products/:id" component={ProductDetail} />
-              <Route path="/about" component={About} />
-              <Route path="/blog" component={Blog} />
-              <Route path="/blog/:id" component={BlogPost} />
-              <Route path="/team/:id" component={TeamMember} />
-              <Route path="/careers" component={Careers} />
-              <Route path="/contact" component={Contact} />
-              <Route component={NotFound} />
-            </Switch>
-          </main>
-          <Footer />
-          <ThemeToggle />
-          
-          {/* Mobile Menu - positioned at root level */}
-          <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} />
-        </div>
-      </ThemeProvider>
+      <LanguageProvider>
+        <ThemeProvider defaultTheme="dark" storageKey="i-varse-theme">
+          <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white">
+            <Navbar onMenuToggle={toggleMobileMenu} />
+            <main className="flex-grow pt-20">
+              <Switch>
+                <Route path="/" component={Home} />
+                <Route path="/services" component={Services} />
+                <Route path="/services/:id" component={ServiceDetail} />
+                <Route path="/products" component={Products} />
+                <Route path="/products/:id" component={ProductDetail} />
+                <Route path="/about" component={About} />
+                <Route path="/blog" component={Blog} />
+                <Route path="/blog/:id" component={BlogPost} />
+                <Route path="/team/:id" component={TeamMember} />
+                <Route path="/careers" component={Careers} />
+                <Route path="/contact" component={Contact} />
+                <Route component={NotFound} />
+              </Switch>
+            </main>
+            <Footer />
+            <ThemeToggle />
+            
+            {/* Mobile Menu - positioned at root level */}
+            <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} />
+          </div>
+        </ThemeProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

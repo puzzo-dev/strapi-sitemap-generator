@@ -5,6 +5,7 @@ import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
 import { ChevronRight } from 'lucide-react';
 import LanguageButton from '@/components/ui/LanguageButton';
+import { useLanguage } from '@/components/context/LanguageContext';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -13,7 +14,8 @@ interface MobileMenuProps {
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const [location] = useLocation();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const { currentLanguage, setLanguage, supportedLanguages } = useLanguage();
 
   const navLinks = [
     { name: t('nav.home', 'Home'), path: '/' },
@@ -92,19 +94,22 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               <div className="relative">
                 <select
                   className="cursor-pointer w-full p-2 text-gray-700 dark:text-gray-200 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 appearance-none"
-                  value={i18n.language}
+                  value={currentLanguage}
                   onChange={(e) => {
-                    i18n.changeLanguage(e.target.value);
-                    localStorage.setItem('preferredLanguage', e.target.value);
+                    setLanguage(e.target.value);
                   }}
                 >
-                  <option value="en">🇬🇧 English</option>
-                  <option value="yo">🇳🇬 Yorùbá</option>
-                  <option value="ig">🇳🇬 Igbo</option>
-                  <option value="ha">🇳🇬 Hausa</option>
-                  <option value="fr">🇫🇷 Français</option>
-                  <option value="es">🇪🇸 Español</option>
-                  <option value="sw">🇰🇪 Kiswahili</option>
+                  {supportedLanguages.map((lang) => (
+                    <option key={lang} value={lang}>
+                      {lang === 'en' && '🇬🇧 English'}
+                      {lang === 'yo' && '🇳🇬 Yorùbá'}
+                      {lang === 'ig' && '🇳🇬 Igbo'}
+                      {lang === 'ha' && '🇳🇬 Hausa'}
+                      {lang === 'fr' && '🇫🇷 Français'}
+                      {lang === 'es' && '🇪🇸 Español'}
+                      {lang === 'sw' && '🇰🇪 Kiswahili'}
+                    </option>
+                  ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                   <svg className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

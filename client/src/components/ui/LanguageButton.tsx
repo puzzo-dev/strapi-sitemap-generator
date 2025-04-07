@@ -1,41 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/components/context/LanguageContext';
+import { Globe } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 interface LanguageButtonProps {
-  code: string;
-  flag: string;
-  name: string;
-  onClose?: () => void;
+  variant?: "ghost" | "link" | "default" | "destructive" | "outline" | "secondary";
+  size?: "icon" | "default" | "sm" | "lg";
+  className?: string;
 }
 
-const LanguageButton: React.FC<LanguageButtonProps> = ({ code, flag, name, onClose }) => {
-  const { i18n } = useTranslation();
-  const currentLang = i18n.language.split('-')[0];
-  const isActive = currentLang === code;
-  
+const LanguageButton: React.FC<LanguageButtonProps> = ({ 
+  variant = "ghost", 
+  size = "icon",
+  className = ""
+}) => {
+  const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const { currentLanguage, setLanguage, supportedLanguages } = useLanguage();
+
   return (
-    <button
-      className={`flex items-center justify-start p-3 rounded-md text-sm transition-colors ${
-        isActive 
-          ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-medium'
-          : 'bg-white dark:bg-gray-700/30 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600/20'
-      }`}
-      onClick={() => {
-        i18n.changeLanguage(code);
-        localStorage.setItem('preferredLanguage', code);
-        if (onClose) onClose();
-      }}
-    >
-      <span className="mr-2 text-base">{flag}</span>
-      <span>{name}</span>
-      {isActive && (
-        <span className="ml-auto">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.33301 8.00002L6.66634 11.3334L12.6663 5.33335" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </span>
-      )}
-    </button>
+    <>
+      <Button
+        variant={variant}
+        size={size}
+        onClick={() => setIsOpen(true)}
+        className={className}
+      >
+        <Globe className="h-5 w-5" />
+      </Button>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              {t('language.select', 'Select Language')}
+            </DialogTitle>
+          </DialogHeader>
+          <RadioGroup 
+            defaultValue={currentLanguage}
+            onValueChange={(value) => {
+              setLanguage(value);
+              setIsOpen(false);
+            }}
+            className="gap-4"
+          >
+            {supportedLanguages.map((lang) => (
+              <div key={lang} className="flex items-center space-x-2">
+                <RadioGroupItem value={lang} id={`lang-${lang}`} />
+                <Label htmlFor={`lang-${lang}`} className="cursor-pointer">
+                  {t(`language.${lang}`)}
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

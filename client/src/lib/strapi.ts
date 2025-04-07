@@ -39,6 +39,23 @@ const strapiHeaders = {
   ...(STRAPI_API_TOKEN ? { Authorization: `Bearer ${STRAPI_API_TOKEN}` } : {})
 };
 
+// Current language for localization
+let currentLanguage = 'en';
+
+// Function to set current language for Strapi requests
+export function setCurrentLanguage(lang: string) {
+  currentLanguage = lang;
+  console.log('Language changed to:', lang);
+  
+  // Invalidate and refetch data if needed
+  // Here we could trigger refetches for any data that depends on language
+}
+
+// Get current language for Strapi requests
+export function getCurrentLanguage() {
+  return currentLanguage;
+}
+
 /**
  * Fetch data from API with error handling and fallback to local data
  */
@@ -51,8 +68,11 @@ async function fetchData<T>(endpoint: string, fallbackData: T): Promise<T> {
       console.warn('No Strapi API token provided, using fallback data');
       return fallbackData;
     } else {
-      // Use Strapi API
-      const response = await fetch(`${STRAPI_URL}/api/${endpoint}`, {
+      // Use Strapi API with language param
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+      
+      const response = await fetch(`${STRAPI_URL}/api/${endpoint}?populate=*${localeSuffix}`, {
         headers: strapiHeaders
       });
       
@@ -90,8 +110,11 @@ export async function getProductById(id: number): Promise<ProductProps | undefin
     } else if (!STRAPI_API_TOKEN) {
       return localProducts.find(product => product.id === id);
     } else {
-      // Use Strapi API
-      const response = await fetch(`${STRAPI_URL}/api/products/${id}?populate=*`, {
+      // Use Strapi API with language param
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+      
+      const response = await fetch(`${STRAPI_URL}/api/products/${id}?populate=*${localeSuffix}`, {
         headers: strapiHeaders
       });
       
@@ -129,8 +152,11 @@ export async function getServiceById(id: number): Promise<ServiceProps | undefin
     } else if (!STRAPI_API_TOKEN) {
       return localServices.find(service => service.id === id);
     } else {
-      // Use Strapi API
-      const response = await fetch(`${STRAPI_URL}/api/services/${id}?populate=*`, {
+      // Use Strapi API with language param
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+      
+      const response = await fetch(`${STRAPI_URL}/api/services/${id}?populate=*${localeSuffix}`, {
         headers: strapiHeaders
       });
       
@@ -253,8 +279,11 @@ export async function getSiteConfig(): Promise<SiteConfig> {
     } else if (!STRAPI_API_TOKEN) {
       return defaultSiteConfig;
     } else {
-      // Use Strapi API
-      const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*`, {
+      // Use Strapi API with language param
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+      
+      const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*${localeSuffix}`, {
         headers: strapiHeaders
       });
       
@@ -295,8 +324,11 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
       console.warn('No Strapi API token provided, cannot fetch page content');
       return null;
     } else {
-      // Use Strapi API
-      const response = await fetch(`${STRAPI_URL}/api/pages?filters[slug][$eq]=${slug}&populate=deep`, {
+      // Use Strapi API with language param
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+      
+      const response = await fetch(`${STRAPI_URL}/api/pages?filters[slug][$eq]=${slug}&populate=deep${localeSuffix}`, {
         headers: strapiHeaders
       });
       
