@@ -169,12 +169,18 @@ const Home: React.FC = () => {
                   <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
                 </div>
               ) : (
-                <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10 transition-opacity duration-700">
-                  {isHeroLoading 
-                    ? 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
-                    : heroContents[currentHeroIndex]?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
-                  }
-                </h1>
+                <>
+                  <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+                    <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+                    Digital Innovation
+                  </div>
+                  <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10 transition-opacity duration-700">
+                    {isHeroLoading 
+                      ? 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
+                      : heroContents[currentHeroIndex]?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
+                    }
+                  </h1>
+                </>
               )}
             </div>
             
@@ -189,12 +195,18 @@ const Home: React.FC = () => {
                       <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
                     </div>
                   ) : (
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10 transition-opacity duration-700">
-                      {isHeroLoading 
-                        ? 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
-                        : heroContents[currentHeroIndex]?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
-                      }
-                    </h1>
+                    <>
+                      <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+                        <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+                        Digital Innovation
+                      </div>
+                      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10 transition-opacity duration-700">
+                        {isHeroLoading 
+                          ? 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
+                          : heroContents[currentHeroIndex]?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
+                        }
+                      </h1>
+                    </>
                   )}
                 </div>
                 
