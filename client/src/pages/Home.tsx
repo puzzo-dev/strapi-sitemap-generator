@@ -326,15 +326,15 @@ const Home: React.FC = () => {
                           </div>
                           
                           {/* Current service overlay content - super tiny in top right */}
-                          <div className="absolute top-0 right-0 z-20 py-1 px-1.5 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
+                          <div className="absolute top-0 right-0 z-20 py-0.5 px-1 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
                             {serviceSlides.map((service, index) => (
                               <div 
                                 key={service.id || index}
                                 className={`transition-opacity duration-500 flex items-center ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
                               >
                                 <div className="flex items-center">
-                                  <span className="text-[8px]">{serviceIcons[index % serviceIcons.length]}</span>
-                                  <h3 className="text-[9px] font-medium ml-1 text-white whitespace-nowrap">
+                                  <span className="w-2 h-2">{serviceIcons[index % serviceIcons.length]}</span>
+                                  <h3 className="text-[8px] font-medium ml-0.5 text-white whitespace-nowrap">
                                     {service.title}
                                   </h3>
                                 </div>
