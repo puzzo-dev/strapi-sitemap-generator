@@ -320,7 +320,7 @@ const Products: React.FC = () => {
           <div className="card p-8 md:p-12 border-2 border-blue-100 dark:border-blue-800/30 text-center">
             <h2 className="heading-lg text-gray-800 dark:text-white mb-6">Ready to Transform Your Business?</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-              Our products are designed to help you achieve your business goals. Contact us today to learn how we can customize our solutions to meet your specific needs.
+              Our solutions are designed to help you achieve your business goals. Contact us today to learn how we can customize our solutions to meet your specific needs.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <GradientButton href="/contact" size="lg" endIcon={<ArrowRight />}>

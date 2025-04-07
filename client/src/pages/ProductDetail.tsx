@@ -441,7 +441,7 @@ const ProductDetail: React.FC = () => {
               <Package className="h-4 w-4 mr-2" />
               More Options
             </div>
-            <h2 className="section-title">Related Products</h2>
+            <h2 className="section-title">Related Solutions</h2>
             <p className="section-subtitle">
               Explore our other solutions that might be a better fit for your needs.
             </p>

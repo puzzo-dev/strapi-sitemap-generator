@@ -21,7 +21,7 @@ const resources = {
         home: 'Home',
         about: 'About Us',
         services: 'Services',
-        products: 'Products',
+        products: 'Solutions',
         blog: 'TechVision Insights',
         careers: 'Careers',
         contact: 'Contact',
@@ -57,7 +57,7 @@ const resources = {
         description: 'Comprehensive digital solutions tailored to your business needs.',
       },
       products: {
-        title: 'Our Products',
+        title: 'Our Solutions',
         subtitle: 'Innovative Solutions',
         description: 'Cutting-edge products designed to transform your business operations.',
         features: 'Key Features',
