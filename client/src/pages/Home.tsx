@@ -38,18 +38,39 @@ const Home: React.FC = () => {
     <>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] pt-12 pb-20 md:pt-16 md:pb-24 lg:py-24 border-b border-blue-100 dark:border-blue-900/40 hero-section">
-        {/* Tech-inspired background elements */}
+        {/* Tech-inspired background elements - Enhanced with more icons */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* Animated gradient orbs */}
           <div className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40 animate-pulse-slow" />
           <div className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30 animate-pulse-slower" />
           <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-900/30 animate-pulse-slow" />
           
-          {/* Tech pattern */}
+          {/* Enhanced tech pattern with more icons */}
           <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10">
-            <CircuitBoard className="absolute right-0 top-0 h-64 w-64 text-blue-800 opacity-20 transform rotate-12" />
-            <Cpu className="absolute left-10 bottom-10 h-48 w-48 text-indigo-700 opacity-15 transform -rotate-12" />
+            <CircuitBoard className="absolute right-0 top-0 h-64 w-64 text-blue-800 opacity-30 transform rotate-12 animate-float" style={{ animationDelay: '1s' }} />
+            <Cpu className="absolute left-10 bottom-10 h-48 w-48 text-indigo-700 opacity-30 transform -rotate-12 animate-float" style={{ animationDelay: '2s' }} />
+            <Code className="absolute right-1/4 bottom-1/4 h-56 w-56 text-cyan-700 opacity-20 transform rotate-45 animate-float" style={{ animationDelay: '0s' }} />
+            <LayoutGrid className="absolute left-1/4 top-1/3 h-40 w-40 text-blue-600 opacity-25 transform -rotate-6 animate-float" style={{ animationDelay: '1.5s' }} />
+            <Sparkles className="absolute left-10 top-10 h-32 w-32 text-purple-600 opacity-20 animate-pulse-light" />
           </div>
+
+          {/* Animated tech scan line */}
+          <div className="tech-scan-line"></div>
+          
+          {/* Animated network connections */}
+          <svg className="absolute inset-0 w-full h-full z-0 opacity-10 dark:opacity-15" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <circle cx="20" cy="20" r="2" className="text-blue-500 fill-current animate-pulse-light" />
+            <circle cx="80" cy="30" r="2" className="text-cyan-500 fill-current animate-pulse-light" style={{ animationDelay: '0.5s' }} />
+            <circle cx="50" cy="70" r="2" className="text-indigo-500 fill-current animate-pulse-light" style={{ animationDelay: '1s' }} />
+            <circle cx="30" cy="80" r="2" className="text-purple-500 fill-current animate-pulse-light" style={{ animationDelay: '1.5s' }} />
+            <circle cx="70" cy="60" r="2" className="text-blue-500 fill-current animate-pulse-light" style={{ animationDelay: '2s' }} />
+            
+            <line x1="20" y1="20" x2="80" y2="30" className="text-blue-500 stroke-current opacity-50" strokeWidth="0.2" />
+            <line x1="80" y1="30" x2="50" y2="70" className="text-cyan-500 stroke-current opacity-50" strokeWidth="0.2" />
+            <line x1="50" y1="70" x2="30" y2="80" className="text-indigo-500 stroke-current opacity-50" strokeWidth="0.2" />
+            <line x1="30" y1="80" x2="70" y2="60" className="text-purple-500 stroke-current opacity-50" strokeWidth="0.2" />
+            <line x1="70" y1="60" x2="20" y2="20" className="text-blue-500 stroke-current opacity-50" strokeWidth="0.2" />
+          </svg>
         </div>
         
         <div className="container-custom">
@@ -63,7 +84,7 @@ const Home: React.FC = () => {
                     <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
                   </div>
                 ) : (
-                  <h1 className="hero-title">
+                  <h1 className="heading-xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
                     {pageContent?.sections?.find(s => s.type === 'hero')?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'}
                   </h1>
                 )}
@@ -76,7 +97,7 @@ const Home: React.FC = () => {
                 ) : (
                   <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block">
                     {pageContent?.sections?.find(s => s.type === 'hero')?.subtitle || 
-                    'Embark on a successful innovative journey with cutting-edge solutions for your business. We\'re dedicated to elevating your digital experience.'}
+                    'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'}
                   </p>
                 )}
                 
@@ -101,13 +122,46 @@ const Home: React.FC = () => {
               </div>
             </div>
             
-            {/* Right column - Slideshow */}
+            {/* Right column - Slideshow with interactive elements */}
             <div className="order-1 lg:order-2">
               <div className="relative rounded-xl overflow-hidden aspect-video shadow-2xl shadow-blue-900/10 dark:shadow-blue-500/10 fade-in-slide">
                 {/* Tech slideshow container */}
                 <div className="relative h-full w-full border border-blue-200 dark:border-blue-800 rounded-xl bg-white/80 dark:bg-gray-900/80 p-3">
-                  {/* Main content area with tech corners */}
+                  {/* Main content area with tech corners and animated backdrop */}
                   <div className="relative h-full w-full bg-gradient-to-br from-blue-50 to-white dark:from-blue-950 dark:to-gray-900 rounded-lg overflow-hidden">
+                    {/* Animated backdrop */}
+                    <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                      <div className="relative w-full h-full">
+                        {/* Company logo or branded image can go here from CMS */}
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 opacity-10 dark:opacity-20">
+                          <img 
+                            src="https://images.unsplash.com/photo-1642059863319-1481ad72fc2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                            alt="I-VARSE Technologies" 
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        
+                        {/* Animated tech elements */}
+                        <CircuitBoard className="absolute top-6 left-6 h-12 w-12 text-blue-300 dark:text-blue-700 opacity-30 animate-float" />
+                        <Cpu className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300 dark:text-indigo-700 opacity-30 animate-float" style={{ animationDelay: '1s' }} />
+                        
+                        {/* Animated dots & lines */}
+                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                          <circle cx="20" cy="20" r="1" className="text-blue-400 fill-current animate-pulse-light" />
+                          <circle cx="80" cy="30" r="1" className="text-cyan-400 fill-current animate-pulse-light" style={{ animationDelay: '0.5s' }} />
+                          <circle cx="50" cy="70" r="1" className="text-indigo-400 fill-current animate-pulse-light" style={{ animationDelay: '1s' }} />
+                          <circle cx="30" cy="80" r="1" className="text-purple-400 fill-current animate-pulse-light" style={{ animationDelay: '1.5s' }} />
+                          <circle cx="70" cy="60" r="1" className="text-blue-400 fill-current animate-pulse-light" style={{ animationDelay: '2s' }} />
+                          
+                          <line x1="20" y1="20" x2="80" y2="30" className="text-blue-400 stroke-current" strokeWidth="0.2" />
+                          <line x1="80" y1="30" x2="50" y2="70" className="text-cyan-400 stroke-current" strokeWidth="0.2" />
+                          <line x1="50" y1="70" x2="30" y2="80" className="text-indigo-400 stroke-current" strokeWidth="0.2" />
+                          <line x1="30" y1="80" x2="70" y2="60" className="text-purple-400 stroke-current" strokeWidth="0.2" />
+                          <line x1="70" y1="60" x2="20" y2="20" className="text-blue-400 stroke-current" strokeWidth="0.2" />
+                        </svg>
+                      </div>
+                    </div>
+                    
                     {/* Tech corner elements */}
                     <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-blue-400 dark:border-blue-500 z-10"></div>
                     <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-blue-400 dark:border-blue-500 z-10"></div>
@@ -135,7 +189,7 @@ const Home: React.FC = () => {
               ) : (
                 <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
                   {pageContent?.sections?.find(s => s.type === 'hero')?.subtitle || 
-                  'Embark on a successful innovative journey with cutting-edge solutions for your business. We\'re dedicated to elevating your digital experience.'}
+                  'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'}
                 </p>
               )}
               
@@ -168,11 +222,32 @@ const Home: React.FC = () => {
       <section className="py-24">
         <div className="container-custom">
           <div className="card p-8 md:p-10 lg:p-12 relative overflow-hidden group animate-fade-in shadow-lg">
-            {/* Tech pattern background */}
+            {/* Tech pattern background - Enhanced */}
             <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 overflow-hidden">
               <Code className="absolute -right-20 -bottom-10 w-64 h-64 text-blue-400 dark:text-blue-600 animate-spin-slow" />
-              <LayoutGrid className="absolute -left-10 -top-10 w-48 h-48 text-blue-300 dark:text-blue-700" />
+              <LayoutGrid className="absolute -left-10 -top-10 w-48 h-48 text-blue-300 dark:text-blue-700 animate-float" style={{ animationDelay: '2s' }} />
+              <Cpu className="absolute right-1/3 top-20 w-32 h-32 text-indigo-400 dark:text-indigo-600 animate-float" style={{ animationDelay: '0.5s' }} />
+              <CircuitBoard className="absolute left-1/4 bottom-10 w-40 h-40 text-purple-400 dark:text-purple-600 animate-pulse-slower transform rotate-12" />
+              <Sparkles className="absolute right-1/4 top-1/4 w-20 h-20 text-cyan-400 dark:text-cyan-600 animate-pulse-light" />
             </div>
+            
+            {/* Scan line */}
+            <div className="tech-scan-line"></div>
+            
+            {/* Animated network connections */}
+            <svg className="absolute inset-0 w-full h-full z-0 opacity-5 dark:opacity-10" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <circle cx="10" cy="10" r="1" className="text-blue-500 fill-current animate-pulse-light" />
+              <circle cx="90" cy="20" r="1" className="text-cyan-500 fill-current animate-pulse-light" style={{ animationDelay: '0.5s' }} />
+              <circle cx="50" cy="50" r="1" className="text-indigo-500 fill-current animate-pulse-light" style={{ animationDelay: '1s' }} />
+              <circle cx="20" cy="80" r="1" className="text-purple-500 fill-current animate-pulse-light" style={{ animationDelay: '1.5s' }} />
+              <circle cx="80" cy="70" r="1" className="text-blue-500 fill-current animate-pulse-light" style={{ animationDelay: '2s' }} />
+              
+              <line x1="10" y1="10" x2="90" y2="20" className="text-blue-500 stroke-current" strokeWidth="0.1" />
+              <line x1="90" y1="20" x2="50" y2="50" className="text-cyan-500 stroke-current" strokeWidth="0.1" />
+              <line x1="50" y1="50" x2="20" y2="80" className="text-indigo-500 stroke-current" strokeWidth="0.1" />
+              <line x1="20" y1="80" x2="80" y2="70" className="text-purple-500 stroke-current" strokeWidth="0.1" />
+              <line x1="80" y1="70" x2="10" y2="10" className="text-blue-500 stroke-current" strokeWidth="0.1" />
+            </svg>
             
             {/* Content */}
             <div className="flex flex-col md:flex-row gap-10 md:gap-16 relative z-10">
@@ -232,8 +307,29 @@ const Home: React.FC = () => {
       </section>
 
       {/* Video and About Section */}
-      <section className="py-24">
-        <div className="container-custom">
+      <section className="py-24 relative overflow-hidden">
+        {/* Background tech pattern for about section */}
+        <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 pointer-events-none overflow-hidden">
+          {/* Tech elements */}
+          <Code className="absolute left-10 top-20 h-40 w-40 text-blue-400 dark:text-blue-600 opacity-30 animate-float" style={{ animationDelay: '1s' }} />
+          <LayoutGrid className="absolute right-20 top-10 h-32 w-32 text-purple-400 dark:text-purple-600 opacity-25 animate-pulse-slower" />
+          <Cpu className="absolute right-1/3 bottom-20 h-36 w-36 text-indigo-400 dark:text-indigo-600 opacity-20 transform rotate-12 animate-float" style={{ animationDelay: '2s' }} />
+          
+          {/* Tech scan line */}
+          <div className="tech-scan-line" style={{ animationDelay: '3s' }}></div>
+          
+          {/* Grid pattern */}
+          <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 opacity-20">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="contents">
+                <div className="absolute left-0 right-0 h-px bg-blue-500/20 dark:bg-blue-400/10" style={{ top: `${(i+1) * 16}%` }}></div>
+                <div className="absolute top-0 bottom-0 w-px bg-blue-500/20 dark:bg-blue-400/10" style={{ left: `${(i+1) * 16}%` }}></div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="container-custom relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="w-full lg:w-1/2">
               <div className="relative">
@@ -281,10 +377,24 @@ const Home: React.FC = () => {
             {/* Video Container */}
             <div className="w-full lg:w-1/2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
               <div className="relative rounded-xl overflow-hidden aspect-video card border-2 border-blue-200 dark:border-blue-800/70 group">
-                {/* Tech-inspired decorative elements */}
+                {/* Tech-inspired decorative elements - Enhanced */}
                 <div className="absolute inset-0 z-0 overflow-hidden">
-                  <CircuitBoard className="absolute top-0 left-0 w-40 h-40 text-blue-200/20 dark:text-blue-800/10 transform -translate-x-1/4 -translate-y-1/4" />
-                  <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-gradient-to-tl from-blue-200/20 to-transparent dark:from-blue-800/10 blur-xl"></div>
+                  <CircuitBoard className="absolute top-0 left-0 w-40 h-40 text-blue-200/20 dark:text-blue-800/10 transform -translate-x-1/4 -translate-y-1/4 animate-float" style={{ animationDelay: '0.5s' }} />
+                  <Cpu className="absolute bottom-8 right-8 w-24 h-24 text-indigo-200/20 dark:text-indigo-700/20 transform rotate-12 animate-pulse-slower" />
+                  <Code className="absolute top-8 right-8 w-16 h-16 text-cyan-200/20 dark:text-cyan-700/20 animate-pulse-light" />
+                  <LayoutGrid className="absolute bottom-12 left-12 w-20 h-20 text-purple-200/15 dark:text-purple-700/15 animate-float" style={{ animationDelay: '1.5s' }} />
+                  
+                  {/* Gradient orb */}
+                  <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-gradient-to-tl from-blue-200/20 to-transparent dark:from-blue-800/10 blur-xl animate-pulse-slow"></div>
+                  
+                  {/* Circuit lines */}
+                  <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="M20,20 L80,20 L80,80 L20,80 Z" stroke="currentColor" strokeWidth="0.3" fill="none" />
+                    <circle cx="20" cy="20" r="3" fill="currentColor" className="animate-pulse-light" />
+                    <circle cx="80" cy="20" r="3" fill="currentColor" className="animate-pulse-light" style={{ animationDelay: '1s' }} />
+                    <circle cx="80" cy="80" r="3" fill="currentColor" className="animate-pulse-light" style={{ animationDelay: '2s' }} />
+                    <circle cx="20" cy="80" r="3" fill="currentColor" className="animate-pulse-light" style={{ animationDelay: '3s' }} />
+                  </svg>
                 </div>
                 
                 {/* Main video container */}
@@ -336,11 +446,35 @@ const Home: React.FC = () => {
       
       {/* Services Grid Section */}
       <section id="services" className="py-24 bg-blue-50/50 dark:bg-blue-950/30 relative overflow-hidden">
-        {/* Background tech pattern */}
+        {/* Background tech pattern - Enhanced */}
         <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 pointer-events-none overflow-hidden">
-          <Sparkles className="absolute right-10 top-20 h-64 w-64 text-blue-400 dark:text-blue-600 opacity-30" />
+          <Sparkles className="absolute right-10 top-20 h-64 w-64 text-blue-400 dark:text-blue-600 opacity-30 animate-pulse-slower" />
+          <Cpu className="absolute left-20 top-40 h-40 w-40 text-indigo-400 dark:text-indigo-600 opacity-20 animate-float" style={{ animationDelay: '1s' }} />
+          <CircuitBoard className="absolute right-1/4 bottom-20 h-56 w-56 text-purple-400 dark:text-purple-600 opacity-20 transform rotate-12 animate-float" style={{ animationDelay: '2s' }} />
+          <Code className="absolute left-1/3 bottom-1/3 h-48 w-48 text-cyan-400 dark:text-cyan-600 opacity-25 transform -rotate-6 animate-pulse-slower" />
+          <LayoutGrid className="absolute left-10 top-20 h-36 w-36 text-blue-400 dark:text-blue-600 opacity-20 animate-float" style={{ animationDelay: '0.5s' }} />
+          
+          {/* Grid lines */}
           <div className="absolute top-1/2 left-0 h-[1px] w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
           <div className="absolute top-0 left-1/2 h-full w-[1px] bg-gradient-to-b from-transparent via-blue-500/30 to-transparent"></div>
+          
+          {/* Animated tech scan line */}
+          <div className="tech-scan-line" style={{ animationDelay: '2s' }}></div>
+          
+          {/* Multiple grid dots */}
+          <div className="absolute inset-0 grid grid-cols-8 grid-rows-8">
+            {[...Array(15)].map((_, i) => (
+              <div 
+                key={i}
+                className="absolute w-1.5 h-1.5 rounded-full bg-blue-500/30 dark:bg-blue-400/20 animate-pulse-light"
+                style={{ 
+                  left: `${Math.random() * 100}%`, 
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 4}s`
+                }}
+              />
+            ))}
+          </div>
         </div>
         
         <div className="container-custom relative z-10">
@@ -389,8 +523,46 @@ const Home: React.FC = () => {
       </section>
       
       {/* Testimonials Section */}
-      <section className="py-24">
-        <div className="container-custom">
+      <section className="py-24 relative overflow-hidden">
+        {/* Background tech pattern for testimonials */}
+        <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 pointer-events-none overflow-hidden">
+          {/* Tech elements */}
+          <Sparkles className="absolute left-10 top-20 h-36 w-36 text-blue-400 dark:text-blue-600 opacity-30 animate-pulse-light" />
+          <CircuitBoard className="absolute right-10 bottom-10 h-48 w-48 text-indigo-400 dark:text-indigo-600 opacity-20 animate-float" style={{ animationDelay: '1.5s' }} />
+          
+          {/* Decorative curved line */}
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path 
+              d="M0,50 Q25,30 50,50 T100,50" 
+              className="text-blue-500 stroke-current" 
+              fill="none" 
+              strokeWidth="0.1"
+            />
+            <path 
+              d="M0,70 Q25,50 50,70 T100,70" 
+              className="text-indigo-500 stroke-current" 
+              fill="none" 
+              strokeWidth="0.1"
+            />
+          </svg>
+          
+          {/* Subtle dots */}
+          <div className="absolute inset-0">
+            {[...Array(12)].map((_, i) => (
+              <div 
+                key={i}
+                className="absolute w-1 h-1 rounded-full bg-blue-500/20 dark:bg-blue-400/10 animate-pulse-light"
+                style={{ 
+                  left: `${Math.random() * 100}%`, 
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`
+                }}
+              />
+            ))}
+          </div>
+        </div>
+        
+        <div className="container-custom relative z-10">
           {/* Section Header */}
           <div className="text-center mb-16 max-w-2xl mx-auto">
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">
