@@ -63,11 +63,11 @@ const Home: React.FC = () => {
   
   // Service slide indicators (simple dots with different colors)
   const serviceIcons = [
-    <div className="w-1 h-1 rounded-full bg-blue-500"></div>,
-    <div className="w-1 h-1 rounded-full bg-indigo-500"></div>,
-    <div className="w-1 h-1 rounded-full bg-cyan-500"></div>,
-    <div className="w-1 h-1 rounded-full bg-purple-500"></div>,
-    <div className="w-1 h-1 rounded-full bg-blue-500"></div>
+    <div className="w-2 h-2 rounded-full bg-blue-500"></div>,
+    <div className="w-2 h-2 rounded-full bg-indigo-500"></div>,
+    <div className="w-2 h-2 rounded-full bg-cyan-500"></div>,
+    <div className="w-2 h-2 rounded-full bg-purple-500"></div>,
+    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
   ];
   
   // Dummy service images for the slides
