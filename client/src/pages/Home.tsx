@@ -309,9 +309,9 @@ const Home: React.FC = () => {
                                 <img 
                                   src={service.image || serviceImages[index % serviceImages.length]} 
                                   alt={service.title} 
-                                  className="w-full h-full object-cover opacity-50 dark:opacity-40"
+                                  className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-blue-800/20 to-blue-900/30 dark:from-blue-900/60 dark:via-indigo-900/40 dark:to-blue-800/50"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
                               </div>
                             ))}
                           </div>
@@ -326,19 +326,19 @@ const Home: React.FC = () => {
                           </div>
                           
                           {/* Current service overlay content */}
-                          <div className="absolute bottom-0 left-0 right-0 z-20 p-4 md:p-6 bg-gradient-to-t from-black/70 via-black/50 to-transparent">
+                          <div className="absolute bottom-0 left-0 right-0 z-20 p-4 md:p-6 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
                             {serviceSlides.map((service, index) => (
                               <div 
                                 key={service.id || index}
                                 className={`transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
                               >
-                                <div className="flex items-center mb-3 bg-blue-900/40 backdrop-blur-sm p-2 rounded-md border-l-2 border-blue-400">
+                                <div className="flex items-center mb-2">
                                   {serviceIcons[index % serviceIcons.length]}
-                                  <h3 className="text-lg md:text-2xl font-bold ml-2 text-white">
+                                  <h3 className="text-lg md:text-xl font-bold ml-2 text-white">
                                     {service.title}
                                   </h3>
                                 </div>
-                                <p className="text-sm md:text-base text-white/90 mb-2 line-clamp-2 bg-black/30 p-2 rounded backdrop-blur-sm">
+                                <p className="text-sm text-white/80 mb-2 line-clamp-2">
                                   {service.description}
                                 </p>
                               </div>
@@ -366,39 +366,8 @@ const Home: React.FC = () => {
                         </div>
                       )}
                       
-                      {/* Navigation arrows - subtle design */}
-                      <button 
-                        onClick={prevSlide}
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 dark:bg-gray-800/30 hover:bg-white/40 dark:hover:bg-gray-800/50 p-2 rounded-full transition-colors backdrop-blur-sm"
-                        aria-label="Previous slide"
-                      >
-                        <ChevronLeft className="h-5 w-5 text-white" />
-                      </button>
-                      
-                      <button 
-                        onClick={nextSlide}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 dark:bg-gray-800/30 hover:bg-white/40 dark:hover:bg-gray-800/50 p-2 rounded-full transition-colors backdrop-blur-sm"
-                        aria-label="Next slide"
-                      >
-                        <ChevronRight className="h-5 w-5 text-white" />
-                      </button>
+                      {/* Navigation controls removed as requested */}
                     </div>
-                  </div>
-                  
-                  {/* Slide indicators */}
-                  <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-                    {serviceSlides.map((_, index) => (
-                      <button 
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        className={`h-2 w-2 rounded-full transition-colors duration-300 ${
-                          index === currentSlide 
-                            ? 'bg-blue-600 dark:bg-blue-400' 
-                            : 'bg-gray-300 dark:bg-gray-700 hover:bg-blue-400 dark:hover:bg-blue-600'
-                        }`}
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
-                    ))}
                   </div>
                 </div>
               </div>
