@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useRoute } from 'wouter';
-import { ArrowLeft, ArrowRight, Check, Package, Shield, Zap, HeartPulse, BarChart, Share2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Package, Shield, Zap, HeartPulse, BarChart } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { products } from '@/lib/data';
 import { ProductProps } from '@/lib/types';
 import { useProductById } from '@/hooks/useStrapiContent';
-import { useTranslation } from 'react-i18next';
-import SocialShareBar from '@/components/ui/SocialShareBar';
-import FloatingSocialShare from '@/components/ui/FloatingSocialShare';
-import { Button } from '@/components/ui/button';
 
 // Extended products data with additional details
 const extendedProducts: (ProductProps & {
@@ -184,21 +180,6 @@ const extendedProducts: (ProductProps & {
 const ProductDetail: React.FC = () => {
   const [, params] = useRoute('/products/:id');
   const productId = params?.id ? parseInt(params.id, 10) : -1;
-  const { t } = useTranslation();
-  const [showFloatingShare, setShowFloatingShare] = useState<boolean>(false);
-  
-  // Show floating share buttons after scrolling down
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const threshold = window.innerHeight * 0.3; // 30% of viewport height
-      
-      setShowFloatingShare(scrollPosition > threshold);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   
   // Get product from API using the hook
   const { data: apiProduct, isLoading } = useProductById(productId);
@@ -244,10 +225,10 @@ const ProductDetail: React.FC = () => {
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Product Not Found</h1>
             <p className="text-gray-600 dark:text-gray-300 mb-6">The product you're looking for doesn't exist or has been removed.</p>
             <Link href="/products">
-              <div className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium cursor-pointer">
+              <a className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 <span>Back to Products</span>
-              </div>
+              </a>
             </Link>
           </div>
         </div>
@@ -260,88 +241,57 @@ const ProductDetail: React.FC = () => {
   
   return (
     <>
-      {/* Floating social share buttons */}
-      {showFloatingShare && product && (
-        <FloatingSocialShare
-          title={product.title}
-          description={product.description}
-          imageUrl={product.image}
-          position="right"
-          offset={20}
-        />
-      )}
-      
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section">
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:py-24 border-b border-blue-100 dark:border-blue-900/40">
         <div className="absolute inset-0 z-0 overflow-hidden">
-          {/* Animated gradient elements */}
+          {/* Animated gradient orbs */}
           <div className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40 animate-pulse-slow" />
           <div className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30 animate-pulse-slower" />
           
           {/* Tech pattern elements */}
           <div className="hidden md:block absolute top-10 left-10 w-24 h-24 border border-blue-200 dark:border-blue-800/50 rounded-lg rotate-12"></div>
           <div className="hidden md:block absolute bottom-20 left-1/4 w-20 h-20 border-2 border-blue-200 dark:border-blue-800/50 rounded-full"></div>
-          
-          {/* Additional decorative elements */}
-          <div className="hidden md:block absolute bottom-10 right-1/4 w-32 h-32 border border-blue-200/50 dark:border-blue-800/30 rounded-lg rotate-45"></div>
-          <div className="hidden md:block absolute top-1/4 right-1/3 w-16 h-16 border-2 border-purple-200/50 dark:border-purple-800/30 rounded-full"></div>
         </div>
         
         <div className="container-custom relative z-10">
           <div className="flex flex-col items-center text-center mb-12">
             <Link href="/products">
-              <div className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium mb-4 hover:underline transition-colors cursor-pointer">
+              <a className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium mb-4 hover:underline">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                <span>{t('navigation.backToProducts')}</span>
-              </div>
+                <span>Back to Products</span>
+              </a>
             </Link>
             
-            <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
+            <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
               <Package className="h-4 w-4 mr-2" />
-              {t('product.softwareProduct')}
+              Software Product
             </div>
             
-            <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <span className="gradient-text">{product.title}</span>
-            </h1>
+            <h1 className="heading-lg text-gray-800 dark:text-white mb-6">{product.title}</h1>
             
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mb-8 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mb-8">
               {product.description}
             </p>
             
-            <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <div className="flex flex-wrap justify-center gap-4">
               <GradientButton href="/contact" size="lg" endIcon={<ArrowRight />}>
-                {t('product.requestDemo')}
+                Request Demo
               </GradientButton>
               {product.demoURL && (
                 <GradientButton href={product.demoURL} variant="outline" size="lg">
-                  {t('product.liveDemo')}
+                  Live Demo
                 </GradientButton>
               )}
-              <Button 
-                variant="outline" 
-                className="flex items-center gap-2 border-blue-100 bg-white/90 text-blue-600 hover:bg-blue-50 dark:border-blue-800 dark:bg-slate-800/90 dark:text-blue-400 dark:hover:bg-slate-700/90"
-                onClick={() => {
-                  const shareButtons = document.getElementById('product-share-section');
-                  if (shareButtons) {
-                    shareButtons.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
-                <Share2 className="h-4 w-4" />
-                {t('product.share')}
-              </Button>
             </div>
           </div>
           
           {product.image && (
-            <div className="relative w-full max-w-5xl mx-auto rounded-xl overflow-hidden shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+            <div className="relative w-full max-w-5xl mx-auto rounded-xl overflow-hidden shadow-2xl">
               <img 
                 src={product.image} 
                 alt={product.title} 
                 className="w-full h-auto object-cover rounded-xl border border-blue-100 dark:border-blue-800/30"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
           )}
         </div>
@@ -358,19 +308,6 @@ const ProductDetail: React.FC = () => {
                 )) || (
                   <p>{product.description}</p>
                 )}
-                
-                {/* Social share section */}
-                <div id="product-share-section" className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
-                  <SocialShareBar 
-                    title={product.title}
-                    description={product.description}
-                    imageUrl={product.image}
-                    style="standard"
-                    headingText={t('product.shareProduct')}
-                    align="left"
-                    showLabels={true}
-                  />
-                </div>
               </div>
             </div>
             
@@ -516,10 +453,10 @@ const ProductDetail: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{product.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-6">{product.description}</p>
                 <Link href={`/products/${product.id}`}>
-                  <div className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center cursor-pointer">
+                  <a className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center">
                     <span>Learn More</span>
                     <ArrowRight className="h-4 w-4 ml-1" />
-                  </div>
+                  </a>
                 </Link>
               </div>
             ))}

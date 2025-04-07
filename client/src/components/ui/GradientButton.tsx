@@ -10,6 +10,7 @@ interface GradientButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   endIcon?: React.ReactNode;
   startIcon?: React.ReactNode;
   fullWidth?: boolean;
+  as?: string;
 }
 
 const GradientButton: React.FC<GradientButtonProps> = ({ 
@@ -87,6 +88,33 @@ const GradientButton: React.FC<GradientButtonProps> = ({
           {buttonContent}
         </div>
       </Link>
+    );
+  }
+
+  // Render based on as prop
+  if (props.as === 'div') {
+    return (
+      <div className={cn(getButtonClasses(), "cursor-pointer")} onClick={props.onClick}>
+        {buttonContent}
+      </div>
+    );
+  } else if (props.as === 'span') {
+    return (
+      <span className={cn(getButtonClasses(), "cursor-pointer")} onClick={props.onClick}>
+        {buttonContent}
+      </span>
+    );
+  } else if (props.as === 'a') {
+    return (
+      <a 
+        className={getButtonClasses()} 
+        href={props.href as string} 
+        target={props.target as string} 
+        rel={props.rel as string}
+        onClick={props.onClick}
+      >
+        {buttonContent}
+      </a>
     );
   }
   
