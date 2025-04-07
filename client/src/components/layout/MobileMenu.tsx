@@ -3,8 +3,8 @@ import { Link, useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
-import LanguageSelector from '@/components/ui/LanguageSelector';
 import { ChevronRight } from 'lucide-react';
+import LanguageButton from '@/components/ui/LanguageButton';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -87,8 +87,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 {t('language.select', 'Select Language')}
               </h3>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800/40 rounded-lg overflow-hidden">
-              <LanguageSelector className="w-full" />
+            <div className="bg-gray-50 dark:bg-gray-800/40 rounded-lg p-2 grid grid-cols-2 gap-2">
+              <LanguageButton code="en" flag="🇬🇧" name="English" onClose={onClose} />
+              <LanguageButton code="yo" flag="🇳🇬" name="Yorùbá" onClose={onClose} />
+              <LanguageButton code="ig" flag="🇳🇬" name="Igbo" onClose={onClose} />
+              <LanguageButton code="ha" flag="🇳🇬" name="Hausa" onClose={onClose} />
+              <LanguageButton code="fr" flag="🇫🇷" name="Français" onClose={onClose} />
+              <LanguageButton code="es" flag="🇪🇸" name="Español" onClose={onClose} />
+              <LanguageButton code="sw" flag="🇰🇪" name="Kiswahili" onClose={onClose} />
             </div>
           </div>
 
