@@ -179,7 +179,7 @@ const Home: React.FC = () => {
       />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] pt-12 pb-20 md:pt-16 md:pb-24 lg:py-24 border-b border-blue-100 dark:border-blue-900/40 hero-section">
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section">
         {/* Tech-inspired background elements - Enhanced with more icons */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* Animated gradient orbs */}
@@ -226,15 +226,12 @@ const Home: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                    <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+                  <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
+                    <Cpu className="h-4 w-4 mr-2" />
                     Digital Innovation
                   </div>
-                  <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10 transition-opacity duration-700">
-                    {isHeroLoading 
-                      ? 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
-                      : heroContents[currentHeroIndex]?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
-                    }
+                  <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                    <span className="gradient-text">Innovative Digital</span> Solutions<br />for Modern Businesses
                   </h1>
                 </>
               )}
@@ -252,15 +249,12 @@ const Home: React.FC = () => {
                     </div>
                   ) : (
                     <>
-                      <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                        <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+                      <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
+                        <Cpu className="h-4 w-4 mr-2" />
                         Digital Innovation
                       </div>
-                      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10 transition-opacity duration-700">
-                        {isHeroLoading 
-                          ? 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
-                          : heroContents[currentHeroIndex]?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
-                        }
+                      <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                        <span className="gradient-text">Innovative Digital</span> Solutions<br />for Modern Businesses
                       </h1>
                     </>
                   )}
@@ -273,7 +267,7 @@ const Home: React.FC = () => {
                     <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                   </div>
                 ) : (
-                  <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block transition-opacity duration-700">
+                  <p className="text-xl text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                     {isHeroLoading 
                       ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
                       : heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
@@ -429,7 +423,7 @@ const Home: React.FC = () => {
                   <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                 </div>
               ) : (
-                <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 transition-opacity duration-700">
+                <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                   {isHeroLoading 
                     ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
                     : heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
