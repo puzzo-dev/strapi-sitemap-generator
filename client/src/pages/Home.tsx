@@ -72,11 +72,16 @@ const Home: React.FC = () => {
   
   // Dummy service images for the slides
   const serviceImages = [
-    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1517586979036-b7d1e86b3345?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1526489550178-7bd5d9944f4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1568776291954-4dbdc2e2739a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    // High-quality immersive tech image for Digital Solutions
+    "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    // Modern app development with code projection
+    "https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    // Futuristic data center for Cloud Solutions 
+    "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    // AI and machine learning visualization
+    "https://images.unsplash.com/photo-1677442135131-4668bd807267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    // Cybersecurity concept with digital lock
+    "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   ];
   
   // Handle slide navigation
@@ -304,9 +309,9 @@ const Home: React.FC = () => {
                                 <img 
                                   src={service.image || serviceImages[index % serviceImages.length]} 
                                   alt={service.title} 
-                                  className="w-full h-full object-cover opacity-40 dark:opacity-30"
+                                  className="w-full h-full object-cover opacity-50 dark:opacity-40"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-blue-800/20 to-blue-900/30 dark:from-blue-900/60 dark:via-indigo-900/40 dark:to-blue-800/50"></div>
                               </div>
                             ))}
                           </div>
@@ -321,19 +326,19 @@ const Home: React.FC = () => {
                           </div>
                           
                           {/* Current service overlay content */}
-                          <div className="absolute bottom-0 left-0 right-0 z-20 p-4 md:p-6 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+                          <div className="absolute bottom-0 left-0 right-0 z-20 p-4 md:p-6 bg-gradient-to-t from-black/70 via-black/50 to-transparent">
                             {serviceSlides.map((service, index) => (
                               <div 
                                 key={service.id || index}
                                 className={`transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
                               >
-                                <div className="flex items-center mb-2">
+                                <div className="flex items-center mb-3 bg-blue-900/40 backdrop-blur-sm p-2 rounded-md border-l-2 border-blue-400">
                                   {serviceIcons[index % serviceIcons.length]}
-                                  <h3 className="text-lg md:text-xl font-bold ml-2 text-white">
+                                  <h3 className="text-lg md:text-2xl font-bold ml-2 text-white">
                                     {service.title}
                                   </h3>
                                 </div>
-                                <p className="text-sm text-white/80 mb-2 line-clamp-2">
+                                <p className="text-sm md:text-base text-white/90 mb-2 line-clamp-2 bg-black/30 p-2 rounded backdrop-blur-sm">
                                   {service.description}
                                 </p>
                               </div>
