@@ -15,7 +15,7 @@ import type { SiteContent } from '@shared/schema';
 import { apiRequest } from './queryClient';
 
 // Constants for API integration
-const USE_LOCAL_API = true; // Set to true to use local API instead of Strapi
+const USE_LOCAL_API = false; // Set to false to use Strapi instead of local API
 const STRAPI_URL = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
 const STRAPI_API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
 

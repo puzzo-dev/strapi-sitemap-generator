@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'wouter';
 import IVarseLogo from '@/components/ui/IVarseLogo';
+import NewsletterForm from '@/components/ui/NewsletterForm';
 import { useFooterColumns, useSocialLinks, useSiteConfig } from '@/hooks/useStrapiContent';
 
 // Import icons
@@ -33,16 +34,7 @@ const Footer: React.FC = () => {
               {/* Newsletter subscription */}
               <div className="pt-4 staggered-fade-in">
                 <h4 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Subscribe to our newsletter</h4>
-                <div className="flex flex-col sm:flex-row gap-3 max-w-md">
-                  <input 
-                    type="email" 
-                    placeholder="Your email address" 
-                    className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button className="gradient-bg px-5 py-3 rounded-lg text-white flex items-center justify-center hover:opacity-90 transition-all animate-pulse-light">
-                    Subscribe
-                  </button>
-                </div>
+                <NewsletterForm className="max-w-md" />
               </div>
               
               {/* Social media icons - Mobile optimized */}
