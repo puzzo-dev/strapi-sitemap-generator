@@ -35,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Products', path: '/products' },
-    { name: 'Blog', path: '/blog' },
+    { name: 'TechVision Insights', path: '/blog' },
     { name: 'Careers', path: '/careers' },
     { name: 'Contact', path: '/contact', isButton: true }
   ];

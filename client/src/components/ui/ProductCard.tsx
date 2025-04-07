@@ -7,9 +7,10 @@ import { ProductProps } from '@/lib/types';
 
 interface ProductCardProps {
   product: ProductProps;
+  isReversed?: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }) => {
   const { title, description, image, keyFeatures, benefits } = product;
   
   const container = {
@@ -53,32 +54,54 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <CardTitle className="text-2xl font-semibold mb-4 text-blue-700 dark:text-blue-300">{title}</CardTitle>
           </motion.div>
           
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ scale: 1.01 }}
-            className="md:h-60 h-40 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-8 overflow-hidden flex items-center justify-center shadow-md relative"
-          >
-            {image ? (
-              <img 
-                src={image} 
-                alt={`${title} screenshot`} 
-                className="w-full h-full object-contain object-center p-2"
-              />
-            ) : (
-              <div className="text-gray-400 dark:text-gray-500 flex flex-col items-center">
-                <ImageIcon className="h-12 w-12 mb-2 opacity-50" />
-                <p className="text-sm">Product Screenshot</p>
-              </div>
-            )}
+          <div className={`grid grid-cols-1 ${isReversed ? 'lg:grid-cols-[2fr_3fr] lg:grid-flow-dense' : 'lg:grid-cols-[3fr_2fr]'} gap-8 mb-8`}>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              whileHover={{ scale: 1.01 }}
+              className={`md:h-60 h-40 bg-blue-50 dark:bg-blue-900/20 rounded-lg overflow-hidden flex items-center justify-center shadow-md relative ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}
+            >
+              {image ? (
+                <img 
+                  src={image} 
+                  alt={`${title} screenshot`} 
+                  className="w-full h-full object-contain object-center p-2"
+                />
+              ) : (
+                <div className="text-gray-400 dark:text-gray-500 flex flex-col items-center">
+                  <ImageIcon className="h-12 w-12 mb-2 opacity-50" />
+                  <p className="text-sm">Product Screenshot</p>
+                </div>
+              )}
+              
+              {/* Tech corner elements */}
+              <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-blue-400 dark:border-blue-500"></div>
+              <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-blue-400 dark:border-blue-500"></div>
+              <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-blue-400 dark:border-blue-500"></div>
+              <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-blue-400 dark:border-blue-500"></div>
+            </motion.div>
             
-            {/* Tech corner elements */}
-            <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-blue-400 dark:border-blue-500"></div>
-            <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-blue-400 dark:border-blue-500"></div>
-            <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-blue-400 dark:border-blue-500"></div>
-            <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-blue-400 dark:border-blue-500"></div>
-          </motion.div>
+            <div className={`flex flex-col justify-center ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
+              <motion.div
+                className="flex gap-2 flex-wrap"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                {keyFeatures.slice(0, 3).map((feature, index) => (
+                  <span 
+                    key={index} 
+                    className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-300"
+                  >
+                    <Check className="h-3 w-3 mr-1" />
+                    {feature}
+                  </span>
+                ))}
+              </motion.div>
+            </div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div

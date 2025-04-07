@@ -163,7 +163,7 @@ const Products: React.FC = () => {
             ) : (
               apiProducts.map((product, index) => (
                 <div key={product.id} className={index % 2 === 0 ? '' : 'bg-white dark:bg-[#132f4c] py-12 -mx-4 px-4 md:-mx-8 md:px-8 lg:-mx-16 lg:px-16'}>
-                  <ProductCard product={product} />
+                  <ProductCard product={product} isReversed={index % 2 !== 0} />
                 </div>
               ))
             )}

@@ -3,7 +3,7 @@ import { Link, useRoute } from 'wouter';
 import { Calendar, Clock, Tag, User, ArrowLeft, Share2, MessageCircle, ThumbsUp, Bookmark, ArrowRight } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 
-// Reuse blog posts data from the Blog component
+// Reuse blog posts data from the TechVision Insights component
 const blogPosts = [
   {
     id: 1,
@@ -106,12 +106,12 @@ const BlogPost: React.FC = () => {
       <div className="content-section bg-white dark:bg-[#132f4c]">
         <div className="container-custom">
           <div className="card p-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Blog Post Not Found</h1>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">The blog post you're looking for doesn't exist or has been removed.</p>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">TechVision Insights Article Not Found</h1>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">The TechVision Insights article you're looking for doesn't exist or has been removed.</p>
             <Link href="/blog">
               <a className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                <span>Back to Blog</span>
+                <span>Back to TechVision Insights</span>
               </a>
             </Link>
           </div>
@@ -139,7 +139,7 @@ const BlogPost: React.FC = () => {
           <Link href="/blog">
             <a className="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 mb-6 transition-colors">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              <span>Back to Blog</span>
+              <span>Back to TechVision Insights</span>
             </a>
           </Link>
           
