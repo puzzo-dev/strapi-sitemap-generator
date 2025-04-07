@@ -439,6 +439,51 @@
   }
 }
 
+/* Fade in with slide */
+.fade-in-slide {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-in-slide 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+
+@keyframes fade-in-slide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tech scan effect animation */
+.tech-scan-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(45, 129, 255, 0.7), transparent);
+  animation: tech-scan 6s linear infinite;
+  opacity: 0.3;
+}
+
+@keyframes tech-scan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.5;
+  }
+  95% {
+    opacity: 0.5;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
 /* Loading animation */
 @keyframes loading-pulse {
   0%, 100% {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Star } from 'lucide-react';
 
 interface StarRatingProps {
   rating: number;
@@ -7,12 +8,12 @@ interface StarRatingProps {
 
 const StarRating: React.FC<StarRatingProps> = ({ rating, maxRating = 5 }) => {
   return (
-    <div className="flex text-yellow-400">
+    <div className="flex">
       {[...Array(maxRating)].map((_, i) => (
-        <i 
+        <Star 
           key={i} 
-          className={`fas ${i < rating ? 'fa-star' : 'fa-star-o'}`}
-        ></i>
+          className={`h-5 w-5 ${i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
+        />
       ))}
     </div>
   );
