@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
+import { useTranslation } from 'react-i18next';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
+import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useNavigation, useSiteConfig } from '@/hooks/useStrapiContent';
 
 interface NavbarProps {
@@ -11,6 +13,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
   const [scrolled, setScrolled] = useState(false);
   const [location] = useLocation();
+  const { t } = useTranslation();
 
   // Track scroll position for navbar styling
   useEffect(() => {
@@ -37,15 +40,15 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
   // Fetch site configuration from Strapi
   const { data: siteConfig } = useSiteConfig();
   
-  // Default nav links as fallback
+  // Default nav links as fallback with translations
   const defaultNavLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Services', path: '/services' },
-    { name: 'Products', path: '/products' },
-    { name: 'TechVision Insights', path: '/blog' },
-    { name: 'Careers', path: '/careers' },
-    { name: 'Contact', path: '/contact', isButton: true }
+    { name: t('nav.home', 'Home'), path: '/' },
+    { name: t('nav.about', 'About Us'), path: '/about' },
+    { name: t('nav.services', 'Services'), path: '/services' },
+    { name: t('nav.products', 'Products'), path: '/products' },
+    { name: t('nav.blog', 'TechVision Insights'), path: '/blog' },
+    { name: t('nav.careers', 'Careers'), path: '/careers' },
+    { name: t('nav.contact', 'Contact'), path: '/contact', isButton: true }
   ];
   
   // Convert Strapi nav items to our component format if available
@@ -97,7 +100,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
             {/* Contact button */}
             <div className="ml-6">
               <GradientButton href="/contact" size="sm">
-                Contact Us
+                {t('button.contactUs', 'Contact Us')}
               </GradientButton>
             </div>
           </div>
@@ -114,6 +117,10 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
             </button>
+          </div>
+          {/* Add language selector */}
+          <div className="hidden md:flex md:items-center md:ml-4">
+            <LanguageSelector />
           </div>
         </div>
       </div>
