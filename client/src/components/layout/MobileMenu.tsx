@@ -83,20 +83,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             </Link>
           ))}
 
-          {/* Language Selector */}
-          <div className="px-4 py-3 mb-2">
-            <div className="flex items-center mb-2 px-2">
-              <div className="h-6 w-1 bg-blue-500 rounded-full mr-2"></div>
-              <h3 className="text-base font-semibold text-gray-700 dark:text-gray-300">
-                {t('language.select', 'Select Language')}
-              </h3>
-            </div>
-            
-            <div className="bg-gray-50 dark:bg-gray-800/40 rounded-lg p-4">
-              <LanguageSelector compact={true} />
-            </div>
-          </div>
-
           {/* Contact Button */}
           <div className="px-4 pt-6 pb-4">
             <GradientButton
