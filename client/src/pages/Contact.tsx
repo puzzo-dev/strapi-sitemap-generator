@@ -28,8 +28,15 @@ const Contact: React.FC = () => {
   return (
     <>
       {/* Contact Header */}
-      <section className="bg-secondary py-24">
-        <div className="container-custom">
+      <section className="bg-secondary py-24 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+          <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-primary-light blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-blue-500 blur-3xl"></div>
+          <div className="absolute top-1/4 right-1/4 w-40 h-40 rounded-full bg-purple-500 blur-3xl"></div>
+        </div>
+        
+        <div className="container-custom relative z-10">
           <div className="flex flex-col lg:flex-row gap-12">
             <div className="w-full lg:w-1/2">
               {isPageLoading ? (
@@ -151,11 +158,23 @@ const Contact: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="bg-secondary-light py-24">
-        <div className="container-custom">
-          <h2 className="text-3xl font-bold mb-12 text-center">
-            {pageContent?.sections?.find(s => s.type === 'testimonials')?.title || 'TESTIMONIALS'}
-          </h2>
+      <section className="bg-secondary-light py-24 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+          <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-primary-light blur-3xl"></div>
+          <div className="absolute bottom-20 left-20 w-96 h-96 rounded-full bg-indigo-500 blur-3xl"></div>
+        </div>
+        
+        <div className="container-custom relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-blue-400">
+              {pageContent?.sections?.find(s => s.type === 'testimonials')?.title || 'TESTIMONIALS'}
+            </h2>
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              {pageContent?.sections?.find(s => s.type === 'testimonials')?.subtitle || 
+                'See what our clients have to say about their experience working with us.'}
+            </p>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {isTestimonialsLoading ? (
@@ -178,8 +197,9 @@ const Contact: React.FC = () => {
               ))
             ) : (
               // If there are testimonials in the page content, use those, otherwise fall back to API testimonials
-              (pageContent?.sections?.find(s => s.type === 'testimonials')?.items?.length ? 
-                pageContent.sections.find(s => s.type === 'testimonials')?.items : apiTestimonials
+              ((pageContent?.sections?.find(s => s.type === 'testimonials')?.items?.length) ? 
+                (pageContent?.sections?.find(s => s.type === 'testimonials')?.items || []) 
+                : (apiTestimonials || [])
               ).map((testimonial: any) => (
                 <TestimonialCard key={testimonial.id} testimonial={testimonial} />
               ))
@@ -189,13 +209,19 @@ const Contact: React.FC = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-secondary py-24">
-        <div className="container-custom">
+      <section className="bg-secondary py-24 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+          <div className="absolute bottom-40 left-40 w-60 h-60 rounded-full bg-purple-600 blur-3xl"></div>
+          <div className="absolute top-40 right-40 w-80 h-80 rounded-full bg-primary-light blur-3xl"></div>
+        </div>
+        
+        <div className="container-custom relative z-10">
           <div className="text-center mb-16">
-            <h2 className="section-title">
+            <h2 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-purple-500">
               {pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.title || 'Frequently Asked Questions'}
             </h2>
-            <p className="section-subtitle">
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
               {pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.subtitle || 
                 'Find answers to common questions about our services and how we can help your business.'}
             </p>
@@ -216,32 +242,32 @@ const Contact: React.FC = () => {
               // Check if there are FAQ items in the page content
               pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.items ? (
                 // Map through FAQ items from Strapi
-                pageContent.sections.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.items?.map((faq: any, index: number) => (
-                  <div key={index} className="bg-secondary-dark rounded-xl p-6 border border-gray-800">
-                    <h3 className="text-xl font-semibold mb-2">{faq.question}</h3>
-                    <p className="text-gray-400">{faq.answer}</p>
+                pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.items?.map((faq: any, index: number) => (
+                  <div key={index} className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-white">{faq.question}</h3>
+                    <p className="text-gray-300">{faq.answer}</p>
                   </div>
                 ))
               ) : (
                 // Fallback FAQ items
                 <>
-                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800">
-                    <h3 className="text-xl font-semibold mb-2">What services does I-VARSE provide?</h3>
-                    <p className="text-gray-400">
+                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-white">What services does I-VARSE provide?</h3>
+                    <p className="text-gray-300">
                       I-VARSE provides a range of digital services including web development, mobile app development, cloud infrastructure management, API programming & integration, SEO optimization, and content writing.
                     </p>
                   </div>
                   
-                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800">
-                    <h3 className="text-xl font-semibold mb-2">How long does it take to complete a project?</h3>
-                    <p className="text-gray-400">
+                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-white">How long does it take to complete a project?</h3>
+                    <p className="text-gray-300">
                       Project timelines vary depending on scope and complexity. A typical website might take 4-6 weeks, while more complex applications could take several months. We'll provide a detailed timeline during our initial consultation.
                     </p>
                   </div>
                   
-                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800">
-                    <h3 className="text-xl font-semibold mb-2">Do you provide ongoing support after project completion?</h3>
-                    <p className="text-gray-400">
+                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-white">Do you provide ongoing support after project completion?</h3>
+                    <p className="text-gray-300">
                       Yes, we offer various support and maintenance packages to ensure your digital products continue to perform optimally after launch. Our team is always available to address any issues or implement updates.
                     </p>
                   </div>
