@@ -141,19 +141,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
           transition={{ duration: 0.4, delay: 0.4 }}
         >
           <Link href={`/products/${product.id}`}>
-            <motion.a 
-              className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group relative overflow-hidden"
-              whileHover={{ scale: 1.05 }}
+            <motion.div 
+              className="button-spec inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group"
+              whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <span className="inline-block relative">
+              <span>
                 Learn More
-                <motion.span 
-                  className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 dark:bg-blue-400 origin-left" 
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
               </span>
               <motion.span
                 className="ml-1 inline-flex"
@@ -162,7 +156,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
               >
                 <ArrowRight className="h-4 w-4" />
               </motion.span>
-            </motion.a>
+            </motion.div>
           </Link>
         </motion.div>
       </div>
