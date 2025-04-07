@@ -60,19 +60,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               whileHover={{ scale: 1.01 }}
-              className={`md:h-60 h-40 bg-blue-50 dark:bg-blue-900/20 rounded-lg overflow-hidden flex items-center justify-center shadow-md relative ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}
+              className={`md:h-44 h-32 bg-blue-50 dark:bg-blue-900/20 rounded-lg overflow-hidden flex items-center justify-center shadow-md relative ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}
             >
               {image ? (
                 <img 
                   src={image} 
                   alt={`${title} screenshot`} 
-                  className="w-full h-full object-contain object-center p-2"
+                  className="w-full h-full object-cover object-center"
                 />
               ) : (
-                <div className="text-gray-400 dark:text-gray-500 flex flex-col items-center">
-                  <ImageIcon className="h-12 w-12 mb-2 opacity-50" />
-                  <p className="text-sm">Product Screenshot</p>
-                </div>
+                <img 
+                  src={`https://source.unsplash.com/random/600x400/?tech,${title.toLowerCase().replace(/\s+/g, ',')}`}
+                  alt={`${title} visualization`}
+                  className="w-full h-full object-cover object-center"
+                  onError={(e) => {
+                    // Fallback if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = "https://source.unsplash.com/random/600x400/?technology";
+                  }}
+                />
               )}
               
               {/* Tech corner elements */}

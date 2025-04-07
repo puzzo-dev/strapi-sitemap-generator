@@ -4,17 +4,20 @@ import ProductCard from '@/components/ui/ProductCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import GradientButton from '@/components/ui/GradientButton';
 import { products, testimonials } from '@/lib/data';
+import { getProducts, getTestimonials } from '@/lib/strapi';
 import { ProductProps, TestimonialProps } from '@/lib/types';
 import { ArrowRight, Package, Target, PieChart, ShieldCheck, Award, Cpu, Check } from 'lucide-react';
 
 const Products: React.FC = () => {
   const { data: apiProducts, isLoading: isProductsLoading } = useQuery<ProductProps[]>({
-    queryKey: ['/api/products'],
+    queryKey: ['products'],
+    queryFn: getProducts,
     initialData: products,
   });
 
   const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useQuery<TestimonialProps[]>({
-    queryKey: ['/api/testimonials'],
+    queryKey: ['testimonials'],
+    queryFn: getTestimonials,
     initialData: testimonials,
   });
 

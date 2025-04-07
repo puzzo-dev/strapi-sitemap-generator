@@ -4,16 +4,19 @@ import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import { services, testimonials } from '@/lib/data';
+import { getServices, getTestimonials } from '@/lib/strapi';
 import { ServiceProps, TestimonialProps } from '@/lib/types';
 
 const Services: React.FC = () => {
   const { data: apiServices, isLoading: isServicesLoading } = useQuery<ServiceProps[]>({
-    queryKey: ['/api/services'],
+    queryKey: ['services'],
+    queryFn: getServices,
     initialData: services,
   });
 
   const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useQuery<TestimonialProps[]>({
-    queryKey: ['/api/testimonials'],
+    queryKey: ['testimonials'],
+    queryFn: getTestimonials,
     initialData: testimonials,
   });
 

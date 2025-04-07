@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ContactFormData } from '@/lib/types';
+import { submitContactForm } from '@/lib/strapi';
 
 const contactFormSchema = z.object({
   fullName: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -38,9 +38,7 @@ const ContactForm: React.FC = () => {
   });
 
   const contactMutation = useMutation({
-    mutationFn: (data: ContactFormData) => 
-      apiRequest('POST', '/api/contact', data)
-        .then(res => res.json()),
+    mutationFn: submitContactForm,
     onSuccess: () => {
       toast({
         title: "Success!",
@@ -52,7 +50,7 @@ const ContactForm: React.FC = () => {
     onError: (error) => {
       toast({
         title: "Error!",
-        description: error.toString() || "There was a problem submitting your form. Please try again.",
+        description: error instanceof Error ? error.message : "There was a problem submitting your form. Please try again.",
         variant: "destructive",
       });
     },
