@@ -325,8 +325,8 @@ const Home: React.FC = () => {
                             />
                           </div>
                           
-                          {/* Current service overlay content - minimal in top corner */}
-                          <div className="absolute top-0 left-0 z-20 p-2 m-3 bg-black/30 backdrop-blur-sm rounded-md inline-flex items-center">
+                          {/* Current service overlay content - flush with top right corner */}
+                          <div className="absolute top-0 right-0 z-20 p-2 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
                             {serviceSlides.map((service, index) => (
                               <div 
                                 key={service.id || index}
