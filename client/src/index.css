@@ -406,12 +406,13 @@
   }
 }
 
-.mobile-menu-enter {
-  animation: slide-in-right-menu 0.4s ease-out forwards;
+.mobile-menu-open {
+  transform: translateX(0);
+  animation: slide-in-right-menu 0.3s ease-out forwards;
 }
 
-.mobile-menu-exit {
-  animation: slide-in-right-menu 0.4s ease-in reverse forwards;
+.mobile-menu-closed {
+  transform: translateX(100%);
 }
 
 /* Slideshow animation for hero image - slower and more mellow transitions */

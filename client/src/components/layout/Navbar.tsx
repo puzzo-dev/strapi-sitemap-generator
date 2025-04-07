@@ -114,14 +114,14 @@ const Navbar: React.FC = () => {
       
       {/* Mobile menu - off-screen slide-in with overlay backdrop */}
       <div 
-        className={`md:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
+        className={`md:hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
           mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={closeMobileMenu}
       >
         {/* Mobile menu container */}
         <div 
-          className={`mobile-menu fixed top-0 right-0 w-3/4 h-full bg-white dark:bg-[#0a1929] shadow-xl overflow-y-auto transform transition-transform duration-400 ease-in-out ${
+          className={`mobile-menu fixed top-0 right-0 w-4/5 h-full bg-white dark:bg-[#0a1929] shadow-xl overflow-y-auto transform transition-transform duration-400 ease-in-out z-[101] ${
             mobileMenuOpen ? 'mobile-menu-open' : 'mobile-menu-closed'
           }`}
           onClick={(e) => e.stopPropagation()}

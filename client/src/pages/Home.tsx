@@ -23,7 +23,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-20 md:py-24 lg:py-28 border-b border-blue-100 dark:border-blue-900/40 hero-section">
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] pt-12 pb-20 md:pt-16 md:pb-24 lg:py-24 border-b border-blue-100 dark:border-blue-900/40 hero-section">
         {/* Tech-inspired background elements */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* Animated gradient orbs */}
@@ -55,7 +55,7 @@ const Home: React.FC = () => {
         <div className="container-custom relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-10 md:gap-12 lg:gap-16">
             {/* On mobile: Shows heading first, then slideshow, then content */}
-            <div className="w-full lg:w-1/2 space-y-8 animate-fade-in order-1 lg:order-1 pt-10 md:pt-6">
+            <div className="w-full lg:w-1/2 space-y-8 animate-fade-in order-1 lg:order-1 pt-4 md:pt-0">
               {/* Tag Label */}
               <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 animate-slide-in-right mb-4">
                 <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
