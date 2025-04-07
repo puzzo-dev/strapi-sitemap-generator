@@ -7,7 +7,7 @@ import { services, testimonials, clientLogos } from '@/lib/data';
 import { ServiceProps, TestimonialProps } from '@/lib/types';
 
 // Import icons
-import { PlayCircle, ArrowRight, ChevronRight } from 'lucide-react';
+import { PlayCircle, ArrowRight, ChevronRight, Info as InfoIcon } from 'lucide-react';
 
 const Home: React.FC = () => {
   const { data: apiServices, isLoading: isServicesLoading } = useQuery<ServiceProps[]>({
@@ -23,7 +23,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white dark:from-[#0a1929] dark:to-[#132f4c] py-16 md:pt-8 md:pb-16 border-b border-blue-100 dark:border-blue-900/40">
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-8 md:pb-16 border-b border-blue-100 dark:border-blue-900/40">
         {/* Tech-inspired background elements */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* Animated gradient orbs */}
@@ -83,30 +83,63 @@ const Home: React.FC = () => {
             <div className="w-full lg:w-1/2 flex justify-center animate-fade-in" style={{ animationDelay: '0.5s' }}>
               <div className="relative w-full max-w-lg">
                 {/* Glowing background effect */}
-                <div className="animate-pulse-slow absolute -bottom-4 -right-4 h-64 w-64 rounded-full bg-blue-300/30 blur-3xl dark:bg-blue-900/20"></div>
+                <div className="animate-pulse-slower absolute -bottom-4 -right-4 h-64 w-64 rounded-full bg-blue-300/30 blur-3xl dark:bg-blue-900/20"></div>
+                <div className="animate-pulse-slow absolute -top-4 -left-4 h-48 w-48 rounded-full bg-purple-300/20 blur-3xl dark:bg-purple-900/10"></div>
                 
                 {/* Tech border frame */}
                 <div className="absolute inset-0 border-2 border-blue-200/50 dark:border-blue-700/30 rounded-2xl -m-2 z-0"></div>
                 <div className="absolute inset-0 border border-blue-300/70 dark:border-blue-600/30 rounded-xl rotate-3 z-0"></div>
                 
-                {/* Main image with animation */}
-                <div className="relative z-10 rounded-lg overflow-hidden shadow-xl transition-all duration-500 hover:shadow-blue-500/30 hover:scale-[1.03] border border-blue-200 dark:border-blue-800/50 animate-float">
-                  <img 
-                    src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                    alt="Professional working with digital solutions" 
-                    className="rounded-lg object-cover w-full aspect-[4/3]"
-                  />
+                {/* Slideshow container */}
+                <div className="relative z-10 rounded-lg overflow-hidden shadow-xl transition-all duration-700 hover:shadow-blue-500/30 group hover:scale-[1.02] border border-blue-200 dark:border-blue-800/50 h-full aspect-[4/3]">
+                  {/* Image 1: Web Development */}
+                  <div className="absolute inset-0 animate-slideshow" style={{ animationDelay: '0s' }}>
+                    <img 
+                      src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                      alt="Professional working with digital solutions" 
+                      className="rounded-lg object-cover w-full h-full"
+                    />
+                    <div className="absolute top-0 right-0 bg-gradient-to-bl from-blue-500 to-blue-600 text-white px-4 py-1 text-sm font-medium">
+                      Web Development
+                    </div>
+                  </div>
                   
-                  {/* Decorative elements */}
-                  <div className="absolute top-0 right-0 bg-gradient-to-bl from-blue-500 to-blue-600 text-white px-4 py-1 text-sm font-medium">
-                    Digital Solutions
+                  {/* Image 2: Mobile Apps */}
+                  <div className="absolute inset-0 animate-slideshow" style={{ animationDelay: '-10s' }}>
+                    <img 
+                      src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                      alt="Mobile application development" 
+                      className="rounded-lg object-cover w-full h-full"
+                    />
+                    <div className="absolute top-0 right-0 bg-gradient-to-bl from-indigo-500 to-indigo-600 text-white px-4 py-1 text-sm font-medium">
+                      Mobile Apps
+                    </div>
+                  </div>
+                  
+                  {/* Image 3: Cloud Solutions */}
+                  <div className="absolute inset-0 animate-slideshow" style={{ animationDelay: '-5s' }}>
+                    <img 
+                      src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                      alt="Cloud computing infrastructure" 
+                      className="rounded-lg object-cover w-full h-full"
+                    />
+                    <div className="absolute top-0 right-0 bg-gradient-to-bl from-cyan-500 to-cyan-600 text-white px-4 py-1 text-sm font-medium">
+                      Cloud Solutions
+                    </div>
                   </div>
                   
                   {/* Tech corner elements */}
-                  <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-blue-400 dark:border-blue-500"></div>
-                  <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-blue-400 dark:border-blue-500"></div>
-                  <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-blue-400 dark:border-blue-500"></div>
-                  <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-blue-400 dark:border-blue-500"></div>
+                  <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-blue-400 dark:border-blue-500 z-10"></div>
+                  <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-blue-400 dark:border-blue-500 z-10"></div>
+                  <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-blue-400 dark:border-blue-500 z-10"></div>
+                  <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-blue-400 dark:border-blue-500 z-10"></div>
+                </div>
+                
+                {/* Tech indicators */}
+                <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse-light"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse-light" style={{ animationDelay: '1s' }}></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-pulse-light" style={{ animationDelay: '2s' }}></div>
                 </div>
               </div>
             </div>
@@ -185,19 +218,107 @@ const Home: React.FC = () => {
           </div>
         </div>
         
-        {/* Video Section */}
-        <div className="container-custom mt-16">
-          <div className="relative rounded-xl overflow-hidden aspect-video max-w-4xl mx-auto card">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <button className="z-10 w-20 h-20 rounded-full bg-white/90 shadow-lg flex items-center justify-center cursor-pointer hover:bg-white transition-all duration-300 hover:scale-110">
-                <PlayCircle className="h-12 w-12 text-blue-600" />
-              </button>
-              <div className="absolute inset-0 bg-blue-900/20"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1642059863319-1481ad72fc2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                alt="Video: About I-VARSE" 
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+        {/* Video and About Section */}
+        <div className="container-custom mt-24">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="w-full lg:w-1/2">
+              <div className="relative">
+                {/* Section Title */}
+                <div className="mb-8 animate-fade-in">
+                  <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">
+                    <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse-slow"></span>
+                    Who We Are
+                  </div>
+                  <h2 className="heading-md text-blue-600 dark:text-blue-400 mt-2">About I-VARSE</h2>
+                </div>
+                
+                {/* About Content */}
+                <div className="text-gray-600 dark:text-gray-300 space-y-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                  <p>
+                    Founded in 2018, I-VARSE Limited has been at the forefront of digital innovation in Nigeria, providing cutting-edge technology solutions to businesses across various sectors.
+                  </p>
+                  <p>
+                    Our mission is to empower businesses with transformative digital solutions that drive growth, efficiency, and competitive advantage in an increasingly technology-driven world.
+                  </p>
+                  
+                  {/* Key Facts */}
+                  <div className="grid grid-cols-2 gap-4 mt-8">
+                    <div className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+                      <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">5+</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Years of Experience</div>
+                    </div>
+                    <div className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+                      <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">100+</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Projects Completed</div>
+                    </div>
+                    <div className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
+                      <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">50+</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Happy Clients</div>
+                    </div>
+                    <div className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+                      <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">20+</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Team Members</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Video Container */}
+            <div className="w-full lg:w-1/2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              <div className="relative rounded-xl overflow-hidden aspect-video card border-2 border-blue-200 dark:border-blue-800/70 group">
+                {/* Tech-inspired decorative elements */}
+                <div className="absolute inset-0 z-0 overflow-hidden">
+                  <svg className="absolute top-0 left-0 w-40 h-40 text-blue-200/20 dark:text-blue-800/10 transform -translate-x-1/4 -translate-y-1/4" viewBox="0 0 200 200" fill="none">
+                    <path d="M100 0 V200 M0 100 H200" stroke="currentColor" strokeWidth="0.5" strokeDasharray="5 3" />
+                    <circle cx="100" cy="100" r="50" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 2" />
+                  </svg>
+                  
+                  <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-gradient-to-tl from-blue-200/20 to-transparent dark:from-blue-800/10 blur-xl"></div>
+                </div>
+                
+                {/* Main video container */}
+                <div className="absolute inset-3 rounded-lg overflow-hidden shadow-xl z-10 bg-gray-900">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-blue-900/30"></div>
+                    <img 
+                      src="https://images.unsplash.com/photo-1642059863319-1481ad72fc2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                      alt="Video: About I-VARSE" 
+                      className="absolute inset-0 w-full h-full object-cover opacity-90"
+                    />
+                    <button className="z-20 w-20 h-20 rounded-full bg-white/90 shadow-lg flex items-center justify-center cursor-pointer hover:bg-white transition-all duration-300 hover:scale-110 animate-pulse-light">
+                      <PlayCircle className="h-12 w-12 text-blue-600" />
+                    </button>
+                    
+                    {/* Video title overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
+                      <div className="font-medium">Our Company Story</div>
+                      <div className="text-sm text-gray-300">Learn about our mission and values</div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Tech corner elements */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-3 border-l-3 border-blue-500 dark:border-blue-400 rounded-tl z-10"></div>
+                <div className="absolute top-0 right-0 w-8 h-8 border-t-3 border-r-3 border-blue-500 dark:border-blue-400 rounded-tr z-10"></div>
+                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-3 border-l-3 border-blue-500 dark:border-blue-400 rounded-bl z-10"></div>
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-3 border-r-3 border-blue-500 dark:border-blue-400 rounded-br z-10"></div>
+                
+                {/* Dynamic highlights */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-20">
+                  <div className="absolute top-0 left-1/2 w-40 h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-pulse-slower"></div>
+                  <div className="absolute bottom-0 left-1/2 w-40 h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-pulse-slower"></div>
+                  <div className="absolute left-0 top-1/2 h-40 w-[1px] bg-gradient-to-b from-transparent via-blue-500 to-transparent animate-pulse-slower"></div>
+                  <div className="absolute right-0 top-1/2 h-40 w-[1px] bg-gradient-to-b from-transparent via-blue-500 to-transparent animate-pulse-slower"></div>
+                </div>
+              </div>
+              
+              <div className="mt-4 flex items-center justify-center">
+                <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                  <InfoIcon className="h-4 w-4 mr-1 text-blue-500" /> 
+                  Click to watch our company introduction video
+                </span>
+              </div>
             </div>
           </div>
         </div>
