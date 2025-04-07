@@ -99,3 +99,24 @@ export interface ClientLogo {
   image: string;
   url?: string;
 }
+
+export interface JobListing {
+  id: number;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  description: string;
+  responsibilities: string[];
+  requirements: string[];
+  featured?: boolean;
+  postedAt?: string;
+  applicationUrl?: string;
+}
+
+export interface Benefit {
+  id?: number;
+  title: string;
+  description: string;
+  icon: string;
+}

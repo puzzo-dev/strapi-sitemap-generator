@@ -1,4 +1,11 @@
-import { products as localProducts, services as localServices, testimonials as localTestimonials, clientLogos as localClientLogos } from '@/lib/data';
+import { 
+  products as localProducts, 
+  services as localServices, 
+  testimonials as localTestimonials, 
+  clientLogos as localClientLogos,
+  jobListings as localJobListings,
+  benefits as localBenefits
+} from '@/lib/data';
 import { 
   ProductProps, 
   ServiceProps, 
@@ -10,7 +17,9 @@ import {
   SiteConfig,
   PageContent,
   TeamMember,
-  ClientLogo
+  ClientLogo,
+  JobListing,
+  Benefit
 } from '@/lib/types';
 import type { SiteContent } from '@shared/schema';
 import { apiRequest } from './queryClient';
@@ -506,4 +515,33 @@ export async function scheduleAppointment(data: {
     console.error('Error scheduling appointment:', error);
     throw error;
   }
+}
+
+/**
+ * Get job listings from API or fallback to local data
+ */
+export async function getJobListings(): Promise<JobListing[]> {
+  // Using the jobListings data from data.ts as fallback
+  return fetchData<JobListing[]>('job-listings', localJobListings);
+}
+
+/**
+ * Get a single job listing by ID from API or fallback to local data
+ */
+export async function getJobById(id: number): Promise<JobListing | undefined> {
+  try {
+    const allJobs = await getJobListings();
+    return allJobs.find(job => job.id === id);
+  } catch (error) {
+    console.error('Error fetching job:', error);
+    return undefined;
+  }
+}
+
+/**
+ * Get benefits from API or fallback to local data
+ */
+export async function getBenefits(): Promise<Benefit[]> {
+  // Using the benefits data from data.ts as fallback
+  return fetchData<Benefit[]>('benefits', localBenefits);
 }

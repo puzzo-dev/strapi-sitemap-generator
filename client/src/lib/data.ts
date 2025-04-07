@@ -98,22 +98,145 @@ export const testimonials: TestimonialProps[] = [
 export const clientLogos = [
   {
     name: "Google",
-    image: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
+    image: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    url: "https://google.com"
   },
   {
     name: "Apple",
-    image: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+    image: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+    url: "https://apple.com"
   },
   {
     name: "Amazon",
-    image: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
+    image: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+    url: "https://amazon.com"
   },
   {
     name: "Microsoft",
-    image: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
+    image: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+    url: "https://microsoft.com"
   },
   {
     name: "Netflix",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+    image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+    url: "https://netflix.com"
+  }
+];
+
+// Job listings data for Careers page
+export const jobListings = [
+  {
+    id: 1,
+    title: "Senior Full Stack Developer",
+    department: "Engineering",
+    location: "Lagos, Nigeria",
+    type: "Full-time",
+    description: "We're looking for an experienced Full Stack Developer to lead our development team in creating robust software solutions.",
+    responsibilities: [
+      "Design and implement scalable web applications",
+      "Lead technical architecture decisions",
+      "Mentor junior developers and conduct code reviews",
+      "Collaborate with product and design teams"
+    ],
+    requirements: [
+      "5+ years of experience in full stack development",
+      "Proficiency in React, Node.js, and modern JavaScript",
+      "Experience with cloud infrastructure (AWS, Azure, or GCP)",
+      "Strong problem-solving skills and attention to detail"
+    ]
+  },
+  {
+    id: 2,
+    title: "UX/UI Designer",
+    department: "Design",
+    location: "Remote",
+    type: "Full-time",
+    description: "Join our creative team as a UX/UI Designer to craft intuitive and engaging user experiences for our products.",
+    responsibilities: [
+      "Create user-centered designs for web and mobile applications",
+      "Develop wireframes, prototypes, and high-fidelity mockups",
+      "Conduct user research and usability testing",
+      "Collaborate with developers to ensure design implementation"
+    ],
+    requirements: [
+      "3+ years of experience in UX/UI design",
+      "Proficiency in design tools like Figma or Adobe XD",
+      "Strong portfolio demonstrating user-centered design projects",
+      "Understanding of accessibility and responsive design principles"
+    ]
+  },
+  {
+    id: 3,
+    title: "DevOps Engineer",
+    department: "Infrastructure",
+    location: "Lagos, Nigeria",
+    type: "Full-time",
+    description: "We're seeking a DevOps Engineer to optimize our infrastructure and streamline our development workflows.",
+    responsibilities: [
+      "Build and maintain CI/CD pipelines",
+      "Manage cloud infrastructure and containerization",
+      "Implement monitoring and logging solutions",
+      "Automate deployment processes and infrastructure"
+    ],
+    requirements: [
+      "3+ years of experience in DevOps or related field",
+      "Experience with container orchestration (Kubernetes)",
+      "Knowledge of infrastructure as code (Terraform, CloudFormation)",
+      "Familiarity with monitoring tools and log management systems"
+    ]
+  },
+  {
+    id: 4,
+    title: "Digital Marketing Specialist",
+    department: "Marketing",
+    location: "Remote",
+    type: "Full-time",
+    description: "Help drive our digital marketing efforts to increase brand awareness and generate leads for our business.",
+    responsibilities: [
+      "Develop and implement digital marketing strategies",
+      "Manage social media presence and content calendar",
+      "Create and optimize ad campaigns across platforms",
+      "Analyze marketing metrics and provide actionable insights"
+    ],
+    requirements: [
+      "2+ years of experience in digital marketing",
+      "Proficiency in SEO, SEM, and social media marketing",
+      "Experience with marketing analytics tools",
+      "Strong written and verbal communication skills"
+    ]
+  }
+];
+
+// Benefits data for Careers page
+export const benefits = [
+  {
+    title: "Competitive Compensation",
+    description: "We offer industry-leading salaries and comprehensive benefits packages.",
+    icon: "PieChart"
+  },
+  {
+    title: "Health & Wellness",
+    description: "Comprehensive health insurance and wellness programs for you and your family.",
+    icon: "Heart"
+  },
+  {
+    title: "Remote-Friendly",
+    description: "Flexible work arrangements including remote and hybrid options.",
+    icon: "Laptop"
+  },
+  {
+    title: "Professional Growth",
+    description: "Continuous learning opportunities, conferences, and career development.",
+    icon: "Award"
+  },
+  {
+    title: "Work-Life Balance",
+    description: "Generous paid time off, parental leave, and flexible schedules.",
+    icon: "Coffee"
+  },
+  {
+    title: "Global Impact",
+    description: "Work on projects that make a real difference for clients worldwide.",
+    icon: "Globe"
   }
 ];

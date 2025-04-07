@@ -11,9 +11,12 @@ import {
   Heart,
   Coffee,
   Globe,
-  Laptop
+  Laptop, 
+  Loader
 } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
+import { useJobListings, useBenefits } from '@/hooks/useStrapiContent';
+import { JobListing, Benefit } from '@/lib/types';
 
 // Sample job listings
 const jobListings = [
@@ -134,6 +137,34 @@ const benefits = [
 ];
 
 const Careers: React.FC = () => {
+  // Fetch job listings and benefits from Strapi
+  const { data: apiJobListings, isLoading: isJobsLoading } = useJobListings();
+  const { data: apiBenefits, isLoading: isBenefitsLoading } = useBenefits();
+  
+  // Get the job listings data, either from API or fallback
+  const displayJobListings = apiJobListings?.length ? apiJobListings : jobListings;
+  
+  // Process benefits data to include icon components
+  const getBenefitIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'PieChart': return <PieChart className="h-6 w-6" />;
+      case 'Heart': return <Heart className="h-6 w-6" />;
+      case 'Laptop': return <Laptop className="h-6 w-6" />;
+      case 'Award': return <Award className="h-6 w-6" />;
+      case 'Coffee': return <Coffee className="h-6 w-6" />;
+      case 'Globe': return <Globe className="h-6 w-6" />;
+      default: return <Award className="h-6 w-6" />; // Default icon
+    }
+  };
+
+  // Process the benefits data for display
+  const displayBenefits = apiBenefits?.length 
+    ? apiBenefits.map(b => ({
+        ...b,
+        icon: getBenefitIcon(b.icon)
+      })) 
+    : benefits;
+    
   return (
     <>
       {/* Hero Section */}
@@ -268,19 +299,25 @@ const Careers: React.FC = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="card p-8 hover-lift">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-200 dark:shadow-blue-900/20">
-                  {benefit.icon}
+          {isBenefitsLoading ? (
+            <div className="flex justify-center items-center py-12">
+              <Loader className="h-8 w-8 text-blue-500 animate-spin" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {displayBenefits.map((benefit, index) => (
+                <div key={index} className="card p-8 hover-lift">
+                  <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-200 dark:shadow-blue-900/20">
+                    {benefit.icon}
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{benefit.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {benefit.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{benefit.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {benefit.description}
-                </p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -298,65 +335,71 @@ const Careers: React.FC = () => {
             </p>
           </div>
           
-          <div className="space-y-6">
-            {jobListings.map(job => (
-              <div key={job.id} className="card p-6 md:p-8 hover-lift">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{job.title}</h3>
-                    <div className="flex flex-wrap gap-3 mb-4">
-                      <div className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300">
-                        <Briefcase className="h-4 w-4 mr-1.5" />
-                        {job.department}
+          {isJobsLoading ? (
+            <div className="flex justify-center items-center py-12">
+              <Loader className="h-8 w-8 text-blue-500 animate-spin" />
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {displayJobListings.map(job => (
+                <div key={job.id} className="card p-6 md:p-8 hover-lift">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{job.title}</h3>
+                      <div className="flex flex-wrap gap-3 mb-4">
+                        <div className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300">
+                          <Briefcase className="h-4 w-4 mr-1.5" />
+                          {job.department}
+                        </div>
+                        <div className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300">
+                          <MapPin className="h-4 w-4 mr-1.5" />
+                          {job.location}
+                        </div>
+                        <div className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300">
+                          <Clock className="h-4 w-4 mr-1.5" />
+                          {job.type}
+                        </div>
                       </div>
-                      <div className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300">
-                        <MapPin className="h-4 w-4 mr-1.5" />
-                        {job.location}
-                      </div>
-                      <div className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300">
-                        <Clock className="h-4 w-4 mr-1.5" />
-                        {job.type}
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
+                        {job.description}
+                      </p>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div>
+                          <h4 className="font-bold text-gray-800 dark:text-white mb-2">Responsibilities:</h4>
+                          <ul className="space-y-2">
+                            {job.responsibilities.map((item, i) => (
+                              <li key={i} className="flex items-start text-gray-600 dark:text-gray-300">
+                                <ChevronRight className="h-4 w-4 text-blue-500 mt-1 mr-2 flex-shrink-0" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-800 dark:text-white mb-2">Requirements:</h4>
+                          <ul className="space-y-2">
+                            {job.requirements.map((item, i) => (
+                              <li key={i} className="flex items-start text-gray-600 dark:text-gray-300">
+                                <ChevronRight className="h-4 w-4 text-blue-500 mt-1 mr-2 flex-shrink-0" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">
-                      {job.description}
-                    </p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                      <div>
-                        <h4 className="font-bold text-gray-800 dark:text-white mb-2">Responsibilities:</h4>
-                        <ul className="space-y-2">
-                          {job.responsibilities.map((item, i) => (
-                            <li key={i} className="flex items-start text-gray-600 dark:text-gray-300">
-                              <ChevronRight className="h-4 w-4 text-blue-500 mt-1 mr-2 flex-shrink-0" />
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-gray-800 dark:text-white mb-2">Requirements:</h4>
-                        <ul className="space-y-2">
-                          {job.requirements.map((item, i) => (
-                            <li key={i} className="flex items-start text-gray-600 dark:text-gray-300">
-                              <ChevronRight className="h-4 w-4 text-blue-500 mt-1 mr-2 flex-shrink-0" />
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                    <div className="md:ml-6 flex-shrink-0">
+                      <GradientButton href={`/careers/${job.id}`} endIcon={<ArrowRight />}>
+                        Apply Now
+                      </GradientButton>
                     </div>
-                  </div>
-                  
-                  <div className="md:ml-6 flex-shrink-0">
-                    <GradientButton href={`/careers/${job.id}`} endIcon={<ArrowRight />}>
-                      Apply Now
-                    </GradientButton>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
           
           <div className="mt-16 text-center bg-blue-50 dark:bg-blue-900/20 p-8 rounded-xl border border-blue-100 dark:border-blue-800/30">
             <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Don't See the Right Fit?</h3>

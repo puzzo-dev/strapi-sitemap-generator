@@ -817,25 +817,25 @@ const Home: React.FC = () => {
           {/* Client Logos */}
           <div className="mt-10">
             {isClientLogosLoading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center justify-items-center">
+              <div className="flex overflow-x-auto pb-4 gap-8 justify-center items-center">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="w-32 h-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div key={i} className="w-32 h-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse flex-shrink-0"></div>
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center justify-items-center">
+              <div className="flex overflow-x-auto pb-4 gap-8 justify-center items-center">
                 {(apiClientLogos || clientLogos).map((client, index) => (
                   <a 
                     key={index} 
                     href={client.url || "#"} 
-                    className="transition-opacity duration-300 hover:opacity-80 flex items-center justify-center"
+                    className="transition-opacity duration-300 hover:opacity-80 flex items-center justify-center flex-shrink-0"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     <img 
                       src={client.image} 
                       alt={client.name} 
-                      className="h-10 md:h-12 object-contain max-w-[120px] lg:max-w-[150px] filter dark:invert dark:brightness-150 dark:contrast-75"
+                      className="h-8 md:h-10 object-contain w-20 md:w-24 filter dark:invert dark:brightness-150 dark:contrast-75"
                     />
                   </a>
                 ))}

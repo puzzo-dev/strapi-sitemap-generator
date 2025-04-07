@@ -10,7 +10,10 @@ import {
   getProducts,
   getServices,
   getTestimonials,
-  getClientLogos
+  getClientLogos,
+  getJobListings,
+  getJobById,
+  getBenefits
 } from '@/lib/strapi';
 import { 
   NavItem, 
@@ -22,7 +25,9 @@ import {
   ProductProps,
   ServiceProps,
   TestimonialProps,
-  ClientLogo
+  ClientLogo,
+  JobListing,
+  Benefit
 } from '@/lib/types';
 
 /**
@@ -178,5 +183,36 @@ export function useClientLogos() {
   return useQuery<ClientLogo[]>({
     queryKey: ['client-logos'],
     queryFn: getClientLogos
+  });
+}
+
+/**
+ * Custom hook to fetch job listings
+ */
+export function useJobListings() {
+  return useQuery<JobListing[]>({
+    queryKey: ['job-listings'],
+    queryFn: getJobListings
+  });
+}
+
+/**
+ * Custom hook to fetch job by ID
+ */
+export function useJobById(id: number) {
+  return useQuery<JobListing | undefined>({
+    queryKey: ['job-listings', id],
+    queryFn: () => getJobById(id),
+    enabled: !!id
+  });
+}
+
+/**
+ * Custom hook to fetch benefits
+ */
+export function useBenefits() {
+  return useQuery<Benefit[]>({
+    queryKey: ['benefits'],
+    queryFn: getBenefits
   });
 }
