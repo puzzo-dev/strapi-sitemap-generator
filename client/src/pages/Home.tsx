@@ -333,8 +333,8 @@ const Home: React.FC = () => {
                                 className={`transition-opacity duration-500 flex items-center ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
                               >
                                 <div className="flex items-center">
-                                  <span className="w-2 h-2">{serviceIcons[index % serviceIcons.length]}</span>
-                                  <h3 className="text-[8px] font-medium ml-0.5 text-white whitespace-nowrap">
+                                  <span className="text-[11px] flex items-center justify-center">{serviceIcons[index % serviceIcons.length]}</span>
+                                  <h3 className="text-[11px] font-medium ml-0.5 text-white whitespace-nowrap">
                                     {service.title}
                                   </h3>
                                 </div>
