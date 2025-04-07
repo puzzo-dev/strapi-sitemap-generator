@@ -23,7 +23,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
 }) => {
   // Style variants
   const getButtonClasses = () => {
-    let baseClasses = 'rounded-lg font-medium transition-all duration-300 flex items-center justify-center';
+    let baseClasses = 'rounded-lg font-medium transition-all duration-700 ease-in-out flex items-center justify-center';
     
     // Size variations
     const sizeClasses = {
@@ -35,10 +35,10 @@ const GradientButton: React.FC<GradientButtonProps> = ({
     
     // Variant styles
     const variantClasses = {
-      default: 'gradient-bg text-white hover:shadow-lg hover:shadow-blue-500/20 active:scale-[0.98]',
-      outline: 'bg-transparent border-2 border-blue-500 text-blue-500 dark:text-blue-400 hover:bg-blue-500/10',
-      ghost: 'bg-transparent text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20',
-      light: 'bg-white text-blue-600 hover:bg-gray-50 shadow-md hover:shadow-lg'
+      default: 'gradient-bg text-white hover:shadow-lg hover:shadow-blue-500/20 hover:translate-y-[-2px] active:translate-y-0 active:shadow-md',
+      outline: 'bg-transparent border-2 border-blue-500 text-blue-500 dark:text-blue-400 hover:bg-blue-500/10 hover:translate-y-[-2px] active:translate-y-0',
+      ghost: 'bg-transparent text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:translate-y-[-2px] active:translate-y-0',
+      light: 'bg-white text-blue-600 hover:bg-gray-50 shadow-md hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0'
     };
     
     return cn(

@@ -54,33 +54,40 @@ const Home: React.FC = () => {
 
         <div className="container-custom relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-12 pt-8 md:pt-16 lg:py-16">
-            <div className="w-full lg:w-1/2 space-y-6 animate-fade-in">
+            {/* On mobile: Shows heading first, then slideshow, then content */}
+            <div className="w-full lg:w-1/2 space-y-6 animate-fade-in order-1 lg:order-1">
+              {/* Tag Label */}
               <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 animate-slide-in-right">
                 <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
                 Premium Tech Solutions
               </div>
               
+              {/* Main Heading - Always shows first */}
               <h1 className="heading-xl">
                 <span className="block animate-fade-in-up" style={{ animationDelay: '0.2s' }}>Top rated web</span>
                 <span className="block animate-fade-in-up" style={{ animationDelay: '0.4s' }}>dev company</span>
                 <span className="gradient-text font-extrabold animate-fade-in-up" style={{ animationDelay: '0.6s' }}>in Lagos, Nigeria</span>
               </h1>
               
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-                Embark on a successful innovative journey with cutting-edge solutions for your business. We're dedicated to elevating your digital experience.
-              </p>
-              
-              <div className="pt-8 flex flex-wrap gap-4 animate-fade-in-up" style={{ animationDelay: '1s' }}>
-                <GradientButton href="/services" size="lg" endIcon={<ChevronRight />} className="animate-bounce-subtle">
-                  Get Started
-                </GradientButton>
-                <GradientButton href="/#about" variant="outline" size="lg" className="animate-pulse-light">
-                  Learn More
-                </GradientButton>
+              {/* Hidden on Mobile until after slideshow */}
+              <div className="hidden md:block lg:block">
+                <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+                  Embark on a successful innovative journey with cutting-edge solutions for your business. We're dedicated to elevating your digital experience.
+                </p>
+                
+                <div className="pt-8 flex flex-wrap gap-4 animate-fade-in-up" style={{ animationDelay: '1s' }}>
+                  <GradientButton href="/services" size="lg" endIcon={<ChevronRight />} className="animate-snowfall">
+                    Get Started
+                  </GradientButton>
+                  <GradientButton href="/#about" variant="outline" size="lg" className="animate-pulse-light">
+                    Learn More
+                  </GradientButton>
+                </div>
               </div>
             </div>
             
-            <div className="w-full lg:w-1/2 flex justify-center animate-fade-in" style={{ animationDelay: '0.5s' }}>
+            {/* Slideshow - Shows second on mobile */}
+            <div className="w-full lg:w-1/2 flex justify-center animate-fade-in order-2 lg:order-2 mt-8 md:mt-0" style={{ animationDelay: '0.5s' }}>
               <div className="relative w-full max-w-lg">
                 {/* Glowing background effect */}
                 <div className="animate-pulse-slower absolute -bottom-4 -right-4 h-64 w-64 rounded-full bg-blue-300/30 blur-3xl dark:bg-blue-900/20"></div>
@@ -105,7 +112,7 @@ const Home: React.FC = () => {
                   </div>
                   
                   {/* Image 2: Mobile Apps */}
-                  <div className="absolute inset-0 animate-slideshow" style={{ animationDelay: '-10s' }}>
+                  <div className="absolute inset-0 animate-slideshow" style={{ animationDelay: '-16s' }}>
                     <img 
                       src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                       alt="Mobile application development" 
@@ -117,7 +124,7 @@ const Home: React.FC = () => {
                   </div>
                   
                   {/* Image 3: Cloud Solutions */}
-                  <div className="absolute inset-0 animate-slideshow" style={{ animationDelay: '-5s' }}>
+                  <div className="absolute inset-0 animate-slideshow" style={{ animationDelay: '-8s' }}>
                     <img 
                       src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                       alt="Cloud computing infrastructure" 
@@ -141,6 +148,22 @@ const Home: React.FC = () => {
                   <div className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse-light" style={{ animationDelay: '1s' }}></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-pulse-light" style={{ animationDelay: '2s' }}></div>
                 </div>
+              </div>
+            </div>
+            
+            {/* Mobile-only content - Shows third on mobile, after the slideshow */}
+            <div className="w-full block md:hidden lg:hidden order-3 mt-8 space-y-6 staggered-fade-in">
+              <p className="text-base text-gray-600 dark:text-gray-300">
+                Embark on a successful innovative journey with cutting-edge solutions for your business. We're dedicated to elevating your digital experience.
+              </p>
+              
+              <div className="pt-4 flex flex-col gap-3 w-full">
+                <GradientButton href="/services" size="default" endIcon={<ChevronRight />} className="w-full animate-snowfall">
+                  Get Started
+                </GradientButton>
+                <GradientButton href="/#about" variant="outline" size="default" className="w-full">
+                  Learn More
+                </GradientButton>
               </div>
             </div>
           </div>
