@@ -20,7 +20,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
       </div>
       
       {/* Testimonial content */}
-      <p className="text-gray-600 dark:text-gray-300 mb-6 italic">
+      <p className="text-gray-600 dark:text-blue-200 mb-6 italic">
         "{testimonial.content}"
       </p>
       

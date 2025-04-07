@@ -180,7 +180,7 @@ const Contact: React.FC = () => {
             <h2 className="text-3xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-blue-400">
               {pageContent?.sections?.find(s => s.type === 'testimonials')?.title || 'TESTIMONIALS'}
             </h2>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg text-blue-200 max-w-2xl mx-auto">
               {pageContent?.sections?.find(s => s.type === 'testimonials')?.subtitle || 
                 'See what our clients have to say about their experience working with us.'}
             </p>
@@ -231,7 +231,7 @@ const Contact: React.FC = () => {
             <h2 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-purple-500">
               {pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.title || 'Frequently Asked Questions'}
             </h2>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg text-blue-200 max-w-2xl mx-auto">
               {pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.subtitle || 
                 'Find answers to common questions about our services and how we can help your business.'}
             </p>
@@ -255,7 +255,7 @@ const Contact: React.FC = () => {
                 pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.items?.map((faq: any, index: number) => (
                   <div key={index} className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
                     <h3 className="text-xl font-semibold mb-2 text-white">{faq.question}</h3>
-                    <p className="text-gray-300">{faq.answer}</p>
+                    <p className="text-blue-200">{faq.answer}</p>
                   </div>
                 ))
               ) : (
@@ -263,21 +263,21 @@ const Contact: React.FC = () => {
                 <>
                   <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
                     <h3 className="text-xl font-semibold mb-2 text-white">What services does I-VARSE provide?</h3>
-                    <p className="text-gray-300">
+                    <p className="text-blue-200">
                       I-VARSE provides a range of digital services including web development, mobile app development, cloud infrastructure management, API programming & integration, SEO optimization, and content writing.
                     </p>
                   </div>
                   
                   <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
                     <h3 className="text-xl font-semibold mb-2 text-white">How long does it take to complete a project?</h3>
-                    <p className="text-gray-300">
+                    <p className="text-blue-200">
                       Project timelines vary depending on scope and complexity. A typical website might take 4-6 weeks, while more complex applications could take several months. We'll provide a detailed timeline during our initial consultation.
                     </p>
                   </div>
                   
                   <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
                     <h3 className="text-xl font-semibold mb-2 text-white">Do you provide ongoing support after project completion?</h3>
-                    <p className="text-gray-300">
+                    <p className="text-blue-200">
                       Yes, we offer various support and maintenance packages to ensure your digital products continue to perform optimally after launch. Our team is always available to address any issues or implement updates.
                     </p>
                   </div>
