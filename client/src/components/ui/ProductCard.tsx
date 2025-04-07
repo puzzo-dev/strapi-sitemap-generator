@@ -57,14 +57,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ scale: 1.02 }}
-            className="aspect-video bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-8 overflow-hidden flex items-center justify-center shadow-md relative"
+            whileHover={{ scale: 1.01 }}
+            className="md:h-60 h-40 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-8 overflow-hidden flex items-center justify-center shadow-md relative"
           >
             {image ? (
               <img 
                 src={image} 
                 alt={`${title} screenshot`} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain object-center p-2"
               />
             ) : (
               <div className="text-gray-400 dark:text-gray-500 flex flex-col items-center">

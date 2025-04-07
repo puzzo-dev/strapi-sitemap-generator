@@ -5,7 +5,7 @@ import TestimonialCard from '@/components/ui/TestimonialCard';
 import GradientButton from '@/components/ui/GradientButton';
 import { products, testimonials } from '@/lib/data';
 import { ProductProps, TestimonialProps } from '@/lib/types';
-import { ArrowRight, Package, Target, PieChart, ShieldCheck, Award, Cpu } from 'lucide-react';
+import { ArrowRight, Package, Target, PieChart, ShieldCheck, Award, Cpu, Check } from 'lucide-react';
 
 const Products: React.FC = () => {
   const { data: apiProducts, isLoading: isProductsLoading } = useQuery<ProductProps[]>({
@@ -127,7 +127,7 @@ const Products: React.FC = () => {
               Array(2).fill(0).map((_, index) => (
                 <div key={index} className="card animate-pulse p-8">
                   <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/3"></div>
-                  <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg mb-8"></div>
+                  <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg mb-8"></div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
@@ -167,6 +167,110 @@ const Products: React.FC = () => {
                 </div>
               ))
             )}
+          </div>
+          
+          {/* Product Comparison Table */}
+          <div className="mt-24">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+                <PieChart className="h-4 w-4 mr-2" />
+                Product Comparison
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">Compare Our Solutions</h2>
+              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Find the perfect solution for your business needs. Compare our products to identify which features best align with your requirements.
+              </p>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-blue-50 dark:bg-blue-900/20">
+                    <th className="border border-blue-100 dark:border-blue-800/30 p-4 text-left text-gray-800 dark:text-white">Features</th>
+                    <th className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-blue-700 dark:text-blue-300 font-bold">Entry-E</th>
+                    <th className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-blue-700 dark:text-blue-300 font-bold">Business in a Box</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white">Core Functionality</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">Event Management</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">Business Operations</td>
+                  </tr>
+                  <tr className="bg-blue-50/50 dark:bg-blue-900/10">
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white">Best For</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">Event Organizers</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">Small & Medium Businesses</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white">Mobile Support</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </span>
+                    </td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </span>
+                    </td>
+                  </tr>
+                  <tr className="bg-blue-50/50 dark:bg-blue-900/10">
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white">Analytics Dashboard</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </span>
+                    </td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white">Payment Processing</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </span>
+                    </td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </span>
+                    </td>
+                  </tr>
+                  <tr className="bg-blue-50/50 dark:bg-blue-900/10">
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white">Inventory Management</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 bg-red-100 dark:bg-red-900/30 rounded-full">
+                        <svg className="h-4 w-4 text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </span>
+                    </td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">
+                      <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full">
+                        <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 font-medium text-gray-800 dark:text-white">CRM System</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">Basic</td>
+                    <td className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-gray-600 dark:text-gray-300">Advanced</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div className="mt-8 text-center">
+              <GradientButton href="/contact" size="lg" className="mx-auto" endIcon={<ArrowRight className="h-4 w-4 ml-1" />}>
+                Request Custom Solution
+              </GradientButton>
+            </div>
           </div>
         </div>
       </section>
