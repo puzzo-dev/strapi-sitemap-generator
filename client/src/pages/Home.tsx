@@ -1,10 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
 import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import { services, testimonials, clientLogos } from '@/lib/data';
 import { ServiceProps, TestimonialProps, ClientLogo } from '@/lib/types';
+import { 
+  fadeInUp, 
+  staggerChildren, 
+  scaleUp, 
+  slideIn, 
+  gridItemAnimation,
+  snowfallParticleAnimation,
+  floatingShapeAnimation,
+  clipPathReveal,
+  textCharAnimation,
+  glossyCardAnimation,
+  shimmerEffect
+} from '@/lib/animations';
 import { 
   usePageContent, 
   useServices, 
@@ -179,39 +193,378 @@ const Home: React.FC = () => {
       />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section">
+      <motion.section 
+        initial="initial"
+        animate="animate"
+        className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section"
+      >
         {/* Tech-inspired background elements - Enhanced with more icons */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* Animated gradient orbs */}
-          <div className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40 animate-pulse-slow" />
-          <div className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30 animate-pulse-slower" />
-          <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-900/30 animate-pulse-slow" />
+          <motion.div 
+            variants={scaleUp(0.8, 1.5, 0.2)}
+            className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40" 
+          />
+          <motion.div 
+            variants={scaleUp(0.8, 1.8, 0.5)}
+            className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30" 
+          />
+          <motion.div 
+            variants={scaleUp(0.8, 2, 0.8)}
+            className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-900/30" 
+          />
           
           {/* Enhanced tech pattern with more icons */}
           <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10">
-            <CircuitBoard className="absolute right-0 top-0 h-64 w-64 text-blue-800 opacity-30 transform rotate-12 animate-float" style={{ animationDelay: '1s' }} />
-            <Cpu className="absolute left-10 bottom-10 h-48 w-48 text-indigo-700 opacity-30 transform -rotate-12 animate-float" style={{ animationDelay: '2s' }} />
-            <Code className="absolute right-1/4 bottom-1/4 h-56 w-56 text-cyan-700 opacity-20 transform rotate-45 animate-float" style={{ animationDelay: '0s' }} />
-            <LayoutGrid className="absolute left-1/4 top-1/3 h-40 w-40 text-blue-600 opacity-25 transform -rotate-6 animate-float" style={{ animationDelay: '1.5s' }} />
-            <Sparkles className="absolute left-10 top-10 h-32 w-32 text-purple-600 opacity-20 animate-pulse-light" />
+            <motion.div 
+              initial={{ opacity: 0, y: 20, rotate: 0 }}
+              animate={{ 
+                opacity: 0.3, 
+                y: 0,
+                rotate: 12,
+                transition: { 
+                  duration: 0.8,
+                  delay: 0.3
+                }
+              }}
+              className="absolute right-0 top-0"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -15, 0, 10, 0],
+                  rotate: [12, 15, 10, 13, 12],
+                  transition: { 
+                    repeat: Infinity,
+                    duration: 10,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                <CircuitBoard className="h-64 w-64 text-blue-800" />
+              </motion.div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20, rotate: 0 }}
+              animate={{ 
+                opacity: 0.3, 
+                y: 0,
+                rotate: -12,
+                transition: { 
+                  duration: 0.8,
+                  delay: 0.5
+                }
+              }}
+              className="absolute left-10 bottom-10"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, 10, 0, -15, 0],
+                  rotate: [-12, -9, -14, -10, -12],
+                  transition: { 
+                    repeat: Infinity,
+                    duration: 12,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                <Cpu className="h-48 w-48 text-indigo-700" />
+              </motion.div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20, rotate: 0 }}
+              animate={{ 
+                opacity: 0.2, 
+                y: 0,
+                rotate: 45,
+                transition: { 
+                  duration: 0.8,
+                  delay: 0.7
+                }
+              }}
+              className="absolute right-1/4 bottom-1/4"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 5, -5, 0],
+                  rotate: [45, 48, 43, 46, 45],
+                  transition: { 
+                    repeat: Infinity,
+                    duration: 8,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                <Code className="h-56 w-56 text-cyan-700" />
+              </motion.div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20, rotate: 0 }}
+              animate={{ 
+                opacity: 0.25, 
+                y: 0,
+                rotate: -6,
+                transition: { 
+                  duration: 0.8,
+                  delay: 0.9
+                }
+              }}
+              className="absolute left-1/4 top-1/3"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, 5, -5, 10, 0],
+                  rotate: [-6, -4, -8, -3, -6],
+                  transition: { 
+                    repeat: Infinity,
+                    duration: 9,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                <LayoutGrid className="h-40 w-40 text-blue-600" />
+              </motion.div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ 
+                opacity: 0.2, 
+                scale: 1,
+                transition: { 
+                  duration: 1,
+                  delay: 1.1
+                }
+              }}
+              className="absolute left-10 top-10"
+            >
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.05, 0.98, 1.02, 1],
+                  opacity: [0.2, 0.3, 0.2, 0.25, 0.2],
+                  transition: { 
+                    repeat: Infinity,
+                    duration: 5,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                <Sparkles className="h-32 w-32 text-purple-600" />
+              </motion.div>
+            </motion.div>
           </div>
 
           {/* Animated tech scan line */}
-          <div className="tech-scan-line"></div>
+          <motion.div 
+            initial={{ opacity: 0, top: '100%' }}
+            animate={{ 
+              opacity: [0, 0.6, 0.1], 
+              top: ['100%', '0%', '0%'],
+              transition: { 
+                duration: 3, 
+                repeat: Infinity, 
+                repeatDelay: 5
+              }
+            }}
+            className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent"
+          />
+          
+          {/* Snowfall particles */}
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            {Array.from({ length: 15 }).map((_, i) => {
+              // Precalculate random values to avoid React errors
+              const randomLeft = (i * 6.67) % 100; // Distribute evenly across width
+              const randomScale = 0.5 + ((i % 5) * 0.1); // 0.5 to 0.9
+              const randomDuration = 8 + ((i % 5) * 1); // 8 to 12 seconds
+              const randomDelay = (i % 5) * 1; // 0 to 4 seconds
+              
+              return (
+                <motion.div
+                  key={`snowfall-particle-${i}`}
+                  className="absolute h-1 w-1 rounded-full bg-blue-500/50 dark:bg-blue-400/50"
+                  initial={{ 
+                    y: -20, 
+                    opacity: 0,
+                    scale: randomScale
+                  }}
+                  animate={{ 
+                    y: '120%', 
+                    opacity: [0, 0.8, 0.5, 0],
+                    transition: { 
+                      duration: randomDuration, 
+                      delay: randomDelay,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }
+                  }}
+                  style={{
+                    left: `${randomLeft}%`,
+                  }}
+                />
+              );
+            })}
+          </div>
           
           {/* Animated network connections */}
           <svg className="absolute inset-0 w-full h-full z-0 opacity-10 dark:opacity-15" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <circle cx="20" cy="20" r="2" className="text-blue-500 fill-current animate-pulse-light" />
-            <circle cx="80" cy="30" r="2" className="text-cyan-500 fill-current animate-pulse-light" style={{ animationDelay: '0.5s' }} />
-            <circle cx="50" cy="70" r="2" className="text-indigo-500 fill-current animate-pulse-light" style={{ animationDelay: '1s' }} />
-            <circle cx="30" cy="80" r="2" className="text-purple-500 fill-current animate-pulse-light" style={{ animationDelay: '1.5s' }} />
-            <circle cx="70" cy="60" r="2" className="text-blue-500 fill-current animate-pulse-light" style={{ animationDelay: '2s' }} />
+            <motion.circle 
+              cx="20" cy="20" r="2" 
+              className="text-blue-500 fill-current"
+              initial={{ opacity: 0, r: 0 }}
+              animate={{ 
+                opacity: 1, 
+                r: [0, 2, 1.5, 2],
+                transition: { 
+                  duration: 3, 
+                  delay: 0.2,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  times: [0, 0.3, 0.8, 1]
+                }
+              }}
+            />
+            <motion.circle 
+              cx="80" cy="30" r="2" 
+              className="text-cyan-500 fill-current"
+              initial={{ opacity: 0, r: 0 }}
+              animate={{ 
+                opacity: 1, 
+                r: [0, 2, 1.5, 2],
+                transition: { 
+                  duration: 3, 
+                  delay: 0.7,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  times: [0, 0.3, 0.8, 1]
+                }
+              }}
+            />
+            <motion.circle 
+              cx="50" cy="70" r="2" 
+              className="text-indigo-500 fill-current"
+              initial={{ opacity: 0, r: 0 }}
+              animate={{ 
+                opacity: 1, 
+                r: [0, 2, 1.5, 2],
+                transition: { 
+                  duration: 3, 
+                  delay: 1.2,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  times: [0, 0.3, 0.8, 1]
+                }
+              }}
+            />
+            <motion.circle 
+              cx="30" cy="80" r="2" 
+              className="text-purple-500 fill-current"
+              initial={{ opacity: 0, r: 0 }}
+              animate={{ 
+                opacity: 1, 
+                r: [0, 2, 1.5, 2],
+                transition: { 
+                  duration: 3, 
+                  delay: 1.7,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  times: [0, 0.3, 0.8, 1]
+                }
+              }}
+            />
+            <motion.circle 
+              cx="70" cy="60" r="2" 
+              className="text-blue-500 fill-current"
+              initial={{ opacity: 0, r: 0 }}
+              animate={{ 
+                opacity: 1, 
+                r: [0, 2, 1.5, 2],
+                transition: { 
+                  duration: 3, 
+                  delay: 2.2,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  times: [0, 0.3, 0.8, 1]
+                }
+              }}
+            />
             
-            <line x1="20" y1="20" x2="80" y2="30" className="text-blue-500 stroke-current opacity-50" strokeWidth="0.2" />
-            <line x1="80" y1="30" x2="50" y2="70" className="text-cyan-500 stroke-current opacity-50" strokeWidth="0.2" />
-            <line x1="50" y1="70" x2="30" y2="80" className="text-indigo-500 stroke-current opacity-50" strokeWidth="0.2" />
-            <line x1="30" y1="80" x2="70" y2="60" className="text-purple-500 stroke-current opacity-50" strokeWidth="0.2" />
-            <line x1="70" y1="60" x2="20" y2="20" className="text-blue-500 stroke-current opacity-50" strokeWidth="0.2" />
+            <motion.line 
+              x1="20" y1="20" x2="80" y2="30" 
+              className="text-blue-500 stroke-current"
+              initial={{ opacity: 0, strokeWidth: 0 }}
+              animate={{ 
+                opacity: 0.5, 
+                strokeWidth: 0.2,
+                pathLength: [0, 1],
+                transition: { 
+                  duration: 2, 
+                  delay: 0.5,
+                  ease: "easeInOut"
+                }
+              }}
+            />
+            <motion.line 
+              x1="80" y1="30" x2="50" y2="70" 
+              className="text-cyan-500 stroke-current"
+              initial={{ opacity: 0, strokeWidth: 0 }}
+              animate={{ 
+                opacity: 0.5, 
+                strokeWidth: 0.2,
+                pathLength: [0, 1],
+                transition: { 
+                  duration: 2, 
+                  delay: 1,
+                  ease: "easeInOut"
+                }
+              }}
+            />
+            <motion.line 
+              x1="50" y1="70" x2="30" y2="80" 
+              className="text-indigo-500 stroke-current"
+              initial={{ opacity: 0, strokeWidth: 0 }}
+              animate={{ 
+                opacity: 0.5, 
+                strokeWidth: 0.2,
+                pathLength: [0, 1],
+                transition: { 
+                  duration: 2, 
+                  delay: 1.5,
+                  ease: "easeInOut"
+                }
+              }}
+            />
+            <motion.line 
+              x1="30" y1="80" x2="70" y2="60" 
+              className="text-purple-500 stroke-current"
+              initial={{ opacity: 0, strokeWidth: 0 }}
+              animate={{ 
+                opacity: 0.5, 
+                strokeWidth: 0.2,
+                pathLength: [0, 1],
+                transition: { 
+                  duration: 2, 
+                  delay: 2,
+                  ease: "easeInOut"
+                }
+              }}
+            />
+            <motion.line 
+              x1="70" y1="60" x2="20" y2="20" 
+              className="text-blue-500 stroke-current"
+              initial={{ opacity: 0, strokeWidth: 0 }}
+              animate={{ 
+                opacity: 0.5, 
+                strokeWidth: 0.2,
+                pathLength: [0, 1],
+                transition: { 
+                  duration: 2, 
+                  delay: 2.5,
+                  ease: "easeInOut"
+                }
+              }}
+            />
           </svg>
         </div>
         
@@ -454,7 +807,7 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Specializations Section */}
       <section className="py-24">
