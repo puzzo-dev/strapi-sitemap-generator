@@ -3,8 +3,11 @@ import { Link, useLocation } from 'wouter';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
 
-const Navbar: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+interface NavbarProps {
+  onMenuToggle?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
   const [scrolled, setScrolled] = useState(false);
   const [location] = useLocation();
 
@@ -23,14 +26,6 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
-
   const isActive = (path: string) => {
     return location === path;
   };
@@ -47,7 +42,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav 
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-40 transition-all duration-300 ${
         scrolled 
           ? 'bg-white/95 dark:bg-[#0a1929]/95 shadow-md backdrop-blur-md' 
           : 'bg-white/80 dark:bg-[#0a1929]/80 backdrop-blur-md shadow-sm'
@@ -95,82 +90,13 @@ const Navbar: React.FC = () => {
             <button 
               type="button" 
               className="text-gray-700 dark:text-gray-200 hover:text-blue-500 focus:outline-none" 
-              onClick={toggleMobileMenu}
+              onClick={onMenuToggle}
               aria-label="Toggle mobile menu"
             >
-              {mobileMenuOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Mobile menu - off-screen slide-in with overlay backdrop */}
-      <div 
-        className={`md:hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
-          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={closeMobileMenu}
-      >
-        {/* Mobile menu container */}
-        <div 
-          className={`mobile-menu fixed top-0 right-0 w-4/5 h-full bg-white dark:bg-[#0a1929] shadow-xl overflow-y-auto transform transition-transform duration-400 ease-in-out z-[101] ${
-            mobileMenuOpen ? 'mobile-menu-open' : 'mobile-menu-closed'
-          }`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Mobile menu header */}
-          <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-gray-800">
-            <Link href="/" onClick={closeMobileMenu}>
-              <div className="cursor-pointer">
-                <IVarseLogo size={40} />
-              </div>
-            </Link>
-            <button
-              className="text-gray-700 dark:text-gray-200 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800/50 focus:outline-none"
-              onClick={closeMobileMenu}
-              aria-label="Close mobile menu"
-            >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
             </button>
-          </div>
-          
-          {/* Mobile menu items with improved spacing */}
-          <div className="mobile-menu-items py-4 px-4">
-            {navLinks.map((link) => !link.isButton && (
-              <Link key={link.name} href={link.path}>
-                <div 
-                  className={`mobile-menu-item block cursor-pointer text-lg font-semibold py-4 px-4 my-2 rounded-lg transition-colors ${
-                    isActive(link.path) 
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
-                      : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/30'
-                  }`}
-                  onClick={closeMobileMenu}
-                >
-                  {link.name}
-                </div>
-              </Link>
-            ))}
-            
-            {/* Contact button with improved spacing and styling */}
-            <div className="px-4 pt-8 pb-4">
-              <GradientButton 
-                href="/contact" 
-                className="w-full justify-center py-4 text-base animate-pulse-light"
-                onClick={closeMobileMenu}
-              >
-                Contact Us
-              </GradientButton>
-            </div>
           </div>
         </div>
       </div>

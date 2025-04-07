@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Route, Switch } from "wouter";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -17,13 +18,24 @@ import NotFound from "@/pages/not-found";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import MobileMenu from "@/components/layout/MobileMenu";
 
 function App() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="i-varse-theme">
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white">
-          <Navbar />
+          <Navbar onMenuToggle={toggleMobileMenu} />
           <main className="flex-grow pt-20">
             <Switch>
               <Route path="/" component={Home} />
@@ -38,6 +50,9 @@ function App() {
           </main>
           <Footer />
           <ThemeToggle />
+          
+          {/* Mobile Menu - positioned at root level */}
+          <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} />
         </div>
       </ThemeProvider>
     </QueryClientProvider>
