@@ -10,7 +10,11 @@ import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const LanguageSelector: React.FC = () => {
+interface LanguageSelectorProps {
+  compact?: boolean;
+}
+
+const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) => {
   const { t } = useTranslation();
   const { currentLanguage, setLanguage, supportedLanguages } = useLanguage();
 
@@ -45,17 +49,30 @@ const LanguageSelector: React.FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={t('language.select', 'Select language')}
-          className="relative"
-        >
-          <Globe className="h-5 w-5" />
-          <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-[8px] font-medium text-white">
-            {currentLanguage.toUpperCase()}
-          </span>
-        </Button>
+        {compact ? (
+          <Button
+            variant="ghost"
+            size="sm"
+            aria-label={t('language.select', 'Select language')}
+            className="relative px-2 py-1 h-8 min-w-8 rounded-full bg-gray-100/80 dark:bg-gray-800/80"
+          >
+            <span className="text-xs font-medium">
+              {getFlag(currentLanguage)} {currentLanguage.toUpperCase()}
+            </span>
+          </Button>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t('language.select', 'Select language')}
+            className="relative"
+          >
+            <Globe className="h-5 w-5" />
+            <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-[8px] font-medium text-white">
+              {currentLanguage.toUpperCase()}
+            </span>
+          </Button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         {supportedLanguages.map((lang) => (

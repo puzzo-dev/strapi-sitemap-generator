@@ -62,14 +62,14 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
 
   return (
     <nav 
-      className={`fixed top-0 w-full z-40 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled 
           ? 'bg-white/95 dark:bg-[#0a1929]/95 shadow-md backdrop-blur-md' 
           : 'bg-white/80 dark:bg-[#0a1929]/80 backdrop-blur-md shadow-sm'
       }`}
     >
       <div className="container-custom">
-        <div className="flex justify-between h-20">
+        <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0 flex items-center">
             <Link href="/">
               <div className="flex items-center cursor-pointer">
@@ -78,6 +78,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
             </Link>
           </div>
           
+          {/* Desktop menu */}
           <div className="hidden md:flex md:items-center">
             <div className="flex items-center space-x-1 md:space-x-3 lg:space-x-6">
               {navLinks.map((link) => !link.isButton ? (
@@ -103,13 +104,24 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
                 {t('button.contactUs', 'Contact Us')}
               </GradientButton>
             </div>
+            
+            {/* Desktop language selector */}
+            <div className="ml-4">
+              <LanguageSelector />
+            </div>
           </div>
           
-          {/* Mobile menu button */}
-          <div className="flex items-center md:hidden">
+          {/* Mobile controls - always visible on small screens */}
+          <div className="flex items-center gap-3 md:hidden">
+            {/* Mobile language selector - compact version */}
+            <div className="mr-2">
+              <LanguageSelector compact={true} />
+            </div>
+            
+            {/* Mobile menu toggle button */}
             <button 
               type="button" 
-              className="text-gray-700 dark:text-gray-200 hover:text-blue-500 focus:outline-none" 
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-800/50 focus:outline-none" 
               onClick={onMenuToggle}
               aria-label="Toggle mobile menu"
             >
@@ -117,10 +129,6 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
             </button>
-          </div>
-          {/* Add language selector */}
-          <div className="hidden md:flex md:items-center md:ml-4">
-            <LanguageSelector />
           </div>
         </div>
       </div>

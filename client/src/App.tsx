@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/components/context/LanguageContext";
 import { Helmet } from "react-helmet";
 import MetaTags from "@/components/seo/MetaTags";
 import { generateWebsiteSchema } from "@/components/seo/StructuredData";
+import { AnimatePresence } from "framer-motion";
 
 // Pages
 import Home from "@/pages/Home";
@@ -61,20 +62,22 @@ function App() {
           <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white">
             <Navbar onMenuToggle={toggleMobileMenu} />
             <main className="flex-grow pt-20">
-              <Switch>
-                <Route path="/" component={Home} />
-                <Route path="/services" component={Services} />
-                <Route path="/services/:id" component={ServiceDetail} />
-                <Route path="/products" component={Products} />
-                <Route path="/products/:id" component={ProductDetail} />
-                <Route path="/about" component={About} />
-                <Route path="/blog" component={Blog} />
-                <Route path="/blog/:id" component={BlogPost} />
-                <Route path="/team/:id" component={TeamMember} />
-                <Route path="/careers" component={Careers} />
-                <Route path="/contact" component={Contact} />
-                <Route component={NotFound} />
-              </Switch>
+              <AnimatePresence mode="wait">
+                <Switch>
+                  <Route path="/" component={Home} />
+                  <Route path="/services" component={Services} />
+                  <Route path="/services/:id" component={ServiceDetail} />
+                  <Route path="/products" component={Products} />
+                  <Route path="/products/:id" component={ProductDetail} />
+                  <Route path="/about" component={About} />
+                  <Route path="/blog" component={Blog} />
+                  <Route path="/blog/:id" component={BlogPost} />
+                  <Route path="/team/:id" component={TeamMember} />
+                  <Route path="/careers" component={Careers} />
+                  <Route path="/contact" component={Contact} />
+                  <Route component={NotFound} />
+                </Switch>
+              </AnimatePresence>
             </main>
             <Footer />
             <ThemeToggle />
