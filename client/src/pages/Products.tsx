@@ -1,13 +1,48 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect } from 'react';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import ProductCard from '@/components/ui/ProductCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import GradientButton from '@/components/ui/GradientButton';
 import { products, testimonials } from '@/lib/data';
 import { ProductProps, TestimonialProps } from '@/lib/types';
-import { fadeInUp, staggerChildren, scaleUp, slideIn, gridItemAnimation, clipPathReveal } from '@/lib/animations';
-import { useProducts, useTestimonials } from '@/hooks/useStrapiContent';
-import { ArrowRight, Package, Target, PieChart, ShieldCheck, Award, Cpu, Check } from 'lucide-react';
+import { 
+  fadeInUp, 
+  staggerChildren, 
+  scaleUp, 
+  slideIn, 
+  gridItemAnimation, 
+  clipPathReveal,
+  snowfallParticleAnimation,
+  floatingShapeAnimation,
+  textCharAnimation,
+  glossyCardAnimation,
+  shimmerEffect
+} from '@/lib/animations';
+import { useProducts, useTestimonials, usePageContent } from '@/hooks/useStrapiContent';
+import { 
+  ArrowRight, 
+  Package, 
+  Target, 
+  PieChart, 
+  ShieldCheck, 
+  Award, 
+  Cpu, 
+  Check, 
+  CircuitBoard,
+  Code,
+  Zap,
+  Database
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/components/context/LanguageContext';
+import useSeoHelpers from '@/hooks/useSeoHelpers';
+import MetaTags from '@/components/seo/MetaTags';
+import SemanticSection from '@/components/seo/SemanticSection';
+import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';
+
+// Import company logo
+import IVarseLogo from '@assets/I-VARSELogo3@3x.png';
+import ProductHeroImage from '@assets/Product.png';
 
 const Products: React.FC = () => {
   const { data: apiProducts, isLoading: isProductsLoading } = useProducts();

@@ -69,6 +69,8 @@
     font-weight: 500;
   }
   
+
+  
   .heading-xl {
     @apply text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-black;
     letter-spacing: -0.03em;
