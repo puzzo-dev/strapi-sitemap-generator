@@ -39,11 +39,22 @@ import {
   Shield
 } from 'lucide-react';
 
+// Import SEO components
+import MetaTags from '@/components/seo/MetaTags';
+import SemanticSection from '@/components/seo/SemanticSection';
+import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';
+import useSeoHelpers from '@/hooks/useSeoHelpers';
+import { useLanguage } from '@/components/context/LanguageContext';
+
 const Home: React.FC = () => {
   const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoplayEnabled, setAutoplayEnabled] = useState(true);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+  
+  // SEO optimization helpers
+  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
   
   // Fetch page content from Strapi
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('home');
@@ -129,8 +140,44 @@ const Home: React.FC = () => {
   const handleMouseEnter = () => setAutoplayEnabled(false);
   const handleMouseLeave = () => setAutoplayEnabled(true);
 
+  // Prepare SEO metadata
+  const pageTitle = isHeroLoading 
+    ? 'I-Varse Limited - Innovative Digital Solutions' 
+    : generateSeoTitle(heroContents[currentHeroIndex]?.title || 'I-Varse Limited - Innovative Digital Solutions');
+  
+  const pageDescription = isHeroLoading
+    ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+    : generateSeoDescription(heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.');
+
+  // Generate structured data
+  const structuredData = {
+    ...generateWebsiteSchema(),
+    ...generateOrganizationSchema()
+  };
+
   return (
     <>
+      {/* SEO Metadata */}
+      <MetaTags
+        title={pageTitle}
+        description={pageDescription}
+        canonicalUrl="https://ivarse.com"
+        ogImage="https://ivarse.com/og-image.jpg"
+        ogUrl="https://ivarse.com"
+        ogType="website"
+        twitterCard="summary_large_image"
+        alternateLanguages={[
+          { lang: 'en', url: 'https://ivarse.com' },
+          { lang: 'yo', url: 'https://ivarse.com/yo' },
+          { lang: 'ig', url: 'https://ivarse.com/ig' },
+          { lang: 'ha', url: 'https://ivarse.com/ha' },
+          { lang: 'fr', url: 'https://ivarse.com/fr' },
+          { lang: 'es', url: 'https://ivarse.com/es' },
+          { lang: 'sw', url: 'https://ivarse.com/sw' }
+        ]}
+        structuredData={structuredData}
+      />
+      
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] pt-12 pb-20 md:pt-16 md:pb-24 lg:py-24 border-b border-blue-100 dark:border-blue-900/40 hero-section">
         {/* Tech-inspired background elements - Enhanced with more icons */}
