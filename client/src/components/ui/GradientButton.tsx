@@ -49,12 +49,12 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   const getButtonClasses = () => {
     let baseClasses = 'rounded-lg font-medium transition-all duration-300 ease-in-out flex items-center justify-center relative overflow-hidden';
     
-    // Size variations
+    // Size variations with responsive adjustments
     const sizeClasses = {
-      sm: 'text-sm px-4 py-2',
-      default: 'px-6 py-3',
-      lg: 'text-lg px-8 py-4',
-      icon: 'p-2'
+      sm: 'text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2',
+      default: 'text-sm sm:text-base px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3',
+      lg: 'text-base sm:text-lg px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4',
+      icon: 'p-1.5 sm:p-2'
     };
     
     // Variant styles
@@ -81,9 +81,9 @@ const GradientButton: React.FC<GradientButtonProps> = ({
 
   const buttonContent = (
     <>
-      {startIcon && <span className="mr-2">{startIcon}</span>}
+      {startIcon && <span className="mr-1 sm:mr-1.5 md:mr-2">{startIcon}</span>}
       <span>{children}</span>
-      {endIcon && <span className="ml-2">{endIcon}</span>}
+      {endIcon && <span className="ml-1 sm:ml-1.5 md:ml-2">{endIcon}</span>}
     </>
   );
 

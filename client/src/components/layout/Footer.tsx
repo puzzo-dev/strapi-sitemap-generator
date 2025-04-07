@@ -24,32 +24,32 @@ const Footer: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-x-8 gap-y-12">
             {/* Logo and newsletter section - full width on mobile, 2 columns on larger screens */}
             <div className="md:col-span-2 lg:col-span-2 space-y-6">
-              <div className="flex items-center mb-6">
-                <IVarseLogo size={45} />
+              <div className="flex items-center mb-4 sm:mb-6">
+                <IVarseLogo size={36} className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-auto lg:h-auto" />
               </div>
-              <p className="text-gray-600 dark:text-gray-300 max-w-md">
+              <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 max-w-md">
                 {siteConfig?.siteDescription || 'Leading digital innovation company providing premium web development and IT consulting services for businesses looking to transform their digital presence.'}
               </p>
               
               {/* Newsletter subscription */}
-              <div className="pt-4 staggered-fade-in">
-                <h4 className="text-base font-semibold mb-4 text-gray-900 dark:text-white">Subscribe to our newsletter</h4>
+              <div className="pt-3 sm:pt-4 staggered-fade-in">
+                <h4 className="text-sm sm:text-base font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-white">Subscribe to our newsletter</h4>
                 <NewsletterForm className="max-w-md" />
               </div>
               
               {/* Social media icons - Mobile optimized */}
-              <div className="flex space-x-4 mt-6 md:hidden">
-                <a href="#" aria-label="Twitter" className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
-                  <Twitter className="h-5 w-5" />
+              <div className="flex space-x-3 sm:space-x-4 mt-4 sm:mt-6 md:hidden">
+                <a href="#" aria-label="Twitter" className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                  <Twitter className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
-                <a href="#" aria-label="Facebook" className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
-                  <Facebook className="h-5 w-5" />
+                <a href="#" aria-label="Facebook" className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                  <Facebook className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
-                <a href="#" aria-label="Instagram" className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
-                  <Instagram className="h-5 w-5" />
+                <a href="#" aria-label="Instagram" className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                  <Instagram className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
-                <a href="#" aria-label="LinkedIn" className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
-                  <Linkedin className="h-5 w-5" />
+                <a href="#" aria-label="LinkedIn" className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                  <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
               </div>
             </div>
@@ -83,14 +83,14 @@ const Footer: React.FC = () => {
               // Dynamic footer columns from Strapi
               footerColumns.map((column) => (
                 <div key={column.id} className="md:col-span-1 lg:col-span-1">
-                  <h4 className="text-sm md:text-base font-bold mb-5 text-gray-900 dark:text-white uppercase tracking-wider">
+                  <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 md:mb-5 text-gray-900 dark:text-white uppercase tracking-wider">
                     {column.title}
                   </h4>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2 sm:space-y-3">
                     {column.links.map((link, index) => (
                       <li key={index}>
                         <Link href={link.url}>
-                          <div className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          <div className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                             {link.label}
                           </div>
                         </Link>
@@ -103,8 +103,8 @@ const Footer: React.FC = () => {
               // Fallback footer columns
               <>
                 <div className="md:col-span-1 lg:col-span-1">
-                  <h4 className="text-sm md:text-base font-bold mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Company</h4>
-                  <ul className="space-y-3">
+                  <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 md:mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Company</h4>
+                  <ul className="space-y-2 sm:space-y-3">
                     <li>
                       <Link href="/about">
                         <div className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
@@ -144,8 +144,8 @@ const Footer: React.FC = () => {
                 </div>
                 
                 <div className="md:col-span-1 lg:col-span-1">
-                  <h4 className="text-sm md:text-base font-bold mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Services</h4>
-                  <ul className="space-y-3">
+                  <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 md:mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Services</h4>
+                  <ul className="space-y-2 sm:space-y-3">
                     <li>
                       <div className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                         Web Development
@@ -177,35 +177,35 @@ const Footer: React.FC = () => {
             )}
             
             <div className="md:col-span-2 lg:col-span-1">
-              <h4 className="text-sm md:text-base font-bold mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Contact</h4>
-              <ul className="space-y-4">
+              <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 md:mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Contact</h4>
+              <ul className="space-y-2 sm:space-y-3 md:space-y-4">
                 <li className="flex items-start">
-                  <MapPin className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0" />
-                  <span className="text-gray-600 dark:text-gray-300">
+                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-2 sm:mr-3 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300">
                     {siteConfig?.contactAddress || '5 Adams Street, Off Nnamdi Rd, Surulere, Lagos, Nigeria'}
                   </span>
                 </li>
                 <li className="flex items-center">
-                  <Phone className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0" />
-                  <span className="text-gray-600 dark:text-gray-300">
+                  <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 mr-2 sm:mr-3 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300">
                     {siteConfig?.contactPhone || '+234 123 456 7890'}
                   </span>
                 </li>
                 <li className="flex items-center">
-                  <Mail className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0" />
-                  <span className="text-gray-600 dark:text-gray-300">
+                  <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 mr-2 sm:mr-3 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300">
                     {siteConfig?.contactEmail || 'contact@i-varse.com'}
                   </span>
                 </li>
               </ul>
               
               {/* Social media icons - Desktop only */}
-              <div className="hidden md:flex space-x-4 mt-6">
+              <div className="hidden md:flex space-x-3 md:space-x-4 mt-4 md:mt-6">
                 {isSocialLinksLoading ? (
-                  <div className="flex space-x-4">
-                    <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
-                    <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
-                    <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+                  <div className="flex space-x-3 md:space-x-4">
+                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
                   </div>
                 ) : socialLinks && socialLinks.length > 0 ? (
                   socialLinks.map((link) => {
@@ -214,15 +214,15 @@ const Footer: React.FC = () => {
                       switch (platform.toLowerCase()) {
                         case 'twitter':
                         case 'x':
-                          return <Twitter className="h-5 w-5" />;
+                          return <Twitter className="h-4 w-4 md:h-5 md:w-5" />;
                         case 'facebook':
-                          return <Facebook className="h-5 w-5" />;
+                          return <Facebook className="h-4 w-4 md:h-5 md:w-5" />;
                         case 'instagram':
-                          return <Instagram className="h-5 w-5" />;
+                          return <Instagram className="h-4 w-4 md:h-5 md:w-5" />;
                         case 'linkedin':
-                          return <Linkedin className="h-5 w-5" />;
+                          return <Linkedin className="h-4 w-4 md:h-5 md:w-5" />;
                         default:
-                          return <div className="h-5 w-5 bg-current rounded-full"></div>;
+                          return <div className="h-4 w-4 md:h-5 md:w-5 bg-current rounded-full"></div>;
                       }
                     };
 
@@ -233,7 +233,7 @@ const Footer: React.FC = () => {
                         aria-label={link.platform}
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors"
+                        className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors"
                       >
                         {getIcon(link.platform)}
                       </a>
@@ -242,17 +242,17 @@ const Footer: React.FC = () => {
                 ) : (
                   // Fallback if no social links are available
                   <>
-                    <a href="#" aria-label="Twitter" className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
-                      <Twitter className="h-5 w-5" />
+                    <a href="#" aria-label="Twitter" className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                      <Twitter className="h-4 w-4 md:h-5 md:w-5" />
                     </a>
-                    <a href="#" aria-label="Facebook" className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
-                      <Facebook className="h-5 w-5" />
+                    <a href="#" aria-label="Facebook" className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                      <Facebook className="h-4 w-4 md:h-5 md:w-5" />
                     </a>
-                    <a href="#" aria-label="Instagram" className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
-                      <Instagram className="h-5 w-5" />
+                    <a href="#" aria-label="Instagram" className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                      <Instagram className="h-4 w-4 md:h-5 md:w-5" />
                     </a>
-                    <a href="#" aria-label="LinkedIn" className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
-                      <Linkedin className="h-5 w-5" />
+                    <a href="#" aria-label="LinkedIn" className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                      <Linkedin className="h-4 w-4 md:h-5 md:w-5" />
                     </a>
                   </>
                 )}
@@ -263,17 +263,17 @@ const Footer: React.FC = () => {
         
         {/* Footer bottom section */}
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="text-center md:text-left text-gray-500 dark:text-gray-400 mb-6 md:mb-0">
+          <div className="text-center md:text-left text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 md:mb-0">
             &copy; {new Date().getFullYear()} I-VARSE Limited. All rights reserved.
           </div>
-          <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6">
-            <a href="#" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <div className="flex flex-wrap justify-center md:justify-end gap-3 sm:gap-4 md:gap-6">
+            <a href="#" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Terms of Service
             </a>
-            <a href="#" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a href="#" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a href="#" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Cookie Policy
             </a>
           </div>
