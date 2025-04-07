@@ -33,11 +33,11 @@ const Products: React.FC = () => {
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
               <Package className="h-4 w-4 mr-2" />
-              Our Products
+              Our Solutions
             </div>
             
             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <span className="gradient-text">Powerful Products</span> for<br />Your Business Success
+              <span className="gradient-text">Powerful Solutions</span> for<br />Your Business Success
             </h1>
             
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
@@ -46,7 +46,7 @@ const Products: React.FC = () => {
             
             <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
               <GradientButton href="#products" size="lg" endIcon={<ArrowRight />}>
-                Explore Products
+                Explore Solutions
               </GradientButton>
               <GradientButton href="/contact" variant="outline" size="lg">
                 Request Demo
@@ -110,7 +110,7 @@ const Products: React.FC = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
               <Package className="h-4 w-4 mr-2" />
-              Featured Products
+              Featured Solutions
             </div>
             <h2 className="section-title">Our Software Solutions</h2>
             <p className="section-subtitle">
@@ -171,7 +171,7 @@ const Products: React.FC = () => {
             <div className="text-center mb-12">
               <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                 <PieChart className="h-4 w-4 mr-2" />
-                Product Comparison
+                Solution Comparison
               </div>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">Compare Our Solutions</h2>
               <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
