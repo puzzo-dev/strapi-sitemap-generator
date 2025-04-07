@@ -325,20 +325,20 @@ const Home: React.FC = () => {
                             />
                           </div>
                           
-                          {/* Current service overlay content */}
-                          <div className="absolute bottom-0 left-0 right-0 z-20 p-4 md:p-6 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+                          {/* Current service overlay content - moved to top right */}
+                          <div className="absolute top-0 right-0 z-20 p-3 m-4 bg-black/40 backdrop-blur-sm rounded-lg max-w-[250px] md:max-w-[300px]">
                             {serviceSlides.map((service, index) => (
                               <div 
                                 key={service.id || index}
                                 className={`transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
                               >
-                                <div className="flex items-center mb-2">
+                                <div className="flex items-center mb-1">
                                   {serviceIcons[index % serviceIcons.length]}
-                                  <h3 className="text-lg md:text-xl font-bold ml-2 text-white">
+                                  <h3 className="text-sm md:text-base font-bold ml-2 text-white">
                                     {service.title}
                                   </h3>
                                 </div>
-                                <p className="text-sm text-white/80 mb-2 line-clamp-2">
+                                <p className="text-xs md:text-sm text-white/90 line-clamp-2">
                                   {service.description}
                                 </p>
                               </div>
