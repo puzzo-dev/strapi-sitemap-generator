@@ -325,22 +325,19 @@ const Home: React.FC = () => {
                             />
                           </div>
                           
-                          {/* Current service overlay content - moved to top right */}
-                          <div className="absolute top-0 right-0 z-20 p-3 m-4 bg-black/40 backdrop-blur-sm rounded-lg max-w-[250px] md:max-w-[300px]">
+                          {/* Current service overlay content - minimal in top corner */}
+                          <div className="absolute top-0 left-0 z-20 p-2 m-3 bg-black/30 backdrop-blur-sm rounded-md inline-flex items-center">
                             {serviceSlides.map((service, index) => (
                               <div 
                                 key={service.id || index}
-                                className={`transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
+                                className={`transition-opacity duration-500 flex items-center ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
                               >
-                                <div className="flex items-center mb-1">
-                                  {serviceIcons[index % serviceIcons.length]}
-                                  <h3 className="text-sm md:text-base font-bold ml-2 text-white">
+                                <div className="flex items-center">
+                                  <span className="text-xs">{serviceIcons[index % serviceIcons.length]}</span>
+                                  <h3 className="text-xs font-medium ml-1.5 text-white">
                                     {service.title}
                                   </h3>
                                 </div>
-                                <p className="text-xs md:text-sm text-white/90 line-clamp-2">
-                                  {service.description}
-                                </p>
                               </div>
                             ))}
                           </div>
