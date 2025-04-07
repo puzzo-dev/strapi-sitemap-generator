@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
 import { ChevronRight } from 'lucide-react';
-import LanguageButton from '@/components/ui/LanguageButton';
+import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useLanguage } from '@/components/context/LanguageContext';
 
 interface MobileMenuProps {
@@ -31,18 +31,20 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+      className={`fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm transition-all duration-300 ${
         isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
       onClick={onClose}
     >
       <div
-        className={`fixed top-0 right-0 w-4/5 max-w-md h-full bg-white dark:bg-[#0a1929] shadow-2xl overflow-y-auto transition-transform duration-300 ease-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed top-0 right-0 w-4/5 max-w-md h-full bg-white dark:bg-[#0a1929] shadow-2xl overflow-y-auto transition-all duration-300 ease-out transform ${
+          isOpen ? 'translate-x-0 visible' : 'translate-x-full'
         }`}
         style={{ 
           boxShadow: isOpen ? '-5px 0 30px rgba(0, 0, 0, 0.15)' : 'none',
-          borderLeft: '1px solid rgba(30, 73, 118, 0.15)'
+          borderLeft: '1px solid rgba(30, 73, 118, 0.15)',
+          willChange: 'transform',
+          transform: isOpen ? 'translateX(0)' : 'translateX(100%)'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -90,33 +92,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               </h3>
             </div>
             
-            <div className="bg-gray-50 dark:bg-gray-800/40 rounded-lg p-2">
-              <div className="relative">
-                <select
-                  className="cursor-pointer w-full p-2 text-gray-700 dark:text-gray-200 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 appearance-none"
-                  value={currentLanguage}
-                  onChange={(e) => {
-                    setLanguage(e.target.value);
-                  }}
-                >
-                  {supportedLanguages.map((lang) => (
-                    <option key={lang} value={lang}>
-                      {lang === 'en' && '🇬🇧 English'}
-                      {lang === 'yo' && '🇳🇬 Yorùbá'}
-                      {lang === 'ig' && '🇳🇬 Igbo'}
-                      {lang === 'ha' && '🇳🇬 Hausa'}
-                      {lang === 'fr' && '🇫🇷 Français'}
-                      {lang === 'es' && '🇪🇸 Español'}
-                      {lang === 'sw' && '🇰🇪 Kiswahili'}
-                    </option>
-                  ))}
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <svg className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </div>
-              </div>
+            <div className="bg-gray-50 dark:bg-gray-800/40 rounded-lg p-4">
+              <LanguageSelector compact={true} />
             </div>
           </div>
 
