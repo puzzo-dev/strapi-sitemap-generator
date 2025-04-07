@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import { services, testimonials, clientLogos } from '@/lib/data';
 import { ServiceProps, TestimonialProps } from '@/lib/types';
-import { usePageContent, useServices, useTestimonials } from '@/hooks/useStrapiContent';
+import { 
+  usePageContent, 
+  useServices, 
+  useTestimonials, 
+  useDynamicHeroContent 
+} from '@/hooks/useStrapiContent';
 
 // Import company logo for service slider
 import IVarseLogo from '@assets/I-VARSELogo3@3x.png';
@@ -37,9 +42,13 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoplayEnabled, setAutoplayEnabled] = useState(true);
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   
   // Fetch page content from Strapi
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('home');
+  
+  // Fetch dynamic hero content
+  const { heroContents, isLoading: isHeroLoading } = useDynamicHeroContent();
   
   // Fetch services from Strapi
   const { data: apiServices, isLoading: isServicesLoading } = useServices();
@@ -94,6 +103,19 @@ const Home: React.FC = () => {
     return () => clearInterval(timer);
   }, [currentSlide, autoplayEnabled]);
   
+  // Auto-rotate hero content for more dynamic feel
+  useEffect(() => {
+    // If we only have one hero content or loading, don't rotate
+    if (heroContents.length <= 1) return;
+    
+    // Rotate hero content every 7 seconds (slightly slower than service slides)
+    const timer = setInterval(() => {
+      setCurrentHeroIndex(prev => (prev + 1) % heroContents.length);
+    }, 7000);
+    
+    return () => clearInterval(timer);
+  }, [heroContents]);
+  
   // Pause autoplay on hover
   const handleMouseEnter = () => setAutoplayEnabled(false);
   const handleMouseLeave = () => setAutoplayEnabled(true);
@@ -147,8 +169,11 @@ const Home: React.FC = () => {
                   <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
                 </div>
               ) : (
-                <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10">
-                  {pageContent?.sections?.find(s => s.type === 'hero')?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'}
+                <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10 transition-opacity duration-700">
+                  {isHeroLoading 
+                    ? 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
+                    : heroContents[currentHeroIndex]?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
+                  }
                 </h1>
               )}
             </div>
@@ -164,8 +189,11 @@ const Home: React.FC = () => {
                       <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
                     </div>
                   ) : (
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10">
-                      {pageContent?.sections?.find(s => s.type === 'hero')?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'}
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10 transition-opacity duration-700">
+                      {isHeroLoading 
+                        ? 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
+                        : heroContents[currentHeroIndex]?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'
+                      }
                     </h1>
                   )}
                 </div>
@@ -177,9 +205,11 @@ const Home: React.FC = () => {
                     <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                   </div>
                 ) : (
-                  <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block">
-                    {pageContent?.sections?.find(s => s.type === 'hero')?.subtitle || 
-                    'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'}
+                  <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block transition-opacity duration-700">
+                    {isHeroLoading 
+                      ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+                      : heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+                    }
                   </p>
                 )}
                 
@@ -365,9 +395,11 @@ const Home: React.FC = () => {
                   <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                 </div>
               ) : (
-                <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
-                  {pageContent?.sections?.find(s => s.type === 'hero')?.subtitle || 
-                  'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'}
+                <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 transition-opacity duration-700">
+                  {isHeroLoading 
+                    ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+                    : heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+                  }
                 </p>
               )}
               

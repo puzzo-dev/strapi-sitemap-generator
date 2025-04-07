@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   getNavItems,
@@ -70,6 +71,62 @@ export function usePageContent(slug: string) {
     queryKey: ['page-content', slug],
     queryFn: () => getPageContent(slug)
   });
+}
+
+/**
+ * Custom hook to fetch dynamic hero content
+ * This hook fetches multiple hero headers and content from Strapi
+ */
+export function useDynamicHeroContent() {
+  const { data: pageContent, isLoading, error } = usePageContent('home');
+  
+  // Extract all hero sections if they exist, otherwise return a default entry
+  const heroContents = useMemo(() => {
+    if (!pageContent || !pageContent.sections) {
+      return [{ 
+        title: 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES',
+        subtitle: 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+      }];
+    }
+    
+    // Get all hero sections from the CMS
+    // First, find all hero sections
+    const primaryHeroSections = pageContent.sections.filter(section => 
+      section.type === 'hero'
+    );
+    
+    // Then try to find any additional sections that might have hero content variants
+    // This checks for sections that might be tagged differently but contain hero content
+    const additionalHeroSections = pageContent.sections.filter(section => 
+      section.settings?.isHeroVariant === true || 
+      section.title?.includes('Hero') ||
+      section.settings?.displayAsHero === true
+    );
+    
+    // Combine all hero sections
+    const allHeroSections = [...primaryHeroSections, ...additionalHeroSections];
+    
+    // If no hero sections are found, return the default
+    if (allHeroSections.length === 0) {
+      return [{ 
+        title: 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES',
+        subtitle: 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+      }];
+    }
+    
+    // Map the hero sections to the format we need
+    return allHeroSections.map(section => ({
+      title: section.title || 'INNOVATIVE DIGITAL SOLUTIONS',
+      subtitle: section.subtitle || 'Elevate your business with our cutting-edge digital solutions.',
+      settings: section.settings || {},
+    }));
+  }, [pageContent]);
+
+  return {
+    heroContents,
+    isLoading,
+    error
+  };
 }
 
 /**
