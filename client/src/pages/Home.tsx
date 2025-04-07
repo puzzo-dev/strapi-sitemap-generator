@@ -7,6 +7,9 @@ import { services, testimonials, clientLogos } from '@/lib/data';
 import { ServiceProps, TestimonialProps } from '@/lib/types';
 import { usePageContent, useServices, useTestimonials } from '@/hooks/useStrapiContent';
 
+// Import company logo for service slider
+import IVarseLogo from '@assets/I-VARSELogo3@3x.png';
+
 // Import icons
 import { 
   PlayCircle, 
@@ -137,46 +140,51 @@ const Home: React.FC = () => {
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
             {/* Mobile Header (Shows above the slider on mobile) */}
-            <div className="block lg:hidden w-full mb-6">
+            <div className="block lg:hidden w-full mb-4">
               {isPageLoading ? (
                 <div className="space-y-3">
                   <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
                   <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
                 </div>
               ) : (
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10">
+                <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10">
                   {pageContent?.sections?.find(s => s.type === 'hero')?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'}
                 </h1>
               )}
             </div>
             
-            {/* Left column - Content (Hidden on mobile, shows as second on desktop) */}
-            <div className="order-2 lg:order-1 hidden lg:block">
+            {/* Left column - Content (Shows second on mobile, first on desktop) */}
+            <div className="order-2 lg:order-1">
               <div className="space-y-6 md:space-y-8">
-                {isPageLoading ? (
-                  <div className="space-y-3">
-                    <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
-                    <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
-                  </div>
-                ) : (
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10">
-                    {pageContent?.sections?.find(s => s.type === 'hero')?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'}
-                  </h1>
-                )}
+                {/* Desktop-only heading - hidden on mobile */}
+                <div className="hidden lg:block">
+                  {isPageLoading ? (
+                    <div className="space-y-3">
+                      <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
+                      <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
+                    </div>
+                  ) : (
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-2 text-blue-600 dark:text-blue-400 relative z-10">
+                      {pageContent?.sections?.find(s => s.type === 'hero')?.title || 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES'}
+                    </h1>
+                  )}
+                </div>
                 
+                {/* Always visible subtitle */}
                 {isPageLoading ? (
                   <div className="space-y-3">
                     <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
                     <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                   </div>
                 ) : (
-                  <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 lg:pr-10">
+                  <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block">
                     {pageContent?.sections?.find(s => s.type === 'hero')?.subtitle || 
                     'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'}
                   </p>
                 )}
                 
-                <div className="pt-4 flex flex-col sm:flex-row gap-4">
+                {/* Desktop-only buttons */}
+                <div className="pt-4 flex-col sm:flex-row gap-4 hidden md:flex">
                   <GradientButton 
                     href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.url || "/services"} 
                     size="lg" 
@@ -235,73 +243,97 @@ const Home: React.FC = () => {
                       </svg>
                     </div>
                     
-                    {/* Service Slides Container */}
-                    <div className="absolute inset-0 z-10">
+                    {/* Service Slides Container - Original Design */}
+                    <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                       {isServicesLoading ? (
                         // Loading state
                         <div className="flex items-center justify-center h-full">
                           <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                         </div>
                       ) : (
-                        // Service slides
-                        serviceSlides.map((service, index) => (
-                          <div 
-                            key={service.id || index}
-                            className={`absolute inset-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 transition-opacity duration-500 ${
-                              index === currentSlide ? 'opacity-100 z-20' : 'opacity-0 z-10'
-                            }`}
-                          >
-                            {/* Service image */}
-                            <div className="w-full md:w-1/2 h-full flex items-center justify-center p-2 md:p-6 relative">
-                              <div className="relative w-full h-full overflow-hidden rounded-lg">
+                        <div className="relative w-full h-full">
+                          {/* Main image with gradient overlay */}
+                          <div className="absolute inset-0 z-10">
+                            {serviceSlides.map((service, index) => (
+                              <div 
+                                key={service.id || index} 
+                                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+                              >
                                 <img 
                                   src={service.image || serviceImages[index % serviceImages.length]} 
                                   alt={service.title} 
-                                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                  className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
                               </div>
-                            </div>
-                            
-                            {/* Service content */}
-                            <div className="w-full md:w-1/2 p-4 flex flex-col justify-center items-center md:items-start">
-                              <div className="mb-4 flex items-center justify-center md:justify-start">
-                                {serviceIcons[index % serviceIcons.length]}
-                              </div>
-                              <h3 className="text-xl md:text-2xl font-bold mb-2 text-center md:text-left text-blue-600 dark:text-blue-400">
-                                {service.title}
-                              </h3>
-                              <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 text-center md:text-left">
-                                {service.description?.slice(0, 120)}{service.description?.length > 120 ? '...' : ''}
-                              </p>
-                              <div className="mt-4">
-                                <GradientButton 
-                                  href={`/services/${service.id}`} 
-                                  variant="outline"
-                                  size="sm" 
-                                  endIcon={<ArrowRight className="h-4 w-4" />}
-                                >
-                                  Learn More
-                                </GradientButton>
-                              </div>
-                            </div>
+                            ))}
                           </div>
-                        ))
+                          
+                          {/* Company logo */}
+                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 opacity-10 dark:opacity-20">
+                            <img 
+                              src={IVarseLogo} 
+                              alt="I-VARSE Technologies" 
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          
+                          {/* Current service overlay content */}
+                          <div className="absolute bottom-0 left-0 right-0 z-20 p-4 md:p-6 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+                            {serviceSlides.map((service, index) => (
+                              <div 
+                                key={service.id || index}
+                                className={`transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
+                              >
+                                <div className="flex items-center mb-2">
+                                  {serviceIcons[index % serviceIcons.length]}
+                                  <h3 className="text-lg md:text-xl font-bold ml-2 text-white">
+                                    {service.title}
+                                  </h3>
+                                </div>
+                                <p className="text-sm text-white/80 mb-2 line-clamp-2">
+                                  {service.description}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                          
+                          {/* Animated tech elements */}
+                          <CircuitBoard className="absolute top-6 left-6 h-12 w-12 text-blue-300 dark:text-blue-700 opacity-30 animate-float" />
+                          <Cpu className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300 dark:text-indigo-700 opacity-30 animate-float" style={{ animationDelay: '1s' }} />
+                          
+                          {/* Animated dots & lines */}
+                          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <circle cx="20" cy="20" r="1" className="text-blue-400 fill-current animate-pulse-light" />
+                            <circle cx="80" cy="30" r="1" className="text-cyan-400 fill-current animate-pulse-light" style={{ animationDelay: '0.5s' }} />
+                            <circle cx="50" cy="70" r="1" className="text-indigo-400 fill-current animate-pulse-light" style={{ animationDelay: '1s' }} />
+                            <circle cx="30" cy="80" r="1" className="text-purple-400 fill-current animate-pulse-light" style={{ animationDelay: '1.5s' }} />
+                            <circle cx="70" cy="60" r="1" className="text-blue-400 fill-current animate-pulse-light" style={{ animationDelay: '2s' }} />
+                            
+                            <line x1="20" y1="20" x2="80" y2="30" className="text-blue-400 stroke-current" strokeWidth="0.2" />
+                            <line x1="80" y1="30" x2="50" y2="70" className="text-cyan-400 stroke-current" strokeWidth="0.2" />
+                            <line x1="50" y1="70" x2="30" y2="80" className="text-indigo-400 stroke-current" strokeWidth="0.2" />
+                            <line x1="30" y1="80" x2="70" y2="60" className="text-purple-400 stroke-current" strokeWidth="0.2" />
+                            <line x1="70" y1="60" x2="20" y2="20" className="text-blue-400 stroke-current" strokeWidth="0.2" />
+                          </svg>
+                        </div>
                       )}
                       
-                      {/* Navigation arrows */}
+                      {/* Navigation arrows - subtle design */}
                       <button 
                         onClick={prevSlide}
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 bg-white/80 dark:bg-gray-800/80 p-2 rounded-full shadow-md hover:bg-white dark:hover:bg-gray-700 transition-colors"
+                        className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 dark:bg-gray-800/30 hover:bg-white/40 dark:hover:bg-gray-800/50 p-2 rounded-full transition-colors backdrop-blur-sm"
+                        aria-label="Previous slide"
                       >
-                        <ChevronLeft className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        <ChevronLeft className="h-5 w-5 text-white" />
                       </button>
                       
                       <button 
                         onClick={nextSlide}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 bg-white/80 dark:bg-gray-800/80 p-2 rounded-full shadow-md hover:bg-white dark:hover:bg-gray-700 transition-colors"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 dark:bg-gray-800/30 hover:bg-white/40 dark:hover:bg-gray-800/50 p-2 rounded-full transition-colors backdrop-blur-sm"
+                        aria-label="Next slide"
                       >
-                        <ChevronRight className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        <ChevronRight className="h-5 w-5 text-white" />
                       </button>
                     </div>
                   </div>
