@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Check, Target, Users, BarChart, Clock, Calendar 
 import GradientButton from '@/components/ui/GradientButton';
 import { services } from '@/lib/data';
 import { ServiceProps } from '@/lib/types';
+import { useServiceById } from '@/hooks/useStrapiContent';
 
 // Extended services data with additional details
 const extendedServices: (ServiceProps & {
@@ -99,8 +100,40 @@ const ServiceDetail: React.FC = () => {
   const [, params] = useRoute('/services/:id');
   const serviceId = params?.id ? parseInt(params.id, 10) : -1;
   
-  // Find the service by ID
-  const service = extendedServices.find(service => service.id === serviceId);
+  // Get service from API using the hook
+  const { data: apiService, isLoading } = useServiceById(serviceId);
+  
+  // Find extended service data to merge with API data
+  const extendedServiceData = extendedServices.find(s => s.id === serviceId);
+  
+  // Combine API service data with extended data, or fall back to just the extended data
+  const service = apiService 
+    ? { 
+        ...apiService, 
+        ...extendedServiceData 
+      } 
+    : extendedServiceData;
+  
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="content-section bg-white dark:bg-[#132f4c] min-h-screen">
+        <div className="container-custom py-16">
+          <div className="animate-pulse space-y-8">
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+            <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mb-2"></div>
+            <div className="flex gap-4">
+              <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-40"></div>
+              <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-40"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   // Handle not found case
   if (!service) {

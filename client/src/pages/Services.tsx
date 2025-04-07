@@ -1,24 +1,18 @@
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
 import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
+import { useServices, useTestimonials } from '@/hooks/useStrapiContent';
 import { services, testimonials } from '@/lib/data';
-import { getServices, getTestimonials } from '@/lib/strapi';
 import { ServiceProps, TestimonialProps } from '@/lib/types';
 
 const Services: React.FC = () => {
-  const { data: apiServices, isLoading: isServicesLoading } = useQuery<ServiceProps[]>({
-    queryKey: ['services'],
-    queryFn: getServices,
-    initialData: services,
-  });
-
-  const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useQuery<TestimonialProps[]>({
-    queryKey: ['testimonials'],
-    queryFn: getTestimonials,
-    initialData: testimonials,
-  });
+  const { data: apiServices, isLoading: isServicesLoading } = useServices();
+  const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useTestimonials();
+  
+  // Use the API data if available, otherwise fall back to local data
+  const displayServices = apiServices?.length ? apiServices : services;
+  const displayTestimonials = apiTestimonials?.length ? apiTestimonials : testimonials;
 
   return (
     <>
@@ -52,7 +46,7 @@ const Services: React.FC = () => {
                 </div>
               ))
             ) : (
-              apiServices.map(service => (
+              displayServices.map(service => (
                 <ServiceCard key={service.id} service={service} />
               ))
             )}
@@ -143,7 +137,7 @@ const Services: React.FC = () => {
                 </div>
               ))
             ) : (
-              apiTestimonials.map(testimonial => (
+              displayTestimonials.map(testimonial => (
                 <TestimonialCard key={testimonial.id} testimonial={testimonial} />
               ))
             )}

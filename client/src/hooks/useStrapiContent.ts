@@ -9,6 +9,7 @@ import {
   getTeamMembers,
   getProducts,
   getServices,
+  getServiceById,
   getTestimonials,
   getClientLogos,
   getJobListings,
@@ -163,6 +164,17 @@ export function useServices() {
   return useQuery<ServiceProps[]>({
     queryKey: ['services'],
     queryFn: getServices
+  });
+}
+
+/**
+ * Custom hook to fetch a single service by ID
+ */
+export function useServiceById(id: number) {
+  return useQuery<ServiceProps | undefined>({
+    queryKey: ['services', id],
+    queryFn: () => getServiceById(id),
+    enabled: id !== undefined && id !== null && id > 0
   });
 }
 
