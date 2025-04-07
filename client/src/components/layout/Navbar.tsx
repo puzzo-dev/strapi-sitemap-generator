@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
+import { useNavigation, useSiteConfig } from '@/hooks/useStrapiContent';
 
 interface NavbarProps {
   onMenuToggle?: () => void;
@@ -30,7 +31,14 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
     return location === path;
   };
 
-  const navLinks = [
+  // Fetch navigation links from Strapi
+  const { data: navItems, isLoading: isNavLoading } = useNavigation();
+  
+  // Fetch site configuration from Strapi
+  const { data: siteConfig } = useSiteConfig();
+  
+  // Default nav links as fallback
+  const defaultNavLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
@@ -39,6 +47,15 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
     { name: 'Careers', path: '/careers' },
     { name: 'Contact', path: '/contact', isButton: true }
   ];
+  
+  // Convert Strapi nav items to our component format if available
+  const navLinks = navItems ? 
+    navItems.map(item => ({
+      name: item.label,
+      path: item.url,
+      isButton: item.label.toLowerCase() === 'contact' || item.label.toLowerCase().includes('contact us')
+    })) : 
+    defaultNavLinks;
 
   return (
     <nav 

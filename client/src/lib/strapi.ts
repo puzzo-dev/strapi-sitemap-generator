@@ -1,5 +1,16 @@
 import { products, services, testimonials } from '@/lib/data';
-import { ProductProps, ServiceProps, TestimonialProps, ContactFormData } from '@/lib/types';
+import { 
+  ProductProps, 
+  ServiceProps, 
+  TestimonialProps, 
+  ContactFormData,
+  NavItem,
+  SocialLink,
+  FooterColumn,
+  SiteConfig,
+  PageContent,
+  TeamMember
+} from '@/lib/types';
 import { apiRequest } from './queryClient';
 
 // Strapi API URL should be set in environment variables
@@ -116,6 +127,178 @@ export async function getServiceById(id: number): Promise<ServiceProps | undefin
  */
 export async function getTestimonials(): Promise<TestimonialProps[]> {
   return fetchFromStrapi<TestimonialProps[]>('testimonials?populate=*', testimonials);
+}
+
+/**
+ * Get navigation menu items from Strapi
+ */
+export async function getNavItems(): Promise<NavItem[]> {
+  const defaultNavItems: NavItem[] = [
+    { id: 1, label: 'Home', url: '/', order: 1 },
+    { id: 2, label: 'Services', url: '/services', order: 2 },
+    { id: 3, label: 'Products', url: '/products', order: 3 },
+    { id: 4, label: 'About', url: '/about', order: 4 },
+    { id: 5, label: 'Contact', url: '/contact', order: 5 },
+  ];
+  
+  return fetchFromStrapi<NavItem[]>('nav-items?sort=order:asc', defaultNavItems);
+}
+
+/**
+ * Get social media links from Strapi
+ */
+export async function getSocialLinks(): Promise<SocialLink[]> {
+  const defaultSocialLinks: SocialLink[] = [
+    { id: 1, platform: 'Twitter', url: 'https://twitter.com', icon: 'twitter' },
+    { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
+    { id: 3, platform: 'Facebook', url: 'https://facebook.com', icon: 'facebook' }
+  ];
+  
+  return fetchFromStrapi<SocialLink[]>('social-links', defaultSocialLinks);
+}
+
+/**
+ * Get footer columns from Strapi
+ */
+export async function getFooterColumns(): Promise<FooterColumn[]> {
+  const defaultFooterColumns: FooterColumn[] = [
+    { 
+      id: 1, 
+      title: 'Company', 
+      links: [
+        { label: 'About Us', url: '/about' },
+        { label: 'Careers', url: '/careers' },
+        { label: 'Contact', url: '/contact' }
+      ]
+    },
+    { 
+      id: 2, 
+      title: 'Services', 
+      links: [
+        { label: 'Web Development', url: '/services' },
+        { label: 'Mobile App Development', url: '/services' },
+        { label: 'Cloud Solutions', url: '/services' }
+      ]
+    },
+    { 
+      id: 3, 
+      title: 'Resources', 
+      links: [
+        { label: 'Blog', url: '/blog' },
+        { label: 'Documentation', url: '/docs' },
+        { label: 'Support', url: '/support' }
+      ]
+    }
+  ];
+  
+  return fetchFromStrapi<FooterColumn[]>('footer-columns?populate=*', defaultFooterColumns);
+}
+
+/**
+ * Get site configuration from Strapi
+ */
+export async function getSiteConfig(): Promise<SiteConfig> {
+  const defaultSiteConfig: SiteConfig = {
+    siteName: 'I-Varse Limited',
+    siteDescription: 'Digital solutions for modern businesses',
+    contactEmail: 'info@ivarse.com',
+    contactPhone: '+1234567890',
+    contactAddress: '123 Tech Boulevard, Silicon Valley, CA',
+    logoLight: '/assets/I-VARSELogo3@3x.png',
+    logoDark: '/assets/I-VARSELogo4@3x.png',
+    favicon: '/assets/I-VARSEIcon1@3x.png'
+  };
+  
+  try {
+    if (!STRAPI_API_TOKEN) {
+      return defaultSiteConfig;
+    }
+    
+    const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*`, {
+      headers: defaultHeaders
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
+    
+    const result = await response.json();
+    if (!result.data) {
+      return defaultSiteConfig;
+    }
+    
+    return {
+      id: result.data.id,
+      ...result.data.attributes
+    };
+  } catch (error) {
+    console.warn('Error fetching site config from Strapi:', error);
+    return defaultSiteConfig;
+  }
+}
+
+/**
+ * Get page content by slug from Strapi
+ */
+export async function getPageContent(slug: string): Promise<PageContent | null> {
+  try {
+    if (!STRAPI_API_TOKEN) {
+      console.warn('No Strapi API token provided, cannot fetch page content');
+      return null;
+    }
+    
+    const response = await fetch(`${STRAPI_URL}/api/pages?filters[slug][$eq]=${slug}&populate=deep`, {
+      headers: defaultHeaders
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
+    
+    const result = await response.json();
+    if (!result.data || result.data.length === 0) {
+      return null;
+    }
+    
+    return {
+      id: result.data[0].id,
+      ...result.data[0].attributes
+    };
+  } catch (error) {
+    console.warn(`Error fetching page content for ${slug} from Strapi:`, error);
+    return null;
+  }
+}
+
+/**
+ * Get team members from Strapi
+ */
+export async function getTeamMembers(): Promise<TeamMember[]> {
+  const defaultTeamMembers: TeamMember[] = [
+    { 
+      id: 1, 
+      name: 'John Doe', 
+      position: 'CEO', 
+      bio: 'Experienced leader with a passion for technology innovation.',
+      image: 'https://source.unsplash.com/random/300x300/?portrait'
+    },
+    { 
+      id: 2, 
+      name: 'Jane Smith', 
+      position: 'CTO', 
+      bio: 'Tech enthusiast with deep expertise in software architecture.',
+      image: 'https://source.unsplash.com/random/300x300/?portrait'
+    },
+    { 
+      id: 3, 
+      name: 'Alex Johnson', 
+      position: 'Design Lead', 
+      bio: 'Creative professional focused on delivering exceptional user experiences.',
+      image: 'https://source.unsplash.com/random/300x300/?portrait'
+    }
+  ];
+  
+  return fetchFromStrapi<TeamMember[]>('team-members?populate=*', defaultTeamMembers);
 }
 
 /**
