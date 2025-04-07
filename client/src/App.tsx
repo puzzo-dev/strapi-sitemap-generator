@@ -9,6 +9,7 @@ import Home from "@/pages/Home";
 import Services from "@/pages/Services";
 import ServiceDetail from "@/pages/ServiceDetail";
 import Products from "@/pages/Products";
+import ProductDetail from "@/pages/ProductDetail";
 import Contact from "@/pages/Contact";
 import About from "@/pages/About";
 import Blog from "@/pages/Blog";
@@ -45,6 +46,7 @@ function App() {
               <Route path="/services" component={Services} />
               <Route path="/services/:id" component={ServiceDetail} />
               <Route path="/products" component={Products} />
+              <Route path="/products/:id" component={ProductDetail} />
               <Route path="/about" component={About} />
               <Route path="/blog" component={Blog} />
               <Route path="/blog/:id" component={BlogPost} />

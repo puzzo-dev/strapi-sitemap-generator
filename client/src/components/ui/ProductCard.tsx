@@ -1,8 +1,7 @@
 import React from 'react';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Link } from 'wouter';
+import { ArrowRight, Check } from 'lucide-react';
 import GradientButton from './GradientButton';
-import { Check, Star, Image as ImageIcon, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { ProductProps } from '@/lib/types';
 
 interface ProductCardProps {
@@ -11,182 +10,82 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }) => {
-  const { title, description, image, keyFeatures, benefits } = product;
-  
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const listItem = {
-    hidden: { opacity: 0, x: -20 },
-    show: { opacity: 1, x: 0 }
-  };
-
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Card className="relative overflow-hidden border border-gray-100 dark:border-gray-800 hover:border-blue-200 dark:hover:border-blue-700 group hover:shadow-xl dark:hover:shadow-blue-900/10 transition-all duration-300">
-        {/* Tech-inspired background pattern */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 opacity-5 dark:opacity-10 transform rotate-12">
-          <svg className="w-full h-full" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 2" />
-            <circle cx="100" cy="100" r="60" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 2" />
-            <circle cx="100" cy="100" r="40" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 1" />
-            <circle cx="100" cy="100" r="20" stroke="currentColor" strokeWidth="0.5" />
-          </svg>
-        </div>
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      {/* Image column */}
+      <div className={`md:col-span-5 ${isReversed ? 'md:order-last' : ''}`}>
+        {product.image ? (
+          <div className="rounded-xl overflow-hidden shadow-lg border border-blue-100 dark:border-blue-800/30">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        ) : (
+          <div className="rounded-xl bg-blue-50 dark:bg-blue-900/20 h-64 flex items-center justify-center border border-blue-100 dark:border-blue-800/30">
+            <span className="text-blue-500 dark:text-blue-300 text-xl font-medium">
+              {product.title}
+            </span>
+          </div>
+        )}
+      </div>
+      
+      {/* Content column */}
+      <div className="md:col-span-7">
+        <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
+          {product.title}
+        </h3>
         
-        <CardContent className="p-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <CardTitle className="text-2xl font-semibold mb-4 text-blue-700 dark:text-blue-300">{title}</CardTitle>
-          </motion.div>
-          
-          <div className={`grid grid-cols-1 ${isReversed ? 'lg:grid-cols-[2fr_3fr] lg:grid-flow-dense' : 'lg:grid-cols-[3fr_2fr]'} gap-8 mb-8`}>
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              whileHover={{ scale: 1.01 }}
-              className={`md:h-36 h-28 bg-blue-50 dark:bg-blue-900/20 rounded-lg overflow-hidden flex items-center justify-center shadow-md relative ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}
-            >
-              {image ? (
-                <img 
-                  src={image} 
-                  alt={`${title} screenshot`} 
-                  className="w-full h-full object-cover object-center"
-                />
-              ) : (
-                <img 
-                  src={`https://source.unsplash.com/random/600x350/?tech,${title.toLowerCase().replace(/\s+/g, ',')}`}
-                  alt={`${title} visualization`}
-                  className="w-full h-full object-cover object-center"
-                  onError={(e) => {
-                    // Fallback if image fails to load
-                    const target = e.target as HTMLImageElement;
-                    target.onerror = null;
-                    target.src = "https://source.unsplash.com/random/600x350/?technology";
-                  }}
-                />
-              )}
-              
-              {/* Tech corner elements */}
-              <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-blue-400 dark:border-blue-500"></div>
-              <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-blue-400 dark:border-blue-500"></div>
-              <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-blue-400 dark:border-blue-500"></div>
-              <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-blue-400 dark:border-blue-500"></div>
-            </motion.div>
-            
-            <div className={`flex flex-col justify-center ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
-              <motion.div
-                className="flex gap-2 flex-wrap"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                {keyFeatures.slice(0, 3).map((feature, index) => (
-                  <span 
-                    key={index} 
-                    className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-300"
-                  >
-                    <Check className="h-3 w-3 mr-1" />
-                    {feature}
+        <p className="text-gray-600 dark:text-gray-300 mb-6">
+          {product.description}
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div>
+            <h4 className="font-bold text-gray-700 dark:text-gray-200 mb-3">
+              Key Features
+            </h4>
+            <ul className="space-y-2">
+              {product.keyFeatures.map((feature, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="flex-shrink-0 mr-2 mt-1">
+                    <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
                   </span>
-                ))}
-              </motion.div>
-            </div>
+                  <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                </li>
+              ))}
+            </ul>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div
-              variants={container}
-              initial="hidden"
-              animate="show"
-            >
-              <h4 className="text-lg font-medium mb-4 text-blue-700 dark:text-blue-400 border-b border-blue-200 dark:border-blue-800 pb-2">KEY FEATURES</h4>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300">
-                {keyFeatures.map((feature, index) => (
-                  <motion.li key={index} variants={listItem} className="flex items-start">
-                    <span className="flex-shrink-0 mr-2 mt-1">
-                      <motion.div 
-                        whileHover={{ rotate: [0, -10, 10, -5, 5, 0] }}
-                        transition={{ duration: 0.6 }}
-                        className="h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center"
-                      >
-                        <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
-                      </motion.div>
-                    </span>
-                    <span>{feature}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-            
-            <motion.div
-              variants={container}
-              initial="hidden"
-              animate="show"
-              transition={{ delayChildren: 0.3 }}
-            >
-              <h4 className="text-lg font-medium mb-4 text-blue-700 dark:text-blue-400 border-b border-blue-200 dark:border-blue-800 pb-2">BENEFITS</h4>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300">
-                {benefits.map((benefit, index) => (
-                  <motion.li key={index} variants={listItem} className="flex items-start">
-                    <span className="flex-shrink-0 mr-2 mt-1">
-                      <motion.div 
-                        whileHover={{ scale: 1.2, rotate: 5 }}
-                        className="h-5 w-5 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center"
-                      >
-                        <Star className="h-3 w-3 text-amber-600 dark:text-amber-400" />
-                      </motion.div>
-                    </span>
-                    <span>{benefit}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-          
-          <motion.div 
-            className="mt-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            <GradientButton 
-              href="/contact" 
-              endIcon={<ArrowRight className="h-4 w-4 ml-1" />}
-              className="animate-pulse-light"
-            >
-              Learn More
-            </GradientButton>
-          </motion.div>
-        </CardContent>
-        
-        {/* Animated tech border */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute top-0 left-0 w-full h-full border-2 border-transparent">
-            <div className="absolute top-0 right-0 h-0.5 w-0 bg-gradient-to-l from-blue-400 to-indigo-500 group-hover:w-full transition-all duration-1000"></div>
-            <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-blue-400 to-indigo-500 group-hover:w-full transition-all duration-1000 delay-200"></div>
-            <div className="absolute left-0 top-0 w-0.5 h-0 bg-gradient-to-b from-blue-400 to-indigo-500 group-hover:h-full transition-all duration-1000 delay-100"></div>
-            <div className="absolute right-0 bottom-0 w-0.5 h-0 bg-gradient-to-t from-blue-400 to-indigo-500 group-hover:h-full transition-all duration-1000 delay-300"></div>
+          <div>
+            <h4 className="font-bold text-gray-700 dark:text-gray-200 mb-3">
+              Benefits
+            </h4>
+            <ul className="space-y-2">
+              {product.benefits.map((benefit, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="flex-shrink-0 mr-2 mt-1">
+                    <Check className="h-4 w-4 text-purple-500 dark:text-purple-400" />
+                  </span>
+                  <span className="text-gray-600 dark:text-gray-300">{benefit}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </Card>
-    </motion.div>
+        
+        <div>
+          <Link href={`/products/${product.id}`}>
+            <a>
+              <GradientButton endIcon={<ArrowRight />}>
+                Learn More
+              </GradientButton>
+            </a>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

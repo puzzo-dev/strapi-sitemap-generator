@@ -1,25 +1,19 @@
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
 import ProductCard from '@/components/ui/ProductCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import GradientButton from '@/components/ui/GradientButton';
 import { products, testimonials } from '@/lib/data';
-import { getProducts, getTestimonials } from '@/lib/strapi';
 import { ProductProps, TestimonialProps } from '@/lib/types';
+import { useProducts, useTestimonials } from '@/hooks/useStrapiContent';
 import { ArrowRight, Package, Target, PieChart, ShieldCheck, Award, Cpu, Check } from 'lucide-react';
 
 const Products: React.FC = () => {
-  const { data: apiProducts, isLoading: isProductsLoading } = useQuery<ProductProps[]>({
-    queryKey: ['products'],
-    queryFn: getProducts,
-    initialData: products,
-  });
-
-  const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useQuery<TestimonialProps[]>({
-    queryKey: ['testimonials'],
-    queryFn: getTestimonials,
-    initialData: testimonials,
-  });
+  const { data: apiProducts, isLoading: isProductsLoading } = useProducts();
+  const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useTestimonials();
+  
+  // Use the API data if available, otherwise fall back to local data
+  const displayProducts = apiProducts?.length ? apiProducts : products;
+  const displayTestimonials = apiTestimonials?.length ? apiTestimonials : testimonials;
 
   return (
     <>
@@ -164,7 +158,7 @@ const Products: React.FC = () => {
                 </div>
               ))
             ) : (
-              apiProducts.map((product, index) => (
+              displayProducts.map((product, index) => (
                 <div key={product.id} className={index % 2 === 0 ? '' : 'bg-white dark:bg-[#132f4c] py-12 -mx-4 px-4 md:-mx-8 md:px-8 lg:-mx-16 lg:px-16'}>
                   <ProductCard product={product} isReversed={index % 2 !== 0} />
                 </div>
@@ -312,7 +306,7 @@ const Products: React.FC = () => {
                 </div>
               ))
             ) : (
-              apiTestimonials.map(testimonial => (
+              displayTestimonials.map(testimonial => (
                 <TestimonialCard key={testimonial.id} testimonial={testimonial} />
               ))
             )}

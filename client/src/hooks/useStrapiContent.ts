@@ -8,6 +8,7 @@ import {
   getPageContent,
   getTeamMembers,
   getProducts,
+  getProductById,
   getServices,
   getServiceById,
   getTestimonials,
@@ -174,6 +175,17 @@ export function useServiceById(id: number) {
   return useQuery<ServiceProps | undefined>({
     queryKey: ['services', id],
     queryFn: () => getServiceById(id),
+    enabled: id !== undefined && id !== null && id > 0
+  });
+}
+
+/**
+ * Custom hook to fetch a single product by ID
+ */
+export function useProductById(id: number) {
+  return useQuery<ProductProps | undefined>({
+    queryKey: ['products', id],
+    queryFn: () => getProductById(id),
     enabled: id !== undefined && id !== null && id > 0
   });
 }
