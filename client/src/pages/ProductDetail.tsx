@@ -422,6 +422,7 @@ const ProductDetail: React.FC = () => {
                   <GradientButton 
                     href="/contact" 
                     className="w-full justify-center"
+                    size="sm"
                     variant={index === 1 ? 'default' : 'outline'}
                   >
                     Get Started
@@ -473,10 +474,10 @@ const ProductDetail: React.FC = () => {
               Contact us today to discuss how {product.title} can help you achieve your business goals.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <GradientButton href="/contact" variant="light" className="border border-white/20">
+              <GradientButton href="/contact" variant="light" size="sm" className="border border-white/20">
                 Request a Demonstration
               </GradientButton>
-              <GradientButton href="/contact" variant="light" className="border border-white/20">
+              <GradientButton href="/contact" variant="light" size="sm" className="border border-white/20">
                 Get Custom Pricing
               </GradientButton>
             </div>

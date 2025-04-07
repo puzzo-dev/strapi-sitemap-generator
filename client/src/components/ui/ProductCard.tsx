@@ -77,10 +77,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
         
         <div>
           <Link href={`/products/${product.id}`}>
-            <a>
-              <GradientButton endIcon={<ArrowRight />}>
-                Learn More
-              </GradientButton>
+            <a className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:underline">
+              <span>Learn More</span>
+              <ArrowRight className="h-4 w-4 ml-1" />
             </a>
           </Link>
         </div>
