@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,15 +10,40 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground dark:bg-[#0a1929] dark:text-white;
+    @apply antialiased bg-background text-foreground dark:bg-[#0a1929] dark:text-white;
+    font-family: 'Space Grotesk', sans-serif;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight font-bold;
+    @apply font-bold;
+    font-family: 'Chakra Petch', sans-serif;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer components {
+  /* Hero Section with distinctive bottom-left border */
+  .hero-section {
+    position: relative;
+  }
+  
+  .hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 40%;
+    height: 80px;
+    background-color: white;
+    border-top-right-radius: 100px;
+    z-index: 1;
+  }
+  
+  /* Dark mode version */
+  .dark .hero-section::after {
+    background-color: #132f4c;
+  }
+  
   /* Gradients */
   .gradient-text {
     @apply bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] bg-clip-text text-transparent;
@@ -96,7 +123,7 @@
   }
   
   .animate-bounce-subtle {
-    animation: bounce-subtle 8s infinite;
+    animation: bounce-subtle 12s ease-in-out infinite;
   }
   
   .animate-fade-in {
@@ -173,11 +200,14 @@
 }
 
 @keyframes bounce-subtle {
-  0%, 100% {
+  0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
   }
-  50% {
-    transform: translateY(-5px);
+  40% {
+    transform: translateY(-3px);
+  }
+  60% {
+    transform: translateY(-2px);
   }
 }
 

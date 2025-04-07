@@ -23,7 +23,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-8 md:pb-16 border-b border-blue-100 dark:border-blue-900/40">
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-8 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section">
         {/* Tech-inspired background elements */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* Animated gradient orbs */}
@@ -325,15 +325,57 @@ const Home: React.FC = () => {
         
         {/* Client Logos */}
         <div className="container-custom mt-24">
-          <div className="text-center mb-10">
-            <h3 className="text-xl font-medium text-gray-400 dark:text-gray-500">Trusted by innovative companies</h3>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-            {clientLogos.map((logo, index) => (
-              <div key={index} className="h-12 flex items-center justify-center grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 hover-lift">
-                <img src={logo.image} alt={logo.name} className="h-full" />
+          <div className="relative overflow-hidden rounded-xl card p-10 md:py-16 border-2 border-blue-100 dark:border-blue-800/50">
+            {/* Tech-inspired background pattern */}
+            <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 overflow-hidden">
+              <div className="absolute left-0 top-0 w-full h-40 bg-gradient-to-b from-blue-100 dark:from-blue-900/20 to-transparent"></div>
+              
+              {/* Tech grid pattern */}
+              <div className="grid grid-cols-10 grid-rows-10 h-full w-full">
+                {Array.from({ length: 40 }).map((_, i) => (
+                  <div 
+                    key={i}
+                    className="border-b border-r border-blue-200/30 dark:border-blue-700/20 flex items-center justify-center"
+                  >
+                    {i % 5 === 0 && (
+                      <div className="w-1 h-1 rounded-full bg-blue-300/50 dark:bg-blue-600/30"></div>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
+              
+              {/* Animated circuit lines */}
+              <svg className="absolute -right-10 -bottom-10 w-64 h-64 text-blue-400/30 dark:text-blue-600/20 animate-spin-slow" viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="0.5" strokeDasharray="10 5" />
+                <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.5" strokeDasharray="8 4" />
+                <circle cx="50" cy="50" r="15" stroke="currentColor" strokeWidth="0.5" strokeDasharray="5 3" />
+              </svg>
+            </div>
+            
+            {/* Content */}
+            <div className="relative z-10">
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+                  <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+                  Our Clients
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">Trusted by Innovative Companies</h3>
+              </div>
+              
+              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                {clientLogos.map((logo, index) => (
+                  <div 
+                    key={index} 
+                    className="h-14 flex items-center justify-center grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover-lift"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="p-3 rounded-lg hover:bg-blue-50/80 dark:hover:bg-blue-900/30 transition-all duration-300">
+                      <img src={logo.image} alt={logo.name} className="h-full" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
