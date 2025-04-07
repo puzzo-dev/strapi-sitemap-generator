@@ -15,9 +15,10 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
+    @apply font-extrabold;
     font-family: 'Chakra Petch', sans-serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -59,23 +60,29 @@
   
   /* Typography */
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-6;
+    @apply text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   
   .section-subtitle {
     @apply text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-10;
+    font-weight: 500;
   }
   
   .heading-xl {
-    @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold;
+    @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .heading-lg {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold;
+    @apply text-3xl md:text-4xl lg:text-5xl font-extrabold;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   
   .heading-md {
-    @apply text-2xl md:text-3xl font-bold;
+    @apply text-2xl md:text-3xl font-extrabold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
   
   /* Layout */
@@ -123,7 +130,7 @@
   }
   
   .animate-bounce-subtle {
-    animation: bounce-subtle 12s ease-in-out infinite;
+    animation: bounce-subtle 20s ease-in-out infinite;
   }
   
   .animate-fade-in {
@@ -200,14 +207,14 @@
 }
 
 @keyframes bounce-subtle {
-  0%, 20%, 50%, 80%, 100% {
+  0%, 15%, 45%, 65%, 82%, 100% {
     transform: translateY(0);
   }
-  40% {
-    transform: translateY(-3px);
-  }
-  60% {
+  30% {
     transform: translateY(-2px);
+  }
+  75% {
+    transform: translateY(-1px);
   }
 }
 

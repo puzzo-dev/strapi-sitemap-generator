@@ -362,15 +362,25 @@ const Home: React.FC = () => {
                 <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">Trusted by Innovative Companies</h3>
               </div>
               
-              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8 justify-items-center items-center">
                 {clientLogos.map((logo, index) => (
                   <div 
                     key={index} 
-                    className="h-14 flex items-center justify-center grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover-lift"
+                    className="w-full h-16 sm:h-14 flex items-center justify-center grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover-lift"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <div className="p-3 rounded-lg hover:bg-blue-50/80 dark:hover:bg-blue-900/30 transition-all duration-300">
-                      <img src={logo.image} alt={logo.name} className="h-full" />
+                    <div className="p-3 rounded-lg hover:bg-blue-50/80 dark:hover:bg-blue-900/30 transition-all duration-300 w-full h-full flex items-center justify-center">
+                      <img 
+                        src={logo.image} 
+                        alt={logo.name} 
+                        className="max-h-full max-w-full object-contain"
+                        style={{ 
+                          maxWidth: '100px',
+                          maxHeight: '40px',
+                          width: 'auto',
+                          height: 'auto'
+                        }}
+                      />
                     </div>
                   </div>
                 ))}

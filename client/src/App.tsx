@@ -8,6 +8,9 @@ import Home from "@/pages/Home";
 import Services from "@/pages/Services";
 import Products from "@/pages/Products";
 import Contact from "@/pages/Contact";
+import About from "@/pages/About";
+import Blog from "@/pages/Blog";
+import Careers from "@/pages/Careers";
 import NotFound from "@/pages/not-found";
 
 // Layout components
@@ -26,6 +29,9 @@ function App() {
               <Route path="/" component={Home} />
               <Route path="/services" component={Services} />
               <Route path="/products" component={Products} />
+              <Route path="/about" component={About} />
+              <Route path="/blog" component={Blog} />
+              <Route path="/careers" component={Careers} />
               <Route path="/contact" component={Contact} />
               <Route component={NotFound} />
             </Switch>
