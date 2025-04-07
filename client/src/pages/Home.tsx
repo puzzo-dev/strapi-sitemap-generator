@@ -583,7 +583,7 @@ const Home: React.FC = () => {
                     <Cpu className="h-4 w-4 mr-2" />
                     Digital Innovation
                   </div>
-                  <h1 className="text-3xl md:text-4xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                  <h1 className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                     <span className="gradient-text">Innovative Digital</span> Solutions<br />for Modern Businesses
                   </h1>
                 </>
@@ -606,7 +606,7 @@ const Home: React.FC = () => {
                         <Cpu className="h-4 w-4 mr-2" />
                         Digital Innovation
                       </div>
-                      <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                      <h1 className="heading-xl text-5xl md:text-6xl font-black mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                         <span className="gradient-text">Innovative Digital</span> Solutions<br />for Modern Businesses
                       </h1>
                     </>
