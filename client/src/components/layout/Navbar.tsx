@@ -112,21 +112,27 @@ const Navbar: React.FC = () => {
         </div>
       </div>
       
-      {/* Mobile menu - off-screen slide-in */}
+      {/* Mobile menu - off-screen slide-in with overlay backdrop */}
       <div 
-        className={`md:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`md:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
           mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={closeMobileMenu}
       >
+        {/* Mobile menu container */}
         <div 
-          className={`fixed top-0 right-0 w-4/5 h-full bg-white dark:bg-[#132f4c] shadow-xl p-6 overflow-y-auto transform transition-transform duration-300 ease-in-out ${
-            mobileMenuOpen ? 'translate-x-0 mobile-menu-enter' : 'translate-x-full mobile-menu-exit'
+          className={`mobile-menu fixed top-0 right-0 w-3/4 h-full bg-white dark:bg-[#0a1929] shadow-xl overflow-y-auto transform transition-transform duration-400 ease-in-out ${
+            mobileMenuOpen ? 'mobile-menu-open' : 'mobile-menu-closed'
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex justify-between items-center mb-8">
-            <IVarseLogo size={38} />
+          {/* Mobile menu header */}
+          <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-gray-800">
+            <Link href="/" onClick={closeMobileMenu}>
+              <div className="cursor-pointer">
+                <IVarseLogo size={40} />
+              </div>
+            </Link>
             <button
               className="text-gray-700 dark:text-gray-200 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800/50 focus:outline-none"
               onClick={closeMobileMenu}
@@ -138,11 +144,12 @@ const Navbar: React.FC = () => {
             </button>
           </div>
           
-          <div className="space-y-5 staggered-fade-in">
+          {/* Mobile menu items with improved spacing */}
+          <div className="mobile-menu-items py-4 px-4">
             {navLinks.map((link) => !link.isButton && (
               <Link key={link.name} href={link.path}>
                 <div 
-                  className={`block cursor-pointer rounded-lg text-base font-semibold p-4 transition-colors ${
+                  className={`mobile-menu-item block cursor-pointer text-lg font-semibold py-4 px-4 my-2 rounded-lg transition-colors ${
                     isActive(link.path) 
                       ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
                       : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/30'
@@ -153,8 +160,14 @@ const Navbar: React.FC = () => {
                 </div>
               </Link>
             ))}
-            <div className="p-4 pt-6">
-              <GradientButton href="/contact" className="w-full" onClick={closeMobileMenu}>
+            
+            {/* Contact button with improved spacing and styling */}
+            <div className="px-4 pt-8 pb-4">
+              <GradientButton 
+                href="/contact" 
+                className="w-full justify-center py-4 text-base animate-pulse-light"
+                onClick={closeMobileMenu}
+              >
                 Contact Us
               </GradientButton>
             </div>

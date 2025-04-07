@@ -23,7 +23,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-8 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section">
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-20 md:py-24 lg:py-28 border-b border-blue-100 dark:border-blue-900/40 hero-section">
         {/* Tech-inspired background elements */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* Animated gradient orbs */}
@@ -53,16 +53,16 @@ const Home: React.FC = () => {
         </div>
 
         <div className="container-custom relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-12 pt-8 md:pt-16 lg:py-16">
+          <div className="flex flex-col lg:flex-row items-center gap-10 md:gap-12 lg:gap-16">
             {/* On mobile: Shows heading first, then slideshow, then content */}
-            <div className="w-full lg:w-1/2 space-y-6 animate-fade-in order-1 lg:order-1">
+            <div className="w-full lg:w-1/2 space-y-8 animate-fade-in order-1 lg:order-1 pt-10 md:pt-6">
               {/* Tag Label */}
-              <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 animate-slide-in-right">
+              <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 animate-slide-in-right mb-4">
                 <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
                 Premium Tech Solutions
               </div>
               
-              {/* Main Heading - Always shows first */}
+              {/* Main Heading - Always shows first - BIGGER on mobile */}
               <h1 className="heading-xl">
                 <span className="block animate-fade-in-up" style={{ animationDelay: '0.2s' }}>Top rated web</span>
                 <span className="block animate-fade-in-up" style={{ animationDelay: '0.4s' }}>dev company</span>
@@ -87,7 +87,7 @@ const Home: React.FC = () => {
             </div>
             
             {/* Slideshow - Shows second on mobile */}
-            <div className="w-full lg:w-1/2 flex justify-center animate-fade-in order-2 lg:order-2 mt-8 md:mt-0" style={{ animationDelay: '0.5s' }}>
+            <div className="w-full lg:w-1/2 flex justify-center animate-fade-in order-2 lg:order-2 mt-12 md:mt-0" style={{ animationDelay: '0.5s' }}>
               <div className="relative w-full max-w-lg">
                 {/* Glowing background effect */}
                 <div className="animate-pulse-slower absolute -bottom-4 -right-4 h-64 w-64 rounded-full bg-blue-300/30 blur-3xl dark:bg-blue-900/20"></div>
@@ -152,16 +152,16 @@ const Home: React.FC = () => {
             </div>
             
             {/* Mobile-only content - Shows third on mobile, after the slideshow */}
-            <div className="w-full block md:hidden lg:hidden order-3 mt-8 space-y-6 staggered-fade-in">
-              <p className="text-base text-gray-600 dark:text-gray-300">
+            <div className="w-full block md:hidden lg:hidden order-3 mt-12 space-y-8 mobile-space-y staggered-fade-in">
+              <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
                 Embark on a successful innovative journey with cutting-edge solutions for your business. We're dedicated to elevating your digital experience.
               </p>
               
-              <div className="pt-4 flex flex-col gap-3 w-full">
-                <GradientButton href="/services" size="default" endIcon={<ChevronRight />} className="w-full animate-snowfall">
+              <div className="pt-4 flex flex-col gap-4 w-full">
+                <GradientButton href="/services" size="default" endIcon={<ChevronRight />} className="w-full py-4 justify-center animate-snowfall">
                   Get Started
                 </GradientButton>
-                <GradientButton href="/#about" variant="outline" size="default" className="w-full">
+                <GradientButton href="/#about" variant="outline" size="default" className="w-full py-4 justify-center">
                   Learn More
                 </GradientButton>
               </div>
@@ -170,8 +170,8 @@ const Home: React.FC = () => {
         </div>
         
         {/* Specializations Section */}
-        <div className="container-custom mt-24">
-          <div className="card p-8 md:p-10 lg:p-12 relative overflow-hidden group animate-fade-in">
+        <div className="container-custom mt-28 md:mt-32">
+          <div className="card p-8 md:p-10 lg:p-12 relative overflow-hidden group animate-fade-in shadow-lg">
             {/* Tech pattern background */}
             <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 overflow-hidden">
               <svg className="absolute -right-20 -bottom-10 w-64 h-64 text-blue-400 dark:text-blue-600 animate-spin-slow" viewBox="0 0 100 100" fill="none">
@@ -186,54 +186,54 @@ const Home: React.FC = () => {
             </div>
             
             {/* Content */}
-            <div className="flex flex-col md:flex-row gap-8 md:gap-16 relative z-10">
-              <div className="md:w-1/2 animate-fade-in">
-                <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+            <div className="flex flex-col md:flex-row gap-10 md:gap-16 relative z-10">
+              <div className="md:w-1/2 space-y-6 animate-fade-in">
+                <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                   <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
                   Core Competencies
                 </div>
                 <h2 className="heading-md mb-6 text-blue-600 dark:text-blue-400">SPECIALIZATIONS IN<br />SERVICE OPERATIONS</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-8">
+                <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg">
                   I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses toward digital success.
                 </p>
-                <a href="/services" className="button-spec group">
+                <a href="/services" className="button-spec group text-lg">
                   <span>View All Services</span>
-                  <ArrowRight className="h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1" />
                 </a>
               </div>
               
               <div className="md:w-1/2">
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="spec-card animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                    <div className="h-10 w-10 rounded-md bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center mb-3 shadow-md shadow-blue-100 dark:shadow-blue-900/10">
-                      <span className="font-bold">01</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.1s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center mb-4 shadow-md shadow-blue-100 dark:shadow-blue-900/10">
+                      <span className="font-bold text-lg">01</span>
                     </div>
-                    <h3 className="font-medium mb-2 text-blue-700 dark:text-blue-300">Web Development</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Custom websites and web applications with modern technologies</p>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Web Development</h3>
+                    <p className="text-base text-gray-600 dark:text-gray-300">Custom websites and web applications with modern technologies</p>
                   </div>
                   
-                  <div className="spec-card animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                    <div className="h-10 w-10 rounded-md bg-gradient-to-br from-indigo-400 to-indigo-600 text-white flex items-center justify-center mb-3 shadow-md shadow-indigo-100 dark:shadow-indigo-900/10">
-                      <span className="font-bold">02</span>
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.2s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-indigo-400 to-indigo-600 text-white flex items-center justify-center mb-4 shadow-md shadow-indigo-100 dark:shadow-indigo-900/10">
+                      <span className="font-bold text-lg">02</span>
                     </div>
-                    <h3 className="font-medium mb-2 text-blue-700 dark:text-blue-300">Mobile Apps</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Cross-platform mobile applications for Android and iOS</p>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Mobile Apps</h3>
+                    <p className="text-base text-gray-600 dark:text-gray-300">Cross-platform mobile applications for Android and iOS</p>
                   </div>
                   
-                  <div className="spec-card animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                    <div className="h-10 w-10 rounded-md bg-gradient-to-br from-cyan-400 to-cyan-600 text-white flex items-center justify-center mb-3 shadow-md shadow-cyan-100 dark:shadow-cyan-900/10">
-                      <span className="font-bold">03</span>
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.3s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-cyan-400 to-cyan-600 text-white flex items-center justify-center mb-4 shadow-md shadow-cyan-100 dark:shadow-cyan-900/10">
+                      <span className="font-bold text-lg">03</span>
                     </div>
-                    <h3 className="font-medium mb-2 text-blue-700 dark:text-blue-300">Cloud Solutions</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Scalable and secure cloud infrastructure deployment</p>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Cloud Solutions</h3>
+                    <p className="text-base text-gray-600 dark:text-gray-300">Scalable and secure cloud infrastructure deployment</p>
                   </div>
                   
-                  <div className="spec-card animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                    <div className="h-10 w-10 rounded-md bg-gradient-to-br from-purple-400 to-purple-600 text-white flex items-center justify-center mb-3 shadow-md shadow-purple-100 dark:shadow-purple-900/10">
-                      <span className="font-bold">04</span>
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.4s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-purple-400 to-purple-600 text-white flex items-center justify-center mb-4 shadow-md shadow-purple-100 dark:shadow-purple-900/10">
+                      <span className="font-bold text-lg">04</span>
                     </div>
-                    <h3 className="font-medium mb-2 text-blue-700 dark:text-blue-300">AI Solutions</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Custom AI integrations for business automation</p>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">AI Solutions</h3>
+                    <p className="text-base text-gray-600 dark:text-gray-300">Custom AI integrations for business automation</p>
                   </div>
                 </div>
               </div>
