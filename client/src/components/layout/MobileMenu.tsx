@@ -13,7 +13,7 @@ interface MobileMenuProps {
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const [location] = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const navLinks = [
     { name: t('nav.home', 'Home'), path: '/' },
@@ -87,14 +87,31 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 {t('language.select', 'Select Language')}
               </h3>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800/40 rounded-lg p-2 grid grid-cols-2 gap-2">
-              <LanguageButton code="en" flag="🇬🇧" name="English" onClose={onClose} />
-              <LanguageButton code="yo" flag="🇳🇬" name="Yorùbá" onClose={onClose} />
-              <LanguageButton code="ig" flag="🇳🇬" name="Igbo" onClose={onClose} />
-              <LanguageButton code="ha" flag="🇳🇬" name="Hausa" onClose={onClose} />
-              <LanguageButton code="fr" flag="🇫🇷" name="Français" onClose={onClose} />
-              <LanguageButton code="es" flag="🇪🇸" name="Español" onClose={onClose} />
-              <LanguageButton code="sw" flag="🇰🇪" name="Kiswahili" onClose={onClose} />
+            
+            <div className="bg-gray-50 dark:bg-gray-800/40 rounded-lg p-2">
+              <div className="relative">
+                <select
+                  className="cursor-pointer w-full p-2 text-gray-700 dark:text-gray-200 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 appearance-none"
+                  value={i18n.language}
+                  onChange={(e) => {
+                    i18n.changeLanguage(e.target.value);
+                    localStorage.setItem('preferredLanguage', e.target.value);
+                  }}
+                >
+                  <option value="en">🇬🇧 English</option>
+                  <option value="yo">🇳🇬 Yorùbá</option>
+                  <option value="ig">🇳🇬 Igbo</option>
+                  <option value="ha">🇳🇬 Hausa</option>
+                  <option value="fr">🇫🇷 Français</option>
+                  <option value="es">🇪🇸 Español</option>
+                  <option value="sw">🇰🇪 Kiswahili</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                  <svg className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
 
