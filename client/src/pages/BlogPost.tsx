@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'wouter';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +27,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import SocialShareButtons from '@/components/ui/SocialShareButtons';
+import SocialShareBar from '@/components/ui/SocialShareBar';
+import FloatingSocialShare from '@/components/ui/FloatingSocialShare';
+import { toast } from '@/hooks/use-toast';
 import type { BlogPost } from '@/lib/types';
 
 // Comment form schema
@@ -43,6 +47,20 @@ const BlogPostPage: React.FC = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [commentTab, setCommentTab] = useState<string>('read'); // 'read' or 'write'
+  const [showFloatingShare, setShowFloatingShare] = useState<boolean>(false);
+  
+  // Show floating share buttons after scrolling down
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const threshold = window.innerHeight * 0.3; // 30% of viewport height
+      
+      setShowFloatingShare(scrollPosition > threshold);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   // Fetch blog post
   const { data: post, isLoading: isLoadingPost, error: postError } = useBlogPostBySlug(slug);
@@ -173,6 +191,17 @@ const BlogPostPage: React.FC = () => {
   
   return (
     <div className="bg-slate-50 dark:bg-slate-900 min-h-screen pb-16">
+      {/* Floating social share buttons */}
+      {showFloatingShare && post && (
+        <FloatingSocialShare
+          title={post.title}
+          description={post.blog_intro}
+          imageUrl={post.meta_image}
+          hashtags={post.tags}
+          position="left"
+          offset={20}
+        />
+      )}
       {/* Hero section with post title and featured image */}
       <div className="relative bg-primary py-16 md:py-24 text-white">
         {post.meta_image && (
@@ -283,11 +312,17 @@ const BlogPostPage: React.FC = () => {
                   </div>
                 )}
                 
-                {/* Share button */}
+                {/* Share section with social buttons */}
                 <div className="mt-10 pt-6 border-t">
-                  <Button variant="outline" onClick={handleShare} className="flex items-center">
-                    <FiShare2 className="mr-2" /> {t('blog.sharePost')}
-                  </Button>
+                  <SocialShareBar 
+                    title={post.title}
+                    description={post.blog_intro}
+                    imageUrl={post.meta_image}
+                    hashtags={post.tags}
+                    style="prominent"
+                    headingText={t('blog.sharePost')}
+                    align="left"
+                  />
                 </div>
               </div>
             </div>

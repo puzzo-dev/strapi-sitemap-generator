@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useRoute } from 'wouter';
-import { ArrowLeft, ArrowRight, Check, Package, Shield, Zap, HeartPulse, BarChart } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Package, Shield, Zap, HeartPulse, BarChart, Share2 } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { products } from '@/lib/data';
 import { ProductProps } from '@/lib/types';
 import { useProductById } from '@/hooks/useStrapiContent';
+import { useTranslation } from 'react-i18next';
+import SocialShareBar from '@/components/ui/SocialShareBar';
+import FloatingSocialShare from '@/components/ui/FloatingSocialShare';
+import { Button } from '@/components/ui/button';
 
 // Extended products data with additional details
 const extendedProducts: (ProductProps & {
@@ -180,6 +184,21 @@ const extendedProducts: (ProductProps & {
 const ProductDetail: React.FC = () => {
   const [, params] = useRoute('/products/:id');
   const productId = params?.id ? parseInt(params.id, 10) : -1;
+  const { t } = useTranslation();
+  const [showFloatingShare, setShowFloatingShare] = useState<boolean>(false);
+  
+  // Show floating share buttons after scrolling down
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const threshold = window.innerHeight * 0.3; // 30% of viewport height
+      
+      setShowFloatingShare(scrollPosition > threshold);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   // Get product from API using the hook
   const { data: apiProduct, isLoading } = useProductById(productId);
@@ -241,6 +260,17 @@ const ProductDetail: React.FC = () => {
   
   return (
     <>
+      {/* Floating social share buttons */}
+      {showFloatingShare && product && (
+        <FloatingSocialShare
+          title={product.title}
+          description={product.description}
+          imageUrl={product.image}
+          position="right"
+          offset={20}
+        />
+      )}
+      
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:py-24 border-b border-blue-100 dark:border-blue-900/40">
         <div className="absolute inset-0 z-0 overflow-hidden">
@@ -282,6 +312,19 @@ const ProductDetail: React.FC = () => {
                   Live Demo
                 </GradientButton>
               )}
+              <Button 
+                variant="outline" 
+                className="flex items-center gap-2 border-blue-100 bg-white/90 text-blue-600 hover:bg-blue-50 dark:border-blue-800 dark:bg-slate-800/90 dark:text-blue-400 dark:hover:bg-slate-700/90"
+                onClick={() => {
+                  const shareButtons = document.getElementById('product-share-section');
+                  if (shareButtons) {
+                    shareButtons.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
+                <Share2 className="h-4 w-4" />
+                {t('product.share')}
+              </Button>
             </div>
           </div>
           
@@ -308,6 +351,19 @@ const ProductDetail: React.FC = () => {
                 )) || (
                   <p>{product.description}</p>
                 )}
+                
+                {/* Social share section */}
+                <div id="product-share-section" className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+                  <SocialShareBar 
+                    title={product.title}
+                    description={product.description}
+                    imageUrl={product.image}
+                    style="standard"
+                    headingText={t('product.shareProduct')}
+                    align="left"
+                    showLabels={true}
+                  />
+                </div>
               </div>
             </div>
             
