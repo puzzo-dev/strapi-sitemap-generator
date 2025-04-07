@@ -92,3 +92,10 @@ export interface TeamMember {
   image?: string;
   socialLinks?: SocialLink[];
 }
+
+export interface ClientLogo {
+  id?: number;
+  name: string;
+  image: string;
+  url?: string;
+}

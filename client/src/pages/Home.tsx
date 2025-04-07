@@ -4,12 +4,13 @@ import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import { services, testimonials, clientLogos } from '@/lib/data';
-import { ServiceProps, TestimonialProps } from '@/lib/types';
+import { ServiceProps, TestimonialProps, ClientLogo } from '@/lib/types';
 import { 
   usePageContent, 
   useServices, 
   useTestimonials, 
-  useDynamicHeroContent 
+  useDynamicHeroContent,
+  useClientLogos
 } from '@/hooks/useStrapiContent';
 
 // Import company logo for service slider
@@ -55,6 +56,9 @@ const Home: React.FC = () => {
   
   // Fetch testimonials from Strapi
   const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useTestimonials();
+  
+  // Fetch client logos from Strapi
+  const { data: apiClientLogos, isLoading: isClientLogosLoading } = useClientLogos();
 
   // Create service slides with fallback to local data if API fails
   const serviceSlides = isServicesLoading 
@@ -793,6 +797,49 @@ const Home: React.FC = () => {
                   <TestimonialCard testimonial={testimonial} />
                 </div>
               ))
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Clients Section */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-900/50 relative overflow-hidden">
+        <div className="container-custom">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">
+              Trusted By Industry Leaders
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              We work with leading companies around the world to transform their businesses through innovative digital solutions.
+            </p>
+          </div>
+
+          {/* Client Logos */}
+          <div className="mt-10">
+            {isClientLogosLoading ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center justify-items-center">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="w-32 h-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center justify-items-center">
+                {(apiClientLogos || clientLogos).map((client, index) => (
+                  <a 
+                    key={index} 
+                    href={client.url || "#"} 
+                    className="transition-opacity duration-300 hover:opacity-80 flex items-center justify-center"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <img 
+                      src={client.image} 
+                      alt={client.name} 
+                      className="h-10 md:h-12 object-contain max-w-[120px] lg:max-w-[150px] filter dark:invert dark:brightness-150 dark:contrast-75"
+                    />
+                  </a>
+                ))}
+              </div>
             )}
           </div>
         </div>

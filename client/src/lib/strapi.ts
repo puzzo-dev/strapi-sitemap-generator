@@ -1,4 +1,4 @@
-import { products as localProducts, services as localServices, testimonials as localTestimonials } from '@/lib/data';
+import { products as localProducts, services as localServices, testimonials as localTestimonials, clientLogos as localClientLogos } from '@/lib/data';
 import { 
   ProductProps, 
   ServiceProps, 
@@ -9,7 +9,8 @@ import {
   FooterColumn,
   SiteConfig,
   PageContent,
-  TeamMember
+  TeamMember,
+  ClientLogo
 } from '@/lib/types';
 import type { SiteContent } from '@shared/schema';
 import { apiRequest } from './queryClient';
@@ -429,6 +430,13 @@ export async function subscribeToNewsletter(email: string): Promise<any> {
     console.error('Error subscribing to newsletter:', error);
     throw error;
   }
+}
+
+/**
+ * Get client logos from API or fallback to local data
+ */
+export async function getClientLogos(): Promise<ClientLogo[]> {
+  return fetchData<ClientLogo[]>('client-logos', localClientLogos);
 }
 
 /**

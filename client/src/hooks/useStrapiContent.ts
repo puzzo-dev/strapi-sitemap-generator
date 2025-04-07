@@ -9,7 +9,8 @@ import {
   getTeamMembers,
   getProducts,
   getServices,
-  getTestimonials
+  getTestimonials,
+  getClientLogos
 } from '@/lib/strapi';
 import { 
   NavItem, 
@@ -20,7 +21,8 @@ import {
   TeamMember,
   ProductProps,
   ServiceProps,
-  TestimonialProps
+  TestimonialProps,
+  ClientLogo
 } from '@/lib/types';
 
 /**
@@ -166,5 +168,15 @@ export function useTestimonials() {
   return useQuery<TestimonialProps[]>({
     queryKey: ['testimonials'],
     queryFn: getTestimonials
+  });
+}
+
+/**
+ * Custom hook to fetch client logos
+ */
+export function useClientLogos() {
+  return useQuery<ClientLogo[]>({
+    queryKey: ['client-logos'],
+    queryFn: getClientLogos
   });
 }
