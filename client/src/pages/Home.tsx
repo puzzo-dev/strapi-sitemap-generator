@@ -61,13 +61,13 @@ const Home: React.FC = () => {
     ? services.slice(0, 5) 
     : (apiServices?.length ? apiServices : services).slice(0, 5);
   
-  // Service slide icons (for services that don't have icons from API)
+  // Service slide indicators (simple dots with different colors)
   const serviceIcons = [
-    <Database className="h-12 w-12 text-blue-500" />,
-    <Globe className="h-12 w-12 text-indigo-500" />,
-    <Smartphone className="h-12 w-12 text-cyan-500" />,
-    <Shield className="h-12 w-12 text-purple-500" />,
-    <Zap className="h-12 w-12 text-blue-500" />
+    <div className="w-1 h-1 rounded-full bg-blue-500"></div>,
+    <div className="w-1 h-1 rounded-full bg-indigo-500"></div>,
+    <div className="w-1 h-1 rounded-full bg-cyan-500"></div>,
+    <div className="w-1 h-1 rounded-full bg-purple-500"></div>,
+    <div className="w-1 h-1 rounded-full bg-blue-500"></div>
   ];
   
   // Dummy service images for the slides
@@ -333,8 +333,8 @@ const Home: React.FC = () => {
                                 className={`transition-opacity duration-500 flex items-center ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
                               >
                                 <div className="flex items-center">
-                                  <span className="text-[5px] flex items-center justify-center">{serviceIcons[index % serviceIcons.length]}</span>
-                                  <h3 className="text-[11px] font-medium ml-0.5 text-white whitespace-nowrap">
+                                  <span className="flex items-center justify-center mr-1.5">{serviceIcons[index % serviceIcons.length]}</span>
+                                  <h3 className="text-[11px] font-medium text-white whitespace-nowrap">
                                     {service.title}
                                   </h3>
                                 </div>
