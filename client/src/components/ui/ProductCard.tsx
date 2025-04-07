@@ -76,13 +76,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
         </div>
         
         <div>
-          <Link href={`/products/${product.id}`}>
-            <a>
-              <GradientButton endIcon={<ArrowRight />}>
-                Learn More
-              </GradientButton>
-            </a>
-          </Link>
+          {/* Use the direct href prop on GradientButton instead of wrapping with Link */}
+          <GradientButton href={`/products/${product.id}`} endIcon={<ArrowRight />}>
+            Learn More
+          </GradientButton>
         </div>
       </div>
     </div>

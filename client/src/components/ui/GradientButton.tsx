@@ -89,8 +89,8 @@ const GradientButton: React.FC<GradientButtonProps> = ({
       </Link>
     );
   }
-
-  // Regular button
+  
+  // Default to button
   return (
     <button className={getButtonClasses()} {...props}>
       {buttonContent}
