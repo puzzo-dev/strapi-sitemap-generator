@@ -230,7 +230,7 @@ const Home: React.FC = () => {
                     <Cpu className="h-4 w-4 mr-2" />
                     Digital Innovation
                   </div>
-                  <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                  <h1 className="text-3xl md:text-4xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                     <span className="gradient-text">Innovative Digital</span> Solutions<br />for Modern Businesses
                   </h1>
                 </>
@@ -416,14 +416,14 @@ const Home: React.FC = () => {
             </div>
             
             {/* Mobile-only content - Shows third on mobile, after the slideshow */}
-            <div className="w-full block md:hidden lg:hidden order-3 mt-12 space-y-8 mobile-space-y staggered-fade-in">
+            <div className="w-full block md:hidden lg:hidden order-3 mt-16 mb-12 space-y-8 mobile-space-y staggered-fade-in">
               {isPageLoading ? (
                 <div className="space-y-3">
                   <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
                   <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                 </div>
               ) : (
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                   {isHeroLoading 
                     ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
                     : heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
@@ -431,12 +431,12 @@ const Home: React.FC = () => {
                 </p>
               )}
               
-              <div className="pt-4 flex flex-col gap-4 w-full">
+              <div className="pt-6 flex flex-col gap-5 w-full">
                 <GradientButton 
                   href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.url || "/services"} 
-                  size="default" 
+                  size="lg" 
                   endIcon={<ChevronRight />} 
-                  className="w-full py-4 justify-center animate-snowfall" 
+                  className="w-full py-5 justify-center animate-snowfall text-lg" 
                   fullWidth
                 >
                   {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.text || t('button.getStarted')}
@@ -444,8 +444,8 @@ const Home: React.FC = () => {
                 <GradientButton 
                   href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.url || "/#about"} 
                   variant="outline" 
-                  size="default" 
-                  className="w-full py-4 justify-center" 
+                  size="lg" 
+                  className="w-full py-5 justify-center text-lg" 
                   fullWidth
                 >
                   {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.text || t('button.learnMore')}
