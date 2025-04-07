@@ -9,6 +9,7 @@ interface GradientButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'default' | 'sm' | 'lg' | 'icon';
   endIcon?: React.ReactNode;
   startIcon?: React.ReactNode;
+  fullWidth?: boolean;
 }
 
 const GradientButton: React.FC<GradientButtonProps> = ({ 
@@ -19,6 +20,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   size = 'default',
   endIcon,
   startIcon,
+  fullWidth = false,
   ...props 
 }) => {
   // Style variants
@@ -41,10 +43,16 @@ const GradientButton: React.FC<GradientButtonProps> = ({
       light: 'bg-white text-blue-600 hover:bg-gray-50 shadow-md hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0'
     };
     
+    // For fullWidth buttons that need to be smaller and centered on desktop
+    const fullWidthClasses = fullWidth
+      ? 'w-full md:w-auto md:mx-auto'
+      : '';
+    
     return cn(
       baseClasses,
       sizeClasses[size],
       variantClasses[variant],
+      fullWidthClasses,
       className
     );
   };

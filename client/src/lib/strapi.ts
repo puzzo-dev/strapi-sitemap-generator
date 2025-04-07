@@ -1,4 +1,4 @@
-import { products, services, testimonials } from '@/lib/data';
+import { products as localProducts, services as localServices, testimonials as localTestimonials } from '@/lib/data';
 import { 
   ProductProps, 
   ServiceProps, 
@@ -11,126 +11,140 @@ import {
   PageContent,
   TeamMember
 } from '@/lib/types';
+import type { SiteContent } from '@shared/schema';
 import { apiRequest } from './queryClient';
 
-// Strapi API URL should be set in environment variables
+// Constants for API integration
+const USE_LOCAL_API = true; // Set to true to use local API instead of Strapi
 const STRAPI_URL = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
 const STRAPI_API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
 
-// Default headers for Strapi API requests
-const defaultHeaders = {
+// Default headers for API requests
+const strapiHeaders = {
   'Content-Type': 'application/json',
   ...(STRAPI_API_TOKEN ? { Authorization: `Bearer ${STRAPI_API_TOKEN}` } : {})
 };
 
 /**
- * Fetch data from Strapi with error handling and fallback to local data
+ * Fetch data from API with error handling and fallback to local data
  */
-async function fetchFromStrapi<T>(endpoint: string, fallbackData: T): Promise<T> {
+async function fetchData<T>(endpoint: string, fallbackData: T): Promise<T> {
   try {
-    if (!STRAPI_API_TOKEN) {
+    if (USE_LOCAL_API) {
+      // Use local API (Express backend)
+      return await apiRequest<T>(`/api/${endpoint}`);
+    } else if (!STRAPI_API_TOKEN) {
       console.warn('No Strapi API token provided, using fallback data');
       return fallbackData;
+    } else {
+      // Use Strapi API
+      const response = await fetch(`${STRAPI_URL}/api/${endpoint}`, {
+        headers: strapiHeaders
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      return result.data?.map((item: any) => ({
+        id: item.id,
+        ...item.attributes
+      })) || fallbackData;
     }
-    
-    const response = await fetch(`${STRAPI_URL}/api/${endpoint}`, {
-      headers: defaultHeaders
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-    }
-    
-    const result = await response.json();
-    return result.data?.map((item: any) => ({
-      id: item.id,
-      ...item.attributes
-    })) || fallbackData;
   } catch (error) {
-    console.warn(`Error fetching from Strapi (${endpoint}):`, error);
+    console.warn(`Error fetching data (${endpoint}):`, error);
     return fallbackData;
   }
 }
 
 /**
- * Get all products from Strapi or fallback to local data
+ * Get all products from API or fallback to local data
  */
 export async function getProducts(): Promise<ProductProps[]> {
-  return fetchFromStrapi<ProductProps[]>('products?populate=*', products);
+  return fetchData<ProductProps[]>('products', localProducts);
 }
 
 /**
- * Get a single product by ID from Strapi or fallback to local data
+ * Get a single product by ID from API or fallback to local data
  */
 export async function getProductById(id: number): Promise<ProductProps | undefined> {
   try {
-    if (!STRAPI_API_TOKEN) {
+    if (USE_LOCAL_API) {
+      const products = await fetchData<ProductProps[]>('products', localProducts);
       return products.find(product => product.id === id);
+    } else if (!STRAPI_API_TOKEN) {
+      return localProducts.find(product => product.id === id);
+    } else {
+      // Use Strapi API
+      const response = await fetch(`${STRAPI_URL}/api/products/${id}?populate=*`, {
+        headers: strapiHeaders
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      return {
+        id: result.data.id,
+        ...result.data.attributes
+      };
     }
-    
-    const response = await fetch(`${STRAPI_URL}/api/products/${id}?populate=*`, {
-      headers: defaultHeaders
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-    }
-    
-    const result = await response.json();
-    return {
-      id: result.data.id,
-      ...result.data.attributes
-    };
   } catch (error) {
-    console.warn(`Error fetching product ${id} from Strapi:`, error);
-    return products.find(product => product.id === id);
+    console.warn(`Error fetching product ${id}:`, error);
+    return localProducts.find(product => product.id === id);
   }
 }
 
 /**
- * Get all services from Strapi or fallback to local data
+ * Get all services from API or fallback to local data
  */
 export async function getServices(): Promise<ServiceProps[]> {
-  return fetchFromStrapi<ServiceProps[]>('services?populate=*', services);
+  return fetchData<ServiceProps[]>('services', localServices);
 }
 
 /**
- * Get a single service by ID from Strapi or fallback to local data
+ * Get a single service by ID from API or fallback to local data
  */
 export async function getServiceById(id: number): Promise<ServiceProps | undefined> {
   try {
-    if (!STRAPI_API_TOKEN) {
+    if (USE_LOCAL_API) {
+      const services = await fetchData<ServiceProps[]>('services', localServices);
       return services.find(service => service.id === id);
+    } else if (!STRAPI_API_TOKEN) {
+      return localServices.find(service => service.id === id);
+    } else {
+      // Use Strapi API
+      const response = await fetch(`${STRAPI_URL}/api/services/${id}?populate=*`, {
+        headers: strapiHeaders
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      return {
+        id: result.data.id,
+        ...result.data.attributes
+      };
     }
-    
-    const response = await fetch(`${STRAPI_URL}/api/services/${id}?populate=*`, {
-      headers: defaultHeaders
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-    }
-    
-    const result = await response.json();
-    return {
-      id: result.data.id,
-      ...result.data.attributes
-    };
   } catch (error) {
-    console.warn(`Error fetching service ${id} from Strapi:`, error);
-    return services.find(service => service.id === id);
+    console.warn(`Error fetching service ${id}:`, error);
+    return localServices.find(service => service.id === id);
   }
 }
 
 /**
- * Get all testimonials from Strapi or fallback to local data
+ * Get all testimonials from API or fallback to local data
  */
 export async function getTestimonials(): Promise<TestimonialProps[]> {
-  return fetchFromStrapi<TestimonialProps[]>('testimonials?populate=*', testimonials);
+  return fetchData<TestimonialProps[]>('testimonials', localTestimonials);
 }
 
 /**
- * Get navigation menu items from Strapi
+ * Get navigation menu items from API
  */
 export async function getNavItems(): Promise<NavItem[]> {
   const defaultNavItems: NavItem[] = [
@@ -141,11 +155,11 @@ export async function getNavItems(): Promise<NavItem[]> {
     { id: 5, label: 'Contact', url: '/contact', order: 5 },
   ];
   
-  return fetchFromStrapi<NavItem[]>('nav-items?sort=order:asc', defaultNavItems);
+  return fetchData<NavItem[]>('nav-items', defaultNavItems);
 }
 
 /**
- * Get social media links from Strapi
+ * Get social media links from API
  */
 export async function getSocialLinks(): Promise<SocialLink[]> {
   const defaultSocialLinks: SocialLink[] = [
@@ -154,11 +168,11 @@ export async function getSocialLinks(): Promise<SocialLink[]> {
     { id: 3, platform: 'Facebook', url: 'https://facebook.com', icon: 'facebook' }
   ];
   
-  return fetchFromStrapi<SocialLink[]>('social-links', defaultSocialLinks);
+  return fetchData<SocialLink[]>('social-links', defaultSocialLinks);
 }
 
 /**
- * Get footer columns from Strapi
+ * Get footer columns from API
  */
 export async function getFooterColumns(): Promise<FooterColumn[]> {
   const defaultFooterColumns: FooterColumn[] = [
@@ -191,11 +205,11 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
     }
   ];
   
-  return fetchFromStrapi<FooterColumn[]>('footer-columns?populate=*', defaultFooterColumns);
+  return fetchData<FooterColumn[]>('footer-columns', defaultFooterColumns);
 }
 
 /**
- * Get site configuration from Strapi
+ * Get site configuration from API
  */
 export async function getSiteConfig(): Promise<SiteConfig> {
   const defaultSiteConfig: SiteConfig = {
@@ -210,68 +224,90 @@ export async function getSiteConfig(): Promise<SiteConfig> {
   };
   
   try {
-    if (!STRAPI_API_TOKEN) {
+    if (USE_LOCAL_API) {
+      // First attempt to get from internal API
+      try {
+        const result = await apiRequest<{value: any}>(`/api/site-config`);
+        if (result && result.value) {
+          const config = result.value as unknown as SiteConfig;
+          return config;
+        }
+      } catch (e) {
+        console.warn('Error fetching site config from internal API:', e);
+      }
       return defaultSiteConfig;
-    }
-    
-    const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*`, {
-      headers: defaultHeaders
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-    }
-    
-    const result = await response.json();
-    if (!result.data) {
+    } else if (!STRAPI_API_TOKEN) {
       return defaultSiteConfig;
+    } else {
+      // Use Strapi API
+      const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*`, {
+        headers: strapiHeaders
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      if (!result.data) {
+        return defaultSiteConfig;
+      }
+      
+      return {
+        id: result.data.id,
+        ...result.data.attributes
+      };
     }
-    
-    return {
-      id: result.data.id,
-      ...result.data.attributes
-    };
   } catch (error) {
-    console.warn('Error fetching site config from Strapi:', error);
+    console.warn('Error fetching site config:', error);
     return defaultSiteConfig;
   }
 }
 
 /**
- * Get page content by slug from Strapi
+ * Get page content by slug from API
  */
 export async function getPageContent(slug: string): Promise<PageContent | null> {
   try {
-    if (!STRAPI_API_TOKEN) {
+    if (USE_LOCAL_API) {
+      try {
+        const data = await apiRequest<PageContent>(`/api/pages/${slug}`);
+        return data;
+      } catch (e) {
+        console.warn(`Error fetching page content for ${slug} from internal API:`, e);
+        return null;
+      }
+    } else if (!STRAPI_API_TOKEN) {
       console.warn('No Strapi API token provided, cannot fetch page content');
       return null;
+    } else {
+      // Use Strapi API
+      const response = await fetch(`${STRAPI_URL}/api/pages?filters[slug][$eq]=${slug}&populate=deep`, {
+        headers: strapiHeaders
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      if (!result.data || result.data.length === 0) {
+        return null;
+      }
+      
+      return {
+        id: result.data[0].id,
+        ...result.data[0].attributes
+      };
     }
-    
-    const response = await fetch(`${STRAPI_URL}/api/pages?filters[slug][$eq]=${slug}&populate=deep`, {
-      headers: defaultHeaders
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-    }
-    
-    const result = await response.json();
-    if (!result.data || result.data.length === 0) {
-      return null;
-    }
-    
-    return {
-      id: result.data[0].id,
-      ...result.data[0].attributes
-    };
   } catch (error) {
-    console.warn(`Error fetching page content for ${slug} from Strapi:`, error);
+    console.warn(`Error fetching page content for ${slug}:`, error);
     return null;
   }
 }
 
 /**
- * Get team members from Strapi
+ * Get team members from API
  */
 export async function getTeamMembers(): Promise<TeamMember[]> {
   const defaultTeamMembers: TeamMember[] = [
@@ -298,7 +334,7 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
     }
   ];
   
-  return fetchFromStrapi<TeamMember[]>('team-members?populate=*', defaultTeamMembers);
+  return fetchData<TeamMember[]>('team-members', defaultTeamMembers);
 }
 
 /**

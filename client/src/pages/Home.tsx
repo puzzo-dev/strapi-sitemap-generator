@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
@@ -10,6 +11,8 @@ import { ServiceProps, TestimonialProps } from '@/lib/types';
 import { PlayCircle, ArrowRight, ChevronRight, Info as InfoIcon } from 'lucide-react';
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
+  
   const { data: apiServices, isLoading: isServicesLoading } = useQuery<ServiceProps[]>({
     queryKey: ['/api/services'],
     initialData: services,
@@ -77,10 +80,10 @@ const Home: React.FC = () => {
                 
                 <div className="pt-8 flex flex-wrap gap-4 animate-fade-in-up" style={{ animationDelay: '1s' }}>
                   <GradientButton href="/services" size="lg" endIcon={<ChevronRight />} className="animate-snowfall">
-                    Get Started
+                    {t('button.getStarted')}
                   </GradientButton>
                   <GradientButton href="/#about" variant="outline" size="lg" className="animate-pulse-light">
-                    Learn More
+                    {t('button.learnMore')}
                   </GradientButton>
                 </div>
               </div>
@@ -158,11 +161,11 @@ const Home: React.FC = () => {
               </p>
               
               <div className="pt-4 flex flex-col gap-4 w-full">
-                <GradientButton href="/services" size="default" endIcon={<ChevronRight />} className="w-full py-4 justify-center animate-snowfall">
-                  Get Started
+                <GradientButton href="/services" size="default" endIcon={<ChevronRight />} className="w-full py-4 justify-center animate-snowfall" fullWidth>
+                  {t('button.getStarted')}
                 </GradientButton>
-                <GradientButton href="/#about" variant="outline" size="default" className="w-full py-4 justify-center">
-                  Learn More
+                <GradientButton href="/#about" variant="outline" size="default" className="w-full py-4 justify-center" fullWidth>
+                  {t('button.learnMore')}
                 </GradientButton>
               </div>
             </div>

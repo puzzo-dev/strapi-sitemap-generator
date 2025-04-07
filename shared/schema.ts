@@ -62,8 +62,8 @@ export const testimonials = pgTable("testimonials", {
 export const siteContent = pgTable("site_content", {
   id: serial("id").primaryKey(),
   key: text("key").notNull().unique(),
-  defaultValue: text("default_value").notNull(),
-  translations: jsonb("translations").$type<Record<SupportedLanguage, string>>(),
+  value: jsonb("value").notNull(),
+  translations: jsonb("translations").$type<Record<SupportedLanguage, any>>(),
 });
 
 export const pageContent = pgTable("page_content", {
@@ -98,6 +98,9 @@ export const socialLinks = pgTable("social_links", {
   platform: text("platform").notNull(),
   url: text("url").notNull(),
   icon: text("icon").notNull(),
+  translations: jsonb("translations").$type<Record<SupportedLanguage, {
+    platform: string;
+  }>>(),
 });
 
 export const footerColumns = pgTable("footer_columns", {
