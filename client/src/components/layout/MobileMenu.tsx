@@ -21,9 +21,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     { name: t('nav.home', 'Home'), path: '/' },
     { name: t('nav.about', 'About Us'), path: '/about' },
     { name: t('nav.services', 'Services'), path: '/services' },
-    { name: t('nav.products', 'Solutions'), path: '/products' },
+    { name: t('nav.products', 'Products'), path: '/products' },
     { name: t('nav.blog', 'TechVision Insights'), path: '/blog' },
     { name: t('nav.careers', 'Careers'), path: '/careers' },
+    { name: t('nav.team', 'Our Team'), path: '/team' },
     { name: t('nav.contact', 'Contact'), path: '/contact', isButton: true }
   ];
 

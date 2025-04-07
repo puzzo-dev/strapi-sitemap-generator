@@ -104,14 +104,14 @@ const Products: React.FC = () => {
               className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4"
             >
               <Package className="h-4 w-4 mr-2" />
-              Our Solutions
+              Our Products
             </motion.div>
             
             <motion.h1 
               variants={fadeInUp(20, 0.7)}
               className="heading-xl mb-6"
             >
-              <span className="gradient-text">Powerful Solutions</span> for<br />Your Business Success
+              <span className="gradient-text">Powerful Products</span> for<br />Your Business Success
             </motion.h1>
             
             <motion.p 
@@ -126,7 +126,7 @@ const Products: React.FC = () => {
               className="flex flex-wrap justify-center gap-4"
             >
               <GradientButton href="#products" size="lg" endIcon={<ArrowRight />}>
-                Explore Solutions
+                Explore Products
               </GradientButton>
               <GradientButton href="/contact" variant="outline" size="lg">
                 Request Demo
@@ -234,9 +234,9 @@ const Products: React.FC = () => {
           >
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
               <Package className="h-4 w-4 mr-2" />
-              Featured Solutions
+              Featured Products
             </div>
-            <h2 className="section-title">Our Software Solutions</h2>
+            <h2 className="section-title">Our Software Products</h2>
             <p className="section-subtitle">
               Discover our range of innovative products designed to solve real business challenges and drive exceptional results.
             </p>
@@ -308,9 +308,9 @@ const Products: React.FC = () => {
             >
               <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                 <PieChart className="h-4 w-4 mr-2" />
-                Solution Comparison
+                Product Comparison
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">Compare Our Solutions</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">Compare Our Products</h2>
               <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
                 Find the perfect solution for your business needs. Compare our products to identify which features best align with your requirements.
               </p>
@@ -491,7 +491,7 @@ const Products: React.FC = () => {
               className="mt-8 text-center"
             >
               <GradientButton href="/contact" size="lg" className="mx-auto" endIcon={<ArrowRight className="h-4 w-4 ml-1" />}>
-                Request Custom Solution
+                Request Custom Product
               </GradientButton>
             </motion.div>
           </motion.div>
@@ -607,7 +607,7 @@ const Products: React.FC = () => {
                 variants={fadeInUp(20, 0.7, 0.1)}
                 className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8"
               >
-                Our solutions are designed to help you achieve your business goals. Contact us today to learn how we can customize our solutions to meet your specific needs.
+                Our products are designed to help you achieve your business goals. Contact us today to learn how we can customize our products to meet your specific needs.
               </motion.p>
               <motion.div 
                 variants={staggerChildren(0.1, 0.2)}
