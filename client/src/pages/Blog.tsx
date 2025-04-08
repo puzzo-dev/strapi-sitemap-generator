@@ -75,75 +75,87 @@ const BlogPage: React.FC = () => {
     }
   };
 
-  // Render post card
+  // Render post card with enhanced styling and animations
   const renderPostCard = (post: BlogPost) => (
-    <div key={post.slug} className="group flex flex-col h-full overflow-hidden rounded-lg shadow-md bg-white dark:bg-slate-800 hover:shadow-xl transition-shadow duration-300">
+    <div key={post.slug} className="group flex flex-col h-full overflow-hidden rounded-xl shadow-lg bg-white dark:bg-slate-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       {post.meta_image && (
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-52 overflow-hidden">
           <img 
             src={post.meta_image} 
             alt={post.title} 
-            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           {post.featured && (
-            <div className="absolute top-0 right-0 m-2">
-              <Badge variant="destructive">Featured</Badge>
+            <div className="absolute top-0 right-0 m-3">
+              <Badge variant="destructive" className="font-medium px-3 py-1 text-sm">Featured</Badge>
             </div>
           )}
+          <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <h3 className="text-xl font-bold text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+              {post.title}
+            </h3>
+          </div>
         </div>
       )}
       
       <div className="flex flex-col flex-grow p-6">
-        <div className="flex items-center mb-2 text-sm text-muted-foreground">
-          <FiCalendar className="mr-1" />
+        <div className="flex items-center mb-3 text-sm text-muted-foreground">
+          <FiCalendar className="mr-1.5 text-primary" />
           <span>{formatDate(post.published_date)}</span>
           
           {post.readTime && (
             <>
               <span className="mx-2">•</span>
-              <FiClock className="mr-1" />
+              <FiClock className="mr-1.5 text-primary" />
               <span>{post.readTime} min read</span>
             </>
           )}
         </div>
         
-        <h3 className="text-2xl font-bold mb-2 text-primary">{post.title}</h3>
+        <h3 className="text-xl md:text-2xl font-bold mb-3 text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+          {post.title}
+        </h3>
         
-        <p className="mb-4 text-muted-foreground flex-grow">{truncateText(post.blog_intro, 150)}</p>
+        <p className="mb-5 text-muted-foreground flex-grow">{truncateText(post.blog_intro, 120)}</p>
         
         <div className="mt-auto">
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
-              {post.tags.map(tag => (
-                <Badge key={tag} variant="outline" className="text-xs">
-                  <FiTag className="mr-1" /> {tag}
+              {post.tags.slice(0, 3).map(tag => (
+                <Badge key={tag} variant="outline" className="text-xs font-medium hover:bg-primary/10 hover:text-primary transition-colors">
+                  <FiTag className="mr-1.5" /> {tag}
                 </Badge>
               ))}
+              {post.tags.length > 3 && (
+                <Badge variant="outline" className="text-xs">+{post.tags.length - 3}</Badge>
+              )}
             </div>
           )}
           
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
             {post.authorDetails && (
               <div className="flex items-center">
                 {post.authorDetails.user_image ? (
                   <img 
                     src={post.authorDetails.user_image} 
                     alt={post.authorDetails.full_name} 
-                    className="w-8 h-8 rounded-full mr-2"
+                    className="w-8 h-8 rounded-full mr-2.5 border-2 border-white dark:border-slate-700 shadow-sm"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-2">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-2.5 border-2 border-white dark:border-slate-700 shadow-sm">
                     <FiUser className="text-primary" />
                   </div>
                 )}
-                <span className="text-sm text-muted-foreground">{post.authorDetails.full_name}</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{post.authorDetails.full_name}</span>
               </div>
             )}
             
             <Link href={`/blog/${post.slug}`}>
-              <Button variant="ghost" size="sm" className="flex items-center">
-                {t('blog.readMore')} <FiArrowRight className="ml-1" />
-              </Button>
+              <div className="group/btn flex items-center text-primary font-medium text-sm hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
+                {t('blog.readMore')} 
+                <FiArrowRight className="ml-1.5 transform group-hover/btn:translate-x-1 transition-transform" />
+              </div>
             </Link>
           </div>
         </div>
@@ -151,19 +163,38 @@ const BlogPage: React.FC = () => {
     </div>
   );
 
-  // Render skeletons during loading
+  // Render enhanced skeletons during loading
   const renderSkeletons = () => (
     <>
       {Array(6).fill(0).map((_, index) => (
-        <div key={index} className="flex flex-col h-full rounded-lg shadow-md bg-white dark:bg-slate-800">
-          <Skeleton className="h-48 w-full" />
+        <div key={index} className="flex flex-col h-full rounded-xl shadow-lg bg-white dark:bg-slate-800 overflow-hidden">
+          <Skeleton className="h-52 w-full" />
           <div className="p-6">
-            <Skeleton className="h-4 w-1/4 mb-2" />
-            <Skeleton className="h-7 w-3/4 mb-2" />
+            <div className="flex space-x-2 mb-3">
+              <Skeleton className="h-4 w-4 rounded-full" />
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-4 rounded-full ml-2" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+            
+            <Skeleton className="h-8 w-3/4 mb-3" />
             <Skeleton className="h-4 w-full mb-2" />
             <Skeleton className="h-4 w-full mb-2" />
-            <Skeleton className="h-4 w-3/4 mb-4" />
-            <Skeleton className="h-4 w-1/2" />
+            <Skeleton className="h-4 w-3/4 mb-5" />
+            
+            <div className="flex flex-wrap gap-2 mb-4">
+              <Skeleton className="h-6 w-16 rounded-full" />
+              <Skeleton className="h-6 w-20 rounded-full" />
+              <Skeleton className="h-6 w-14 rounded-full" />
+            </div>
+            
+            <div className="pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between">
+              <div className="flex items-center">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-4 w-24 ml-2" />
+              </div>
+              <Skeleton className="h-5 w-20" />
+            </div>
           </div>
         </div>
       ))}
@@ -172,13 +203,31 @@ const BlogPage: React.FC = () => {
   
   return (
     <div className="bg-slate-50 dark:bg-slate-900 min-h-screen">
-      {/* Hero section */}
-      <div className="bg-gradient-to-r from-primary/90 to-primary text-white py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('blog.title')}</h1>
-          <p className="text-xl md:text-2xl opacity-90 max-w-2xl">
-            {t('blog.subtitle')}
-          </p>
+      {/* Hero section with tech particles animation */}
+      <div className="relative bg-gradient-to-br from-primary/95 via-primary to-blue-700 text-white py-16 md:py-32 overflow-hidden">
+        {/* Tech-inspired particle background */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute w-20 h-20 rounded-full bg-blue-300 top-1/4 left-1/3 animate-float-slow"></div>
+          <div className="absolute w-32 h-32 rounded-full bg-blue-200 bottom-1/4 right-1/3 animate-float-medium"></div>
+          <div className="absolute w-16 h-16 rounded-full bg-white/30 top-1/2 left-1/4 animate-float-fast"></div>
+          <div className="absolute w-24 h-24 rounded-full bg-white/20 bottom-1/3 right-1/4 animate-float-slow"></div>
+          <div className="absolute w-12 h-12 rounded-full bg-blue-100 top-1/3 right-1/2 animate-float-medium"></div>
+          <div className="absolute w-2 h-10 bg-blue-300 top-2/3 left-2/3 animate-pulse"></div>
+          <div className="absolute w-3 h-16 bg-blue-200 bottom-1/3 left-1/3 animate-pulse"></div>
+          <div className="absolute w-2 h-12 bg-white/30 top-1/4 right-1/4 animate-pulse"></div>
+          <div className="absolute w-3 h-14 bg-white/20 bottom-1/4 right-2/3 animate-pulse"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-down">
+              {t('blog.title')}
+            </h1>
+            <div className="h-1 w-24 bg-white mb-6 animate-width-expand"></div>
+            <p className="text-xl md:text-2xl opacity-90 max-w-2xl animate-fade-in">
+              {t('blog.subtitle')}
+            </p>
+          </div>
         </div>
       </div>
       
