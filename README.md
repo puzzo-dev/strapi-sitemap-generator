@@ -1,6 +1,6 @@
-# I-Varse Limited Corporate Website
+# I-Varse Technologies Corporate Website
 
-A modern, responsive company website for I-Varse Limited that delivers an engaging digital experience with advanced web technologies and multilingual support.
+A modern, responsive company website for I-Varse Technologies that delivers an engaging digital experience with advanced web technologies and multilingual support.
 
 ![I-Varse Logo](attached_assets/I-VARSELogo3@3x.png)
 
@@ -22,7 +22,7 @@ A modern, responsive company website for I-Varse Limited that delivers an engagi
 
 ## Overview
 
-This is the official website of I-Varse Limited, a digital technology company providing services including web development, mobile app development, cloud infrastructure, and more. The website features a modern design with responsive layouts, animations, multilingual support, and integration with backend services.
+This is the official website of I-Varse Technologies, a digital technology company providing services including web development, mobile app development, cloud infrastructure, and more. The website features a modern design with responsive layouts, animations, multilingual support, and integration with backend services.
 
 ## Features
 
@@ -240,4 +240,4 @@ For detailed deployment instructions, refer to the [deployment-plan.txt](./deplo
 
 ## License
 
-This project is proprietary and owned by I-Varse Limited. All rights reserved.
+This project is proprietary and owned by I-Varse Technologies. All rights reserved.

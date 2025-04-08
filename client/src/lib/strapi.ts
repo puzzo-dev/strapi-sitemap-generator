@@ -258,7 +258,7 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
  */
 export async function getSiteConfig(): Promise<SiteConfig> {
   const defaultSiteConfig: SiteConfig = {
-    siteName: 'I-Varse Limited',
+    siteName: 'I-Varse Technologies',
     siteDescription: 'Digital solutions for modern businesses',
     contactEmail: 'info@ivarse.com',
     contactPhone: '+1234567890',

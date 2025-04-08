@@ -1,4 +1,4 @@
-# Step-by-Step Implementation Plan for I-Varse Website Deployment
+# Step-by-Step Implementation Plan for I-Varse Technologies Website Deployment
 
 ## Phase 1: Environment Setup
 
