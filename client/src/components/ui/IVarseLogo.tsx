@@ -1,6 +1,6 @@
 import React from 'react';
 import whiteLogo from '@assets/I-VARSELogo4@3x.png';
-import darkLogo from '@assets/I-VARSELogo3@3x.png';
+import darkLogo from '@assets/I-VARSELogo\ 1@3x.png';
 
 interface IVarseLogoProps {
   className?: string;
