@@ -35,6 +35,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileMenu from "@/components/layout/MobileMenu";
+import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -94,6 +95,14 @@ function App() {
             </main>
             <Footer />
             <ThemeToggle />
+            
+            {/* Scroll to top button - positioned at root level */}
+            <ScrollToTopButton 
+              threshold={300}
+              size="md"
+              position="bottom-right"
+              ariaLabel="Scroll back to top"
+            />
             
             {/* Mobile Menu - positioned at root level */}
             <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} />
