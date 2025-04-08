@@ -3,6 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
+import NewsletterForm from '@/components/ui/NewsletterForm';
 import { ChevronRight } from 'lucide-react';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useLanguage } from '@/components/context/LanguageContext';
@@ -22,7 +23,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     { id: 2, name: t('nav.about', 'About Us'), path: '/about', category: 'main' },
     { id: 3, name: t('nav.services', 'Services'), path: '/services', category: 'main' },
     { id: 4, name: t('nav.products', 'Products'), path: '/products', category: 'main' },
-    { id: 5, name: t('nav.solutions', 'Solutions'), path: '/solutions', category: 'main' },
+    { id: 5, name: t('nav.solutions', 'Digital Solutions'), path: '/solutions', category: 'main' },
     { id: 6, name: t('nav.blog', 'TechVision Insights'), path: '/blog', category: 'resources' },
     { id: 7, name: t('nav.resources', 'Resources'), path: '/resources', category: 'resources' },
     { id: 8, name: t('nav.team', 'Our Team'), path: '/team', category: 'company' },
@@ -153,6 +154,17 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             >
               {t('button.contactUs', 'Contact Us')}
             </GradientButton>
+          </div>
+          
+          {/* Newsletter Subscription */}
+          <div className="px-3 sm:px-4 pt-4 sm:pt-6 pb-3 sm:pb-4 border-t border-gray-100 dark:border-gray-800 mt-4">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+              {t('newsletter.stayUpdated', 'Stay Updated')}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              {t('newsletter.subscribeText', 'Subscribe to our newsletter for latest tech insights and updates')}
+            </p>
+            <NewsletterForm className="w-full" />
           </div>
         </div>
 

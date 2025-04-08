@@ -42,25 +42,26 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
   
   // Default nav links as fallback with translations
   const defaultNavLinks = [
-    { name: t('nav.home', 'Home'), path: '/' },
-    { name: t('nav.about', 'About Us'), path: '/about' },
-    { name: t('nav.services', 'Services'), path: '/services' },
-    { name: t('nav.products', 'Products'), path: '/products' },
-    { name: t('nav.solutions', 'Solutions'), path: '/solutions' },
-    { name: t('nav.blog', 'TechVision Insights'), path: '/blog' },
-    { name: t('nav.resources', 'Resources'), path: '/resources' },
-    { name: t('nav.team', 'Our Team'), path: '/team' },
-    { name: t('nav.careers', 'Careers'), path: '/careers' },
-    { name: t('nav.portfolio', 'Portfolio'), path: '/portfolio' },
-    { name: t('nav.testimonials', 'Testimonials'), path: '/testimonials' },
-    { name: t('nav.support', 'Support'), path: '/support' },
-    { name: t('nav.faqs', 'FAQs'), path: '/faqs' },
-    { name: t('nav.contact', 'Contact'), path: '/contact', isButton: true }
+    { id: 1, name: t('nav.home', 'Home'), path: '/' },
+    { id: 2, name: t('nav.about', 'About Us'), path: '/about' },
+    { id: 3, name: t('nav.services', 'Services'), path: '/services' },
+    { id: 4, name: t('nav.products', 'Products'), path: '/products' },
+    { id: 5, name: t('nav.solutions', 'Digital Solutions'), path: '/solutions' },
+    { id: 6, name: t('nav.blog', 'TechVision Insights'), path: '/blog' },
+    { id: 7, name: t('nav.resources', 'Resources'), path: '/resources' },
+    { id: 8, name: t('nav.team', 'Our Team'), path: '/team' },
+    { id: 9, name: t('nav.careers', 'Careers'), path: '/careers' },
+    { id: 10, name: t('nav.portfolio', 'Portfolio'), path: '/portfolio' },
+    { id: 11, name: t('nav.testimonials', 'Testimonials'), path: '/testimonials' },
+    { id: 12, name: t('nav.support', 'Support'), path: '/support' },
+    { id: 13, name: t('nav.faqs', 'FAQs'), path: '/faqs' },
+    { id: 14, name: t('nav.contact', 'Contact'), path: '/contact', isButton: true }
   ];
   
   // Convert Strapi nav items to our component format if available
   const navLinks = navItems ? 
-    navItems.map(item => ({
+    navItems.map((item, index) => ({
+      id: index + 1,
       name: item.label,
       path: item.url,
       isButton: item.label.toLowerCase() === 'contact' || item.label.toLowerCase().includes('contact us')
@@ -88,8 +89,8 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
           {/* Desktop menu */}
           <div className="hidden md:flex md:items-center">
             <div className="flex flex-wrap items-center space-x-1 md:space-x-1 lg:space-x-2 xl:space-x-4 justify-end">
-              {navLinks.map((link) => !link.isButton ? (
-                <Link key={link.name} href={link.path}>
+              {navLinks.map((link, index) => !link.isButton ? (
+                <Link key={link.id || `nav-${index}`} href={link.path}>
                   <div className="cursor-pointer">
                     <span className={`
                       px-1 md:px-2 py-1 md:py-1 text-xs sm:text-sm lg:text-base font-semibold transition-colors relative
