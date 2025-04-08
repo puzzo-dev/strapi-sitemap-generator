@@ -33,9 +33,8 @@ import Sitemap from "@/pages/Sitemap";
 // Layout components
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileMenu from "@/components/layout/MobileMenu";
-import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
+import FloatingButtons from "@/components/layout/FloatingButtons";
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -94,15 +93,9 @@ function App() {
               </AnimatePresence>
             </main>
             <Footer />
-            <ThemeToggle />
             
-            {/* Scroll to top button - positioned at root level */}
-            <ScrollToTopButton 
-              threshold={300}
-              size="md"
-              position="bottom-right"
-              ariaLabel="Scroll back to top"
-            />
+            {/* Floating buttons container - positioned at root level */}
+            <FloatingButtons />
             
             {/* Mobile Menu - positioned at root level */}
             <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} />

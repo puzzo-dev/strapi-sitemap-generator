@@ -81,11 +81,11 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
           transition={{ duration: 0.3 }}
           onClick={scrollToTop}
           aria-label={ariaLabel}
-          className={`fixed bottom-6 ${getPositionClasses()} ${getSizeClasses()} 
+          className={`${getSizeClasses()} 
             rounded-full bg-blue-600 dark:bg-blue-500 text-white shadow-lg 
             hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 
             focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900
-            flex items-center justify-center z-40 transition-transform
+            flex items-center justify-center transition-transform
             hover:scale-110 active:scale-95`}
         >
           <ArrowUp className="w-5 h-5" />
