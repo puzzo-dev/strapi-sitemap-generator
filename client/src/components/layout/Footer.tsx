@@ -3,6 +3,7 @@ import { Link } from 'wouter';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import NewsletterForm from '@/components/ui/NewsletterForm';
 import { useFooterColumns, useSocialLinks, useSiteConfig } from '@/hooks/useStrapiContent';
+import AppLink from '@/components/ui/AppLink';
 
 // Import icons
 import { MapPin, Phone, Mail, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
@@ -128,7 +129,7 @@ const Footer: React.FC = () => {
               </div>
             </div>
             
-            {/* Links section - Takes 4 cols on medium screens */}
+            {/* Links section - Takes 3 cols on medium screens */}
             <div className="md:col-span-3 lg:col-span-3">
               {isFooterColumnsLoading ? (
                 // Loading skeletons for footer columns
@@ -152,11 +153,19 @@ const Footer: React.FC = () => {
                     <ul className="space-y-2 sm:space-y-3">
                       {column.links.map((link, index) => (
                         <li key={index}>
-                          <Link href={link.url}>
-                            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                              {link.label}
-                            </div>
-                          </Link>
+                          <a 
+                            href={link.url} 
+                            onClick={(e) => {
+                              if (link.url.startsWith('/') && !link.url.includes('#')) {
+                                e.preventDefault();
+                                window.location.href = link.url;
+                                window.scrollTo(0, 0);
+                              }
+                            }}
+                            className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                          >
+                            {link.label}
+                          </a>
                         </li>
                       ))}
                     </ul>
@@ -168,67 +177,116 @@ const Footer: React.FC = () => {
                   <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 md:mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Company</h4>
                   <ul className="space-y-2 sm:space-y-3">
                     <li>
-                      <Link href="/about">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          About Us
-                        </div>
-                      </Link>
+                      <a 
+                        href="/about" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/about';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        About Us
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Services
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Services
+                      </a>
                     </li>
                     <li>
-                      <Link href="/products">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Products
-                        </div>
-                      </Link>
+                      <a 
+                        href="/products" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/products';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Products
+                      </a>
                     </li>
                     <li>
-                      <Link href="/blog">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Insights
-                        </div>
-                      </Link>
+                      <a 
+                        href="/blog" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/blog';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Insights
+                      </a>
                     </li>
                     <li>
-                      <Link href="/careers">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Careers
-                        </div>
-                      </Link>
+                      <a 
+                        href="/careers" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/careers';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Careers
+                      </a>
                     </li>
                     <li>
-                      <Link href="/contact">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Contact
-                        </div>
-                      </Link>
+                      <a 
+                        href="/contact" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/contact';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Contact
+                      </a>
                     </li>
                     <li>
-                      <Link href="/about#team">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Our Team
-                        </div>
-                      </Link>
+                      <a 
+                        href="/about#team" 
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Our Team
+                      </a>
                     </li>
                     <li>
-                      <Link href="/faq">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          FAQ
-                        </div>
-                      </Link>
+                      <a 
+                        href="/faq" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/faq';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        FAQ
+                      </a>
                     </li>
                     <li>
-                      <Link href="/blog">
-                        <div className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
-                          Insights Pages
-                        </div>
-                      </Link>
+                      <a 
+                        href="/blog" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/blog';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer"
+                      >
+                        Insights Pages
+                      </a>
                     </li>
                   </ul>
                 </div>
@@ -259,11 +317,19 @@ const Footer: React.FC = () => {
                     <ul className="space-y-2 sm:space-y-3">
                       {column.links.map((link, index) => (
                         <li key={index}>
-                          <Link href={link.url}>
-                            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                              {link.label}
-                            </div>
-                          </Link>
+                          <a 
+                            href={link.url} 
+                            onClick={(e) => {
+                              if (link.url.startsWith('/') && !link.url.includes('#')) {
+                                e.preventDefault();
+                                window.location.href = link.url;
+                                window.scrollTo(0, 0);
+                              }
+                            }}
+                            className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                          >
+                            {link.label}
+                          </a>
                         </li>
                       ))}
                     </ul>
@@ -275,67 +341,121 @@ const Footer: React.FC = () => {
                   <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 md:mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Services</h4>
                   <ul className="space-y-2 sm:space-y-3">
                     <li>
-                      <Link href="/services/web-development">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Web Development
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services/web-development" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services/web-development';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Web Development
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services/mobile-development">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Mobile App Development
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services/mobile-development" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services/mobile-development';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Mobile App Development
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services/cloud-infrastructure">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Cloud Infrastructure
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services/cloud-infrastructure" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services/cloud-infrastructure';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Cloud Infrastructure
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services/consulting">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          IT Consulting
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services/consulting" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services/consulting';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        IT Consulting
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services/digital-marketing">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Digital Marketing
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services/digital-marketing" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services/digital-marketing';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        Digital Marketing
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services/ui-ux-design">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          UI/UX Design
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services/ui-ux-design" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services/ui-ux-design';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        UI/UX Design
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services/ai-solutions">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          AI Solutions
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services/ai-solutions" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services/ai-solutions';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        AI Solutions
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services/erp-integration">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          ERP Integration
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services/erp-integration" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services/erp-integration';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                      >
+                        ERP Integration
+                      </a>
                     </li>
                     <li>
-                      <Link href="/services">
-                        <div className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
-                          View All Services
-                        </div>
-                      </Link>
+                      <a 
+                        href="/services" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = '/services';
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer"
+                      >
+                        View All Services
+                      </a>
                     </li>
                   </ul>
                 </div>
@@ -361,19 +481,59 @@ const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} I-VARSE Limited. All rights reserved.
           </div>
           <div className="flex flex-wrap justify-center md:justify-end gap-3 sm:gap-4 md:gap-6">
-            <a href="/terms" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a 
+              href="/terms" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/terms';
+                window.scrollTo(0, 0);
+              }}
+              className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               Terms of Service
             </a>
-            <a href="/privacy" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a 
+              href="/privacy" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/privacy';
+                window.scrollTo(0, 0);
+              }}
+              className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               Privacy Policy
             </a>
-            <a href="/cookies" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a 
+              href="/cookies" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/cookies';
+                window.scrollTo(0, 0);
+              }}
+              className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               Cookie Policy
             </a>
-            <a href="/accessibility" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a 
+              href="/accessibility" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/accessibility';
+                window.scrollTo(0, 0);
+              }}
+              className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               Accessibility
             </a>
-            <a href="/sitemap" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a 
+              href="/sitemap" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/sitemap';
+                window.scrollTo(0, 0);
+              }}
+              className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               Sitemap
             </a>
           </div>
