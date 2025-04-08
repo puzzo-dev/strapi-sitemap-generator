@@ -46,11 +46,15 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
     { name: t('nav.about', 'About Us'), path: '/about' },
     { name: t('nav.services', 'Services'), path: '/services' },
     { name: t('nav.products', 'Products'), path: '/products' },
+    { name: t('nav.solutions', 'Solutions'), path: '/solutions' },
     { name: t('nav.blog', 'TechVision Insights'), path: '/blog' },
+    { name: t('nav.resources', 'Resources'), path: '/resources' },
     { name: t('nav.team', 'Our Team'), path: '/team' },
     { name: t('nav.careers', 'Careers'), path: '/careers' },
     { name: t('nav.portfolio', 'Portfolio'), path: '/portfolio' },
     { name: t('nav.testimonials', 'Testimonials'), path: '/testimonials' },
+    { name: t('nav.support', 'Support'), path: '/support' },
+    { name: t('nav.faqs', 'FAQs'), path: '/faqs' },
     { name: t('nav.contact', 'Contact'), path: '/contact', isButton: true }
   ];
   
