@@ -53,8 +53,8 @@ const Footer: React.FC = () => {
                   {siteConfig?.siteDescription || 'Leading digital innovation company providing premium web development and IT consulting services for businesses looking to transform their digital presence.'}
                 </p>
                 
-                {/* Newsletter subscription */}
-                <div className="pt-4 mt-4 space-y-3 border-t border-gray-100 dark:border-gray-700">
+                {/* Newsletter subscription - Desktop only */}
+                <div className="pt-4 mt-4 space-y-3 border-t border-gray-100 dark:border-gray-700 hidden md:block">
                   <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Subscribe to our newsletter</h4>
                   <p className="text-xs text-gray-600 dark:text-gray-300">
                     Stay updated with our latest news and offers
@@ -274,6 +274,17 @@ const Footer: React.FC = () => {
                   </ul>
                 </div>
               )}
+            </div>
+
+            {/* Newsletter subscription - Mobile only (after services section) */}
+            <div className="md:hidden mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
+              <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white uppercase tracking-wider">
+                Subscribe to Our Newsletter
+              </h4>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-4">
+                Stay updated with our latest tech insights and offers
+              </p>
+              <NewsletterForm className="mb-4" />
             </div>
           </div>
         </div>

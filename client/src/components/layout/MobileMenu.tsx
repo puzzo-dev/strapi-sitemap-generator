@@ -156,16 +156,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             </GradientButton>
           </div>
           
-          {/* Newsletter Subscription */}
-          <div className="px-3 sm:px-4 pt-4 sm:pt-6 pb-3 sm:pb-4 border-t border-gray-100 dark:border-gray-800 mt-4">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
-              {t('newsletter.stayUpdated', 'Stay Updated')}
-            </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              {t('newsletter.subscribeText', 'Subscribe to our newsletter for latest tech insights and updates')}
-            </p>
-            <NewsletterForm className="w-full" />
-          </div>
+
         </div>
 
         {/* Tech pattern background elements */}
