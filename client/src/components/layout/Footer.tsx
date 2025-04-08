@@ -189,9 +189,9 @@ const Footer: React.FC = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/contact">
+                      <Link href="/blog">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Contact
+                          Insights
                         </div>
                       </Link>
                     </li>
@@ -199,6 +199,20 @@ const Footer: React.FC = () => {
                       <Link href="/careers">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                           Careers
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/contact">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          Contact
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/#more">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          More
                         </div>
                       </Link>
                     </li>
@@ -270,6 +284,13 @@ const Footer: React.FC = () => {
                       <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                         Digital Marketing
                       </div>
+                    </li>
+                    <li>
+                      <Link href="/#more">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          More
+                        </div>
+                      </Link>
                     </li>
                   </ul>
                 </div>

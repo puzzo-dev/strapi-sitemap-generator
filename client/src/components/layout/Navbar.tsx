@@ -89,21 +89,90 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
           {/* Desktop menu */}
           <div className="hidden md:flex md:items-center">
             <div className="flex flex-wrap items-center space-x-1 md:space-x-1 lg:space-x-2 xl:space-x-4 justify-end">
-              {navLinks.map((link, index) => !link.isButton ? (
-                <Link key={link.id || `nav-${index}`} href={link.path}>
-                  <div className="cursor-pointer">
-                    <span className={`
-                      px-1 md:px-2 py-1 md:py-1 text-xs sm:text-sm lg:text-base font-semibold transition-colors relative
-                      ${isActive(link.path) 
-                        ? 'text-blue-600 dark:text-blue-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 dark:after:bg-blue-400' 
-                        : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'
-                      }
-                    `}>
-                      {link.name}
-                    </span>
-                  </div>
-                </Link>
-              ) : null)}
+              {/* Always display these core navigation links */}
+              <Link href="/">
+                <div className="cursor-pointer">
+                  <span className={`
+                    px-1 md:px-2 py-1 md:py-1 text-xs sm:text-sm lg:text-base font-semibold transition-colors relative
+                    ${isActive('/') 
+                      ? 'text-blue-600 dark:text-blue-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 dark:after:bg-blue-400' 
+                      : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'
+                    }
+                  `}>
+                    {t('nav.home', 'Home')}
+                  </span>
+                </div>
+              </Link>
+              
+              <Link href="/about">
+                <div className="cursor-pointer">
+                  <span className={`
+                    px-1 md:px-2 py-1 md:py-1 text-xs sm:text-sm lg:text-base font-semibold transition-colors relative
+                    ${isActive('/about') 
+                      ? 'text-blue-600 dark:text-blue-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 dark:after:bg-blue-400' 
+                      : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'
+                    }
+                  `}>
+                    {t('nav.about', 'About Us')}
+                  </span>
+                </div>
+              </Link>
+              
+              <Link href="/services">
+                <div className="cursor-pointer">
+                  <span className={`
+                    px-1 md:px-2 py-1 md:py-1 text-xs sm:text-sm lg:text-base font-semibold transition-colors relative
+                    ${isActive('/services') 
+                      ? 'text-blue-600 dark:text-blue-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 dark:after:bg-blue-400' 
+                      : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'
+                    }
+                  `}>
+                    {t('nav.services', 'Services')}
+                  </span>
+                </div>
+              </Link>
+              
+              <Link href="/products">
+                <div className="cursor-pointer">
+                  <span className={`
+                    px-1 md:px-2 py-1 md:py-1 text-xs sm:text-sm lg:text-base font-semibold transition-colors relative
+                    ${isActive('/products') 
+                      ? 'text-blue-600 dark:text-blue-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 dark:after:bg-blue-400' 
+                      : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'
+                    }
+                  `}>
+                    {t('nav.products', 'Solutions')}
+                  </span>
+                </div>
+              </Link>
+              
+              <Link href="/blog">
+                <div className="cursor-pointer">
+                  <span className={`
+                    px-1 md:px-2 py-1 md:py-1 text-xs sm:text-sm lg:text-base font-semibold transition-colors relative
+                    ${isActive('/blog') 
+                      ? 'text-blue-600 dark:text-blue-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 dark:after:bg-blue-400' 
+                      : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'
+                    }
+                  `}>
+                    {t('nav.blog', 'Insights')}
+                  </span>
+                </div>
+              </Link>
+              
+              <Link href="/careers">
+                <div className="cursor-pointer">
+                  <span className={`
+                    px-1 md:px-2 py-1 md:py-1 text-xs sm:text-sm lg:text-base font-semibold transition-colors relative
+                    ${isActive('/careers') 
+                      ? 'text-blue-600 dark:text-blue-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600 dark:after:bg-blue-400' 
+                      : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400'
+                    }
+                  `}>
+                    {t('nav.careers', 'Careers')}
+                  </span>
+                </div>
+              </Link>
             </div>
             
             {/* Contact button */}
