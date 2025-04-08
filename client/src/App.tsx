@@ -23,6 +23,13 @@ import TeamMember from "@/pages/TeamMember";
 import Careers from "@/pages/Careers";
 import NotFound from "@/pages/not-found";
 
+// Policy Pages
+import Terms from "@/pages/Terms";
+import Privacy from "@/pages/Privacy";
+import Cookies from "@/pages/Cookies";
+import Accessibility from "@/pages/Accessibility";
+import Sitemap from "@/pages/Sitemap";
+
 // Layout components
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -75,6 +82,12 @@ function App() {
                   <Route path="/team/:id" component={TeamMember} />
                   <Route path="/careers" component={Careers} />
                   <Route path="/contact" component={Contact} />
+                  {/* Policy pages */}
+                  <Route path="/terms" component={Terms} />
+                  <Route path="/privacy" component={Privacy} />
+                  <Route path="/cookies" component={Cookies} />
+                  <Route path="/accessibility" component={Accessibility} />
+                  <Route path="/sitemap" component={Sitemap} />
                   <Route component={NotFound} />
                 </Switch>
               </AnimatePresence>
