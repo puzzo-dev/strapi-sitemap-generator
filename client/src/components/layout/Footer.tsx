@@ -231,44 +231,16 @@ const Footer: React.FC = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/portfolio">
+                      <Link href="/blog">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Portfolio
+                          Insights
                         </div>
                       </Link>
                     </li>
                     <li>
-                      <Link href="/case-studies">
+                      <Link href="/careers">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Case Studies
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/partners">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Partners
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/news">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          News & Press
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/events">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Events & Webinars
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/support">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Support
+                          Careers
                         </div>
                       </Link>
                     </li>
@@ -317,58 +289,30 @@ const Footer: React.FC = () => {
                   <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 md:mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Services</h4>
                   <ul className="space-y-2 sm:space-y-3">
                     <li>
-                      <Link href="/services/web-development">
+                      <Link href="/services">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                           Web Development
                         </div>
                       </Link>
                     </li>
                     <li>
-                      <Link href="/services/mobile-development">
+                      <Link href="/services">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                           Mobile App Development
                         </div>
                       </Link>
                     </li>
                     <li>
-                      <Link href="/services/cloud-infrastructure">
+                      <Link href="/services">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Cloud Infrastructure
+                          Cloud Solutions
                         </div>
                       </Link>
                     </li>
                     <li>
-                      <Link href="/services/consulting">
+                      <Link href="/services">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                           IT Consulting
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/services/digital-marketing">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Digital Marketing
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/services/ui-ux-design">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          UI/UX Design
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/services/ai-solutions">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          AI Solutions
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/services/erp-integration">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          ERP Integration
                         </div>
                       </Link>
                     </li>
@@ -403,21 +347,31 @@ const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} I-VARSE Limited. All rights reserved.
           </div>
           <div className="flex flex-wrap justify-center md:justify-end gap-3 sm:gap-4 md:gap-6">
-            <a href="/terms" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              Terms of Service
-            </a>
-            <a href="/privacy" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              Privacy Policy
-            </a>
-            <a href="/cookies" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              Cookie Policy
-            </a>
-            <a href="/accessibility" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              Accessibility
-            </a>
-            <a href="/sitemap" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              Sitemap
-            </a>
+            <Link href="/contact">
+              <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                Contact Us
+              </div>
+            </Link>
+            <Link href="/about">
+              <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                About Us
+              </div>
+            </Link>
+            <Link href="/services">
+              <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                Services
+              </div>
+            </Link>
+            <Link href="/products">
+              <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                Products
+              </div>
+            </Link>
+            <Link href="/blog">
+              <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                Insights
+              </div>
+            </Link>
           </div>
         </div>
       </div>
