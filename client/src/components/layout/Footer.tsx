@@ -224,56 +224,7 @@ const Footer: React.FC = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/testimonials">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Testimonials
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/portfolio">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Portfolio
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/case-studies">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Case Studies
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/partners">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Partners
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/news">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          News & Press
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/events">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Events & Webinars
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/support">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          Support
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/insights">
+                      <Link href="/insights/pages">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                           Insights Pages
                         </div>
