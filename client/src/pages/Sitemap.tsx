@@ -18,7 +18,7 @@ interface SitemapSection {
 
 // Type for a section in the PageContent from database
 interface PageSection {
-  title: string;
+  title: string | undefined;
   items: Array<{
     title: string;
     path: string;
@@ -76,11 +76,11 @@ const Sitemap: React.FC = () => {
   
   // Convert page sections to our sitemap format if available
   const pageSections = Array.isArray(pageContent?.sections) 
-    ? pageContent.sections.map((section: PageSection) => ({
-        title: section.title,
-        links: section.items.map(item => ({
-          title: item.title,
-          path: item.path,
+    ? pageContent.sections.map((section: any) => ({
+        title: section.title || "Section",
+        links: (section.items || []).map((item: any) => ({
+          title: item.title || "Link",
+          path: item.path || "#",
           description: item.description
         }))
       }))
@@ -153,9 +153,9 @@ const Sitemap: React.FC = () => {
                       {section.links.map((link: SitemapLink, linkIndex: number) => (
                         <li key={linkIndex}>
                           <Link href={link.path}>
-                            <a className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
+                            <div className="text-blue-600 dark:text-blue-400 hover:underline font-medium cursor-pointer">
                               {link.title}
-                            </a>
+                            </div>
                           </Link>
                           {link.description && (
                             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -176,9 +176,9 @@ const Sitemap: React.FC = () => {
                 If you can't find what you're looking for, please don't hesitate to contact our support team.
               </p>
               <Link href="/contact">
-                <a className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                <div className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 cursor-pointer">
                   Contact Us
-                </a>
+                </div>
               </Link>
             </div>
           </div>

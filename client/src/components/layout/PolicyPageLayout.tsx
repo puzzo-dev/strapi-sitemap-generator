@@ -1,8 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { usePageContent } from '@/hooks/useStrapiContent';
-import DynamicContent from '@/components/ui/DynamicContent';
-import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import DynamicContent from '../ui/DynamicContent';
+import LoadingSkeleton from '../ui/LoadingSkeleton';
 
 interface PolicyPageLayoutProps {
   title: string;
