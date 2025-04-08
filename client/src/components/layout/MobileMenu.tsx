@@ -22,7 +22,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     { id: 1, name: t('nav.home', 'Home'), path: '/', category: 'main' },
     { id: 2, name: t('nav.about', 'About Us'), path: '/about', category: 'main' },
     { id: 3, name: t('nav.services', 'Services'), path: '/services', category: 'main' },
-    { id: 4, name: t('nav.products', 'Products'), path: '/products', category: 'main' },
+    { id: 4, name: t('nav.products', 'Solutions'), path: '/products', category: 'main' },
     { id: 5, name: t('nav.solutions', 'Digital Solutions'), path: '/solutions', category: 'main' },
     { id: 6, name: t('nav.blog', 'TechVision Insights'), path: '/blog', category: 'resources' },
     { id: 7, name: t('nav.resources', 'Resources'), path: '/resources', category: 'resources' },

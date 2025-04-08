@@ -2,7 +2,16 @@ import React, { useState } from 'react';
 import { Link } from 'wouter';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { FiArrowRight, FiCalendar, FiClock, FiUser, FiTag } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import { 
+  FiArrowRight, 
+  FiCalendar, 
+  FiClock, 
+  FiUser, 
+  FiTag,
+  FiFileText,
+  FiBookOpen
+} from 'react-icons/fi';
 import { useBlogPosts, useBlogCategories } from '@/hooks/useStrapiContent';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,6 +21,15 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import NewsletterForm from '@/components/ui/NewsletterForm';
 import type { BlogPost } from '@/lib/types';
+import { 
+  fadeInUp, 
+  staggerChildren, 
+  scaleUp, 
+  slideIn, 
+  gridItemAnimation,
+  snowfallParticleAnimation,
+  floatingShapeAnimation
+} from '@/lib/animations';
 
 const BlogPage: React.FC = () => {
   const { t } = useTranslation();
@@ -203,33 +221,219 @@ const BlogPage: React.FC = () => {
   
   return (
     <div className="bg-slate-50 dark:bg-slate-900 min-h-screen">
-      {/* Hero section with tech particles animation */}
-      <div className="relative bg-gradient-to-br from-primary/95 via-primary to-blue-700 text-white py-16 md:py-32 overflow-hidden">
-        {/* Tech-inspired particle background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute w-20 h-20 rounded-full bg-blue-300 top-1/4 left-1/3 animate-float-slow"></div>
-          <div className="absolute w-32 h-32 rounded-full bg-blue-200 bottom-1/4 right-1/3 animate-float-medium"></div>
-          <div className="absolute w-16 h-16 rounded-full bg-white/30 top-1/2 left-1/4 animate-float-fast"></div>
-          <div className="absolute w-24 h-24 rounded-full bg-white/20 bottom-1/3 right-1/4 animate-float-slow"></div>
-          <div className="absolute w-12 h-12 rounded-full bg-blue-100 top-1/3 right-1/2 animate-float-medium"></div>
-          <div className="absolute w-2 h-10 bg-blue-300 top-2/3 left-2/3 animate-pulse"></div>
-          <div className="absolute w-3 h-16 bg-blue-200 bottom-1/3 left-1/3 animate-pulse"></div>
-          <div className="absolute w-2 h-12 bg-white/30 top-1/4 right-1/4 animate-pulse"></div>
-          <div className="absolute w-3 h-14 bg-white/20 bottom-1/4 right-2/3 animate-pulse"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-down">
-              {t('blog.title')}
-            </h1>
-            <div className="h-1 w-24 bg-white mb-6 animate-width-expand"></div>
-            <p className="text-xl md:text-2xl opacity-90 max-w-2xl animate-fade-in">
-              {t('blog.subtitle')}
-            </p>
+      {/* Hero Section */}
+      <motion.section 
+        initial="initial"
+        animate="animate"
+        className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section"
+      >
+        {/* Tech-inspired background elements - Enhanced with more icons */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          {/* Animated gradient orbs */}
+          <motion.div 
+            variants={scaleUp(0.8, 1.5, 0.2)}
+            className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40" 
+          />
+          <motion.div 
+            variants={scaleUp(0.8, 1.8, 0.5)}
+            className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30" 
+          />
+          <motion.div 
+            variants={scaleUp(0.8, 2, 0.8)}
+            className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-900/30" 
+          />
+          
+          {/* Enhanced tech pattern with more icons */}
+          <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20, rotate: 0 }}
+              animate={{ 
+                opacity: 0.3, 
+                y: 0,
+                rotate: 12,
+                transition: { 
+                  duration: 0.8,
+                  delay: 0.3
+                }
+              }}
+              className="absolute right-0 top-0"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -15, 0, 10, 0],
+                  rotate: [12, 15, 10, 13, 12],
+                  transition: { 
+                    repeat: Infinity,
+                    duration: 10,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                <FiFileText className="h-64 w-64 text-blue-800" />
+              </motion.div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20, rotate: 0 }}
+              animate={{ 
+                opacity: 0.3, 
+                y: 0,
+                rotate: -12,
+                transition: { 
+                  duration: 0.8,
+                  delay: 0.5
+                }
+              }}
+              className="absolute left-10 bottom-10"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, 10, 0, -15, 0],
+                  rotate: [-12, -9, -14, -10, -12],
+                  transition: { 
+                    repeat: Infinity,
+                    duration: 12,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                <FiBookOpen className="h-48 w-48 text-indigo-700" />
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Animated tech scan line */}
+          <motion.div 
+            initial={{ opacity: 0, top: '100%' }}
+            animate={{ 
+              opacity: [0, 0.6, 0.1], 
+              top: ['100%', '0%', '0%'],
+              transition: { 
+                duration: 3, 
+                repeat: Infinity, 
+                repeatDelay: 5
+              }
+            }}
+            className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent"
+          />
+          
+          {/* Snowfall particles */}
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            {Array.from({ length: 15 }).map((_, i) => {
+              // Precalculate random values to avoid React errors
+              const randomLeft = (i * 6.67) % 100; // Distribute evenly across width
+              const randomScale = 0.5 + ((i % 5) * 0.1); // 0.5 to 0.9
+              const randomDuration = 8 + ((i % 5) * 1); // 8 to 12 seconds
+              const randomDelay = (i % 5) * 1; // 0 to 4 seconds
+              
+              return (
+                <motion.div
+                  key={`snowfall-particle-${i}`}
+                  className="absolute h-1 w-1 rounded-full bg-blue-500/50 dark:bg-blue-400/50"
+                  initial={{ 
+                    y: -20, 
+                    opacity: 0,
+                    scale: randomScale
+                  }}
+                  animate={{ 
+                    y: '120%', 
+                    opacity: [0, 0.8, 0.5, 0],
+                    transition: { 
+                      duration: randomDuration, 
+                      delay: randomDelay,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }
+                  }}
+                  style={{
+                    left: `${randomLeft}%`,
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
-      </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            variants={staggerChildren(0.1)}
+            className="flex flex-col md:flex-row items-center justify-between gap-8"
+          >
+            <motion.div 
+              variants={fadeInUp(20, 0.7)}
+              className="w-full md:w-2/3 text-center md:text-left"
+            >
+              <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+                <FiFileText className="h-4 w-4 mr-2" />
+                {t('blog.insights')}
+              </div>
+              
+              <motion.h1 
+                variants={fadeInUp(20, 0.7)}
+                className="heading-xl mb-6 text-gray-900 dark:text-white"
+              >
+                <span className="gradient-text">{t('blog.title')}</span>
+              </motion.h1>
+              
+              <motion.p 
+                variants={fadeInUp(20, 0.7, 0.3)}
+                className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl"
+              >
+                {t('blog.subtitle')}
+              </motion.p>
+              
+              <motion.div variants={fadeInUp(20, 0.7, 0.5)} className="flex flex-wrap justify-center md:justify-start gap-4">
+                <Input
+                  placeholder={t('blog.searchPlaceholder')}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full max-w-xs hidden md:block"
+                />
+              </motion.div>
+            </motion.div>
+            
+            {/* Decorative element */}
+            <motion.div
+              variants={fadeInUp(20, 0.7, 0.2)}
+              className="hidden md:block w-full md:w-1/3 relative"
+            >
+              <motion.div
+                initial={{ y: 10, rotate: -5 }}
+                animate={{ 
+                  y: [10, -10, 10],
+                  rotate: [-5, 5, -5],
+                  transition: { 
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+                className="relative w-full aspect-square max-w-md mx-auto"
+              >
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 opacity-10 blur-3xl"></div>
+                <div className="relative z-10 grid grid-cols-2 gap-4 p-6 transform rotate-6">
+                  {[0, 1, 2, 3].map((i) => (
+                    <motion.div
+                      key={`blog-card-${i}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ 
+                        opacity: 1, 
+                        y: 0,
+                        transition: { delay: 0.3 + (i * 0.1) }
+                      }}
+                      className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-3 transform hover:-translate-y-1 transition-transform duration-300"
+                    >
+                      <div className="w-full aspect-video rounded bg-gray-200 dark:bg-gray-700 mb-2"></div>
+                      <div className="h-2 w-3/4 bg-gray-200 dark:bg-gray-700 rounded-full mb-1"></div>
+                      <div className="h-2 w-1/2 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
       
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row gap-8">
