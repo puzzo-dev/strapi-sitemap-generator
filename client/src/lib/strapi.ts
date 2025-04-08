@@ -223,7 +223,7 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
         { label: 'About Us', url: '/about' },
         { label: 'Careers', url: '/careers' },
         { label: 'Contact', url: '/contact' },
-        { label: 'Insights Pages', url: '/insights/pages' }
+        { label: 'Insights Pages', url: '/blog' }
       ]
     },
     { 

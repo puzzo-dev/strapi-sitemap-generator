@@ -210,7 +210,7 @@ const Footer: React.FC = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/team">
+                      <Link href="/about#team">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                           Our Team
                         </div>
@@ -224,7 +224,7 @@ const Footer: React.FC = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/insights/pages">
+                      <Link href="/blog">
                         <div className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
                           Insights Pages
                         </div>
