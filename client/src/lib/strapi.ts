@@ -222,16 +222,18 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
       links: [
         { label: 'About Us', url: '/about' },
         { label: 'Careers', url: '/careers' },
-        { label: 'Contact', url: '/contact' }
+        { label: 'Contact', url: '/contact' },
+        { label: 'Insights Pages', url: '/insights/pages' }
       ]
     },
     { 
       id: 2, 
       title: 'Services', 
       links: [
-        { label: 'Web Development', url: '/services' },
-        { label: 'Mobile App Development', url: '/services' },
-        { label: 'Cloud Solutions', url: '/services' }
+        { label: 'Web Development', url: '/services/web-development' },
+        { label: 'Mobile App Development', url: '/services/mobile-development' },
+        { label: 'Cloud Solutions', url: '/services/cloud-solutions' },
+        { label: 'View All Services', url: '/services' }
       ]
     },
     { 

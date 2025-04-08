@@ -225,7 +225,7 @@ const Footer: React.FC = () => {
                     </li>
                     <li>
                       <Link href="/insights/pages">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                        <div className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
                           Insights Pages
                         </div>
                       </Link>
@@ -332,7 +332,7 @@ const Footer: React.FC = () => {
                     </li>
                     <li>
                       <Link href="/services">
-                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                        <div className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
                           View All Services
                         </div>
                       </Link>
