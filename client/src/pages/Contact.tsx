@@ -112,12 +112,12 @@ const Contact: React.FC = () => {
               </div>
               
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800">
-                  <h4 className="text-lg font-medium mb-4">Address</h4>
-                  <p className="text-gray-300">
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
+                  <h4 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">Address</h4>
+                  <p className="text-gray-700 dark:text-gray-300">
                     {siteConfig?.contactAddress || '5 Adams Street, Off Nnamdi Rd,\nSurulere, Lagos, Nigeria, 101283'}
                   </p>
-                  <div className="mt-4 h-32 bg-gray-800 rounded-lg overflow-hidden">
+                  <div className="mt-4 h-32 bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden">
                     {/* Map would go here - this would be implemented with a real mapping solution */}
                     <div className="h-full w-full flex items-center justify-center text-gray-500">
                       <span>Map Location</span>
@@ -125,38 +125,38 @@ const Contact: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800">
-                  <h4 className="text-lg font-medium mb-4">Contact Info</h4>
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
+                  <h4 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">Contact Info</h4>
                   <div className="space-y-4">
                     <div className="flex items-start">
-                      <div className="w-10 h-10 rounded-full bg-primary-light/20 flex items-center justify-center mr-4">
-                        <i className="fas fa-phone-alt text-primary-light"></i>
+                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4">
+                        <i className="fas fa-phone-alt text-blue-600 dark:text-blue-400"></i>
                       </div>
                       <div>
-                        <p className="text-gray-400 text-sm">Phone</p>
-                        <p className="text-white">{siteConfig?.contactPhone || '+234 123 456 7890'}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm">Phone</p>
+                        <p className="text-gray-900 dark:text-white">{siteConfig?.contactPhone || '+234 123 456 7890'}</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <div className="w-10 h-10 rounded-full bg-primary-light/20 flex items-center justify-center mr-4">
-                        <i className="fas fa-envelope text-primary-light"></i>
+                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4">
+                        <i className="fas fa-envelope text-blue-600 dark:text-blue-400"></i>
                       </div>
                       <div>
-                        <p className="text-gray-400 text-sm">Email</p>
-                        <p className="text-white">{siteConfig?.contactEmail || 'contact@i-varse.com'}</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm">Email</p>
+                        <p className="text-gray-900 dark:text-white">{siteConfig?.contactEmail || 'contact@i-varse.com'}</p>
                       </div>
                     </div>
                     
                     <div className="flex space-x-4">
-                      <a href="#" className="w-10 h-10 rounded-full bg-primary-light/20 flex items-center justify-center hover:bg-primary-light/30 transition-colors">
-                        <i className="fab fa-twitter text-primary-light"></i>
+                      <a href="#" className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                        <i className="fab fa-twitter text-blue-600 dark:text-blue-400"></i>
                       </a>
-                      <a href="#" className="w-10 h-10 rounded-full bg-primary-light/20 flex items-center justify-center hover:bg-primary-light/30 transition-colors">
-                        <i className="fab fa-facebook-f text-primary-light"></i>
+                      <a href="#" className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                        <i className="fab fa-facebook-f text-blue-600 dark:text-blue-400"></i>
                       </a>
-                      <a href="#" className="w-10 h-10 rounded-full bg-primary-light/20 flex items-center justify-center hover:bg-primary-light/30 transition-colors">
-                        <i className="fab fa-linkedin-in text-primary-light"></i>
+                      <a href="#" className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800/30 transition-colors">
+                        <i className="fab fa-linkedin-in text-blue-600 dark:text-blue-400"></i>
                       </a>
                     </div>
                   </div>
@@ -168,19 +168,19 @@ const Contact: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="bg-secondary-light py-24 relative overflow-hidden">
+      <section className="bg-gray-50 dark:bg-gray-900 py-24 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-          <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-primary-light blur-3xl"></div>
+          <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-blue-500 dark:bg-blue-600 blur-3xl"></div>
           <div className="absolute bottom-20 left-20 w-96 h-96 rounded-full bg-indigo-500 blur-3xl"></div>
         </div>
         
         <div className="container-custom relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-blue-400">
+            <h2 className="text-3xl font-bold mb-4 text-center text-gray-900 dark:text-white">
               {pageContent?.sections?.find(s => s.type === 'testimonials')?.title || 'TESTIMONIALS'}
             </h2>
-            <p className="text-lg text-blue-200 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               {pageContent?.sections?.find(s => s.type === 'testimonials')?.subtitle || 
                 'See what our clients have to say about their experience working with us.'}
             </p>
@@ -190,18 +190,18 @@ const Contact: React.FC = () => {
             {isTestimonialsLoading ? (
               // Loading skeleton for testimonials
               Array(3).fill(0).map((_, index) => (
-                <div key={index} className="bg-secondary rounded-xl p-6 border border-gray-800 animate-pulse">
+                <div key={index} className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
                   <div className="flex mb-4 space-x-1">
                     {Array(5).fill(0).map((_, i) => (
-                      <div key={i} className="w-5 h-5 bg-gray-700 rounded-full"></div>
+                      <div key={i} className="w-5 h-5 bg-gray-200 dark:bg-gray-600 rounded-full"></div>
                     ))}
                   </div>
-                  <div className="h-4 bg-gray-700 rounded mb-2 w-full"></div>
-                  <div className="h-4 bg-gray-700 rounded mb-2 w-5/6"></div>
-                  <div className="h-4 bg-gray-700 rounded mb-6 w-4/6"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded mb-2 w-full"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded mb-2 w-5/6"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded mb-6 w-4/6"></div>
                   <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full bg-gray-700 mr-4"></div>
-                    <div className="h-4 bg-gray-700 rounded w-1/3"></div>
+                    <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-600 mr-4"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/3"></div>
                   </div>
                 </div>
               ))
@@ -219,19 +219,19 @@ const Contact: React.FC = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-secondary py-24 relative overflow-hidden">
+      <section className="bg-white dark:bg-[#0a1929] py-24 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute bottom-40 left-40 w-60 h-60 rounded-full bg-purple-600 blur-3xl"></div>
-          <div className="absolute top-40 right-40 w-80 h-80 rounded-full bg-primary-light blur-3xl"></div>
+          <div className="absolute bottom-40 left-40 w-60 h-60 rounded-full bg-blue-600 dark:bg-blue-700 blur-3xl"></div>
+          <div className="absolute top-40 right-40 w-80 h-80 rounded-full bg-blue-500 dark:bg-blue-600 blur-3xl"></div>
         </div>
         
         <div className="container-custom relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-purple-500">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
               {pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.title || 'Frequently Asked Questions'}
             </h2>
-            <p className="text-lg text-blue-200 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               {pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.subtitle || 
                 'Find answers to common questions about our services and how we can help your business.'}
             </p>
@@ -241,11 +241,11 @@ const Contact: React.FC = () => {
             {isPageLoading ? (
               // Loading skeleton for FAQs
               Array(3).fill(0).map((_, index) => (
-                <div key={index} className="bg-secondary-dark rounded-xl p-6 border border-gray-800 animate-pulse">
-                  <div className="h-6 bg-gray-700 rounded mb-4 w-3/4"></div>
-                  <div className="h-4 bg-gray-700 rounded mb-2 w-full"></div>
-                  <div className="h-4 bg-gray-700 rounded mb-2 w-5/6"></div>
-                  <div className="h-4 bg-gray-700 rounded w-4/6"></div>
+                <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
+                  <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-3/4"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-full"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-5/6"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/6"></div>
                 </div>
               ))
             ) : (
@@ -253,31 +253,31 @@ const Contact: React.FC = () => {
               pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.items ? (
                 // Map through FAQ items from Strapi
                 pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.items?.map((faq: any, index: number) => (
-                  <div key={index} className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
-                    <h3 className="text-xl font-semibold mb-2 text-white">{faq.question}</h3>
-                    <p className="text-blue-200">{faq.answer}</p>
+                  <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{faq.question}</h3>
+                    <p className="text-gray-600 dark:text-gray-300">{faq.answer}</p>
                   </div>
                 ))
               ) : (
                 // Fallback FAQ items
                 <>
-                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
-                    <h3 className="text-xl font-semibold mb-2 text-white">What services does I-VARSE provide?</h3>
-                    <p className="text-blue-200">
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">What services does I-VARSE provide?</h3>
+                    <p className="text-gray-600 dark:text-gray-300">
                       I-VARSE provides a range of digital services including web development, mobile app development, cloud infrastructure management, API programming & integration, SEO optimization, and content writing.
                     </p>
                   </div>
                   
-                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
-                    <h3 className="text-xl font-semibold mb-2 text-white">How long does it take to complete a project?</h3>
-                    <p className="text-blue-200">
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">How long does it take to complete a project?</h3>
+                    <p className="text-gray-600 dark:text-gray-300">
                       Project timelines vary depending on scope and complexity. A typical website might take 4-6 weeks, while more complex applications could take several months. We'll provide a detailed timeline during our initial consultation.
                     </p>
                   </div>
                   
-                  <div className="bg-secondary-dark rounded-xl p-6 border border-gray-800 hover:border-primary-light/30 transition-colors">
-                    <h3 className="text-xl font-semibold mb-2 text-white">Do you provide ongoing support after project completion?</h3>
-                    <p className="text-blue-200">
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Do you provide ongoing support after project completion?</h3>
+                    <p className="text-gray-600 dark:text-gray-300">
                       Yes, we offer various support and maintenance packages to ensure your digital products continue to perform optimally after launch. Our team is always available to address any issues or implement updates.
                     </p>
                   </div>

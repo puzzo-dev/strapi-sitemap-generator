@@ -223,7 +223,8 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
         { label: 'About Us', url: '/about' },
         { label: 'Careers', url: '/careers' },
         { label: 'Contact', url: '/contact' },
-        { label: 'Insights Pages', url: '/blog' }
+        { label: 'Insights Pages', url: '/blog' },
+        { label: 'Our Team', url: '/about#team' }
       ]
     },
     { 
@@ -233,6 +234,8 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
         { label: 'Web Development', url: '/services/web-development' },
         { label: 'Mobile App Development', url: '/services/mobile-development' },
         { label: 'Cloud Solutions', url: '/services/cloud-solutions' },
+        { label: 'AI Solutions', url: '/services/ai-solutions' },
+        { label: 'Digital Marketing', url: '/services/digital-marketing' },
         { label: 'View All Services', url: '/services' }
       ]
     },
