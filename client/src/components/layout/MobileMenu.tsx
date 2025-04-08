@@ -23,16 +23,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     { id: 2, name: t('nav.about', 'About Us'), path: '/about', category: 'main' },
     { id: 3, name: t('nav.services', 'Services'), path: '/services', category: 'main' },
     { id: 4, name: t('nav.products', 'Solutions'), path: '/products', category: 'main' },
-    { id: 5, name: t('nav.solutions', 'Digital Solutions'), path: '/solutions', category: 'main' },
-    { id: 6, name: t('nav.blog', 'TechVision Insights'), path: '/blog', category: 'resources' },
-    { id: 7, name: t('nav.resources', 'Resources'), path: '/resources', category: 'resources' },
-    { id: 8, name: t('nav.team', 'Our Team'), path: '/team', category: 'company' },
-    { id: 9, name: t('nav.careers', 'Careers'), path: '/careers', category: 'company' },
-    { id: 10, name: t('nav.portfolio', 'Portfolio'), path: '/portfolio', category: 'resources' },
-    { id: 11, name: t('nav.testimonials', 'Testimonials'), path: '/testimonials', category: 'resources' },
-    { id: 12, name: t('nav.support', 'Support'), path: '/support', category: 'resources' },
-    { id: 13, name: t('nav.faqs', 'FAQs'), path: '/faqs', category: 'resources' },
-    { id: 14, name: t('nav.contact', 'Contact'), path: '/contact', category: 'main', isButton: true }
+    { id: 5, name: t('nav.blog', 'TechVision Insights'), path: '/blog', category: 'resources' },
+    { id: 6, name: t('nav.careers', 'Careers'), path: '/careers', category: 'company' },
+    { id: 7, name: t('nav.contact', 'Contact'), path: '/contact', category: 'main', isButton: true }
   ];
 
   const isActive = (path: string) => location === path;
