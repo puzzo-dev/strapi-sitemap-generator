@@ -210,9 +210,23 @@ const Footer: React.FC = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/#more">
+                      <Link href="/team">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          More
+                          Our Team
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/faq">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          FAQ
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/testimonials">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          Testimonials
                         </div>
                       </Link>
                     </li>
@@ -261,34 +275,65 @@ const Footer: React.FC = () => {
                   <h4 className="text-sm md:text-base font-bold mb-3 sm:mb-4 md:mb-5 text-gray-900 dark:text-white uppercase tracking-wider">Services</h4>
                   <ul className="space-y-2 sm:space-y-3">
                     <li>
-                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                        Web Development
-                      </div>
-                    </li>
-                    <li>
-                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                        Mobile App Development
-                      </div>
-                    </li>
-                    <li>
-                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                        Cloud Infrastructure
-                      </div>
-                    </li>
-                    <li>
-                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                        IT Consulting
-                      </div>
-                    </li>
-                    <li>
-                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                        Digital Marketing
-                      </div>
-                    </li>
-                    <li>
-                      <Link href="/#more">
+                      <Link href="/services/web-development">
                         <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                          More
+                          Web Development
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/services/mobile-development">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          Mobile App Development
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/services/cloud-infrastructure">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          Cloud Infrastructure
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/services/consulting">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          IT Consulting
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/services/digital-marketing">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          Digital Marketing
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/services/ui-ux-design">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          UI/UX Design
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/services/ai-solutions">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          AI Solutions
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/services/erp-integration">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          ERP Integration
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/services">
+                        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                          View All Services
                         </div>
                       </Link>
                     </li>
@@ -316,14 +361,20 @@ const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} I-VARSE Limited. All rights reserved.
           </div>
           <div className="flex flex-wrap justify-center md:justify-end gap-3 sm:gap-4 md:gap-6">
-            <a href="#" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a href="/terms" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Terms of Service
             </a>
-            <a href="#" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a href="/privacy" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a href="/cookies" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Cookie Policy
+            </a>
+            <a href="/accessibility" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              Accessibility
+            </a>
+            <a href="/sitemap" className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              Sitemap
             </a>
           </div>
         </div>
