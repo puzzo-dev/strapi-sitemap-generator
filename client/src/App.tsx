@@ -83,7 +83,7 @@ function App() {
                   <Route path="/products/:id" component={ProductDetail} />
                   <Route path="/about" component={About} />
                   <Route path="/blog" component={Blog} />
-                  <Route path="/blog/:id" component={BlogPost} />
+                  <Route path="/blog/:slug" component={BlogPost} />
                   <Route path="/team/:id" component={TeamMember} />
                   <Route path="/careers" component={Careers} />
                   <Route path="/careers/:id" component={JobDetail} />
