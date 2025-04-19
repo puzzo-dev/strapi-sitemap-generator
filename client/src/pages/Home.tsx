@@ -591,7 +591,7 @@ const Home: React.FC = () => {
             </div>
             
             {/* Left column - Content (Shows second on mobile, first on desktop) */}
-            <div className="order-2 lg:order-1">
+            <div className="order-2 lg:order-1 z-10 relative">
               <div className="space-y-6 md:space-y-8">
                 {/* Desktop-only heading - hidden on mobile */}
                 <div className="hidden lg:block">
@@ -629,12 +629,12 @@ const Home: React.FC = () => {
                 )}
                 
                 {/* Desktop-only buttons */}
-                <div className="pt-4 flex-col sm:flex-row gap-4 hidden md:flex">
+                <div className="pt-4 flex flex-row gap-4 hidden md:flex">
                   <GradientButton 
                     href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.url || "/services"} 
                     size="lg" 
                     endIcon={<ChevronRight />} 
-                    className="sm:w-auto py-3 animate-snowfall" 
+                    className="w-auto py-3 animate-snowfall z-10" 
                   >
                     {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.text || t('button.getStarted')}
                   </GradientButton>
@@ -642,7 +642,7 @@ const Home: React.FC = () => {
                     href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.url || "/#about"} 
                     variant="outline" 
                     size="lg" 
-                    className="sm:w-auto py-3" 
+                    className="w-auto py-3 z-10" 
                   >
                     {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.text || t('button.learnMore')}
                   </GradientButton>
