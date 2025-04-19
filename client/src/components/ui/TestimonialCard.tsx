@@ -8,7 +8,7 @@ interface TestimonialCardProps {
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (
-    <div className="card p-6 hover-lift">
+    <div className="card p-6 hover-lift h-full flex flex-col">
       {/* Stars */}
       <div className="flex mb-4">
         {Array(5).fill(0).map((_, i) => (
@@ -20,12 +20,12 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
       </div>
       
       {/* Testimonial content */}
-      <p className="text-gray-600 dark:text-blue-200 mb-6 italic">
+      <p className="text-gray-600 dark:text-blue-200 mb-6 italic flex-grow">
         "{testimonial.content}"
       </p>
       
       {/* Client info */}
-      <div className="flex items-center">
+      <div className="flex items-center mt-auto">
         {testimonial.image ? (
           <div className="w-12 h-12 rounded-full overflow-hidden mr-4 border border-blue-100 dark:border-blue-800/30">
             <img 
