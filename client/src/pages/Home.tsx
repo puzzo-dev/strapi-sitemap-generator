@@ -859,32 +859,32 @@ const Home: React.FC = () => {
               
               <div className="md:w-1/2">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
-                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.1s' }}>
-                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center mb-4 shadow-md shadow-blue-100 dark:shadow-blue-900/10">
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6 bg-white/80 dark:bg-slate-800/70 backdrop-blur-sm shadow-lg shadow-blue-100/50 dark:shadow-blue-900/20 border-t-4 border-t-blue-500 dark:border-t-blue-400" style={{ animationDelay: '0.1s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center mb-4 shadow-lg shadow-blue-200 dark:shadow-blue-900/20 ring-2 ring-white/80 dark:ring-slate-700/80">
                       <span className="font-bold text-lg">01</span>
                     </div>
                     <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Web Development</h3>
                     <p className="text-base text-gray-600 dark:text-gray-300">Custom websites and web applications with modern technologies</p>
                   </div>
                   
-                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.2s' }}>
-                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-indigo-400 to-indigo-600 text-white flex items-center justify-center mb-4 shadow-md shadow-indigo-100 dark:shadow-indigo-900/10">
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6 bg-white/80 dark:bg-slate-800/70 backdrop-blur-sm shadow-lg shadow-indigo-100/50 dark:shadow-indigo-900/20 border-t-4 border-t-indigo-500 dark:border-t-indigo-400" style={{ animationDelay: '0.2s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-indigo-400 to-indigo-600 text-white flex items-center justify-center mb-4 shadow-lg shadow-indigo-200 dark:shadow-indigo-900/20 ring-2 ring-white/80 dark:ring-slate-700/80">
                       <span className="font-bold text-lg">02</span>
                     </div>
                     <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Mobile Apps</h3>
                     <p className="text-base text-gray-600 dark:text-gray-300">Cross-platform mobile applications for Android and iOS</p>
                   </div>
                   
-                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.3s' }}>
-                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-cyan-400 to-cyan-600 text-white flex items-center justify-center mb-4 shadow-md shadow-cyan-100 dark:shadow-cyan-900/10">
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6 bg-white/80 dark:bg-slate-800/70 backdrop-blur-sm shadow-lg shadow-cyan-100/50 dark:shadow-cyan-900/20 border-t-4 border-t-cyan-500 dark:border-t-cyan-400" style={{ animationDelay: '0.3s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-cyan-400 to-cyan-600 text-white flex items-center justify-center mb-4 shadow-lg shadow-cyan-200 dark:shadow-cyan-900/20 ring-2 ring-white/80 dark:ring-slate-700/80">
                       <span className="font-bold text-lg">03</span>
                     </div>
                     <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Cloud Solutions</h3>
                     <p className="text-base text-gray-600 dark:text-gray-300">Scalable and secure cloud infrastructure deployment</p>
                   </div>
                   
-                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.4s' }}>
-                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-purple-400 to-purple-600 text-white flex items-center justify-center mb-4 shadow-md shadow-purple-100 dark:shadow-purple-900/10">
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6 bg-white/80 dark:bg-slate-800/70 backdrop-blur-sm shadow-lg shadow-purple-100/50 dark:shadow-purple-900/20 border-t-4 border-t-purple-500 dark:border-t-purple-400" style={{ animationDelay: '0.4s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-purple-400 to-purple-600 text-white flex items-center justify-center mb-4 shadow-lg shadow-purple-200 dark:shadow-purple-900/20 ring-2 ring-white/80 dark:ring-slate-700/80">
                       <span className="font-bold text-lg">04</span>
                     </div>
                     <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">AI Solutions</h3>
