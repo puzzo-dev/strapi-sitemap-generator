@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 import MetaTags from "@/components/seo/MetaTags";
 import { generateWebsiteSchema } from "@/components/seo/StructuredData";
 import { AnimatePresence } from "framer-motion";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 // Pages
 import Home from "@/pages/Home";
@@ -39,6 +40,9 @@ import FloatingButtons from "@/components/layout/FloatingButtons";
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
+  
+  // Use the scroll to top hook to ensure pages start at the top
+  useScrollToTop();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
