@@ -199,19 +199,19 @@ const Home: React.FC = () => {
         className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section"
       >
         {/* Tech-inspired background elements - Enhanced with more icons */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           {/* Animated gradient orbs */}
           <motion.div 
             variants={scaleUp(0.8, 1.5, 0.2)}
-            className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40" 
+            className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40 pointer-events-none" 
           />
           <motion.div 
             variants={scaleUp(0.8, 1.8, 0.5)}
-            className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30" 
+            className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30 pointer-events-none" 
           />
           <motion.div 
             variants={scaleUp(0.8, 2, 0.8)}
-            className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-900/30" 
+            className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-900/30 pointer-events-none" 
           />
           
           {/* Enhanced tech pattern with more icons */}
@@ -568,8 +568,8 @@ const Home: React.FC = () => {
           </svg>
         </div>
         
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+        <div className="container-custom relative z-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center relative">
             {/* Mobile Header (Shows above the slider on mobile) */}
             <div className="block lg:hidden w-full mb-4">
               {isPageLoading ? (
