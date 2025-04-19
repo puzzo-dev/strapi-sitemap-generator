@@ -97,7 +97,7 @@ const BlogPage: React.FC = () => {
   const renderPostCard = (post: BlogPost) => (
     <div key={post.slug} className="group flex flex-col h-full overflow-hidden rounded-xl shadow-lg bg-white dark:bg-slate-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       {post.meta_image && (
-        <div className="relative h-44 md:h-40 overflow-hidden">
+        <div className="relative h-36 md:h-32 overflow-hidden">
           <img 
             src={post.meta_image} 
             alt={post.title} 
@@ -131,11 +131,11 @@ const BlogPage: React.FC = () => {
           )}
         </div>
         
-        <h3 className="text-base md:text-lg font-bold mb-2 text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
+        <h3 className="text-sm md:text-base font-bold mb-1.5 text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
           {post.title}
         </h3>
         
-        <p className="mb-3 text-sm text-muted-foreground flex-grow line-clamp-3">{truncateText(post.blog_intro, 100)}</p>
+        <p className="mb-2.5 text-xs text-muted-foreground flex-grow line-clamp-2">{truncateText(post.blog_intro, 80)}</p>
         
         <div className="mt-auto">
           {post.tags && post.tags.length > 0 && (
@@ -186,7 +186,7 @@ const BlogPage: React.FC = () => {
     <>
       {Array(6).fill(0).map((_, index) => (
         <div key={index} className="flex flex-col h-full rounded-xl shadow-lg bg-white dark:bg-slate-800 overflow-hidden">
-          <Skeleton className="h-44 md:h-40 w-full" />
+          <Skeleton className="h-36 md:h-32 w-full" />
           <div className="p-4 md:p-5">
             <div className="flex space-x-2 mb-2">
               <Skeleton className="h-3 w-3 rounded-full" />
@@ -195,10 +195,9 @@ const BlogPage: React.FC = () => {
               <Skeleton className="h-3 w-12" />
             </div>
             
-            <Skeleton className="h-5 w-3/4 mb-2" />
-            <Skeleton className="h-3 w-full mb-1.5" />
-            <Skeleton className="h-3 w-full mb-1.5" />
-            <Skeleton className="h-3 w-3/4 mb-3" />
+            <Skeleton className="h-4 w-3/4 mb-1.5" />
+            <Skeleton className="h-2.5 w-full mb-1" />
+            <Skeleton className="h-2.5 w-3/4 mb-2.5" />
             
             <div className="flex flex-wrap gap-1.5 mb-3">
               <Skeleton className="h-5 w-14 rounded-full" />
