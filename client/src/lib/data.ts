@@ -244,9 +244,9 @@ export const benefits = [
 // Blog posts dummy data for when Strapi/ERPNext isn't available
 export const blogPosts = [
   {
-    name: "tech-trends-2025",
-    title: "Technology Trends to Watch in 2025",
-    slug: "technology-trends-2025",
+    name: "ai-revolution-in-business",
+    title: "The AI Revolution in Modern Business",
+    slug: "ai-revolution-in-business",
     blog_category: "Technology",
     blog_intro: "Discover the emerging technology trends that will shape our digital landscape in 2025 and beyond.",
     content: `<p>As we look toward 2025, several emerging technologies are poised to transform how we live and work. Artificial intelligence continues to evolve at a rapid pace, with generative AI becoming increasingly sophisticated in creating content, code, and design assets.</p>
@@ -273,9 +273,9 @@ export const blogPosts = [
     tags: ["AI", "Quantum Computing", "Metaverse", "Sustainable Tech", "Innovation"]
   },
   {
-    name: "cybersecurity-essentials",
-    title: "Essential Cybersecurity Practices for Modern Businesses",
-    slug: "cybersecurity-essentials-modern-businesses",
+    name: "cybersecurity-best-practices",
+    title: "Essential Cybersecurity Best Practices",
+    slug: "cybersecurity-best-practices",
     blog_category: "Security",
     blog_intro: "Protect your organization with these essential cybersecurity practices that every modern business should implement.",
     content: `<p>In today's digital landscape, cybersecurity isn't just an IT concern—it's a business imperative. As cyber threats become more sophisticated, organizations must adopt comprehensive security strategies.</p>
@@ -302,9 +302,9 @@ export const blogPosts = [
     tags: ["Cybersecurity", "Zero Trust", "Data Protection", "Risk Management"]
   },
   {
-    name: "cloud-optimization",
-    title: "Cloud Cost Optimization Strategies That Actually Work",
-    slug: "cloud-cost-optimization-strategies",
+    name: "cloud-computing-trends",
+    title: "Top Cloud Computing Trends for 2025",
+    slug: "cloud-computing-trends",
     blog_category: "Cloud",
     blog_intro: "Implement these proven strategies to optimize your cloud costs without sacrificing performance or reliability.",
     content: `<p>Cloud computing offers tremendous flexibility and scalability, but costs can quickly spiral out of control without proper governance. Effective cloud cost optimization begins with visibility—you can't manage what you can't measure.</p>
@@ -360,9 +360,9 @@ export const blogPosts = [
     tags: ["AI Ethics", "Responsible AI", "Machine Learning", "Fairness", "Transparency"]
   },
   {
-    name: "digital-transformation",
-    title: "Digital Transformation: Beyond the Buzzword",
-    slug: "digital-transformation-beyond-buzzword",
+    name: "digital-transformation-guide",
+    title: "Complete Guide to Digital Transformation",
+    slug: "digital-transformation-guide",
     blog_category: "Business Strategy",
     blog_intro: "Move past the hype and discover what successful digital transformation actually requires for sustainable business evolution.",
     content: `<p>Digital transformation has become an overused term, but when done right, it represents a fundamental reimagining of how an organization delivers value. True transformation goes beyond simply digitizing existing processes.</p>
