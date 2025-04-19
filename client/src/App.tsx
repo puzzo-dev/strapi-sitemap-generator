@@ -22,6 +22,7 @@ import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import TeamMember from "@/pages/TeamMember";
 import Careers from "@/pages/Careers";
+import JobDetail from "@/pages/JobDetail";
 import NotFound from "@/pages/not-found";
 
 // Policy Pages
@@ -85,6 +86,7 @@ function App() {
                   <Route path="/blog/:id" component={BlogPost} />
                   <Route path="/team/:id" component={TeamMember} />
                   <Route path="/careers" component={Careers} />
+                  <Route path="/careers/:id" component={JobDetail} />
                   <Route path="/contact" component={Contact} />
                   {/* Policy pages */}
                   <Route path="/terms" component={Terms} />
