@@ -634,6 +634,9 @@ export async function getBlogPosts(params: {
   featured?: boolean;
   tag?: string;
 } = {}): Promise<BlogPost[]> {
+  // Import dummy blog posts
+  const { blogPosts } = await import('./data');
+  
   // Create query parameters
   const queryParams = new URLSearchParams();
   if (params.limit) queryParams.append('limit', params.limit.toString());
@@ -642,25 +645,72 @@ export async function getBlogPosts(params: {
   if (params.tag) queryParams.append('tag', params.tag);
   
   const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+
+  // Use blog posts from data.ts as fallback
+  return fetchERPNextData<BlogPost[]>(`blogger/posts${queryString}`, filterBlogPosts(blogPosts, params));
+}
+
+/**
+ * Filter blog posts based on params for fallback data
+ */
+function filterBlogPosts(posts: BlogPost[], params: {
+  limit?: number;
+  category?: string;
+  featured?: boolean;
+  tag?: string;
+} = {}): BlogPost[] {
+  let filteredPosts = [...posts];
   
-  // Use an empty array as fallback since we don't have predefined blog posts
-  return fetchERPNextData<BlogPost[]>(`blogger/posts${queryString}`, []);
+  // Filter by category
+  if (params.category) {
+    filteredPosts = filteredPosts.filter(post => 
+      post.blog_category.toLowerCase() === params.category?.toLowerCase()
+    );
+  }
+  
+  // Filter by featured
+  if (params.featured !== undefined) {
+    filteredPosts = filteredPosts.filter(post => post.featured === params.featured);
+  }
+  
+  // Filter by tag
+  if (params.tag) {
+    filteredPosts = filteredPosts.filter(post => 
+      post.tags?.some(tag => tag.toLowerCase() === params.tag?.toLowerCase())
+    );
+  }
+  
+  // Limit results
+  if (params.limit && params.limit > 0) {
+    filteredPosts = filteredPosts.slice(0, params.limit);
+  }
+  
+  return filteredPosts;
 }
 
 /**
  * Get a single blog post by slug
  */
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  // Use null as fallback since we don't have a predefined blog post
-  return fetchERPNextData<BlogPost | null>(`blogger/posts/${slug}`, null);
+  // Import dummy blog posts
+  const { blogPosts } = await import('./data');
+  
+  // Find matching post in dummy data
+  const dummyPost = blogPosts.find(post => post.slug === slug) || null;
+  
+  // Use the matching post from dummy data as fallback
+  return fetchERPNextData<BlogPost | null>(`blogger/posts/${slug}`, dummyPost);
 }
 
 /**
  * Get all blog categories
  */
 export async function getBlogCategories(): Promise<BlogCategory[]> {
-  // Use empty array as fallback
-  return fetchERPNextData<BlogCategory[]>('blogger/categories', []);
+  // Import dummy blog categories
+  const { blogCategories } = await import('./data');
+  
+  // Use blog categories from data.ts as fallback
+  return fetchERPNextData<BlogCategory[]>('blogger/categories', blogCategories);
 }
 
 /**
