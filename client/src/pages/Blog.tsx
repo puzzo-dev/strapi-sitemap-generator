@@ -131,7 +131,7 @@ const BlogPage: React.FC = () => {
           )}
         </div>
         
-        <h3 className="text-lg md:text-xl font-bold mb-2 text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
+        <h3 className="text-base md:text-lg font-bold mb-2 text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
           {post.title}
         </h3>
         
@@ -195,7 +195,7 @@ const BlogPage: React.FC = () => {
               <Skeleton className="h-3 w-12" />
             </div>
             
-            <Skeleton className="h-6 w-3/4 mb-2" />
+            <Skeleton className="h-5 w-3/4 mb-2" />
             <Skeleton className="h-3 w-full mb-1.5" />
             <Skeleton className="h-3 w-full mb-1.5" />
             <Skeleton className="h-3 w-3/4 mb-3" />
