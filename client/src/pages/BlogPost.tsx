@@ -91,6 +91,18 @@ const BlogPostPage: React.FC = () => {
       .slice(0, 3); // Limit to 3 related posts
   }, [post, allPosts]);
   
+  // Title mapping for related posts in dummy content
+  const titleMap: {[key: string]: string} = {
+    'ai-revolution-in-business': 'The AI Revolution in Modern Business',
+    'cloud-computing-trends': 'Top Cloud Computing Trends for 2025',
+    'cybersecurity-best-practices': 'Essential Cybersecurity Best Practices',
+    'digital-transformation-guide': 'Complete Guide to Digital Transformation',
+    'future-of-tech': 'The Future of Technology: What to Expect in 2026',
+    'software-development-methodologies': 'Modern Software Development Methodologies',
+    'blockchain-enterprise-solutions': 'Blockchain Enterprise Solutions',
+    'machine-learning-applications': 'Practical Machine Learning Applications',
+  };
+  
   // Format date for display
   const formatDate = (dateString: string) => {
     try {
@@ -178,6 +190,8 @@ const BlogPostPage: React.FC = () => {
       name: slug,
       slug: slug,
       title: title,
+      published: true,
+      featured: false,
       blog_intro: "This post explores important concepts and latest developments in the technology landscape, providing valuable insights for businesses and professionals.",
       content: `
         <h2>Introduction</h2>
@@ -396,12 +410,14 @@ const BlogPostPage: React.FC = () => {
                       .slice(0, 3)
                       .map(relatedSlug => {
                         const relatedTitle = titleMap[relatedSlug] || `Related: ${relatedSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`;
+                        // Use a consistent image path across posts
+                        const relatedImage = 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=1470';
                         return (
                           <Link key={relatedSlug} href={`/blog/${relatedSlug}`}>
                             <div className="group flex gap-3 items-start hover:bg-slate-50 dark:hover:bg-slate-700/30 p-2 rounded-lg transition-colors">
                               <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
                                 <img 
-                                  src={dummyImage}
+                                  src={relatedImage}
                                   alt={relatedTitle}
                                   className="w-full h-full object-cover"
                                 />
