@@ -858,106 +858,38 @@ const Home: React.FC = () => {
               </div>
               
               <div className="md:w-1/2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-10">
-                  {/* Web Development */}
-                  <motion.div 
-                    className="spec-card group animate-fade-in-up rounded-xl p-6 md:p-8 border border-blue-100 dark:border-blue-800/30 bg-white dark:bg-gray-900/50 shadow-lg hover:shadow-xl dark:shadow-blue-900/5 dark:hover:shadow-blue-800/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
-                    style={{ animationDelay: '0.1s' }}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {/* Background pattern */}
-                    <div className="absolute top-0 right-0 w-24 h-24 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-                      <Code className="w-full h-full" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.1s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center mb-4 shadow-md shadow-blue-100 dark:shadow-blue-900/10">
+                      <span className="font-bold text-lg">01</span>
                     </div>
-                    
-                    {/* Number indicator */}
-                    <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center mb-5 shadow-lg shadow-blue-200 dark:shadow-blue-900/20 relative z-10 group-hover:shadow-blue-300 dark:group-hover:shadow-blue-800/30 transition-all duration-300">
-                      <span className="font-bold text-xl">01</span>
-                    </div>
-                    
-                    {/* Content */}
-                    <h3 className="font-bold text-xl mb-4 text-blue-700 dark:text-blue-300 relative z-10 group-hover:text-blue-600 dark:group-hover:text-blue-200 transition-colors duration-300">Web Development</h3>
-                    <p className="text-base text-gray-600 dark:text-gray-300 relative z-10 leading-relaxed">Custom websites and web applications with modern technologies</p>
-                    
-                    {/* Hover indicator */}
-                    <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-blue-400 to-blue-600 group-hover:w-full transition-all duration-500"></div>
-                  </motion.div>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Web Development</h3>
+                    <p className="text-base text-gray-600 dark:text-gray-300">Custom websites and web applications with modern technologies</p>
+                  </div>
                   
-                  {/* Mobile Apps */}
-                  <motion.div 
-                    className="spec-card group animate-fade-in-up rounded-xl p-6 md:p-8 border border-indigo-100 dark:border-indigo-800/30 bg-white dark:bg-gray-900/50 shadow-lg hover:shadow-xl dark:shadow-indigo-900/5 dark:hover:shadow-indigo-800/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
-                    style={{ animationDelay: '0.2s' }}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {/* Background pattern */}
-                    <div className="absolute top-0 right-0 w-24 h-24 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-                      <Smartphone className="w-full h-full" />
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.2s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-indigo-400 to-indigo-600 text-white flex items-center justify-center mb-4 shadow-md shadow-indigo-100 dark:shadow-indigo-900/10">
+                      <span className="font-bold text-lg">02</span>
                     </div>
-                    
-                    {/* Number indicator */}
-                    <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-600 text-white flex items-center justify-center mb-5 shadow-lg shadow-indigo-200 dark:shadow-indigo-900/20 relative z-10 group-hover:shadow-indigo-300 dark:group-hover:shadow-indigo-800/30 transition-all duration-300">
-                      <span className="font-bold text-xl">02</span>
-                    </div>
-                    
-                    {/* Content */}
-                    <h3 className="font-bold text-xl mb-4 text-indigo-700 dark:text-indigo-300 relative z-10 group-hover:text-indigo-600 dark:group-hover:text-indigo-200 transition-colors duration-300">Mobile Apps</h3>
-                    <p className="text-base text-gray-600 dark:text-gray-300 relative z-10 leading-relaxed">Cross-platform mobile applications for Android and iOS</p>
-                    
-                    {/* Hover indicator */}
-                    <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-indigo-400 to-indigo-600 group-hover:w-full transition-all duration-500"></div>
-                  </motion.div>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Mobile Apps</h3>
+                    <p className="text-base text-gray-600 dark:text-gray-300">Cross-platform mobile applications for Android and iOS</p>
+                  </div>
                   
-                  {/* Cloud Solutions */}
-                  <motion.div 
-                    className="spec-card group animate-fade-in-up rounded-xl p-6 md:p-8 border border-cyan-100 dark:border-cyan-800/30 bg-white dark:bg-gray-900/50 shadow-lg hover:shadow-xl dark:shadow-cyan-900/5 dark:hover:shadow-cyan-800/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
-                    style={{ animationDelay: '0.3s' }}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {/* Background pattern */}
-                    <div className="absolute top-0 right-0 w-24 h-24 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-                      <Database className="w-full h-full" />
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.3s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-cyan-400 to-cyan-600 text-white flex items-center justify-center mb-4 shadow-md shadow-cyan-100 dark:shadow-cyan-900/10">
+                      <span className="font-bold text-lg">03</span>
                     </div>
-                    
-                    {/* Number indicator */}
-                    <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-600 text-white flex items-center justify-center mb-5 shadow-lg shadow-cyan-200 dark:shadow-cyan-900/20 relative z-10 group-hover:shadow-cyan-300 dark:group-hover:shadow-cyan-800/30 transition-all duration-300">
-                      <span className="font-bold text-xl">03</span>
-                    </div>
-                    
-                    {/* Content */}
-                    <h3 className="font-bold text-xl mb-4 text-cyan-700 dark:text-cyan-300 relative z-10 group-hover:text-cyan-600 dark:group-hover:text-cyan-200 transition-colors duration-300">Cloud Solutions</h3>
-                    <p className="text-base text-gray-600 dark:text-gray-300 relative z-10 leading-relaxed">Scalable and secure cloud infrastructure deployment</p>
-                    
-                    {/* Hover indicator */}
-                    <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-cyan-400 to-cyan-600 group-hover:w-full transition-all duration-500"></div>
-                  </motion.div>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">Cloud Solutions</h3>
+                    <p className="text-base text-gray-600 dark:text-gray-300">Scalable and secure cloud infrastructure deployment</p>
+                  </div>
                   
-                  {/* AI Solutions */}
-                  <motion.div 
-                    className="spec-card group animate-fade-in-up rounded-xl p-6 md:p-8 border border-purple-100 dark:border-purple-800/30 bg-white dark:bg-gray-900/50 shadow-lg hover:shadow-xl dark:shadow-purple-900/5 dark:hover:shadow-purple-800/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
-                    style={{ animationDelay: '0.4s' }}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {/* Background pattern */}
-                    <div className="absolute top-0 right-0 w-24 h-24 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-                      <Cpu className="w-full h-full" />
+                  <div className="spec-card animate-fade-in-up p-5 md:p-6" style={{ animationDelay: '0.4s' }}>
+                    <div className="h-12 w-12 rounded-md bg-gradient-to-br from-purple-400 to-purple-600 text-white flex items-center justify-center mb-4 shadow-md shadow-purple-100 dark:shadow-purple-900/10">
+                      <span className="font-bold text-lg">04</span>
                     </div>
-                    
-                    {/* Number indicator */}
-                    <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-purple-400 to-purple-600 text-white flex items-center justify-center mb-5 shadow-lg shadow-purple-200 dark:shadow-purple-900/20 relative z-10 group-hover:shadow-purple-300 dark:group-hover:shadow-purple-800/30 transition-all duration-300">
-                      <span className="font-bold text-xl">04</span>
-                    </div>
-                    
-                    {/* Content */}
-                    <h3 className="font-bold text-xl mb-4 text-purple-700 dark:text-purple-300 relative z-10 group-hover:text-purple-600 dark:group-hover:text-purple-200 transition-colors duration-300">AI Solutions</h3>
-                    <p className="text-base text-gray-600 dark:text-gray-300 relative z-10 leading-relaxed">Custom AI integrations for business automation</p>
-                    
-                    {/* Hover indicator */}
-                    <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-purple-400 to-purple-600 group-hover:w-full transition-all duration-500"></div>
-                  </motion.div>
+                    <h3 className="font-semibold text-lg mb-3 text-blue-700 dark:text-blue-300">AI Solutions</h3>
+                    <p className="text-base text-gray-600 dark:text-gray-300">Custom AI integrations for business automation</p>
+                  </div>
                 </div>
               </div>
             </div>
