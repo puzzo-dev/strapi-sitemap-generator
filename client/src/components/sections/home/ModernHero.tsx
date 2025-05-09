@@ -1,12 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Sparkles, CircuitBoard, Cpu } from 'lucide-react';
-import { HeroProps } from '@/lib/types';
+import { HeroProps, PageSection } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
 
 const ModernHero: React.FC<HeroProps> = ({
-    // Use the same props as OriginalHero
     heroContents = [],
     currentHeroIndex = 0,
     isHeroLoading = false,
@@ -17,37 +16,33 @@ const ModernHero: React.FC<HeroProps> = ({
     serviceIcons = [],
     currentSlide = 0,
     isServicesLoading = false,
-    // Additional props with fallbacks
-    title,
-    subtitle,
-    location = 'Lagos, Nigeria',
-    primaryButtonText,
-    primaryButtonUrl,
-    secondaryButtonText,
-    secondaryButtonUrl,
+    handleMouseEnter = () => { },
+    handleMouseLeave = () => { },
     companyLogo,
 }) => {
     // Extract data from heroContents if available
     const heroContent = heroContents[currentHeroIndex] || {};
 
-    // Use heroContent or fallback to direct props
-    const displayTitle = title || heroContent.title || 'Top rated web dev company';
-    const displaySubtitle = subtitle || heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.';
+    // Use heroContent for title and subtitle
+    const displayTitle = heroContent.title || 'Innovative Digital Solutions for Modern Businesses';
+    const displaySubtitle = heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.';
 
-    // Get button info from pageContent or use fallbacks
-    const primaryBtnText = primaryButtonText ||
-        pageContent?.sections?.find(s => s.type === "hero")?.settings?.primaryButton?.text ||
+    // Get button info from pageContent
+    const primaryBtnText =
+        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.text ||
         'GET STARTED';
 
-    const primaryBtnUrl = primaryButtonUrl ||
-        pageContent?.sections?.find(s => s.type === "hero")?.settings?.primaryButton?.url ||
+    const primaryBtnUrl =
+        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.url ||
         '/services';
 
-    const secondaryBtnText = secondaryButtonText ||
-        pageContent?.sections?.find(s => s.type === "hero")?.settings?.secondaryButton?.text;
+    const secondaryBtnText =
+        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.text ||
+        'LEARN MORE';
 
-    const secondaryBtnUrl = secondaryButtonUrl ||
-        pageContent?.sections?.find(s => s.type === "hero")?.settings?.secondaryButton?.url;
+    const secondaryBtnUrl =
+        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.url ||
+        '/#about';
 
     // Use isPageLoading or isHeroLoading as fallback for isLoading
     const showLoading = isPageLoading || isHeroLoading;
@@ -183,19 +178,26 @@ const ModernHero: React.FC<HeroProps> = ({
                 {/* Service Slides Container */}
                 {serviceImages && serviceImages.length > 0 && (
                     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                        <div className="relative w-full h-full">
+                        <div
+                            className="relative w-full h-full"
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
                             {/* Main image with gradient overlay */}
                             <div className="absolute inset-0 z-10">
-                                {serviceImages.map((image, index) => (
+                                {serviceSlides.map((service, index) => (
                                     <div
-                                        key={index}
-                                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+                                        key={service.id || index}
+                                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+                                            }`}
                                     >
                                         <img
-                                            src={image}
-                                            alt={serviceSlides[index % serviceSlides.length]?.title || `Service ${index + 1}`}
+                                            src={
+                                                service.image ||
+                                                serviceImages[index % serviceImages.length]
+                                            }
+                                            alt={service.title}
                                             className="w-full h-full object-cover opacity-40 dark:opacity-30"
-                                            style={{ aspectRatio: '4/3' }}
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
                                     </div>

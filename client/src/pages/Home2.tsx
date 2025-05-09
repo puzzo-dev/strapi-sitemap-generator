@@ -170,23 +170,18 @@ const Home: React.FC = () => {
             {/* Hero Section */}
             {showModernHero ? (
                 <ModernHero
-                    title={isHeroLoading
-                        ? 'Innovative Digital Solutions'
-                        : heroContents[currentHeroIndex]?.title || 'Innovative Digital Solutions'
-                    }
-                    subtitle={isHeroLoading
-                        ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-                        : heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-                    }
-                    primaryButtonText={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.text || t('button.getStarted')}
-                    primaryButtonUrl={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.url || "/services"}
-                    secondaryButtonText={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.text || t('button.learnMore')}
-                    secondaryButtonUrl={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.url || "/#about"}
-                    isLoading={isPageLoading || isHeroLoading}
+                    heroContents={heroContents}
+                    currentHeroIndex={currentHeroIndex}
+                    isHeroLoading={isHeroLoading}
+                    isPageLoading={isPageLoading}
+                    pageContent={pageContent}
                     serviceSlides={serviceSlides}
                     serviceImages={serviceImages}
                     serviceIcons={serviceIcons}
                     currentSlide={currentSlide}
+                    isServicesLoading={isServicesLoading}
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
                     companyLogo={IVarseLogo}
                 />
             ) : (
@@ -205,7 +200,6 @@ const Home: React.FC = () => {
                     handleMouseLeave={handleMouseLeave}
                 />
             )}
-
             {/* Specializations Section */}
             <SpecializationsSection />
 
