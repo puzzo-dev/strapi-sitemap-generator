@@ -60,7 +60,7 @@ const GradientButton: React.FC<GradientButtonProps> = ({
     // Variant styles
     const variantClasses = {
       default: 'gradient-bg text-white hover:shadow-lg hover:shadow-blue-500/20 hover:translate-y-[-2px] active:translate-y-0 active:shadow-md hover:scale-105 before:absolute before:inset-0 before:bg-white/20 before:opacity-0 before:blur-xl hover:before:opacity-100 before:transition-opacity',
-      outline: 'bg-transparent border-2 border-blue-500 text-blue-500 dark:text-blue-400 hover:bg-blue-500/10 hover:translate-y-[-2px] hover:scale-105 active:translate-y-0 hover:border-blue-600 dark:hover:border-blue-300',
+      outline: 'bg-transparent border border-blue-500 text-blue-500 dark:text-blue-400 hover:bg-blue-500/10 hover:translate-y-[-2px] hover:scale-105 active:translate-y-0 hover:border-blue-600 dark:hover:border-blue-300',
       ghost: 'bg-transparent text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:translate-y-[-2px] hover:scale-105 active:translate-y-0',
       light: 'bg-white text-blue-600 hover:bg-gray-50 shadow-md hover:shadow-lg hover:translate-y-[-2px] hover:scale-105 active:translate-y-0'
     };

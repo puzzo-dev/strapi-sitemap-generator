@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'wouter';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Code2, PenTool, Server, Database, Share2, Layers } from 'lucide-react';
+import { ArrowRight, Code2, PenTool, Server, Database, Share2, Layers, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ServiceProps } from '@/lib/types';
 
@@ -24,6 +24,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
         return <Database className="h-6 w-6 text-blue-500 dark:text-blue-400" />;
       case 'fa-share':
         return <Share2 className="h-6 w-6 text-blue-500 dark:text-blue-400" />;
+      case 'fa-chart':
+        return <BarChart3 className="h-6 w-6 text-blue-500 dark:text-blue-400" />;
       default:
         return <Layers className="h-6 w-6 text-blue-500 dark:text-blue-400" />;
     }

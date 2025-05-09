@@ -7,9 +7,9 @@ import { usePageContent, useTeamMembers } from '@/hooks/useStrapiContent';
 const About: React.FC = () => {
   // Fetch page content from Strapi
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('about');
-  
   // Fetch team members from Strapi
   const { data: teamMembers, isLoading: isTeamLoading } = useTeamMembers();
+  const featuresSection = pageContent?.sections?.find(s => s.type === 'features')
   return (
     <>
       {/* Hero Section */}
@@ -182,22 +182,24 @@ const About: React.FC = () => {
           ) : (
             <>
               <div className="text-center mb-16">
+                {/* First, extract the features section to a variable with optional chaining */}
+                
+                
                 <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                   <Award className="h-4 w-4 mr-2" />
-                  {pageContent?.sections?.find(s => s.type === 'features')?.settings?.label || 'Our Core Values'}
+                  {featuresSection?.settings?.label || 'Our Core Values'}
                 </div>
                 <h2 className="section-title">
-                  {pageContent?.sections?.find(s => s.type === 'features')?.title || 'What Drives Us'}
+                  {featuresSection?.title || 'What Drives Us'}
                 </h2>
                 <p className="section-subtitle">
-                  {pageContent?.sections?.find(s => s.type === 'features')?.subtitle ||
-                    'These principles guide our decisions and define who we are as a company.'}
+                  {featuresSection?.subtitle || 'These principles guide our decisions and define who we are as a company.'}
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                {(pageContent?.sections?.find(s => s.type === 'features')?.items?.length ? 
-                  pageContent.sections.find(s => s.type === 'features')?.items :
+                {((featuresSection?.items && featuresSection.items.length > 0) ? 
+                  featuresSection.items :
                   [
                     {
                       id: 1,
@@ -218,8 +220,8 @@ const About: React.FC = () => {
                       icon: "users"
                     }
                   ]
-                ).map((value: any, index: number) => (
-                  <div key={value.id || index} className="card p-8 hover-lift">
+                  ).map((value: any, index: number) => (
+                    <div key={value.id || index} className="card p-8 hover-lift">
                     <div className={`h-14 w-14 rounded-xl bg-gradient-to-br ${
                       index === 0 ? 'from-blue-400 to-blue-600 shadow-blue-200 dark:shadow-blue-900/20' :
                       index === 1 ? 'from-indigo-400 to-indigo-600 shadow-indigo-200 dark:shadow-indigo-900/20' :
@@ -328,7 +330,8 @@ const About: React.FC = () => {
           <div className="mt-12 text-center">
             <GradientButton 
               href={pageContent?.sections?.find(s => s.type === 'team')?.settings?.cta?.url || "/careers"} 
-              variant="outline" 
+              variant="outline"
+              className='w-60 mx-auto' 
               endIcon={<ArrowRight />}
             >
               {pageContent?.sections?.find(s => s.type === 'team')?.settings?.cta?.text || "Join Our Team"}

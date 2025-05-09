@@ -6,7 +6,7 @@
 // Common organization details
 const organization = {
   "@type": "Organization",
-  "name": "I-Varse Limited",
+  "name": "I-VARSE Technologies",
   "url": "https://www.ivarse.com",
   "logo": "https://www.ivarse.com/logo.png",
   "sameAs": [
@@ -26,7 +26,7 @@ export const generateWebsiteSchema = () => {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "url": "https://www.ivarse.com",
-    "name": "I-Varse Limited",
+    "name": "I-VARSE Technologies",
     "description": "Innovative technology solutions for businesses and individuals",
     "potentialAction": {
       "@type": "SearchAction",
@@ -45,7 +45,7 @@ export const generateOrganizationSchema = () => {
   return {
     "@context": "https://schema.org",
     ...organization,
-    "description": "I-Varse Limited provides cutting-edge technology solutions to empower businesses and individuals.",
+    "description": "I-VARSE Technologies provides cutting-edge technology solutions to empower businesses and individuals.",
     "foundingDate": "2018",
     "address": {
       "@type": "PostalAddress",
@@ -136,7 +136,7 @@ export const generateServiceSchema = (service: {
     ...(service.image ? { "image": service.image } : {}),
     "provider": {
       "@type": "Organization",
-      "name": service.provider || "I-Varse Limited",
+      "name": service.provider || "I-VARSE Technologies",
       "url": organization.url,
       "logo": organization.logo,
       "sameAs": organization.sameAs
@@ -180,7 +180,7 @@ export const generateArticleSchema = (article: {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "I-Varse Limited",
+      "name": "I-VARSE Technologies",
       "logo": {
         "@type": "ImageObject",
         "url": "https://www.ivarse.com/logo.png"
@@ -261,7 +261,7 @@ export const generateJobPostingSchema = (job: {
     "employmentType": job.employmentType,
     "hiringOrganization": {
       "@type": "Organization",
-      "name": job.hiringOrganization || "I-Varse Limited",
+      "name": job.hiringOrganization || "I-VARSE Technologies",
       "sameAs": "https://www.ivarse.com"
     },
     "jobLocation": {
@@ -301,7 +301,7 @@ export const generateContactPageSchema = () => {
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    "description": "Contact I-Varse Limited for innovative technology solutions",
+    "description": "Contact I-VARSE Technologies for innovative technology solutions",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.ivarse.com/contact"

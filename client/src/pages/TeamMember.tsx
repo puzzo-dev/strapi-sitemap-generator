@@ -99,29 +99,29 @@ Sarah regularly contributes to our blog, sharing insights on cloud computing tre
 const TeamMemberPage: React.FC = () => {
   const [, params] = useRoute('/team/:id');
   const memberId = params?.id ? parseInt(params.id, 10) : -1;
-  
+
   // Fetch team members from Strapi
   const { data: apiTeamMembers, isLoading } = useTeamMembers();
-  
+
   // Get base team member from API
   const apiMember = apiTeamMembers?.find(member => member.id === memberId);
-  
+
   // Get extended data
   const extendedMemberData = extendedTeamMembers.find(member => member.id === memberId);
-  
+
   // Combine API data with extended data
-  const member = apiMember 
-    ? { ...extendedMemberData, ...apiMember } 
+  const member = apiMember
+    ? { ...extendedMemberData, ...apiMember }
     : extendedMemberData;
-  
+
   // Combine all team members (for related team members)
-  const allTeamMembers = apiTeamMembers?.length 
+  const allTeamMembers = apiTeamMembers?.length
     ? apiTeamMembers.map(m => {
-        const extended = extendedTeamMembers.find(ext => ext.id === m.id);
-        return { ...extended, ...m };
-      })
+      const extended = extendedTeamMembers.find(ext => ext.id === m.id);
+      return { ...extended, ...m };
+    })
     : extendedTeamMembers;
-  
+
   // Handle not found case
   if (!member) {
     return (
@@ -141,9 +141,9 @@ const TeamMemberPage: React.FC = () => {
       </div>
     );
   }
-  
+
   // Get related team members if they exist
-  const relatedMembers = member.relatedTeamMembers 
+  const relatedMembers = member.relatedTeamMembers
     ? member.relatedTeamMembers.map(id => allTeamMembers.find(m => m.id === id)).filter(Boolean)
     : allTeamMembers.filter(m => m.id !== member.id).slice(0, 3);
 
@@ -164,28 +164,28 @@ const TeamMemberPage: React.FC = () => {
               <span>Back to Team</span>
             </a>
           </Link>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             <div className="md:col-span-4 lg:col-span-3">
               <div className="relative w-48 h-48 md:w-full md:h-auto aspect-square mx-auto md:mx-0 rounded-full overflow-hidden border-4 border-white dark:border-[#132f4c] shadow-xl">
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
+                <img
+                  src={member.image}
+                  alt={member.name}
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
-            
+
             <div className="md:col-span-8 lg:col-span-9 text-center md:text-left">
               <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-2">{member.name}</h1>
               <div className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/30 px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-300 mb-4">
                 <Briefcase className="h-4 w-4 mr-2" />
                 {member.role}
               </div>
-              
+
               <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
                 {member.expertise && member.expertise.map((skill, index) => (
-                  <span 
+                  <span
                     key={index}
                     className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300"
                   >
@@ -193,52 +193,52 @@ const TeamMemberPage: React.FC = () => {
                   </span>
                 ))}
               </div>
-              
+
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 {member.socialMedia?.linkedin && (
-                  <a 
-                    href={member.socialMedia.linkedin} 
-                    target="_blank" 
+                  <a
+                    href={member.socialMedia.linkedin}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
                   >
                     <Linkedin className="h-5 w-5" />
                   </a>
                 )}
-                
+
                 {member.socialMedia?.twitter && (
-                  <a 
-                    href={member.socialMedia.twitter} 
-                    target="_blank" 
+                  <a
+                    href={member.socialMedia.twitter}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
                   >
                     <Twitter className="h-5 w-5" />
                   </a>
                 )}
-                
+
                 {member.socialMedia?.github && (
-                  <a 
-                    href={member.socialMedia.github} 
-                    target="_blank" 
+                  <a
+                    href={member.socialMedia.github}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
                   >
                     <Github className="h-5 w-5" />
                   </a>
                 )}
-                
+
                 {member.email && (
-                  <a 
+                  <a
                     href={`mailto:${member.email}`}
                     className="p-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
                   >
                     <Mail className="h-5 w-5" />
                   </a>
                 )}
-                
+
                 {member.phone && (
-                  <a 
+                  <a
                     href={`tel:${member.phone}`}
                     className="p-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
                   >
@@ -264,14 +264,14 @@ const TeamMemberPage: React.FC = () => {
                   {member.bio?.split('\n\n').map((paragraph, index) => (
                     <p key={index}>{paragraph}</p>
                   )) || (
-                    <p className="text-gray-600 dark:text-gray-300">
-                      {member.name} is an experienced {member.role?.toLowerCase() || member.position?.toLowerCase() || 'professional'} at I-Varse Limited
-                      {member.expertise && member.expertise.length > 0 ? `, specializing in ${member.expertise.join(', ').toLowerCase()}.` : '.'}
-                    </p>
-                  )}
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {member.name} is an experienced {member.role?.toLowerCase() || member.position?.toLowerCase() || 'professional'} at I-VARSE Technologies
+                        {member.expertise && member.expertise.length > 0 ? `, specializing in ${member.expertise.join(', ').toLowerCase()}.` : '.'}
+                      </p>
+                    )}
                 </div>
               </div>
-              
+
               {/* Projects */}
               {member.projects && member.projects.length > 0 && (
                 <div className="card p-6 md:p-8 mb-8">
@@ -290,7 +290,7 @@ const TeamMemberPage: React.FC = () => {
                   </div>
                 </div>
               )}
-              
+
               {/* Contact CTA */}
               <div className="card p-6 md:p-8 gradient-bg text-white">
                 <h2 className="text-2xl font-bold mb-4">Work with {member.name?.split(' ')[0] || 'Our Team'}</h2>
@@ -307,7 +307,7 @@ const TeamMemberPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Sidebar */}
             <div className="lg:col-span-4">
               {/* Info card */}
@@ -325,7 +325,7 @@ const TeamMemberPage: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  
+
                   {member.joinDate && (
                     <div className="flex items-start">
                       <div className="flex-shrink-0 mt-1">
@@ -337,7 +337,7 @@ const TeamMemberPage: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  
+
                   {member.email && (
                     <div className="flex items-start">
                       <div className="flex-shrink-0 mt-1">
@@ -351,7 +351,7 @@ const TeamMemberPage: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  
+
                   {member.phone && (
                     <div className="flex items-start">
                       <div className="flex-shrink-0 mt-1">
@@ -367,7 +367,7 @@ const TeamMemberPage: React.FC = () => {
                   )}
                 </div>
               </div>
-              
+
               {/* Related team members */}
               {relatedMembers.length > 0 && (
                 <div className="card p-6 md:p-8">
@@ -376,9 +376,9 @@ const TeamMemberPage: React.FC = () => {
                     {relatedMembers.map(related => related && (
                       <Link key={related.id} href={`/team/${related.id}`}>
                         <a className="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                          <img 
-                            src={related.image} 
-                            alt={related.name} 
+                          <img
+                            src={related.image}
+                            alt={related.name}
                             className="w-12 h-12 rounded-full object-cover mr-4"
                           />
                           <div>
@@ -390,7 +390,7 @@ const TeamMemberPage: React.FC = () => {
                       </Link>
                     ))}
                   </div>
-                  
+
                   <div className="mt-6">
                     <Link href="/team">
                       <a className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:underline">

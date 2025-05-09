@@ -75,7 +75,7 @@ const resources = {
         error: 'There was an error sending your message. Please try again.',
       },
       footer: {
-        copyright: '© {{year}} I-Varse Limited. All rights reserved.',
+        copyright: '© {{year}} I-VARSE Technologies. All rights reserved.',
         address: 'Address',
         phone: 'Phone',
         email: 'Email',
@@ -201,7 +201,7 @@ const resources = {
         error: 'Àṣìṣe wà níbi fífi ọ̀rọ̀ rẹ ránṣẹ́. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan síi.',
       },
       footer: {
-        copyright: '© {{year}} I-Varse Limited. A ti fi àwọn ẹ̀tọ́ gbogbo pamọ́.',
+        copyright: '© {{year}} I-VARSE Technologies. A ti fi àwọn ẹ̀tọ́ gbogbo pamọ́.',
         address: 'Àdírẹ́ẹ̀sì',
         phone: 'Fóònù',
         email: 'Ímeèlì',
@@ -284,7 +284,7 @@ const resources = {
         error: 'E nwere nsogbu. Biko nwaa ọzọ.',
       },
       footer: {
-        copyright: '© {{year}} I-Varse Limited. Echekwara ikike niile.',
+        copyright: '© {{year}} I-VARSE Technologies. Echekwara ikike niile.',
         address: 'Adreesị',
         phone: 'Ekwentị',
         email: 'Email',
@@ -367,7 +367,7 @@ const resources = {
         error: "Une erreur est produite. Veuillez réessayer.",
       },
       footer: {
-        copyright: '© {{year}} I-Varse Limited. Tous droits réservés.',
+        copyright: '© {{year}} I-VARSE Technologies. Tous droits réservés.',
         address: 'Adresse',
         phone: 'Téléphone',
         email: 'Email',
@@ -450,7 +450,7 @@ const resources = {
         error: 'Hubo un error al enviar su mensaje. Por favor, inténtelo de nuevo.',
       },
       footer: {
-        copyright: '© {{year}} I-Varse Limited. Todos los derechos reservados.',
+        copyright: '© {{year}} I-VARSE Technologies. Todos los derechos reservados.',
         address: 'Dirección',
         phone: 'Teléfono',
         email: 'Correo',
@@ -534,7 +534,7 @@ const resources = {
         error: 'An sami kuskure wajen aika saƙonku. Da fatan za a sake kokarin.',
       },
       footer: {
-        copyright: '© {{year}} I-Varse Limited. Duk haƙƙoƙin mallaka.',
+        copyright: '© {{year}} I-VARSE Technologies. Duk haƙƙoƙin mallaka.',
         address: 'Adreshi',
         phone: 'Waya',
         email: 'Imel',
@@ -661,7 +661,7 @@ const resources = {
         error: 'Kulikuwa na hitilafu wakati wa kutuma ujumbe wako. Tafadhali jaribu tena.',
       },
       footer: {
-        copyright: '© {{year}} I-Varse Limited. Haki zote zimehifadhiwa.',
+        copyright: '© {{year}} I-VARSE Technologies. Haki zote zimehifadhiwa.',
         address: 'Anwani',
         phone: 'Simu',
         email: 'Barua Pepe',
@@ -700,7 +700,7 @@ i18n
 i18n.on('languageChanged', (lng) => {
   // Set the current language for Strapi API calls
   setCurrentLanguage(lng);
-  
+
   // Additional invalidation logic could be added here
   // For example, we could trigger a refetch of all content when language changes
 });

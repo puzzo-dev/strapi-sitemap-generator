@@ -1,15 +1,15 @@
-import { 
-  products as localProducts, 
-  services as localServices, 
-  testimonials as localTestimonials, 
+import {
+  products as localProducts,
+  services as localServices,
+  testimonials as localTestimonials,
   clientLogos as localClientLogos,
   jobListings as localJobListings,
   benefits as localBenefits
 } from '@/lib/data';
-import { 
-  ProductProps, 
-  ServiceProps, 
-  TestimonialProps, 
+import {
+  ProductProps,
+  ServiceProps,
+  TestimonialProps,
   ContactFormData,
   NavItem,
   SocialLink,
@@ -23,7 +23,8 @@ import {
   BlogPost,
   BlogCategory,
   BlogAuthor,
-  BlogComment
+  BlogComment,
+  FooterProps
 } from '@/lib/types';
 import type { SiteContent } from '@shared/schema';
 import { apiRequest } from './queryClient';
@@ -46,7 +47,7 @@ let currentLanguage = 'en';
 export function setCurrentLanguage(lang: string) {
   currentLanguage = lang;
   console.log('Language changed to:', lang);
-  
+
   // Invalidate and refetch data if needed
   // Here we could trigger refetches for any data that depends on language
 }
@@ -71,15 +72,15 @@ async function fetchData<T>(endpoint: string, fallbackData: T): Promise<T> {
       // Use Strapi API with language param
       const locale = currentLanguage;
       const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-      
+
       const response = await fetch(`${STRAPI_URL}/api/${endpoint}?populate=*${localeSuffix}`, {
         headers: strapiHeaders
       });
-      
+
       if (!response.ok) {
         throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
       }
-      
+
       const result = await response.json();
       return result.data?.map((item: any) => ({
         id: item.id,
@@ -113,15 +114,15 @@ export async function getProductById(id: number): Promise<ProductProps | undefin
       // Use Strapi API with language param
       const locale = currentLanguage;
       const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-      
+
       const response = await fetch(`${STRAPI_URL}/api/products/${id}?populate=*${localeSuffix}`, {
         headers: strapiHeaders
       });
-      
+
       if (!response.ok) {
         throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
       }
-      
+
       const result = await response.json();
       return {
         id: result.data.id,
@@ -155,15 +156,15 @@ export async function getServiceById(id: number): Promise<ServiceProps | undefin
       // Use Strapi API with language param
       const locale = currentLanguage;
       const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-      
+
       const response = await fetch(`${STRAPI_URL}/api/services/${id}?populate=*${localeSuffix}`, {
         headers: strapiHeaders
       });
-      
+
       if (!response.ok) {
         throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
       }
-      
+
       const result = await response.json();
       return {
         id: result.data.id,
@@ -194,7 +195,7 @@ export async function getNavItems(): Promise<NavItem[]> {
     { id: 4, label: 'About', url: '/about', order: 4 },
     { id: 5, label: 'Contact', url: '/contact', order: 5 },
   ];
-  
+
   return fetchData<NavItem[]>('nav-items', defaultNavItems);
 }
 
@@ -207,7 +208,7 @@ export async function getSocialLinks(): Promise<SocialLink[]> {
     { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
     { id: 3, platform: 'Facebook', url: 'https://facebook.com', icon: 'facebook' }
   ];
-  
+
   return fetchData<SocialLink[]>('social-links', defaultSocialLinks);
 }
 
@@ -216,9 +217,9 @@ export async function getSocialLinks(): Promise<SocialLink[]> {
  */
 export async function getFooterColumns(): Promise<FooterColumn[]> {
   const defaultFooterColumns: FooterColumn[] = [
-    { 
-      id: 1, 
-      title: 'Company', 
+    {
+      id: 1,
+      title: 'Company',
       links: [
         { label: 'About Us', url: '/about' },
         { label: 'Careers', url: '/careers' },
@@ -227,9 +228,9 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
         { label: 'Our Team', url: '/about#team' }
       ]
     },
-    { 
-      id: 2, 
-      title: 'Services', 
+    {
+      id: 2,
+      title: 'Services',
       links: [
         { label: 'Web Development', url: '/services/web-development' },
         { label: 'Mobile App Development', url: '/services/mobile-development' },
@@ -239,9 +240,9 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
         { label: 'View All Services', url: '/services' }
       ]
     },
-    { 
-      id: 3, 
-      title: 'Resources', 
+    {
+      id: 3,
+      title: 'Resources',
       links: [
         { label: 'Blog', url: '/blog' },
         { label: 'Documentation', url: '/docs' },
@@ -249,7 +250,7 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
       ]
     }
   ];
-  
+
   return fetchData<FooterColumn[]>('footer-columns', defaultFooterColumns);
 }
 
@@ -267,12 +268,12 @@ export async function getSiteConfig(): Promise<SiteConfig> {
     logoDark: '/assets/I-VARSELogo4@3x.png',
     favicon: '/assets/I-VARSEIcon1@3x.png'
   };
-  
+
   try {
     if (USE_LOCAL_API) {
       // First attempt to get from internal API
       try {
-        const result = await apiRequest<{value: any}>(`/api/site-config`);
+        const result = await apiRequest<{ value: any }>(`/api/site-config`);
         if (result && result.value) {
           const config = result.value as unknown as SiteConfig;
           return config;
@@ -287,20 +288,20 @@ export async function getSiteConfig(): Promise<SiteConfig> {
       // Use Strapi API with language param
       const locale = currentLanguage;
       const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-      
+
       const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*${localeSuffix}`, {
         headers: strapiHeaders
       });
-      
+
       if (!response.ok) {
         throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
       }
-      
+
       const result = await response.json();
       if (!result.data) {
         return defaultSiteConfig;
       }
-      
+
       return {
         id: result.data.id,
         ...result.data.attributes
@@ -332,20 +333,20 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
       // Use Strapi API with language param
       const locale = currentLanguage;
       const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-      
+
       const response = await fetch(`${STRAPI_URL}/api/pages?filters[slug][$eq]=${slug}&populate=deep${localeSuffix}`, {
         headers: strapiHeaders
       });
-      
+
       if (!response.ok) {
         throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
       }
-      
+
       const result = await response.json();
       if (!result.data || result.data.length === 0) {
         return null;
       }
-      
+
       return {
         id: result.data[0].id,
         ...result.data[0].attributes
@@ -362,29 +363,36 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
  */
 export async function getTeamMembers(): Promise<TeamMember[]> {
   const defaultTeamMembers: TeamMember[] = [
-    { 
-      id: 1, 
-      name: 'John Doe', 
-      position: 'CEO', 
+    {
+      id: 1,
+      name: 'John Doe',
+      position: 'CEO',
       bio: 'Experienced leader with a passion for technology innovation.',
       image: 'https://source.unsplash.com/random/300x300/?portrait'
     },
-    { 
-      id: 2, 
-      name: 'Jane Smith', 
-      position: 'CTO', 
+    {
+      id: 2,
+      name: 'Jane Smith',
+      position: 'CTO',
       bio: 'Tech enthusiast with deep expertise in software architecture.',
       image: 'https://source.unsplash.com/random/300x300/?portrait'
     },
-    { 
-      id: 3, 
-      name: 'Alex Johnson', 
-      position: 'Design Lead', 
+    {
+      id: 3,
+      name: 'Alex Johnson',
+      position: 'Design Lead',
+      bio: 'Creative professional focused on delivering exceptional user experiences.',
+      image: 'https://source.unsplash.com/random/300x300/?portrait'
+    },
+    {
+      id: 3,
+      name: 'Alex Johnson',
+      position: 'Design Lead',
       bio: 'Creative professional focused on delivering exceptional user experiences.',
       image: 'https://source.unsplash.com/random/300x300/?portrait'
     }
   ];
-  
+
   return fetchData<TeamMember[]>('team-members', defaultTeamMembers);
 }
 
@@ -396,14 +404,14 @@ export async function submitContactForm(data: ContactFormData): Promise<any> {
     const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
     const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
     const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
-    
+
     if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
       console.warn('erpNext credentials not configured, using fallback');
       // Simulate successful submission with a delay
       await new Promise(resolve => setTimeout(resolve, 800));
       return { success: true, message: 'Form submitted successfully' };
     }
-    
+
     // Format data for erpNext API
     const erpNextData = {
       doctype: 'Lead',
@@ -413,7 +421,7 @@ export async function submitContactForm(data: ContactFormData): Promise<any> {
       notes: data.message,
       source: 'Website'
     };
-    
+
     // Call erpNext API
     const response = await fetch(`${ERP_NEXT_URL}/api/resource/Lead`, {
       method: 'POST',
@@ -423,11 +431,11 @@ export async function submitContactForm(data: ContactFormData): Promise<any> {
       },
       body: JSON.stringify(erpNextData)
     });
-    
+
     if (!response.ok) {
       throw new Error(`erpNext API error: ${response.status} ${response.statusText}`);
     }
-    
+
     const result = await response.json();
     return { success: true, data: result };
   } catch (error) {
@@ -444,14 +452,14 @@ export async function subscribeToNewsletter(email: string): Promise<any> {
     const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
     const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
     const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
-    
+
     if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
       console.warn('erpNext credentials not configured, using fallback');
       // Simulate successful subscription with a delay
       await new Promise(resolve => setTimeout(resolve, 800));
       return { success: true, message: 'Subscription successful' };
     }
-    
+
     // Format data for erpNext API - using Email Group Subscriber
     const erpNextData = {
       doctype: 'Email Group Member',
@@ -459,7 +467,7 @@ export async function subscribeToNewsletter(email: string): Promise<any> {
       email: email,
       unsubscribed: 0
     };
-    
+
     // Call erpNext API
     const response = await fetch(`${ERP_NEXT_URL}/api/resource/Email Group Member`, {
       method: 'POST',
@@ -469,11 +477,11 @@ export async function subscribeToNewsletter(email: string): Promise<any> {
       },
       body: JSON.stringify(erpNextData)
     });
-    
+
     if (!response.ok) {
       throw new Error(`erpNext API error: ${response.status} ${response.statusText}`);
     }
-    
+
     const result = await response.json();
     return { success: true, data: result };
   } catch (error) {
@@ -505,19 +513,19 @@ export async function scheduleAppointment(data: {
     const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
     const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
     const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
-    
+
     if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
       console.warn('erpNext credentials not configured, using fallback');
       // Simulate successful booking with a delay
       await new Promise(resolve => setTimeout(resolve, 800));
       return { success: true, message: 'Appointment scheduled successfully' };
     }
-    
+
     // Format data for erpNext API - using Event doctype
     const appointmentDate = new Date(`${data.date}T${data.time}`);
     // Add 1 hour for appointment length
     const endDate = new Date(appointmentDate.getTime() + 60 * 60 * 1000);
-    
+
     const erpNextData = {
       doctype: 'Event',
       subject: `Consultation: ${data.topic}`,
@@ -535,7 +543,7 @@ export async function scheduleAppointment(data: {
         }
       ]
     };
-    
+
     // Call erpNext API
     const response = await fetch(`${ERP_NEXT_URL}/api/resource/Event`, {
       method: 'POST',
@@ -545,11 +553,11 @@ export async function scheduleAppointment(data: {
       },
       body: JSON.stringify(erpNextData)
     });
-    
+
     if (!response.ok) {
       throw new Error(`erpNext API error: ${response.status} ${response.statusText}`);
     }
-    
+
     const result = await response.json();
     return { success: true, data: result };
   } catch (error) {
@@ -592,7 +600,7 @@ export async function getBenefits(): Promise<Benefit[]> {
  */
 
 // Base URL for ERPNext API - should be stored in an environment variable
-const ERPNEXT_API_BASE_URL = import.meta.env.VITE_ERPNEXT_API_URL || 'https://erp.ivarse.com';
+const ERPNEXT_API_BASE_URL = import.meta.env.VITE_ERPNEXT_API_URL || 'https://i-erp.ivarse.com';
 
 /**
  * Fetch data from ERPNext API with error handling
@@ -628,22 +636,22 @@ async function fetchERPNextData<T>(endpoint: string, fallbackData: T): Promise<T
 /**
  * Get all blog posts from ERPNext API
  */
-export async function getBlogPosts(params: { 
-  limit?: number; 
-  category?: string; 
+export async function getBlogPosts(params: {
+  limit?: number;
+  category?: string;
   featured?: boolean;
   tag?: string;
 } = {}): Promise<BlogPost[]> {
   // Import dummy blog posts
   const { blogPosts } = await import('./data');
-  
+
   // Create query parameters
   const queryParams = new URLSearchParams();
   if (params.limit) queryParams.append('limit', params.limit.toString());
   if (params.category) queryParams.append('category', params.category);
   if (params.featured !== undefined) queryParams.append('featured', params.featured.toString());
   if (params.tag) queryParams.append('tag', params.tag);
-  
+
   const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
 
   // Use blog posts from data.ts as fallback
@@ -660,31 +668,31 @@ function filterBlogPosts(posts: BlogPost[], params: {
   tag?: string;
 } = {}): BlogPost[] {
   let filteredPosts = [...posts];
-  
+
   // Filter by category
   if (params.category) {
-    filteredPosts = filteredPosts.filter(post => 
+    filteredPosts = filteredPosts.filter(post =>
       post.blog_category.toLowerCase() === params.category?.toLowerCase()
     );
   }
-  
+
   // Filter by featured
   if (params.featured !== undefined) {
     filteredPosts = filteredPosts.filter(post => post.featured === params.featured);
   }
-  
+
   // Filter by tag
   if (params.tag) {
-    filteredPosts = filteredPosts.filter(post => 
+    filteredPosts = filteredPosts.filter(post =>
       post.tags?.some(tag => tag.toLowerCase() === params.tag?.toLowerCase())
     );
   }
-  
+
   // Limit results
   if (params.limit && params.limit > 0) {
     filteredPosts = filteredPosts.slice(0, params.limit);
   }
-  
+
   return filteredPosts;
 }
 
@@ -694,10 +702,10 @@ function filterBlogPosts(posts: BlogPost[], params: {
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   // Import dummy blog posts
   const { blogPosts } = await import('./data');
-  
+
   // Find matching post in dummy data
   const dummyPost = blogPosts.find(post => post.slug === slug) || null;
-  
+
   // Use the matching post from dummy data as fallback
   return fetchERPNextData<BlogPost | null>(`blogger/posts/${slug}`, dummyPost);
 }
@@ -708,7 +716,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 export async function getBlogCategories(): Promise<BlogCategory[]> {
   // Import dummy blog categories
   const { blogCategories } = await import('./data');
-  
+
   // Use blog categories from data.ts as fallback
   return fetchERPNextData<BlogCategory[]>('blogger/categories', blogCategories);
 }
@@ -755,4 +763,100 @@ export async function submitBlogComment(postId: string, comment: {
 export async function getBlogComments(postId: string): Promise<BlogComment[]> {
   // Use empty array as fallback
   return fetchERPNextData<BlogComment[]>(`blogger/posts/${postId}/comments`, []);
+}
+
+/**
+ * Get footer data from API
+ */
+export async function getFooter(): Promise<FooterProps> {
+  const defaultFooter: FooterProps = {
+    companyDescription: 'Leading digital innovation company providing premium web development and IT consulting services for businesses looking to transform their digital presence.',
+    contactAddress: '5 Adams Street, Off Nnamdi Rd, Surulere, Lagos, Nigeria',
+    contactPhone: '+234 123 456 7890',
+    contactEmail: 'contact@i-varse.com',
+    socialLinks: [
+      { id: 1, platform: 'Twitter', url: 'https://twitter.com', icon: 'twitter' },
+      { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
+      { id: 3, platform: 'Facebook', url: 'https://facebook.com', icon: 'facebook' }
+    ],
+    columns: [
+      {
+        id: 1,
+        title: 'Company',
+        links: [
+          { label: 'About Us', url: '/about' },
+          { label: 'Services', url: '/services' },
+          { label: 'Products', url: '/products' },
+          { label: 'Insights', url: '/blog' },
+          { label: 'Careers', url: '/careers' },
+          { label: 'Contact', url: '/contact' },
+          { label: 'Our Team', url: '/about#team' },
+          { label: 'FAQ', url: '/faq' },
+          { label: 'Insights Pages', url: '/blog' }
+        ]
+      },
+      {
+        id: 2,
+        title: 'Services',
+        links: [
+          { label: 'Web Development', url: '/services/web-development' },
+          { label: 'Mobile App Development', url: '/services/mobile-development' },
+          { label: 'Cloud Infrastructure', url: '/services/cloud-infrastructure' },
+          { label: 'IT Consulting', url: '/services/consulting' },
+          { label: 'Digital Marketing', url: '/services/digital-marketing' },
+          { label: 'UI/UX Design', url: '/services/ui-ux-design' },
+          { label: 'AI Solutions', url: '/services/ai-solutions' },
+          { label: 'ERP Integration', url: '/services/erp-integration' },
+          { label: 'View All Services', url: '/services' }
+        ]
+      }
+    ],
+    legalLinks: [
+      { label: 'Terms of Service', url: '/terms' },
+      { label: 'Privacy Policy', url: '/privacy' },
+      { label: 'Cookie Policy', url: '/cookies' },
+      { label: 'Accessibility', url: '/accessibility' },
+      { label: 'Sitemap', url: '/sitemap' }
+    ],
+    companyName: 'I-VARSE Technologies'
+  };
+
+  try {
+    if (USE_LOCAL_API) {
+      try {
+        const data = await apiRequest<FooterProps>(`/api/footer`);
+        return data;
+      } catch (e) {
+        console.warn('Error fetching footer from internal API:', e);
+        return defaultFooter;
+      }
+    } else if (!STRAPI_API_TOKEN) {
+      return defaultFooter;
+    } else {
+      // Use Strapi API with language param
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+      const response = await fetch(`${STRAPI_URL}/api/footer?populate=deep${localeSuffix}`, {
+        headers: strapiHeaders
+      });
+
+      if (!response.ok) {
+        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      if (!result.data) {
+        return defaultFooter;
+      }
+
+      return {
+        id: result.data.id,
+        ...result.data.attributes
+      };
+    }
+  } catch (error) {
+    console.warn('Error fetching footer:', error);
+    return defaultFooter;
+  }
 }

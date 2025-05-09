@@ -88,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => {} }) => {
           
           {/* Desktop menu */}
           <div className="hidden md:flex md:items-center">
-            <div className="flex flex-wrap items-center space-x-1 md:space-x-1 lg:space-x-2 xl:space-x-4 justify-end">
+            <div className="flex flex-wrap items-center space-x-2 md:space-x-2 lg:space-x-3 xl:space-x-5 justify-end">
               {/* Always display these core navigation links */}
               <Link href="/">
                 <div className="cursor-pointer">

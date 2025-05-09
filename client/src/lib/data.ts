@@ -1,4 +1,4 @@
-import { ServiceProps, ProductProps, TestimonialProps } from './types';
+import { ServiceProps, ProductProps, TestimonialProps, FooterProps } from './types';
 
 export const services: ServiceProps[] = [
   {
@@ -27,6 +27,12 @@ export const services: ServiceProps[] = [
   },
   {
     id: 5,
+    title: "ERP SOLUTIONS",
+    description: "Streamline your business operations with our comprehensive ERP solutions. We implement customized enterprise resource planning systems that integrate all aspects of your business for improved efficiency and productivity.",
+    icon: "fa-cogs"
+  },
+  {
+    id: 6,
     title: "CONTENT WRITING",
     description: "Engage your audience with compelling, SEO-optimized content. Our professional writers create blog posts, website copy, and marketing materials that convert readers into customers.",
     icon: "fa-pen-fancy"
@@ -460,3 +466,57 @@ export const blogCategories = [
     description: "DevOps culture, practices, tools, and platform engineering"
   }
 ];
+// Add this to the existing data
+
+export const footerData: FooterProps = {
+  companyDescription: 'Leading digital innovation company providing premium web development and IT consulting services for businesses looking to transform their digital presence.',
+  contactAddress: '5 Adams Street, Off Nnamdi Rd, Surulere, Lagos, Nigeria',
+  contactPhone: '+234 123 456 7890',
+  contactEmail: 'contact@i-varse.com',
+  socialLinks: [
+    { id: 1, platform: 'Twitter', url: 'https://twitter.com', icon: 'twitter' },
+    { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
+    { id: 3, platform: 'Facebook', url: 'https://facebook.com', icon: 'facebook' },
+    { id: 4, platform: 'Instagram', url: 'https://instagram.com', icon: 'instagram' }
+  ],
+  columns: [
+    {
+      id: 1,
+      title: 'Company',
+      links: [
+        { label: 'About Us', url: '/about' },
+        { label: 'Services', url: '/services' },
+        { label: 'Products', url: '/products' },
+        { label: 'Insights', url: '/blog' },
+        { label: 'Careers', url: '/careers' },
+        { label: 'Contact', url: '/contact' },
+        { label: 'Our Team', url: '/about#team' },
+        { label: 'FAQ', url: '/faq' },
+        { label: 'Insights Pages', url: '/blog' }
+      ]
+    },
+    {
+      id: 2,
+      title: 'Services',
+      links: [
+        { label: 'Web Development', url: '/services/web-development' },
+        { label: 'Mobile App Development', url: '/services/mobile-development' },
+        { label: 'Cloud Infrastructure', url: '/services/cloud-infrastructure' },
+        { label: 'IT Consulting', url: '/services/consulting' },
+        { label: 'Digital Marketing', url: '/services/digital-marketing' },
+        { label: 'UI/UX Design', url: '/services/ui-ux-design' },
+        { label: 'AI Solutions', url: '/services/ai-solutions' },
+        { label: 'ERP Integration', url: '/services/erp-integration' },
+        { label: 'View All Services', url: '/services' }
+      ]
+    }
+  ],
+  legalLinks: [
+    { label: 'Terms of Service', url: '/terms' },
+    { label: 'Privacy Policy', url: '/privacy' },
+    { label: 'Cookie Policy', url: '/cookies' },
+    { label: 'Accessibility', url: '/accessibility' },
+    { label: 'Sitemap', url: '/sitemap' }
+  ],
+  companyName: 'I-VARSE Technologies'
+};

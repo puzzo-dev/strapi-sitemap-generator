@@ -1,4 +1,4 @@
-Build a modern, responsive, and elegant company website for **I-Varse Limited** using:
+Build a modern, responsive, and elegant company website for **I-VARSE Technologies** using:
 
 - **React + TailwindCSS** (for the frontend UI)
 - **Strapi CMS** (to dynamically manage all page content)

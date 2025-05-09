@@ -19,14 +19,15 @@ import {
   getBlogPosts,
   getBlogPostBySlug,
   getBlogCategories,
+  getFooter,
   getBlogComments
 } from '@/lib/strapi';
-import { 
-  NavItem, 
-  SocialLink, 
-  FooterColumn, 
-  SiteConfig, 
-  PageContent, 
+import {
+  NavItem,
+  SocialLink,
+  FooterColumn,
+  SiteConfig,
+  PageContent,
   TeamMember,
   ProductProps,
   ServiceProps,
@@ -36,7 +37,8 @@ import {
   Benefit,
   BlogPost,
   BlogCategory,
-  BlogComment
+  BlogComment,
+  FooterProps
 } from '@/lib/types';
 
 /**
@@ -95,41 +97,41 @@ export function usePageContent(slug: string) {
  */
 export function useDynamicHeroContent() {
   const { data: pageContent, isLoading, error } = usePageContent('home');
-  
+
   // Extract all hero sections if they exist, otherwise return a default entry
   const heroContents = useMemo(() => {
     if (!pageContent || !pageContent.sections) {
-      return [{ 
-        title: 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES',
+      return [{
+        title: 'Innovative Digital Solutions for Modern Businesses',
         subtitle: 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
       }];
     }
-    
+
     // Get all hero sections from the CMS
     // First, find all hero sections
-    const primaryHeroSections = pageContent.sections.filter(section => 
+    const primaryHeroSections = pageContent.sections.filter(section =>
       section.type === 'hero'
     );
-    
+
     // Then try to find any additional sections that might have hero content variants
     // This checks for sections that might be tagged differently but contain hero content
-    const additionalHeroSections = pageContent.sections.filter(section => 
-      section.settings?.isHeroVariant === true || 
+    const additionalHeroSections = pageContent.sections.filter(section =>
+      section.settings?.isHeroVariant === true ||
       section.title?.includes('Hero') ||
       section.settings?.displayAsHero === true
     );
-    
+
     // Combine all hero sections
     const allHeroSections = [...primaryHeroSections, ...additionalHeroSections];
-    
+
     // If no hero sections are found, return the default
     if (allHeroSections.length === 0) {
-      return [{ 
+      return [{
         title: 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES',
         subtitle: 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
       }];
     }
-    
+
     // Map the hero sections to the format we need
     return allHeroSections.map(section => ({
       title: section.title || 'INNOVATIVE DIGITAL SOLUTIONS',
@@ -251,9 +253,9 @@ export function useBenefits() {
 /**
  * Custom hook to fetch blog posts
  */
-export function useBlogPosts(params?: { 
-  limit?: number; 
-  category?: string; 
+export function useBlogPosts(params?: {
+  limit?: number;
+  category?: string;
   featured?: boolean;
   tag?: string;
 }) {
@@ -287,10 +289,23 @@ export function useBlogCategories() {
 /**
  * Custom hook to fetch blog comments for a post
  */
+/**
+ * Custom hook to fetch blog comments for a post
+ */
 export function useBlogComments(postId: string) {
   return useQuery<BlogComment[]>({
     queryKey: ['blog-comments', postId],
     queryFn: () => getBlogComments(postId),
     enabled: !!postId, // Only run the query if a postId is provided
+  });
+}
+
+/**
+ * Custom hook to fetch footer data
+ */
+export function useFooter() {
+  return useQuery<FooterProps>({
+    queryKey: ['footer'],
+    queryFn: getFooter
   });
 }

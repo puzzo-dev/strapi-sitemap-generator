@@ -434,10 +434,10 @@ const BlogPage: React.FC = () => {
         </div>
       </motion.section>
       
-      <div className="container mx-auto px-4 py-12">
-        <div className="flex flex-col md:flex-row gap-8">
+      <div className="container mx-auto py-12">
+        <div className="flex flex-col md:flex-row gap-6">
           {/* Main content */}
-          <div className="md:w-3/4">
+          <div className="md:w-4/5">
             {/* Search and filter */}
             <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md mb-8">
               <div className="flex flex-col md:flex-row gap-4">
@@ -506,7 +506,7 @@ const BlogPage: React.FC = () => {
             {!isLoadingPosts && !postsError && filteredPosts.some(post => post.featured) && (
               <div className="mb-12">
                 <h2 className="text-2xl font-bold mb-6">{t('blog.featuredPosts')}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {filteredPosts
                     .filter(post => post.featured)
                     .slice(0, 2)
@@ -516,10 +516,10 @@ const BlogPage: React.FC = () => {
             )}
             
             {/* All posts */}
-            <h2 className="text-2xl font-bold mb-6">{t('blog.latestPosts')}</h2>
+            <h2 className="text-xl font-bold mb-6">{t('blog.latestPosts')}</h2>
             
             {isLoadingPosts ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {renderSkeletons()}
               </div>
             ) : (

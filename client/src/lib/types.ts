@@ -1,3 +1,19 @@
+export interface ModernHeroProps {
+  title?: string;
+  subtitle?: string;
+  location?: string;
+  primaryButtonText?: string;
+  primaryButtonUrl?: string;
+  secondaryButtonText?: string;
+  secondaryButtonUrl?: string;
+  isLoading?: boolean;
+  serviceSlides?: ServiceProps[];
+  serviceImages?: string[];
+  serviceIcons?: React.ReactNode[];
+  currentSlide?: number;
+  companyLogo?: string;
+}
+
 export interface ServiceProps {
   id: number;
   title: string;
@@ -71,17 +87,90 @@ export interface PageContent {
   metaTitle: string;
   metaDescription: string;
   sections: PageSection[];
+  sectionContent?: SectionContent;
 }
 
 export interface PageSection {
   id: number;
-  type: 'hero' | 'features' | 'testimonials' | 'cta' | 'products' | 'services' | 'team' | 'contact' | 'custom';
+  type: 'hero' | 'features' | 'testimonials' | 'cta' | 'products' | 'services' | 'team' | 'contact' | 'about' | 'clients' | 'blog' | 'custom';
   title?: string;
   subtitle?: string;
   content?: string;
   backgroundColor?: string;
   items?: any[];
-  settings?: Record<string, any>;
+  settings?: {
+    // Hero section settings
+    primaryButton?: {
+      text: string;
+      url: string;
+    };
+    secondaryButton?: {
+      text: string;
+      url: string;
+    };
+    backgroundImage?: string;
+    // About section settings
+    stats?: {
+      value: string;
+      label: string;
+    }[];
+    video?: {
+      thumbnail: string;
+      url: string;
+      title: string;
+      description: string;
+    };
+    // Products section settings
+    maxDisplay?: number;
+    layout?: 'grid' | 'list';
+    // Services section settings
+    featuredService?: string;
+    // Blog section settings
+    postsToShow?: number;
+    showFeaturedOnly?: boolean;
+    // Testimonials section settings
+    testimonialCount?: number;
+    // Clients section settings
+    logoSize?: 'small' | 'medium' | 'large';
+    [key: string]: any;
+  };
+}
+
+export interface SectionContent {
+  hero?: {
+    slides: {
+      title: string;
+      subtitle: string;
+      image: string;
+    }[];
+  };
+  about?: {
+    stats: {
+      value: string;
+      label: string;
+    }[];
+    video: {
+      thumbnail: string;
+      url: string;
+      title: string;
+      description: string;
+    };
+  };
+  products?: {
+    featured: ProductProps[];
+  };
+  services?: {
+    featured: ServiceProps[];
+  };
+  testimonials?: {
+    items: TestimonialProps[];
+  };
+  clients?: {
+    logos: ClientLogo[];
+  };
+  blog?: {
+    recentPosts: BlogPost[];
+  };
 }
 
 export interface TeamMember {
@@ -123,6 +212,7 @@ export interface Benefit {
 
 // ERPNext Blog Content Types
 export interface BlogCategory {
+  id?: number;
   name: string;
   title: string;
   slug: string;
@@ -130,6 +220,7 @@ export interface BlogCategory {
 }
 
 export interface BlogAuthor {
+  id?: number;
   name: string;
   full_name: string;
   user_image?: string;
@@ -138,6 +229,7 @@ export interface BlogAuthor {
 }
 
 export interface BlogPost {
+  id?: number;
   name: string;
   title: string;
   slug: string;
@@ -165,4 +257,28 @@ export interface BlogComment {
   comment: string;
   created_date: string;
   approved: boolean;
+}
+
+export interface FooterProps {
+  // Company information
+  companyDescription: string;
+  contactAddress: string;
+  contactPhone: string;
+  contactEmail: string;
+
+  // Social links
+  socialLinks: SocialLink[];
+
+  // Footer columns for navigation
+  columns: FooterColumn[];
+
+  // Legal links
+  legalLinks: {
+    label: string;
+    url: string;
+  }[];
+
+  // Copyright information
+  copyrightText?: string;
+  companyName?: string;
 }

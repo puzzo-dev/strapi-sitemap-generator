@@ -55,4 +55,4 @@ VALUES
 -- Insert site content
 INSERT INTO site_content (key, value, translations) 
 VALUES 
-('siteConfig', '{"siteName":"I-Varse Limited","siteDescription":"Digital solutions for modern businesses","contactEmail":"info@ivarse.com","contactPhone":"+1234567890","contactAddress":"123 Tech Boulevard, Silicon Valley, CA","logoLight":"/assets/I-VARSELogo3@3x.png","logoDark":"/assets/I-VARSELogo4@3x.png","favicon":"/assets/I-VARSEIcon1@3x.png"}', NULL);
+('siteConfig', '{"siteName":"I-VARSE Technologies","siteDescription":"Digital solutions for modern businesses","contactEmail":"info@ivarse.com","contactPhone":"+1234567890","contactAddress":"123 Tech Boulevard, Silicon Valley, CA","logoLight":"/assets/I-VARSELogo3@3x.png","logoDark":"/assets/I-VARSELogo4@3x.png","favicon":"/assets/I-VARSEIcon1@3x.png"}', NULL);

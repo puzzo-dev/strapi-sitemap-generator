@@ -1,0 +1,65 @@
+import React from 'react';
+import { Link } from 'wouter';
+import { Calendar, Clock, User } from 'lucide-react';
+import { BlogPost } from '@/lib/types';
+import { formatDate } from '@/lib/utils';
+
+interface BlogCardProps {
+    post: BlogPost;
+}
+
+const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
+    return (
+        <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-md overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700/50">
+            {/* Featured Image */}
+            <Link href={`/blog/${post.slug}`}>
+                <a className="block relative overflow-hidden aspect-video">
+                    <img
+                        src={post.meta_image}
+                        alt={post.title}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                    {post.featured && (
+                        <div className="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                            Featured
+                        </div>
+                    )}
+                </a>
+            </Link>
+
+            {/* Content */}
+            <div className="p-6 flex-grow flex flex-col">
+                {/* Category */}
+                <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-2">
+                    {post.blog_category}
+                </div>
+
+                {/* Title */}
+                <Link href={`/blog/${post.slug}`}>
+                    <a className="text-xl font-bold text-gray-900 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                        {post.title}
+                    </a>
+                </Link>
+
+                {/* Excerpt */}
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                    {post.content?.substring(0, 120) + '...'}
+                </p>
+
+                {/* Meta info */}
+                <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-700/50 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center">
+                        <User className="h-3 w-3 mr-1" />
+                        <span>{post.author || 'I-VARSE Team'}</span>
+                    </div>
+                    <div className="flex items-center">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        <span>{formatDate(post.published_date)}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default BlogCard;

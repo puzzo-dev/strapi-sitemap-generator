@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'wouter';
 import { useTranslation } from 'react-i18next';
-import { 
-  Briefcase, 
-  MapPin, 
-  Clock, 
-  ChevronRight, 
-  ArrowLeft, 
-  Send, 
+import {
+  Briefcase,
+  MapPin,
+  Clock,
+  ChevronRight,
+  ArrowLeft,
+  Send,
   Calendar,
   Building,
   Layers,
@@ -21,13 +21,13 @@ import { useJobById } from '@/hooks/useStrapiContent';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -61,10 +61,10 @@ const JobDetail: React.FC = () => {
   const jobId = id ? parseInt(id, 10) : -1;
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
-  
+
   // Fetch job details
   const { data: apiJob, isLoading, error } = useJobById(jobId);
-  
+
   // Application form
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationSchema),
@@ -77,36 +77,36 @@ const JobDetail: React.FC = () => {
       agreeToTerms: false
     }
   });
-  
+
   // Find fallback job data from the static data if API fails
   const fallbackJob = jobListings.find(job => job.id === jobId);
-  
+
   // Use API data if available, otherwise use fallback
   const job = apiJob || fallbackJob;
-  
+
   // Handle form submission
   const onSubmit = (data: ApplicationFormValues) => {
     console.log('Form submitted:', data);
     // In a real app, send this data to your backend
     setSubmitted(true);
-    
+
     // Scroll to top to show the success message
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
+
   // Generate structured data for SEO
   const jobSchema = job ? generateJobPostingSchema({
     title: job.title,
     description: job.description,
     datePosted: new Date().toISOString().split('T')[0],
     validThrough: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0],
-    employmentType: job.type === 'Full-time' ? 'FULL_TIME' : 
-                    job.type === 'Part-time' ? 'PART_TIME' : 
-                    job.type === 'Contract' ? 'CONTRACTOR' : 'OTHER',
+    employmentType: job.type === 'Full-time' ? 'FULL_TIME' :
+      job.type === 'Part-time' ? 'PART_TIME' :
+        job.type === 'Contract' ? 'CONTRACTOR' : 'OTHER',
     hiringOrganization: 'I-Varse Technologies',
     jobLocation: job.location,
   }) : undefined;
-  
+
   // Render loading state
   if (isLoading) {
     return (
@@ -126,7 +126,7 @@ const JobDetail: React.FC = () => {
       </div>
     );
   }
-  
+
   // Render error state or use dummy data
   if (error || !job) {
     // If the id parameter exists but no job is found, create dummy job data
@@ -134,12 +134,12 @@ const JobDetail: React.FC = () => {
       // Create a dummy job based on ID
       const dummyJob = {
         id: jobId,
-        title: jobId === 1 ? "Senior Full Stack Developer" : 
-               jobId === 2 ? "UX/UI Designer" : 
-               jobId === 3 ? "DevOps Engineer" :
-               jobId === 4 ? "Product Manager" :
-               jobId === 5 ? "Data Scientist" :
-               "Technical Position",
+        title: jobId === 1 ? "Senior Full Stack Developer" :
+          jobId === 2 ? "UX/UI Designer" :
+            jobId === 3 ? "DevOps Engineer" :
+              jobId === 4 ? "Product Manager" :
+                jobId === 5 ? "Data Scientist" :
+                  "Technical Position",
         department: "Engineering",
         location: "Lagos, Nigeria",
         type: "Full-time",
@@ -173,10 +173,10 @@ const JobDetail: React.FC = () => {
         ],
         salary: "Competitive"
       };
-      
+
       return renderJobDetail(dummyJob);
     }
-    
+
     // If no id parameter or job could be found, show error
     return (
       <div className="bg-slate-50 dark:bg-slate-900 min-h-screen py-12">
@@ -197,10 +197,10 @@ const JobDetail: React.FC = () => {
       </div>
     );
   }
-  
+
   // Main render function for job detail
   return renderJobDetail(job);
-  
+
   // Helper function to render job detail with given job data
   function renderJobDetail(job: any) {
     return (
@@ -213,18 +213,18 @@ const JobDetail: React.FC = () => {
           structuredData={jobSchema}
           ogType="website"
         />
-        
+
         {/* Header section */}
         <div className="bg-gradient-to-br from-primary/95 via-primary to-blue-700 text-white">
           <div className="container mx-auto px-4 py-16 md:py-24">
             <Link href="/careers">
               <div className="inline-flex items-center text-white/90 hover:text-white mb-10 group/back transition-colors">
-                <ArrowLeft className="mr-2 group-hover/back:-translate-x-1 transition-transform" /> 
-                <span className="font-medium">{t('careers.backToCareers')}</span>
+                <ArrowLeft className="mr-2 group-hover/back:-translate-x-1 transition-transform" />
+                <span className="font-medium">{t('back To Careers')}</span>
               </div>
             </Link>
-            
-            <motion.div 
+
+            <motion.div
               initial="initial"
               animate="animate"
               variants={staggerChildren(0.1)}
@@ -242,7 +242,7 @@ const JobDetail: React.FC = () => {
                   <p>Thank you for your interest in the {job.title} position. Our team will review your application and contact you soon.</p>
                 </motion.div>
               )}
-              
+
               <motion.div variants={fadeInUp(20, 0.7)} className="flex items-center gap-2 mb-2">
                 <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50/20 px-3 py-1 text-sm font-medium text-white border-white/20">
                   <Briefcase className="h-4 w-4 mr-2" />
@@ -253,31 +253,31 @@ const JobDetail: React.FC = () => {
                   {job.type}
                 </div>
               </motion.div>
-              
+
               <motion.h1 variants={fadeInUp(20, 0.7)} className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6">
                 {job.title}
               </motion.h1>
-              
+
               <motion.div variants={fadeInUp(20, 0.7, 0.1)} className="flex items-center text-lg mb-6">
                 <MapPin className="h-5 w-5 mr-2" />
                 <span>{job.location}</span>
               </motion.div>
-              
+
               <motion.p variants={fadeInUp(20, 0.7, 0.2)} className="text-xl opacity-90">
                 {job.description}
               </motion.p>
             </motion.div>
           </div>
         </div>
-        
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <div className="container mx-auto px-2 py-12">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Main content */}
               <div className="lg:col-span-2">
                 <Card className="mb-8">
                   <CardContent className="p-6 md:p-8">
-                    <h2 className="text-2xl font-bold mb-4 flex items-center text-primary">
+                    <h2 className="text-xl font-bold mb-4 flex items-center text-primary">
                       <Layers className="mr-2 h-5 w-5" />
                       Responsibilities
                     </h2>
@@ -292,10 +292,10 @@ const JobDetail: React.FC = () => {
                     </ul>
                   </CardContent>
                 </Card>
-                
+
                 <Card className="mb-8">
                   <CardContent className="p-6 md:p-8">
-                    <h2 className="text-2xl font-bold mb-4 flex items-center text-primary">
+                    <h2 className="text-xl font-bold mb-4 flex items-center text-primary">
                       <Award className="mr-2 h-5 w-5" />
                       Requirements
                     </h2>
@@ -310,11 +310,11 @@ const JobDetail: React.FC = () => {
                     </ul>
                   </CardContent>
                 </Card>
-                
+
                 {job.qualifications && (
                   <Card className="mb-8">
                     <CardContent className="p-6 md:p-8">
-                      <h2 className="text-2xl font-bold mb-4 flex items-center text-primary">
+                      <h2 className="text-xl font-bold mb-4 flex items-center text-primary">
                         <Building className="mr-2 h-5 w-5" />
                         Qualifications
                       </h2>
@@ -330,11 +330,11 @@ const JobDetail: React.FC = () => {
                     </CardContent>
                   </Card>
                 )}
-                
+
                 {job.benefits && (
                   <Card className="mb-8">
                     <CardContent className="p-6 md:p-8">
-                      <h2 className="text-2xl font-bold mb-4 flex items-center text-primary">
+                      <h2 className="text-xl font-bold mb-4 flex items-center text-primary">
                         <DollarSign className="mr-2 h-5 w-5" />
                         Benefits
                       </h2>
@@ -351,7 +351,7 @@ const JobDetail: React.FC = () => {
                   </Card>
                 )}
               </div>
-              
+
               {/* Application sidebar */}
               <div>
                 <div className="sticky top-24">
@@ -359,9 +359,9 @@ const JobDetail: React.FC = () => {
                     <CardContent className="p-6 md:p-8">
                       {!submitted ? (
                         <>
-                          <h2 className="text-2xl font-bold mb-4">Apply for this position</h2>
+                          <h2 className="text-xl font-bold mb-4">Apply for this position</h2>
                           <p className="text-muted-foreground mb-6">Fill out this form to apply for the {job.title} position.</p>
-                          
+
                           <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                               <FormField
@@ -377,7 +377,7 @@ const JobDetail: React.FC = () => {
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <FormField
                                 control={form.control}
                                 name="email"
@@ -391,7 +391,7 @@ const JobDetail: React.FC = () => {
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <FormField
                                 control={form.control}
                                 name="phone"
@@ -405,7 +405,7 @@ const JobDetail: React.FC = () => {
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <FormField
                                 control={form.control}
                                 name="yearsOfExperience"
@@ -429,7 +429,7 @@ const JobDetail: React.FC = () => {
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <FormField
                                 control={form.control}
                                 name="coverLetter"
@@ -437,17 +437,17 @@ const JobDetail: React.FC = () => {
                                   <FormItem>
                                     <FormLabel>Cover Letter*</FormLabel>
                                     <FormControl>
-                                      <Textarea 
+                                      <Textarea
                                         placeholder="Tell us why you're interested in this position and why you'd be a great fit."
-                                        className="min-h-32" 
-                                        {...field} 
+                                        className="min-h-32"
+                                        {...field}
                                       />
                                     </FormControl>
                                     <FormMessage />
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <FormField
                                 control={form.control}
                                 name="resume"
@@ -471,7 +471,7 @@ const JobDetail: React.FC = () => {
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <FormField
                                 control={form.control}
                                 name="agreeToTerms"
@@ -492,7 +492,7 @@ const JobDetail: React.FC = () => {
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <Button type="submit" className="w-full" size="lg">
                                 <Send className="mr-2 h-4 w-4" /> Submit Application
                               </Button>
@@ -515,7 +515,7 @@ const JobDetail: React.FC = () => {
                       )}
                     </CardContent>
                   </Card>
-                  
+
                   <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-100 dark:border-blue-800/30">
                     <h3 className="text-lg font-semibold mb-2 flex items-center">
                       <Calendar className="mr-2 h-5 w-5 text-primary" />

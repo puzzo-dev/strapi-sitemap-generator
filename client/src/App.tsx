@@ -41,7 +41,7 @@ import FloatingButtons from "@/components/layout/FloatingButtons";
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
-  
+
   // Use the scroll to top hook to ensure pages start at the top
   useScrollToTop();
 
@@ -52,7 +52,7 @@ function App() {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
-  
+
   // Generate website schema for global SEO
   const websiteSchema = generateWebsiteSchema();
 
@@ -63,7 +63,7 @@ function App() {
           {/* Base SEO MetaTags that will be overridden by page-specific ones */}
           <MetaTags
             title="Innovative Technology Solutions"
-            description="I-Varse Limited provides cutting-edge technology solutions for businesses and individuals, focusing on innovation, quality, and client satisfaction."
+            description="I-VARSE Technologies provides cutting-edge technology solutions for businesses and individuals, focusing on innovation, quality, and client satisfaction."
             keywords={["technology", "innovation", "digital transformation", "software development", "IT solutions", "I-Varse"]}
             structuredData={websiteSchema}
             ogType="website"
@@ -99,10 +99,10 @@ function App() {
               </AnimatePresence>
             </main>
             <Footer />
-            
+
             {/* Floating buttons container - positioned at root level */}
             <FloatingButtons />
-            
+
             {/* Mobile Menu - positioned at root level */}
             <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} />
           </div>
