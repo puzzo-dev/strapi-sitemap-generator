@@ -1,4 +1,23 @@
-export interface ModernHeroProps {
+export interface HeroProps {
+  // Common props
+  heroContents?: {
+    title?: string;
+    subtitle?: string;
+    settings?: Record<string, any>;
+  }[];
+  currentHeroIndex?: number;
+  isHeroLoading?: boolean;
+  isPageLoading?: boolean;
+  pageContent?: PageContent | null;
+  serviceSlides?: ServiceProps[];
+  serviceImages?: string[];
+  serviceIcons?: React.ReactNode[];
+  currentSlide?: number;
+  isServicesLoading?: boolean;
+  handleMouseEnter?: () => void;
+  handleMouseLeave?: () => void;
+  
+  // Additional props for ModernHero
   title?: string;
   subtitle?: string;
   location?: string;
@@ -7,12 +26,13 @@ export interface ModernHeroProps {
   secondaryButtonText?: string;
   secondaryButtonUrl?: string;
   isLoading?: boolean;
-  serviceSlides?: ServiceProps[];
-  serviceImages?: string[];
-  serviceIcons?: React.ReactNode[];
-  currentSlide?: number;
   companyLogo?: string;
 }
+
+// Keep these for backward compatibility but make them extend the base interface
+export interface ModernHeroProps extends HeroProps {}
+
+export interface OriginalHeroProps extends HeroProps {}
 
 export interface ServiceProps {
   id: number;
@@ -281,4 +301,24 @@ export interface FooterProps {
   // Copyright information
   copyrightText?: string;
   companyName?: string;
+}
+
+// Update the OriginalHeroProps interface with more specific types
+export interface OriginalHeroProps {
+  heroContents: {
+    title?: string;
+    subtitle?: string;
+    settings?: Record<string, any>;
+  }[];
+  currentHeroIndex: number;
+  isHeroLoading: boolean;
+  isPageLoading: boolean;
+  pageContent: PageContent | null;
+  serviceSlides: ServiceProps[];
+  serviceImages: string[];
+  serviceIcons: React.ReactNode[];
+  currentSlide: number;
+  isServicesLoading: boolean;
+  handleMouseEnter: () => void;
+  handleMouseLeave: () => void;
 }

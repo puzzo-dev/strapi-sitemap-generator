@@ -18,7 +18,7 @@ import TestimonialsSection from '@/components/sections/home/TestimonialsSection'
 import BlogPostsSection from '@/components/sections/home/BlogPostsSection';
 import ClientsSection from '@/components/sections/home/ClientsSection';
 // Import UI components
-import ModernHero from '@/components/ui/ModernHero';
+import ModernHero from '@/components/sections/home/ModernHero';
 import { Zap } from 'lucide-react';
 
 // Import hooks and data
@@ -200,6 +200,7 @@ const Home: React.FC = () => {
                     serviceImages={serviceImages}
                     serviceIcons={serviceIcons}
                     currentSlide={currentSlide}
+                    isServicesLoading={isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
                 />

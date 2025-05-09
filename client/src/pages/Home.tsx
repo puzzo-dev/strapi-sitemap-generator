@@ -9,7 +9,7 @@ import { services, testimonials, clientLogos, products } from '@/lib/data';
 import { ServiceProps, TestimonialProps, ClientLogo, ProductProps } from '@/lib/types';
 import { useBlogPosts } from '@/hooks/useStrapiContent';
 import BlogCard from '@/components/ui/BlogCard'; // You'll need to create this component if it doesn't exist
-import ModernHero from '@/components/ui/ModernHero';
+import ModernHero from '@/components/sections/home/ModernHero';
 // Import company logo for service slider
 import IVarseLogo from '@assets/I-VARSELogo3@3x.png';
 import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';

@@ -1,49 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import GradientButton from '@/components/ui/GradientButton';
-import { ServiceProps } from '@/lib/types';
-import { fadeInUp, scaleUp } from '@/lib/animations';
-import { useLanguage } from '@/components/context/LanguageContext';
+import React from "react";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import GradientButton from "@/components/ui/GradientButton";
+import { ServiceProps, HeroProps } from "@/lib/types"; // Updated import
+import { fadeInUp, scaleUp } from "@/lib/animations";
+import { useLanguage } from "@/components/context/LanguageContext";
 import {
-    PlayCircle,
     ChevronRight,
     Cpu,
     CircuitBoard,
     Code,
     LayoutGrid,
-    Sparkles
-} from 'lucide-react';
-import IVarseLogo from '@assets/I-VARSELogo3@3x.png';
+    Sparkles,
+} from "lucide-react";
+import IVarseLogo from "@assets/I-VARSELogo3@3x.png";
 
-interface OriginalHeroProps {
-    heroContents: any[];
-    currentHeroIndex: number;
-    isHeroLoading: boolean;
-    isPageLoading: boolean;
-    pageContent: any;
-    serviceSlides: ServiceProps[];
-    serviceImages: string[];
-    serviceIcons: React.ReactNode[];
-    currentSlide: number;
-    handleMouseEnter: () => void;
-    handleMouseLeave: () => void;
-}
-
-const OriginalHero: React.FC<OriginalHeroProps> = ({
-    heroContents,
-    currentHeroIndex,
-    isHeroLoading,
-    isPageLoading,
+const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps to HeroProps
+    heroContents = [],
+    currentHeroIndex = 0,
+    isHeroLoading = false,
+    isPageLoading = false,
     pageContent,
-    serviceSlides,
-    serviceImages,
-    serviceIcons,
-    currentSlide,
-    handleMouseEnter,
-    handleMouseLeave
-}) => {
-    const { t } = useTranslation();
+    serviceSlides = [],
+    serviceImages = [],
+    serviceIcons = [],
+    currentSlide = 0,
+    isServicesLoading = false,
+    handleMouseEnter = () => {},
+    handleMouseLeave = () => {},
+}) => {    const { t } = useTranslation();
     const { currentLanguage } = useLanguage();
 
     return (
@@ -78,8 +63,8 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                             rotate: 12,
                             transition: {
                                 duration: 0.8,
-                                delay: 0.3
-                            }
+                                delay: 0.3,
+                            },
                         }}
                         className="absolute right-0 top-0"
                     >
@@ -90,8 +75,8 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                 transition: {
                                     repeat: Infinity,
                                     duration: 10,
-                                    ease: "easeInOut"
-                                }
+                                    ease: "easeInOut",
+                                },
                             }}
                         >
                             <CircuitBoard className="h-64 w-64 text-blue-800" />
@@ -104,15 +89,15 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
 
                 {/* Animated tech scan line */}
                 <motion.div
-                    initial={{ opacity: 0, top: '100%' }}
+                    initial={{ opacity: 0, top: "100%" }}
                     animate={{
                         opacity: [0, 0.6, 0.1],
-                        top: ['100%', '0%', '0%'],
+                        top: ["100%", "0%", "0%"],
                         transition: {
                             duration: 3,
                             repeat: Infinity,
-                            repeatDelay: 5
-                        }
+                            repeatDelay: 5,
+                        },
                     }}
                     className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent"
                 />
@@ -122,8 +107,8 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                     {Array.from({ length: 15 }).map((_, i) => {
                         // Precalculate random values to avoid React errors
                         const randomLeft = (i * 6.67) % 100; // Distribute evenly across width
-                        const randomScale = 0.5 + ((i % 5) * 0.1); // 0.5 to 0.9
-                        const randomDuration = 8 + ((i % 5) * 1); // 8 to 12 seconds
+                        const randomScale = 0.5 + (i % 5) * 0.1; // 0.5 to 0.9
+                        const randomDuration = 8 + (i % 5) * 1; // 8 to 12 seconds
                         const randomDelay = (i % 5) * 1; // 0 to 4 seconds
 
                         return (
@@ -133,17 +118,17 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                 initial={{
                                     y: -20,
                                     opacity: 0,
-                                    scale: randomScale
+                                    scale: randomScale,
                                 }}
                                 animate={{
-                                    y: '120%',
+                                    y: "120%",
                                     opacity: [0, 0.8, 0.5, 0],
                                     transition: {
                                         duration: randomDuration,
                                         delay: randomDelay,
                                         repeat: Infinity,
-                                        ease: "linear"
-                                    }
+                                        ease: "linear",
+                                    },
                                 }}
                                 style={{
                                     left: `${randomLeft}%`,
@@ -154,7 +139,11 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                 </div>
 
                 {/* Animated network connections */}
-                <svg className="absolute inset-0 w-full h-full z-0 opacity-10 dark:opacity-15" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <svg
+                    className="absolute inset-0 w-full h-full z-0 opacity-10 dark:opacity-15"
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                >
                     {/* SVG elements omitted for brevity */}
                     {/* ... */}
                 </svg>
@@ -175,8 +164,14 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                     <Cpu className="h-4 w-4 mr-2" />
                                     Digital Innovation
                                 </div>
-                                <h1 className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                                    <span className="gradient-text">Innovative Digital</span> Solutions<br />for Modern Businesses
+                                <h1
+                                    className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up"
+                                    style={{ animationDelay: "0.2s" }}
+                                >
+                                    <span className="gradient-text">Innovative Digital</span>{" "}
+                                    Solutions
+                                    <br />
+                                    for Modern Businesses
                                 </h1>
                             </>
                         )}
@@ -198,8 +193,14 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                             <Cpu className="h-4 w-4 mr-2" />
                                             Digital Innovation
                                         </div>
-                                        <h1 className="heading-xl text-5xl md:text-6xl font-black mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                                            <span className="gradient-text">Innovative Digital</span> Solutions<br />for Modern Businesses
+                                        <h1
+                                            className="heading-xl text-5xl md:text-6xl font-black mb-6 animate-fade-in-up"
+                                            style={{ animationDelay: "0.2s" }}
+                                        >
+                                            <span className="gradient-text">Innovative Digital</span>{" "}
+                                            Solutions
+                                            <br />
+                                            for Modern Businesses
                                         </h1>
                                     </>
                                 )}
@@ -212,31 +213,42 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                     <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                                 </div>
                             ) : (
-                                <p className="text-xl text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                                <p
+                                    className="text-xl text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block mb-8 animate-fade-in-up"
+                                    style={{ animationDelay: "0.4s" }}
+                                >
                                     {isHeroLoading
-                                        ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-                                        : heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-                                    }
+                                        ? "Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence."
+                                        : heroContents[currentHeroIndex]?.subtitle ||
+                                        "Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence."}
                                 </p>
                             )}
 
                             {/* Desktop-only buttons */}
                             <div className="pt-4 md:flex-row gap-4 hidden md:flex">
                                 <GradientButton
-                                    href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.url || "/services"}
+                                    href={
+                                        pageContent?.sections?.find((s) => s.type === "hero")
+                                            ?.settings?.primaryButton?.url || "/services"
+                                    }
                                     size="lg"
                                     endIcon={<ChevronRight />}
                                     className="w-auto py-3 animate-snowfall z-10"
                                 >
-                                    {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.text || t('button.getStarted')}
+                                    {pageContent?.sections?.find((s) => s.type === "hero")
+                                        ?.settings?.primaryButton?.text || t("button.getStarted")}
                                 </GradientButton>
                                 <GradientButton
-                                    href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.url || "/#about"}
+                                    href={
+                                        pageContent?.sections?.find((s) => s.type === "hero")
+                                            ?.settings?.secondaryButton?.url || "/#about"
+                                    }
                                     variant="outline"
                                     size="lg"
                                     className="w-auto py-3 z-10"
                                 >
-                                    {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.text || t('button.learnMore')}
+                                    {pageContent?.sections?.find((s) => s.type === "hero")
+                                        ?.settings?.secondaryButton?.text || t("button.learnMore")}
                                 </GradientButton>
                             </div>
                         </div>
@@ -262,21 +274,92 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                     {/* Animated background tech elements */}
                                     <div className="absolute inset-0 pointer-events-none z-0">
                                         <CircuitBoard className="absolute top-6 left-6 h-12 w-12 text-blue-300/30 dark:text-blue-700/30 animate-float" />
-                                        <Cpu className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300/30 dark:text-indigo-700/30 animate-float" style={{ animationDelay: '1s' }} />
+                                        <Cpu
+                                            className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300/30 dark:text-indigo-700/30 animate-float"
+                                            style={{ animationDelay: "1s" }}
+                                        />
 
                                         {/* Animated dots & lines */}
-                                        <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
-                                            <circle cx="20" cy="20" r="1" className="text-blue-400 fill-current animate-pulse-light" />
-                                            <circle cx="80" cy="30" r="1" className="text-cyan-400 fill-current animate-pulse-light" style={{ animationDelay: '0.5s' }} />
-                                            <circle cx="50" cy="70" r="1" className="text-indigo-400 fill-current animate-pulse-light" style={{ animationDelay: '1s' }} />
-                                            <circle cx="30" cy="80" r="1" className="text-purple-400 fill-current animate-pulse-light" style={{ animationDelay: '1.5s' }} />
-                                            <circle cx="70" cy="60" r="1" className="text-blue-400 fill-current animate-pulse-light" style={{ animationDelay: '2s' }} />
+                                        <svg
+                                            className="absolute inset-0 w-full h-full opacity-20"
+                                            viewBox="0 0 100 100"
+                                            preserveAspectRatio="none"
+                                        >
+                                            <circle
+                                                cx="20"
+                                                cy="20"
+                                                r="1"
+                                                className="text-blue-400 fill-current animate-pulse-light"
+                                            />
+                                            <circle
+                                                cx="80"
+                                                cy="30"
+                                                r="1"
+                                                className="text-cyan-400 fill-current animate-pulse-light"
+                                                style={{ animationDelay: "0.5s" }}
+                                            />
+                                            <circle
+                                                cx="50"
+                                                cy="70"
+                                                r="1"
+                                                className="text-indigo-400 fill-current animate-pulse-light"
+                                                style={{ animationDelay: "1s" }}
+                                            />
+                                            <circle
+                                                cx="30"
+                                                cy="80"
+                                                r="1"
+                                                className="text-purple-400 fill-current animate-pulse-light"
+                                                style={{ animationDelay: "1.5s" }}
+                                            />
+                                            <circle
+                                                cx="70"
+                                                cy="60"
+                                                r="1"
+                                                className="text-blue-400 fill-current animate-pulse-light"
+                                                style={{ animationDelay: "2s" }}
+                                            />
 
-                                            <line x1="20" y1="20" x2="80" y2="30" className="text-blue-400 stroke-current" strokeWidth="0.2" />
-                                            <line x1="80" y1="30" x2="50" y2="70" className="text-cyan-400 stroke-current" strokeWidth="0.2" />
-                                            <line x1="50" y1="70" x2="30" y2="80" className="text-indigo-400 stroke-current" strokeWidth="0.2" />
-                                            <line x1="30" y1="80" x2="70" y2="60" className="text-purple-400 stroke-current" strokeWidth="0.2" />
-                                            <line x1="70" y1="60" x2="20" y2="20" className="text-blue-400 stroke-current" strokeWidth="0.2" />
+                                            <line
+                                                x1="20"
+                                                y1="20"
+                                                x2="80"
+                                                y2="30"
+                                                className="text-blue-400 stroke-current"
+                                                strokeWidth="0.2"
+                                            />
+                                            <line
+                                                x1="80"
+                                                y1="30"
+                                                x2="50"
+                                                y2="70"
+                                                className="text-cyan-400 stroke-current"
+                                                strokeWidth="0.2"
+                                            />
+                                            <line
+                                                x1="50"
+                                                y1="70"
+                                                x2="30"
+                                                y2="80"
+                                                className="text-indigo-400 stroke-current"
+                                                strokeWidth="0.2"
+                                            />
+                                            <line
+                                                x1="30"
+                                                y1="80"
+                                                x2="70"
+                                                y2="60"
+                                                className="text-purple-400 stroke-current"
+                                                strokeWidth="0.2"
+                                            />
+                                            <line
+                                                x1="70"
+                                                y1="60"
+                                                x2="20"
+                                                y2="20"
+                                                className="text-blue-400 stroke-current"
+                                                strokeWidth="0.2"
+                                            />
                                         </svg>
                                     </div>
 
@@ -294,10 +377,16 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                                     {serviceSlides.map((service, index) => (
                                                         <div
                                                             key={service.id || index}
-                                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+                                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide
+                                                                    ? "opacity-100"
+                                                                    : "opacity-0"
+                                                                }`}
                                                         >
                                                             <img
-                                                                src={service.image || serviceImages[index % serviceImages.length]}
+                                                                src={
+                                                                    service.image ||
+                                                                    serviceImages[index % serviceImages.length]
+                                                                }
                                                                 alt={service.title}
                                                                 className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                                             />
@@ -320,10 +409,15 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                                     {serviceSlides.map((service, index) => (
                                                         <div
                                                             key={service.id || index}
-                                                            className={`transition-opacity duration-500 flex items-center ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
+                                                            className={`transition-opacity duration-500 flex items-center ${index === currentSlide
+                                                                    ? "opacity-100"
+                                                                    : "opacity-0 absolute inset-0"
+                                                                }`}
                                                         >
                                                             <div className="flex items-center">
-                                                                <span className="flex items-center justify-center mr-1.5">{serviceIcons[index % serviceIcons.length]}</span>
+                                                                <span className="flex items-center justify-center mr-1.5">
+                                                                    {serviceIcons[index % serviceIcons.length]}
+                                                                </span>
                                                                 <h3 className="text-[11px] font-medium text-white whitespace-nowrap">
                                                                     {service.title}
                                                                 </h3>
@@ -334,21 +428,92 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
 
                                                 {/* Animated tech elements */}
                                                 <CircuitBoard className="absolute top-6 left-6 h-12 w-12 text-blue-300 dark:text-blue-700 opacity-30 animate-float" />
-                                                <Cpu className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300 dark:text-indigo-700 opacity-30 animate-float" style={{ animationDelay: '1s' }} />
+                                                <Cpu
+                                                    className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300 dark:text-indigo-700 opacity-30 animate-float"
+                                                    style={{ animationDelay: "1s" }}
+                                                />
 
                                                 {/* Animated dots & lines */}
-                                                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                                                    <circle cx="20" cy="20" r="1" className="text-blue-400 fill-current animate-pulse-light" />
-                                                    <circle cx="80" cy="30" r="1" className="text-cyan-400 fill-current animate-pulse-light" style={{ animationDelay: '0.5s' }} />
-                                                    <circle cx="50" cy="70" r="1" className="text-indigo-400 fill-current animate-pulse-light" style={{ animationDelay: '1s' }} />
-                                                    <circle cx="30" cy="80" r="1" className="text-purple-400 fill-current animate-pulse-light" style={{ animationDelay: '1.5s' }} />
-                                                    <circle cx="70" cy="60" r="1" className="text-blue-400 fill-current animate-pulse-light" style={{ animationDelay: '2s' }} />
+                                                <svg
+                                                    className="absolute inset-0 w-full h-full"
+                                                    viewBox="0 0 100 100"
+                                                    preserveAspectRatio="none"
+                                                >
+                                                    <circle
+                                                        cx="20"
+                                                        cy="20"
+                                                        r="1"
+                                                        className="text-blue-400 fill-current animate-pulse-light"
+                                                    />
+                                                    <circle
+                                                        cx="80"
+                                                        cy="30"
+                                                        r="1"
+                                                        className="text-cyan-400 fill-current animate-pulse-light"
+                                                        style={{ animationDelay: "0.5s" }}
+                                                    />
+                                                    <circle
+                                                        cx="50"
+                                                        cy="70"
+                                                        r="1"
+                                                        className="text-indigo-400 fill-current animate-pulse-light"
+                                                        style={{ animationDelay: "1s" }}
+                                                    />
+                                                    <circle
+                                                        cx="30"
+                                                        cy="80"
+                                                        r="1"
+                                                        className="text-purple-400 fill-current animate-pulse-light"
+                                                        style={{ animationDelay: "1.5s" }}
+                                                    />
+                                                    <circle
+                                                        cx="70"
+                                                        cy="60"
+                                                        r="1"
+                                                        className="text-blue-400 fill-current animate-pulse-light"
+                                                        style={{ animationDelay: "2s" }}
+                                                    />
 
-                                                    <line x1="20" y1="20" x2="80" y2="30" className="text-blue-400 stroke-current" strokeWidth="0.2" />
-                                                    <line x1="80" y1="30" x2="50" y2="70" className="text-cyan-400 stroke-current" strokeWidth="0.2" />
-                                                    <line x1="50" y1="70" x2="30" y2="80" className="text-indigo-400 stroke-current" strokeWidth="0.2" />
-                                                    <line x1="30" y1="80" x2="70" y2="60" className="text-purple-400 stroke-current" strokeWidth="0.2" />
-                                                    <line x1="70" y1="60" x2="20" y2="20" className="text-blue-400 stroke-current" strokeWidth="0.2" />
+                                                    <line
+                                                        x1="20"
+                                                        y1="20"
+                                                        x2="80"
+                                                        y2="30"
+                                                        className="text-blue-400 stroke-current"
+                                                        strokeWidth="0.2"
+                                                    />
+                                                    <line
+                                                        x1="80"
+                                                        y1="30"
+                                                        x2="50"
+                                                        y2="70"
+                                                        className="text-cyan-400 stroke-current"
+                                                        strokeWidth="0.2"
+                                                    />
+                                                    <line
+                                                        x1="50"
+                                                        y1="70"
+                                                        x2="30"
+                                                        y2="80"
+                                                        className="text-indigo-400 stroke-current"
+                                                        strokeWidth="0.2"
+                                                    />
+                                                    <line
+                                                        x1="30"
+                                                        y1="80"
+                                                        x2="70"
+                                                        y2="60"
+                                                        className="text-purple-400 stroke-current"
+                                                        strokeWidth="0.2"
+                                                    />
+                                                    <line
+                                                        x1="70"
+                                                        y1="60"
+                                                        x2="20"
+                                                        y2="20"
+                                                        className="text-blue-400 stroke-current"
+                                                        strokeWidth="0.2"
+                                                    />
                                                 </svg>
                                             </div>
                                         )}
@@ -366,32 +531,43 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                 <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                             </div>
                         ) : (
-                            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                            <p
+                                className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
+                                style={{ animationDelay: "0.4s" }}
+                            >
                                 {isHeroLoading
-                                    ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-                                    : heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-                                }
+                                    ? "Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence."
+                                    : heroContents[currentHeroIndex]?.subtitle ||
+                                    "Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence."}
                             </p>
                         )}
 
                         <div className="pt-6 flex flex-col gap-5 w-full">
                             <GradientButton
-                                href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.url || "/services"}
+                                href={
+                                    pageContent?.sections?.find((s) => s.type === "hero")
+                                        ?.settings?.primaryButton?.url || "/services"
+                                }
                                 size="lg"
                                 endIcon={<ChevronRight />}
                                 className="w-full py-5 justify-center animate-snowfall text-lg"
                                 fullWidth
                             >
-                                {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.primaryButton?.text || t('button.getStarted')}
+                                {pageContent?.sections?.find((s) => s.type === "hero")?.settings
+                                    ?.primaryButton?.text || t("button.getStarted")}
                             </GradientButton>
                             <GradientButton
-                                href={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.url || "/#about"}
+                                href={
+                                    pageContent?.sections?.find((s) => s.type === "hero")
+                                        ?.settings?.secondaryButton?.url || "/#about"
+                                }
                                 variant="outline"
                                 size="lg"
                                 className="w-full py-5 justify-center text-lg"
                                 fullWidth
                             >
-                                {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.secondaryButton?.text || t('button.learnMore')}
+                                {pageContent?.sections?.find((s) => s.type === "hero")?.settings
+                                    ?.secondaryButton?.text || t("button.learnMore")}
                             </GradientButton>
                         </div>
                     </div>

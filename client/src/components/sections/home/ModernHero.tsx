@@ -1,26 +1,56 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Sparkles, CircuitBoard, Cpu } from 'lucide-react';
-import { ModernHeroProps } from '@/lib/types';
+import { HeroProps } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
-import { ServiceProps } from '@/lib/types';
 
-const ModernHero: React.FC<ModernHeroProps> = ({
-    title = 'Top rated web dev company',
-    subtitle = 'based in',
-    location = 'Lagos, Nigeria',
-    primaryButtonText = 'GET STARTED',
-    primaryButtonUrl = '/services',
-    secondaryButtonText,
-    secondaryButtonUrl,
-    isLoading = false,
+const ModernHero: React.FC<HeroProps> = ({
+    // Use the same props as OriginalHero
+    heroContents = [],
+    currentHeroIndex = 0,
+    isHeroLoading = false,
+    isPageLoading = false,
+    pageContent,
     serviceSlides = [],
     serviceImages = [],
     serviceIcons = [],
     currentSlide = 0,
+    isServicesLoading = false,
+    // Additional props with fallbacks
+    title,
+    subtitle,
+    location = 'Lagos, Nigeria',
+    primaryButtonText,
+    primaryButtonUrl,
+    secondaryButtonText,
+    secondaryButtonUrl,
     companyLogo,
 }) => {
+    // Extract data from heroContents if available
+    const heroContent = heroContents[currentHeroIndex] || {};
+
+    // Use heroContent or fallback to direct props
+    const displayTitle = title || heroContent.title || 'Top rated web dev company';
+    const displaySubtitle = subtitle || heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.';
+
+    // Get button info from pageContent or use fallbacks
+    const primaryBtnText = primaryButtonText ||
+        pageContent?.sections?.find(s => s.type === "hero")?.settings?.primaryButton?.text ||
+        'GET STARTED';
+
+    const primaryBtnUrl = primaryButtonUrl ||
+        pageContent?.sections?.find(s => s.type === "hero")?.settings?.primaryButton?.url ||
+        '/services';
+
+    const secondaryBtnText = secondaryButtonText ||
+        pageContent?.sections?.find(s => s.type === "hero")?.settings?.secondaryButton?.text;
+
+    const secondaryBtnUrl = secondaryButtonUrl ||
+        pageContent?.sections?.find(s => s.type === "hero")?.settings?.secondaryButton?.url;
+
+    // Use isPageLoading or isHeroLoading as fallback for isLoading
+    const showLoading = isPageLoading || isHeroLoading;
     return (
         <section className="flex flex-col md:flex-row max-w-[85rem] justify-center md:justify-self-end overflow-hidden bg-transparent relative">
             {/* Left side */}
@@ -48,51 +78,61 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                     </div>
                 </div>
 
-                <motion.div
-                    initial={{ opacity: 0, x: -40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative z-10"
-                >
-                    <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                        <Cpu className="h-4 w-4 mr-2" />
-                        Digital Innovation
+                {showLoading ? (
+                    // Loading placeholders
+                    <div className="space-y-3">
+                        <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
+                        <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
+                        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse mt-4"></div>
+                        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
                     </div>
+                ) : (
+                    // Your existing content here
+                    <motion.div
+                        initial={{ opacity: 0, x: -40 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="relative z-10"
+                    >
+                        <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
+                            <Cpu className="h-4 w-4 mr-2" />
+                            Digital Innovation
+                        </div>
 
-                    <h1 className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                        <span className="gradient-text">
-                            {title.split(' ').slice(0, 2).join(' ')}
-                        </span>{' '}
-                        {title.split(' ').slice(2).join(' ')}
-                    </h1>
+                        <h1 className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                            <span className="gradient-text">
+                                {displayTitle.split(' ').slice(0, 2).join(' ')}
+                            </span>{' '}
+                            {displayTitle.split(' ').slice(2).join(' ')}
+                        </h1>
 
-                    <p className="text-xl text-gray-600 dark:text-gray-300 lg:pr-10 mb-8 animate-fade-in-up leading-relaxed">
-                        {subtitle}{' '}
-                        {/* <span className="font-bold">{location}</span> */}
-                    </p>
+                        <p className="text-xl text-gray-600 dark:text-gray-300 lg:pr-10 mb-8 animate-fade-in-up leading-relaxed">
+                            {displaySubtitle}
+                        </p>
 
-                    <div className="pt-4 flex flex-wrap gap-4">
-                        <GradientButton
-                            href={primaryButtonUrl}
-                            size="lg"
-                            endIcon={<ChevronRight />}
-                            className="w-auto py-3 animate-snowfall z-10"
-                        >
-                            {primaryButtonText}
-                        </GradientButton>
-
-                        {secondaryButtonText && secondaryButtonUrl && (
+                        <div className="pt-4 flex flex-wrap gap-4">
                             <GradientButton
-                                variant="outline"
+                                href={primaryBtnUrl}
                                 size="lg"
-                                href={secondaryButtonUrl}
-                                className="w-auto py-3 z-10"
+                                endIcon={<ChevronRight />}
+                                className="w-auto py-3 animate-snowfall z-10"
                             >
-                                {secondaryButtonText}
+                                {primaryBtnText}
                             </GradientButton>
-                        )}
-                    </div>
-                </motion.div>
+
+                            {secondaryBtnText && secondaryBtnUrl && (
+                                <GradientButton
+                                    variant="outline"
+                                    size="lg"
+                                    href={secondaryBtnUrl}
+                                    className="w-auto py-3 z-10"
+                                >
+                                    {secondaryBtnText}
+                                </GradientButton>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
 
                 {/* Bottom icons */}
                 <div className="mt-auto flex items-center space-x-2 py-4 sm:space-x-6 text-muted-foreground text-lg sm:text-xl">
