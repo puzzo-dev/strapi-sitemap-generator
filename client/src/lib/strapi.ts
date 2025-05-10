@@ -4,7 +4,8 @@ import {
   testimonials as localTestimonials,
   clientLogos as localClientLogos,
   jobListings as localJobListings,
-  benefits as localBenefits
+  benefits as localBenefits,
+  footerData
 } from '@/lib/data';
 import {
   ProductProps,
@@ -26,7 +27,6 @@ import {
   BlogComment,
   FooterProps
 } from '@/lib/types';
-import type { SiteContent } from '@shared/schema';
 import { apiRequest } from './queryClient';
 
 // Constants for API integration
@@ -769,57 +769,8 @@ export async function getBlogComments(postId: string): Promise<BlogComment[]> {
  * Get footer data from API
  */
 export async function getFooter(): Promise<FooterProps> {
-  const defaultFooter: FooterProps = {
-    companyDescription: 'Leading digital innovation company providing premium web development and IT consulting services for businesses looking to transform their digital presence.',
-    contactAddress: '5 Adams Street, Off Nnamdi Rd, Surulere, Lagos, Nigeria',
-    contactPhone: '+234 123 456 7890',
-    contactEmail: 'contact@i-varse.com',
-    socialLinks: [
-      { id: 1, platform: 'Twitter', url: 'https://twitter.com', icon: 'twitter' },
-      { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
-      { id: 3, platform: 'Facebook', url: 'https://facebook.com', icon: 'facebook' }
-    ],
-    columns: [
-      {
-        id: 1,
-        title: 'Company',
-        links: [
-          { label: 'About Us', url: '/about' },
-          { label: 'Services', url: '/services' },
-          { label: 'Products', url: '/products' },
-          { label: 'Insights', url: '/blog' },
-          { label: 'Careers', url: '/careers' },
-          { label: 'Contact', url: '/contact' },
-          { label: 'Our Team', url: '/about#team' },
-          { label: 'FAQ', url: '/faq' },
-          { label: 'Insights Pages', url: '/blog' }
-        ]
-      },
-      {
-        id: 2,
-        title: 'Services',
-        links: [
-          { label: 'Web Development', url: '/services/web-development' },
-          { label: 'Mobile App Development', url: '/services/mobile-development' },
-          { label: 'Cloud Infrastructure', url: '/services/cloud-infrastructure' },
-          { label: 'IT Consulting', url: '/services/consulting' },
-          { label: 'Digital Marketing', url: '/services/digital-marketing' },
-          { label: 'UI/UX Design', url: '/services/ui-ux-design' },
-          { label: 'AI Solutions', url: '/services/ai-solutions' },
-          { label: 'ERP Integration', url: '/services/erp-integration' },
-          { label: 'View All Services', url: '/services' }
-        ]
-      }
-    ],
-    legalLinks: [
-      { label: 'Terms of Service', url: '/terms' },
-      { label: 'Privacy Policy', url: '/privacy' },
-      { label: 'Cookie Policy', url: '/cookies' },
-      { label: 'Accessibility', url: '/accessibility' },
-      { label: 'Sitemap', url: '/sitemap' }
-    ],
-    companyName: 'I-VARSE Technologies'
-  };
+  // Import the footerData from data.ts
+  const defaultFooter = footerData;
 
   try {
     if (USE_LOCAL_API) {

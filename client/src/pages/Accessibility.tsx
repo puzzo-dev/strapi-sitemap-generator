@@ -11,22 +11,22 @@ const Accessibility: React.FC = () => {
         <>
           <h2>Our Commitment to Accessibility</h2>
           <p>
-            I-Varse Technologies is committed to ensuring digital accessibility for people with disabilities. 
-            We are continuously improving the user experience for everyone and applying the relevant accessibility 
+            I-Varse Technologies is committed to ensuring digital accessibility for people with disabilities.
+            We are continuously improving the user experience for everyone and applying the relevant accessibility
             standards to achieve this.
           </p>
-          
+
           <h2>Conformance Status</h2>
           <p>
-            The Web Content Accessibility Guidelines (WCAG) define requirements for designers and developers to 
-            improve accessibility for people with disabilities. It defines three levels of conformance: Level A, 
+            The Web Content Accessibility Guidelines (WCAG) define requirements for designers and developers to
+            improve accessibility for people with disabilities. It defines three levels of conformance: Level A,
             Level AA, and Level AAA.
           </p>
           <p>
-            The I-Varse Technologies website is partially conformant with WCAG 2.1 level AA. Partially conformant 
+            The I-Varse Technologies website is partially conformant with WCAG 2.1 level AA. Partially conformant
             means that some parts of the content do not fully conform to the accessibility standard.
           </p>
-          
+
           <h2>Accessibility Features</h2>
           <p>
             The I-Varse Technologies website includes the following accessibility features:
@@ -42,7 +42,7 @@ const Accessibility: React.FC = () => {
             <li>Skip to content link</li>
             <li>ARIA attributes where appropriate</li>
           </ul>
-          
+
           <h2>Accessibility Limitations</h2>
           <p>
             Despite our best efforts, there may be some aspects of our website that are not fully accessible:
@@ -52,7 +52,7 @@ const Accessibility: React.FC = () => {
             <li>Some third-party content or functionality may not be fully accessible</li>
             <li>Some interactive elements may not be fully accessible via keyboard navigation</li>
           </ul>
-          
+
           <h2>Feedback and Contact Information</h2>
           <p>
             We welcome your feedback on the accessibility of the I-Varse Technologies website. Please let us know if you encounter any accessibility barriers:
@@ -60,12 +60,12 @@ const Accessibility: React.FC = () => {
           <ul>
             <li>Email: accessibility@ivarse.com</li>
             <li>Phone: +234 123 456 7890</li>
-            <li>Postal Address: 5 Adams Street, Off Nnamdi Rd, Surulere, Lagos, Nigeria</li>
+            <li>Postal Address: 4 Adana Street, Off Tejuosho Rd, Surulere, Lagos, Nigeria</li>
           </ul>
           <p>
             We try to respond to feedback within 3 business days.
           </p>
-          
+
           <h2>Assessment Approach</h2>
           <p>
             I-Varse Technologies has assessed the accessibility of its website by the following approaches:
@@ -75,7 +75,7 @@ const Accessibility: React.FC = () => {
             <li>Manual testing with assistive technologies</li>
             <li>Testing with users with disabilities</li>
           </ul>
-          
+
           <h2>Technical Specifications</h2>
           <p>
             Accessibility of the I-Varse Technologies website relies on the following technologies:
@@ -90,7 +90,7 @@ const Accessibility: React.FC = () => {
           <p>
             These technologies are relied upon for conformance with the accessibility standards used.
           </p>
-          
+
           <h2>Browser and Assistive Technology Compatibility</h2>
           <p>
             The I-Varse Technologies website is designed to be compatible with the following assistive technologies:
@@ -110,7 +110,7 @@ const Accessibility: React.FC = () => {
             <li>Apple Safari (latest 2 versions)</li>
             <li>Microsoft Edge (latest 2 versions)</li>
           </ul>
-          
+
           <h2>Measures to Support Accessibility</h2>
           <p>
             I-Varse Technologies takes the following measures to ensure accessibility of its website:
@@ -123,7 +123,7 @@ const Accessibility: React.FC = () => {
             <li>Assign clear accessibility goals and responsibilities</li>
             <li>Employ formal accessibility quality assurance methods</li>
           </ul>
-          
+
           <h2>Legal Compliance</h2>
           <p>
             This statement was created on April 8, 2023, using the W3C Accessibility Statement Generator Tool.

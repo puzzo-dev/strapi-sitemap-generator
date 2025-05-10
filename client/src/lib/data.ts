@@ -470,7 +470,7 @@ export const blogCategories = [
 
 export const footerData: FooterProps = {
   companyDescription: 'Leading digital innovation company providing premium web development and IT consulting services for businesses looking to transform their digital presence.',
-  contactAddress: '5 Adams Street, Off Nnamdi Rd, Surulere, Lagos, Nigeria',
+  contactAddress: '4 Adana Street, Off Tejuosho Rd, Surulere, Lagos, Nigeria',
   contactPhone: '+234 123 456 7890',
   contactEmail: 'contact@i-varse.com',
   socialLinks: [

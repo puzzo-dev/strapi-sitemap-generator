@@ -1,20 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Sparkles, CircuitBoard, Cpu } from 'lucide-react';
-import { HeroProps, PageSection } from '@/lib/types';
+import { ModernHeroProps, PageSection, ServiceProps } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
 
-const ModernHero: React.FC<HeroProps> = ({
+const ModernHero: React.FC<ModernHeroProps> = ({
     heroContents = [],
     currentHeroIndex = 0,
     isHeroLoading = false,
     isPageLoading = false,
     pageContent,
-    serviceSlides = [],
-    serviceImages = [],
-    serviceIcons = [],
-    currentSlide = 0,
+    services = [],
+    currentServiceIndex = 0,
     isServicesLoading = false,
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
@@ -174,9 +172,8 @@ const ModernHero: React.FC<HeroProps> = ({
                         </motion.div>
                     </motion.div>
                 </div>
-
                 {/* Service Slides Container */}
-                {serviceImages && serviceImages.length > 0 && (
+                {services && services.length > 0 && (
                     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                         <div
                             className="relative w-full h-full"
@@ -185,17 +182,14 @@ const ModernHero: React.FC<HeroProps> = ({
                         >
                             {/* Main image with gradient overlay */}
                             <div className="absolute inset-0 z-10">
-                                {serviceSlides.map((service, index) => (
+                                {services.map((service, index) => (
                                     <div
                                         key={service.id || index}
-                                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+                                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentServiceIndex ? 'opacity-100' : 'opacity-0'
                                             }`}
                                     >
                                         <img
-                                            src={
-                                                service.image ||
-                                                serviceImages[index % serviceImages.length]
-                                            }
+                                            src={service.image || (service.images && service.images[0])}
                                             alt={service.title}
                                             className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                         />
@@ -216,15 +210,19 @@ const ModernHero: React.FC<HeroProps> = ({
                             )}
 
                             {/* Current service overlay content - super tiny in top right */}
-                            {serviceSlides && serviceSlides.length > 0 && serviceIcons && serviceIcons.length > 0 && (
+                            {services && services.length > 0 && (
                                 <div className="absolute top-0 right-0 z-20 py-0.5 px-1 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
-                                    {serviceSlides.map((service, index) => (
+                                    {services.map((service, index) => (
                                         <div
                                             key={service.id || index}
-                                            className={`transition-opacity duration-500 flex items-center ${index === currentSlide ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
+                                            className={`transition-opacity duration-500 flex items-center ${index === currentServiceIndex ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
                                         >
                                             <div className="flex items-center">
-                                                <span className="flex items-center justify-center mr-1.5">{serviceIcons[index % serviceIcons.length]}</span>
+                                                <span className="flex items-center justify-center mr-1.5">
+                                                    {service.iconComponent || (
+                                                        <div className="h-4 w-4 bg-current rounded-full"></div>
+                                                    )}
+                                                </span>
                                                 <p className="text-xs font-medium text-white whitespace-nowrap">
                                                     {service.title}
                                                 </p>

@@ -1,26 +1,63 @@
+import React from "react";
+
+// Base URL interface for reusability
+export interface UrlProps {
+  url: string;
+  openInNewTab?: boolean;
+  isExternal?: boolean;
+}
+
+// Button type that extends UrlProps
+export interface ButtonProps extends UrlProps {
+  text: string;
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'link';
+  size?: 'sm' | 'md' | 'lg';
+  icon?: string;
+  iconPosition?: 'left' | 'right';
+  onClick?: () => void;
+}
+
+// Shared Link item
+export interface LinkItem extends UrlProps {
+  label: string;
+}
+
+// Hero content type
+export interface HeroSlide {
+  title: string;
+  subtitle: string;
+  primaryButton?: ButtonProps;
+  secondaryButton?: ButtonProps;
+  backgroundImage?: string;
+}
+
+// Enhanced ServiceProps
+export interface ServiceProps {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;                   // String identifier for the icon
+  iconComponent?: React.ReactNode; // The actual React icon component
+  images?: string[];              // Allow multiple images per service
+  primaryImage?: string;          // Main image to display
+}
+
+// Main HeroProps
 export interface HeroProps {
-  heroContents: Array<{
-    title: string;
-    subtitle: string;
-    settings?: any;
-  }>;
+  heroContents: HeroSlide[];
   currentHeroIndex: number;
   isHeroLoading: boolean;
   isPageLoading: boolean;
-  pageContent?: any;
-  serviceSlides: ServiceProps[];
-  serviceImages: string[];
-  serviceIcons: React.ReactNode[];
-  currentSlide: number;
+  pageContent?: PageContent;      // Properly typed as PageContent
+  services: ServiceProps[];       // Consolidated service data
+  currentServiceIndex: number;    // Renamed from currentSlide for clarity
   isServicesLoading: boolean;
   handleMouseEnter: () => void;
   handleMouseLeave: () => void;
-  companyLogo?: string; // Optional for ModernHero
+  companyLogo?: string;           // Optional for ModernHero
 }
-
-// Keep these for backward compatibility but make them extend the base interface
+// Compatibility extensions
 export interface ModernHeroProps extends HeroProps { }
-
 export interface OriginalHeroProps extends HeroProps { }
 
 export interface ServiceProps {
@@ -55,8 +92,6 @@ export interface ContactFormData {
   message: string;
 }
 
-// New types for Strapi CMS content management
-
 export interface NavItem {
   id: number;
   label: string;
@@ -64,17 +99,16 @@ export interface NavItem {
   order: number;
 }
 
-export interface SocialLink {
+export interface SocialLink extends UrlProps {
   id: number;
   platform: string;
-  url: string;
   icon: string;
 }
 
 export interface FooterColumn {
   id: number;
   title: string;
-  links: { label: string; url: string }[];
+  links: LinkItem[];
 }
 
 export interface SiteConfig {
@@ -108,38 +142,17 @@ export interface PageSection {
   backgroundColor?: string;
   items?: any[];
   settings?: {
-    // Hero section settings
-    primaryButton?: {
-      text: string;
-      url: string;
-    };
-    secondaryButton?: {
-      text: string;
-      url: string;
-    };
+    primaryButton?: ButtonProps;
+    secondaryButton?: ButtonProps;
     backgroundImage?: string;
-    // About section settings
-    stats?: {
-      value: string;
-      label: string;
-    }[];
-    video?: {
-      thumbnail: string;
-      url: string;
-      title: string;
-      description: string;
-    };
-    // Products section settings
+    stats?: { value: string; label: string }[];
+    video?: { thumbnail: string; url: string; title: string; description: string };
     maxDisplay?: number;
     layout?: 'grid' | 'list';
-    // Services section settings
     featuredService?: string;
-    // Blog section settings
     postsToShow?: number;
     showFeaturedOnly?: boolean;
-    // Testimonials section settings
     testimonialCount?: number;
-    // Clients section settings
     logoSize?: 'small' | 'medium' | 'large';
     [key: string]: any;
   };
@@ -151,13 +164,11 @@ export interface SectionContent {
       title: string;
       subtitle: string;
       image: string;
+      buttons?: ButtonProps[];
     }[];
   };
   about?: {
-    stats: {
-      value: string;
-      label: string;
-    }[];
+    stats: { value: string; label: string }[];
     video: {
       thumbnail: string;
       url: string;
@@ -165,21 +176,11 @@ export interface SectionContent {
       description: string;
     };
   };
-  products?: {
-    featured: ProductProps[];
-  };
-  services?: {
-    featured: ServiceProps[];
-  };
-  testimonials?: {
-    items: TestimonialProps[];
-  };
-  clients?: {
-    logos: ClientLogo[];
-  };
-  blog?: {
-    recentPosts: BlogPost[];
-  };
+  products?: { featured: ProductProps[] };
+  services?: { featured: ServiceProps[] };
+  testimonials?: { items: TestimonialProps[] };
+  clients?: { logos: ClientLogo[] };
+  blog?: { recentPosts: BlogPost[] };
 }
 
 export interface TeamMember {
@@ -219,7 +220,6 @@ export interface Benefit {
   icon: string;
 }
 
-// ERPNext Blog Content Types
 export interface BlogCategory {
   id?: number;
   name: string;
@@ -256,6 +256,7 @@ export interface BlogPost {
   categories?: BlogCategory[];
   readTime?: number;
   tags?: string[];
+  ctaButton?: ButtonProps;
 }
 
 export interface BlogComment {
@@ -269,25 +270,13 @@ export interface BlogComment {
 }
 
 export interface FooterProps {
-  // Company information
   companyDescription: string;
   contactAddress: string;
   contactPhone: string;
   contactEmail: string;
-
-  // Social links
   socialLinks: SocialLink[];
-
-  // Footer columns for navigation
   columns: FooterColumn[];
-
-  // Legal links
-  legalLinks: {
-    label: string;
-    url: string;
-  }[];
-
-  // Copyright information
+  legalLinks: LinkItem[];
   copyrightText?: string;
   companyName?: string;
 }

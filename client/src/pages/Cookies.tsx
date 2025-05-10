@@ -11,12 +11,12 @@ const Cookies: React.FC = () => {
         <>
           <h2>What Are Cookies?</h2>
           <p>
-            Cookies are small text files that are placed on your device when you visit a website. 
-            They are widely used to make websites work more efficiently and provide information to 
-            the website owners. Cookies can be "persistent" cookies that remain on your device until 
+            Cookies are small text files that are placed on your device when you visit a website.
+            They are widely used to make websites work more efficiently and provide information to
+            the website owners. Cookies can be "persistent" cookies that remain on your device until
             they expire or are deleted, or "session" cookies that are deleted when you close your browser.
           </p>
-          
+
           <h2>How We Use Cookies</h2>
           <p>
             I-Varse Technologies uses cookies for various purposes, including:
@@ -27,7 +27,7 @@ const Cookies: React.FC = () => {
             <li><strong>Functionality Cookies:</strong> These cookies enable the website to provide enhanced functionality and personalization. They may be set by us or by third-party providers whose services we have added to our pages.</li>
             <li><strong>Targeting Cookies:</strong> These cookies may be set through our site by our advertising partners. They may be used by those companies to build a profile of your interests and show you relevant advertisements on other sites.</li>
           </ul>
-          
+
           <h2>Specific Cookies We Use</h2>
           <table className="w-full border-collapse border border-gray-300 dark:border-gray-700 mb-6">
             <thead>
@@ -70,7 +70,7 @@ const Cookies: React.FC = () => {
               </tr>
             </tbody>
           </table>
-          
+
           <h2>Third-Party Cookies</h2>
           <p>
             In addition to our own cookies, we may also use various third-party cookies to report usage statistics of the website and deliver advertisements on and through the website. Some common third-party services we may use include:
@@ -82,12 +82,12 @@ const Cookies: React.FC = () => {
             <li>LinkedIn Insight Tag</li>
             <li>HubSpot</li>
           </ul>
-          
+
           <h2>Managing Cookies</h2>
           <p>
             Most web browsers allow you to control cookies through their settings preferences. However, if you limit the ability of websites to set cookies, you may worsen your overall user experience, as it will no longer be personalized to you. It may also stop you from saving customized settings like login information.
           </p>
-          
+
           <h3>How to manage cookies in your browser:</h3>
           <ul>
             <li><strong>Google Chrome:</strong> Settings &gt; Privacy and security &gt; Cookies and other site data</li>
@@ -95,24 +95,24 @@ const Cookies: React.FC = () => {
             <li><strong>Safari:</strong> Preferences &gt; Privacy &gt; Cookies and website data</li>
             <li><strong>Firefox:</strong> Options &gt; Privacy & Security &gt; Cookies and Site Data</li>
           </ul>
-          
+
           <h2>Changes to This Cookie Policy</h2>
           <p>
             We may update our Cookie Policy from time to time. We will notify you of any changes by posting the new Cookie Policy on this page and updating the "Last Updated" date.
           </p>
-          
+
           <h2>Contact Us</h2>
           <p>
             If you have any questions about our Cookie Policy, please contact us at:
           </p>
           <address>
             I-Varse Technologies<br />
-            5 Adams Street, Off Nnamdi Rd,<br />
+            4 Adana Street, Off Tejuosho Rd,<br />
             Surulere, Lagos, Nigeria<br />
             Email: privacy@ivarse.com<br />
             Phone: +234 123 456 7890
           </address>
-          
+
           <p><strong>Last Updated:</strong> April 2023</p>
         </>
       }

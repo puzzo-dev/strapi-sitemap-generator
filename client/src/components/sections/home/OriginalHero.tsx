@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import GradientButton from "@/components/ui/GradientButton";
-import { ServiceProps, HeroProps } from "@/lib/types"; // Updated import
+import { ServiceProps, OriginalHeroProps } from "@/lib/types"; // Updated import
 import { fadeInUp, scaleUp } from "@/lib/animations";
 import { useLanguage } from "@/components/context/LanguageContext";
 import {
@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import IVarseLogo from "@assets/I-VARSELogo3@3x.png";
 
-const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps to HeroProps
+const OriginalHero: React.FC<OriginalHeroProps> = ({ // Changed from OriginalHeroProps to HeroProps
     heroContents = [],
     currentHeroIndex = 0,
     isHeroLoading = false,
@@ -26,9 +26,10 @@ const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps t
     serviceIcons = [],
     currentSlide = 0,
     isServicesLoading = false,
-    handleMouseEnter = () => {},
-    handleMouseLeave = () => {},
-}) => {    const { t } = useTranslation();
+    handleMouseEnter = () => { },
+    handleMouseLeave = () => { },
+}) => {
+    const { t } = useTranslation();
     const { currentLanguage } = useLanguage();
 
     return (
@@ -228,26 +229,26 @@ const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps t
                             <div className="pt-4 md:flex-row gap-4 hidden md:flex">
                                 <GradientButton
                                     href={
-                                        pageContent?.sections?.find((s) => s.type === "hero")
+                                        pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
                                             ?.settings?.primaryButton?.url || "/services"
                                     }
                                     size="lg"
                                     endIcon={<ChevronRight />}
                                     className="w-auto py-3 animate-snowfall z-10"
                                 >
-                                    {pageContent?.sections?.find((s) => s.type === "hero")
+                                    {pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
                                         ?.settings?.primaryButton?.text || t("button.getStarted")}
                                 </GradientButton>
                                 <GradientButton
                                     href={
-                                        pageContent?.sections?.find((s) => s.type === "hero")
+                                        pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
                                             ?.settings?.secondaryButton?.url || "/#about"
                                     }
                                     variant="outline"
                                     size="lg"
                                     className="w-auto py-3 z-10"
                                 >
-                                    {pageContent?.sections?.find((s) => s.type === "hero")
+                                    {pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
                                         ?.settings?.secondaryButton?.text || t("button.learnMore")}
                                 </GradientButton>
                             </div>
@@ -378,8 +379,8 @@ const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps t
                                                         <div
                                                             key={service.id || index}
                                                             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide
-                                                                    ? "opacity-100"
-                                                                    : "opacity-0"
+                                                                ? "opacity-100"
+                                                                : "opacity-0"
                                                                 }`}
                                                         >
                                                             <img
@@ -410,8 +411,8 @@ const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps t
                                                         <div
                                                             key={service.id || index}
                                                             className={`transition-opacity duration-500 flex items-center ${index === currentSlide
-                                                                    ? "opacity-100"
-                                                                    : "opacity-0 absolute inset-0"
+                                                                ? "opacity-100"
+                                                                : "opacity-0 absolute inset-0"
                                                                 }`}
                                                         >
                                                             <div className="flex items-center">
@@ -545,7 +546,7 @@ const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps t
                         <div className="pt-6 flex flex-col gap-5 w-full">
                             <GradientButton
                                 href={
-                                    pageContent?.sections?.find((s) => s.type === "hero")
+                                    pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
                                         ?.settings?.primaryButton?.url || "/services"
                                 }
                                 size="lg"
@@ -553,12 +554,11 @@ const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps t
                                 className="w-full py-5 justify-center animate-snowfall text-lg"
                                 fullWidth
                             >
-                                {pageContent?.sections?.find((s) => s.type === "hero")?.settings
-                                    ?.primaryButton?.text || t("button.getStarted")}
+                                {pageContent?.sections?.find((s: any) => s.type === "hero")?.settings?.primaryButton?.text || t("button.getStarted")}
                             </GradientButton>
                             <GradientButton
                                 href={
-                                    pageContent?.sections?.find((s) => s.type === "hero")
+                                    pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
                                         ?.settings?.secondaryButton?.url || "/#about"
                                 }
                                 variant="outline"
@@ -566,8 +566,7 @@ const OriginalHero: React.FC<HeroProps> = ({ // Changed from OriginalHeroProps t
                                 className="w-full py-5 justify-center text-lg"
                                 fullWidth
                             >
-                                {pageContent?.sections?.find((s) => s.type === "hero")?.settings
-                                    ?.secondaryButton?.text || t("button.learnMore")}
+                                {pageContent?.sections?.find((s: { type: string }) => s.type === "hero")?.settings?.secondaryButton?.text || t("button.learnMore")}
                             </GradientButton>
                         </div>
                     </div>

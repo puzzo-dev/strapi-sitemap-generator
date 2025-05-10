@@ -12,6 +12,7 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 // Pages
 import Home from "@/pages/Home";
+import Home2 from "@/pages/Home2";
 import Services from "@/pages/Services";
 import ServiceDetail from "@/pages/ServiceDetail";
 import Products from "@/pages/Products";
@@ -77,6 +78,7 @@ function App() {
               <AnimatePresence mode="wait">
                 <Switch>
                   <Route path="/" component={Home} />
+                  <Route path="/home" component={Home2} />
                   <Route path="/services" component={Services} />
                   <Route path="/services/:id" component={ServiceDetail} />
                   <Route path="/products" component={Products} />
