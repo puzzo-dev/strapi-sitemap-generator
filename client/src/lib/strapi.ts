@@ -261,7 +261,7 @@ export async function getSiteConfig(): Promise<SiteConfig> {
   const defaultSiteConfig: SiteConfig = {
     siteName: 'I-Varse Technologies',
     siteDescription: 'Digital solutions for modern businesses',
-    contactEmail: 'info@ivarse.com',
+    contactEmail: 'info@itechnologies.ng',
     contactPhone: '+1234567890',
     contactAddress: '123 Tech Boulevard, Silicon Valley, CA',
     logoLight: '/assets/I-VARSELogo3@3x.png',
@@ -600,7 +600,7 @@ export async function getBenefits(): Promise<Benefit[]> {
  */
 
 // Base URL for ERPNext API - should be stored in an environment variable
-const ERPNEXT_API_BASE_URL = import.meta.env.VITE_ERPNEXT_API_URL || 'https://i-erp.ivarse.com';
+const ERPNEXT_API_BASE_URL = import.meta.env.VITE_ERPNEXT_API_URL || 'https://i-erp.itechnologies.ng';
 
 /**
  * Fetch data from ERPNext API with error handling

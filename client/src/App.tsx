@@ -68,8 +68,8 @@ function App() {
             keywords={["technology", "innovation", "digital transformation", "software development", "IT solutions", "I-Varse"]}
             structuredData={websiteSchema}
             ogType="website"
-            canonicalUrl={`https://www.ivarse.com${location}`}
-            ogUrl={`https://www.ivarse.com${location}`}
+            canonicalUrl={`https://www.itechnologies.ng${location}`}
+            ogUrl={`https://www.itechnologies.ng${location}`}
           />
 
           <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white">

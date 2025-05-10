@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import GradientButton from "@/components/ui/GradientButton";
-import { ServiceProps, OriginalHeroProps } from "@/lib/types"; // Updated import
+import { ServiceProps, OriginalHeroProps, PageSection } from "@/lib/types"; // Updated import
 import { fadeInUp, scaleUp } from "@/lib/animations";
 import { useLanguage } from "@/components/context/LanguageContext";
 import {
@@ -15,23 +15,53 @@ import {
 } from "lucide-react";
 import IVarseLogo from "@assets/I-VARSELogo3@3x.png";
 
-const OriginalHero: React.FC<OriginalHeroProps> = ({ // Changed from OriginalHeroProps to HeroProps
+const OriginalHero: React.FC<OriginalHeroProps> = ({
     heroContents = [],
     currentHeroIndex = 0,
     isHeroLoading = false,
     isPageLoading = false,
     pageContent,
-    serviceSlides = [],
-    serviceImages = [],
-    serviceIcons = [],
-    currentSlide = 0,
+    services = [], // Changed from serviceSlides to services
+    currentServiceIndex = 0, // Changed from currentSlide to currentServiceIndex
     isServicesLoading = false,
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
+    companyLogo, // Added companyLogo prop
 }) => {
-    const { t } = useTranslation();
-    const { currentLanguage } = useLanguage();
+    const { t } = useTranslation()
+    const { currentLanguage } = useLanguage()
 
+    // Extract data from heroContents if available
+    const heroContent = heroContents[currentHeroIndex] || {}
+
+    // Use heroContent for title and subtitle
+    const displayTitle = heroContent.title || 'Innovative Digital Solutions for Modern Businesses'
+    const displaySubtitle = heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.'
+
+    // Get button info from heroContent first, then fall back to pageContent
+    const primaryBtnText =
+        heroContent.primaryButton?.text ||
+        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.text ||
+        'GET STARTED'
+
+    const primaryBtnUrl =
+        heroContent.primaryButton?.url ||
+        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.url ||
+        '/services'
+
+    const secondaryBtnText =
+        heroContent.secondaryButton?.text ||
+        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.text ||
+        'LEARN MORE'
+
+    const secondaryBtnUrl =
+        heroContent.secondaryButton?.url ||
+        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.url ||
+        '/#about'
+
+    // Use isPageLoading or isHeroLoading as fallback for isLoading
+    const showLoading = isPageLoading || isHeroLoading
+    // Extract data from heroContents if available
     return (
         <motion.section
             initial="initial"
@@ -215,41 +245,30 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({ // Changed from OriginalHer
                                 </div>
                             ) : (
                                 <p
-                                    className="text-xl text-gray-600 dark:text-gray-300 lg:pr-10 hidden md:block mb-8 animate-fade-in-up"
+                                    className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
                                     style={{ animationDelay: "0.4s" }}
                                 >
-                                    {isHeroLoading
-                                        ? "Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence."
-                                        : heroContents[currentHeroIndex]?.subtitle ||
-                                        "Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence."}
+                                    {displaySubtitle}
                                 </p>
                             )}
 
                             {/* Desktop-only buttons */}
                             <div className="pt-4 md:flex-row gap-4 hidden md:flex">
                                 <GradientButton
-                                    href={
-                                        pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
-                                            ?.settings?.primaryButton?.url || "/services"
-                                    }
+                                    href={primaryBtnUrl}
                                     size="lg"
                                     endIcon={<ChevronRight />}
                                     className="w-auto py-3 animate-snowfall z-10"
                                 >
-                                    {pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
-                                        ?.settings?.primaryButton?.text || t("button.getStarted")}
+                                    {primaryBtnText}
                                 </GradientButton>
                                 <GradientButton
-                                    href={
-                                        pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
-                                            ?.settings?.secondaryButton?.url || "/#about"
-                                    }
+                                    href={secondaryBtnUrl}
                                     variant="outline"
                                     size="lg"
                                     className="w-auto py-3 z-10"
                                 >
-                                    {pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
-                                        ?.settings?.secondaryButton?.text || t("button.learnMore")}
+                                    {secondaryBtnText}
                                 </GradientButton>
                             </div>
                         </div>
@@ -375,18 +394,19 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({ // Changed from OriginalHer
                                             <div className="relative w-full h-full">
                                                 {/* Main image with gradient overlay */}
                                                 <div className="absolute inset-0 z-10">
-                                                    {serviceSlides.map((service, index) => (
+                                                    {services.map((service, index) => (
                                                         <div
                                                             key={service.id || index}
-                                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide
+                                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentServiceIndex
                                                                 ? "opacity-100"
                                                                 : "opacity-0"
                                                                 }`}
                                                         >
                                                             <img
                                                                 src={
+                                                                    service.primaryImage ||
                                                                     service.image ||
-                                                                    serviceImages[index % serviceImages.length]
+                                                                    (service.images && service.images.length > 0 ? service.images[0] : '')
                                                                 }
                                                                 alt={service.title}
                                                                 className="w-full h-full object-cover opacity-40 dark:opacity-30"
@@ -399,7 +419,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({ // Changed from OriginalHer
                                                 {/* Company logo */}
                                                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 opacity-10 dark:opacity-20">
                                                     <img
-                                                        src={IVarseLogo}
+                                                        src={companyLogo}
                                                         alt="I-VARSE Technologies"
                                                         className="w-full h-full object-contain"
                                                     />
@@ -407,17 +427,19 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({ // Changed from OriginalHer
 
                                                 {/* Current service overlay content - super tiny in top right */}
                                                 <div className="absolute top-0 right-0 z-20 py-0.5 px-1 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
-                                                    {serviceSlides.map((service, index) => (
+                                                    {services.map((service, index) => (
                                                         <div
                                                             key={service.id || index}
-                                                            className={`transition-opacity duration-500 flex items-center ${index === currentSlide
+                                                            className={`transition-opacity duration-500 flex items-center ${index === currentServiceIndex
                                                                 ? "opacity-100"
                                                                 : "opacity-0 absolute inset-0"
                                                                 }`}
                                                         >
                                                             <div className="flex items-center">
                                                                 <span className="flex items-center justify-center mr-1.5">
-                                                                    {serviceIcons[index % serviceIcons.length]}
+                                                                    {service.iconComponent || (
+                                                                        <div className="h-4 w-4 bg-current rounded-full"></div>
+                                                                    )}
                                                                 </span>
                                                                 <h3 className="text-[11px] font-medium text-white whitespace-nowrap">
                                                                     {service.title}
@@ -536,37 +558,28 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({ // Changed from OriginalHer
                                 className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
                                 style={{ animationDelay: "0.4s" }}
                             >
-                                {isHeroLoading
-                                    ? "Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence."
-                                    : heroContents[currentHeroIndex]?.subtitle ||
-                                    "Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence."}
+                                {displaySubtitle}
                             </p>
                         )}
 
                         <div className="pt-6 flex flex-col gap-5 w-full">
                             <GradientButton
-                                href={
-                                    pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
-                                        ?.settings?.primaryButton?.url || "/services"
-                                }
+                                href={primaryBtnUrl}
                                 size="lg"
                                 endIcon={<ChevronRight />}
                                 className="w-full py-5 justify-center animate-snowfall text-lg"
                                 fullWidth
                             >
-                                {pageContent?.sections?.find((s: any) => s.type === "hero")?.settings?.primaryButton?.text || t("button.getStarted")}
+                                {primaryBtnText}
                             </GradientButton>
                             <GradientButton
-                                href={
-                                    pageContent?.sections?.find((s: { type: string }) => s.type === "hero")
-                                        ?.settings?.secondaryButton?.url || "/#about"
-                                }
+                                href={secondaryBtnUrl}
                                 variant="outline"
                                 size="lg"
                                 className="w-full py-5 justify-center text-lg"
                                 fullWidth
                             >
-                                {pageContent?.sections?.find((s: { type: string }) => s.type === "hero")?.settings?.secondaryButton?.text || t("button.learnMore")}
+                                {secondaryBtnText}
                             </GradientButton>
                         </div>
                     </div>

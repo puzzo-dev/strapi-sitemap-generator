@@ -202,19 +202,19 @@ const Home: React.FC = () => {
       <MetaTags
         title={pageTitle}
         description={pageDescription}
-        canonicalUrl="https://ivarse.com"
-        ogImage="https://ivarse.com/og-image.jpg"
-        ogUrl="https://ivarse.com"
+        canonicalUrl="https://itechnologies.ng"
+        ogImage="https://itechnologies.ng/og-image.jpg"
+        ogUrl="https://itechnologies.ng"
         ogType="website"
         twitterCard="summary_large_image"
         alternateLanguages={[
-          { lang: 'en', url: 'https://ivarse.com' },
-          { lang: 'yo', url: 'https://ivarse.com/yo' },
-          { lang: 'ig', url: 'https://ivarse.com/ig' },
-          { lang: 'ha', url: 'https://ivarse.com/ha' },
-          { lang: 'fr', url: 'https://ivarse.com/fr' },
-          { lang: 'es', url: 'https://ivarse.com/es' },
-          { lang: 'sw', url: 'https://ivarse.com/sw' }
+          { lang: 'en', url: 'https://itechnologies.ng' },
+          { lang: 'yo', url: 'https://itechnologies.ng/yo' },
+          { lang: 'ig', url: 'https://itechnologies.ng/ig' },
+          { lang: 'ha', url: 'https://itechnologies.ng/ha' },
+          { lang: 'fr', url: 'https://itechnologies.ng/fr' },
+          { lang: 'es', url: 'https://itechnologies.ng/es' },
+          { lang: 'sw', url: 'https://itechnologies.ng/sw' }
         ]}
         structuredData={structuredData}
       />

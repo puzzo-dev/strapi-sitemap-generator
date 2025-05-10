@@ -42,7 +42,7 @@ export const services: ServiceProps[] = [
 export const products: ProductProps[] = [
   {
     id: 1,
-    title: "Entry-E: Event Ticketing SaaS",
+    title: "Entry-X: Event Ticketing SaaS",
     description: "A complete event ticketing solution for event organizers",
     keyFeatures: [
       "Ticket Sales Management",
@@ -472,7 +472,7 @@ export const footerData: FooterProps = {
   companyDescription: 'Leading digital innovation company providing premium web development and IT consulting services for businesses looking to transform their digital presence.',
   contactAddress: '4 Adana Street, Off Tejuosho Rd, Surulere, Lagos, Nigeria',
   contactPhone: '+234 123 456 7890',
-  contactEmail: 'contact@i-varse.com',
+  contactEmail: 'contact@itechnologies.ng',
   socialLinks: [
     { id: 1, platform: 'Twitter', url: 'https://twitter.com', icon: 'twitter' },
     { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },

@@ -144,7 +144,7 @@ const Contact: React.FC = () => {
                       </div>
                       <div>
                         <p className="text-gray-500 dark:text-gray-400 text-sm">Email</p>
-                        <p className="text-gray-900 dark:text-white">{siteConfig?.contactEmail || 'contact@i-varse.com'}</p>
+                        <p className="text-gray-900 dark:text-white">{siteConfig?.contactEmail || 'contact@itechnologies.ng'}</p>
                       </div>
                     </div>
 

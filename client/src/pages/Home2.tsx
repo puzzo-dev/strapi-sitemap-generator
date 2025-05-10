@@ -33,7 +33,7 @@ import { ServiceProps, PageContent, ModernHeroProps } from '@/lib/types';
 const Home: React.FC = () => {
     const { t } = useTranslation();
     const { currentLanguage } = useLanguage();
-    const [currentSlide, setCurrentSlide] = useState(0);
+    const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
     const [autoplayEnabled, setAutoplayEnabled] = useState(true);
     const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
     const [showModernHero, setShowModernHero] = useState(false);
@@ -50,10 +50,13 @@ const Home: React.FC = () => {
     // Fetch services from Strapi
     const { data: apiServices, isLoading: isServicesLoading } = useServices();
 
+    // Import local services data
+    const localServices = services;
+
     // Create service slides with fallback to local data if API fails
-    const serviceSlides = isServicesLoading
-        ? services.slice(0, 5)
-        : (apiServices?.length ? apiServices : services).slice(0, 5);
+    const serviceItems: ServiceProps[] = isServicesLoading
+        ? localServices.slice(0, 5)
+        : (apiServices?.length ? apiServices : localServices).slice(0, 5);
 
     // Service slide indicators (simple dots with different colors)
     const serviceIcons = [
@@ -80,15 +83,15 @@ const Home: React.FC = () => {
 
     // Handle slide navigation
     const nextSlide = () => {
-        setCurrentSlide((prev) => (prev === serviceSlides.length - 1 ? 0 : prev + 1));
+        setCurrentServiceIndex((prev) => (prev === serviceItems.length - 1 ? 0 : prev + 1));
     };
 
     const prevSlide = () => {
-        setCurrentSlide((prev) => (prev === 0 ? serviceSlides.length - 1 : prev - 1));
+        setCurrentServiceIndex((prev) => (prev === 0 ? serviceItems.length - 1 : prev - 1));
     };
 
     const goToSlide = (index: number) => {
-        setCurrentSlide(index);
+        setCurrentServiceIndex(index);
     };
 
     // Auto-rotate slides
@@ -100,7 +103,7 @@ const Home: React.FC = () => {
         }, 5000);
 
         return () => clearInterval(timer);
-    }, [currentSlide, autoplayEnabled]);
+    }, [currentServiceIndex, autoplayEnabled]);
 
     // Auto-rotate hero content for more dynamic feel
     useEffect(() => {
@@ -150,19 +153,19 @@ const Home: React.FC = () => {
             <MetaTags
                 title={pageTitle}
                 description={pageDescription}
-                canonicalUrl="https://ivarse.com"
-                ogImage="https://ivarse.com/og-image.jpg"
-                ogUrl="https://ivarse.com"
+                canonicalUrl="https://itechnologies.ng"
+                ogImage="https://itechnologies.ng/og-image.jpg"
+                ogUrl="https://itechnologies.ng"
                 ogType="website"
                 twitterCard="summary_large_image"
                 alternateLanguages={[
-                    { lang: 'en', url: 'https://ivarse.com' },
-                    { lang: 'yo', url: 'https://ivarse.com/yo' },
-                    { lang: 'ig', url: 'https://ivarse.com/ig' },
-                    { lang: 'ha', url: 'https://ivarse.com/ha' },
-                    { lang: 'fr', url: 'https://ivarse.com/fr' },
-                    { lang: 'es', url: 'https://ivarse.com/es' },
-                    { lang: 'sw', url: 'https://ivarse.com/sw' }
+                    { lang: 'en', url: 'https://itechnologies.ng' },
+                    { lang: 'yo', url: 'https://itechnologies.ng/yo' },
+                    { lang: 'ig', url: 'https://itechnologies.ng/ig' },
+                    { lang: 'ha', url: 'https://itechnologies.ng/ha' },
+                    { lang: 'fr', url: 'https://itechnologies.ng/fr' },
+                    { lang: 'es', url: 'https://itechnologies.ng/es' },
+                    { lang: 'sw', url: 'https://itechnologies.ng/sw' }
                 ]}
                 structuredData={structuredData}
             />
@@ -174,11 +177,9 @@ const Home: React.FC = () => {
                     currentHeroIndex={currentHeroIndex}
                     isHeroLoading={isHeroLoading}
                     isPageLoading={isPageLoading}
-                    pageContent={pageContent}
-                    serviceSlides={serviceSlides}
-                    serviceImages={serviceImages}
-                    serviceIcons={serviceIcons}
-                    currentSlide={currentSlide}
+                    pageContent={pageContent || undefined}
+                    services={serviceItems}
+                    currentServiceIndex={currentServiceIndex}
                     isServicesLoading={isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
@@ -190,11 +191,9 @@ const Home: React.FC = () => {
                     currentHeroIndex={currentHeroIndex}
                     isHeroLoading={isHeroLoading}
                     isPageLoading={isPageLoading}
-                    pageContent={pageContent}
-                    serviceSlides={serviceSlides}
-                    serviceImages={serviceImages}
-                    serviceIcons={serviceIcons}
-                    currentSlide={currentSlide}
+                    pageContent={pageContent || undefined}
+                    services={serviceItems}
+                    currentServiceIndex={currentServiceIndex}
                     isServicesLoading={isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}

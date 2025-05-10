@@ -25,20 +25,24 @@ const ModernHero: React.FC<ModernHeroProps> = ({
     const displayTitle = heroContent.title || 'Innovative Digital Solutions for Modern Businesses';
     const displaySubtitle = heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.';
 
-    // Get button info from pageContent
+    // Get button info from heroContent first, then fall back to pageContent
     const primaryBtnText =
+        heroContent.primaryButton?.text ||
         pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.text ||
         'GET STARTED';
 
     const primaryBtnUrl =
+        heroContent.primaryButton?.url ||
         pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.url ||
         '/services';
 
     const secondaryBtnText =
+        heroContent.secondaryButton?.text ||
         pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.text ||
         'LEARN MORE';
 
     const secondaryBtnUrl =
+        heroContent.secondaryButton?.url ||
         pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.url ||
         '/#about';
 
@@ -109,6 +113,10 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                 size="lg"
                                 endIcon={<ChevronRight />}
                                 className="w-auto py-3 animate-snowfall z-10"
+
+
+                                target={heroContent.primaryButton?.openInNewTab ? "_blank" : undefined}
+                                rel={heroContent.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
                             >
                                 {primaryBtnText}
                             </GradientButton>
@@ -119,6 +127,8 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                     size="lg"
                                     href={secondaryBtnUrl}
                                     className="w-auto py-3 z-10"
+                                    target={heroContent.secondaryButton?.openInNewTab ? "_blank" : undefined}
+                                    rel={heroContent.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
                                 >
                                     {secondaryBtnText}
                                 </GradientButton>
@@ -189,7 +199,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                             }`}
                                     >
                                         <img
-                                            src={service.image || (service.images && service.images[0])}
+                                            src={service.primaryImage || service.image || (service.images && service.images[0])}
                                             alt={service.title}
                                             className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                         />
@@ -220,7 +230,14 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                             <div className="flex items-center">
                                                 <span className="flex items-center justify-center mr-1.5">
                                                     {service.iconComponent || (
-                                                        <div className="h-4 w-4 bg-current rounded-full"></div>
+                                                        service.icon ? (
+                                                            <span className="h-4 w-4 flex items-center justify-center">
+                                                                {/* You might need to implement a dynamic icon component here based on the icon string */}
+                                                                <div className={`icon-${service.icon}`}></div>
+                                                            </span>
+                                                        ) : (
+                                                            <div className="h-4 w-4 bg-current rounded-full"></div>
+                                                        )
                                                     )}
                                                 </span>
                                                 <p className="text-xs font-medium text-white whitespace-nowrap">
@@ -245,5 +262,4 @@ const ModernHero: React.FC<ModernHeroProps> = ({
         </section>
     );
 };
-
 export default ModernHero;

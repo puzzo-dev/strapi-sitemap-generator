@@ -80,7 +80,7 @@ const Terms: React.FC = () => {
             I-Varse Technologies<br />
             4 Adana Street, Off Tejuosho Rd,<br />
             Surulere, Lagos, Nigeria<br />
-            Email: info@ivarse.com<br />
+            Email: info@itechnologies.ng<br />
             Phone: +234 123 456 7890
           </address>
 

@@ -58,7 +58,7 @@ const Accessibility: React.FC = () => {
             We welcome your feedback on the accessibility of the I-Varse Technologies website. Please let us know if you encounter any accessibility barriers:
           </p>
           <ul>
-            <li>Email: accessibility@ivarse.com</li>
+            <li>Email: accessibility@itechnologies.ng</li>
             <li>Phone: +234 123 456 7890</li>
             <li>Postal Address: 4 Adana Street, Off Tejuosho Rd, Surulere, Lagos, Nigeria</li>
           </ul>

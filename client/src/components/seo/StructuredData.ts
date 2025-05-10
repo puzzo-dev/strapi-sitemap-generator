@@ -7,8 +7,8 @@
 const organization = {
   "@type": "Organization",
   "name": "I-VARSE Technologies",
-  "url": "https://www.ivarse.com",
-  "logo": "https://www.ivarse.com/logo.png",
+  "url": "https://www.itechnologies.ng",
+  "logo": "https://www.itechnologies.ng/logo.png",
   "sameAs": [
     "https://www.facebook.com/ivarselimited",
     "https://www.twitter.com/ivarselimited",
@@ -25,12 +25,12 @@ export const generateWebsiteSchema = () => {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "url": "https://www.ivarse.com",
+    "url": "https://www.itechnologies.ng",
     "name": "I-VARSE Technologies",
     "description": "Innovative technology solutions for businesses and individuals",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.ivarse.com/search?q={search_term_string}",
+      "target": "https://www.itechnologies.ng/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     },
     "publisher": organization
@@ -59,7 +59,7 @@ export const generateOrganizationSchema = () => {
       "@type": "ContactPoint",
       "telephone": "+234-123-456-7890",
       "contactType": "Customer Service",
-      "email": "info@ivarse.com",
+      "email": "info@itechnologies.ng",
       "availableLanguage": ["English", "Yoruba", "Igbo", "Hausa"]
     }
   };
@@ -183,7 +183,7 @@ export const generateArticleSchema = (article: {
       "name": "I-VARSE Technologies",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.ivarse.com/logo.png"
+        "url": "https://www.itechnologies.ng/logo.png"
       }
     },
     "datePublished": article.publishDate,
@@ -262,7 +262,7 @@ export const generateJobPostingSchema = (job: {
     "hiringOrganization": {
       "@type": "Organization",
       "name": job.hiringOrganization || "I-VARSE Technologies",
-      "sameAs": "https://www.ivarse.com"
+      "sameAs": "https://www.itechnologies.ng"
     },
     "jobLocation": {
       "@type": "Place",
@@ -304,7 +304,7 @@ export const generateContactPageSchema = () => {
     "description": "Contact I-VARSE Technologies for innovative technology solutions",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.ivarse.com/contact"
+      "@id": "https://www.itechnologies.ng/contact"
     },
     "provider": organization
   };
