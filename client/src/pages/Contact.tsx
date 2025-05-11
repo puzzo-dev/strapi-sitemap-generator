@@ -1,29 +1,48 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet';
 import GradientButton from '@/components/ui/GradientButton';
 import ContactForm from '@/components/ui/ContactForm';
 import BookingForm from '@/components/ui/BookingForm';
 import TestimonialCard from '@/components/ui/TestimonialCard';
-import { testimonials } from '@/lib/data';
-import { TestimonialProps } from '@/lib/types';
+import { testimonials, contactPageContent } from '@/lib/data';
+import { TestimonialProps, PageContent } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { getPageContent } from '@/lib/strapi';
-import { usePageContent, useSiteConfig } from '@/hooks/useStrapiContent';
+import { usePageContent, useSiteConfig, useTestimonials } from '@/hooks/useStrapiContent';
 
 const Contact: React.FC = () => {
   const [formType, setFormType] = useState<'contact' | 'booking'>('contact');
 
   // Fetch testimonials data
-  const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useQuery<TestimonialProps[]>({
-    queryKey: ['/api/testimonials'],
-    initialData: testimonials,
-  });
+  const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useTestimonials();
 
   // Fetch page content from Strapi
-  const { data: pageContent, isLoading: isPageLoading } = usePageContent('contact');
+  const { data: contactPageContent, isLoading: isPageLoading } = usePageContent('contact');
+
 
   // Fetch site configuration
   const { data: siteConfig } = useSiteConfig();
+
+  const testimonialSection = useMemo(() => {
+    if (contactPageContent?.sections && Array.isArray(contactPageContent.sections)) {
+      return contactPageContent.sections.find(s => s.type === 'testimonials');
+    }
+    return null;
+  }, [contactPageContent]);
+  // Get FAQ section data with fallback
+  const faqSection = useMemo(() => {
+    if (contactPageContent?.sections && Array.isArray(contactPageContent.sections)) {
+      return contactPageContent.sections.find(s => s.type === 'custom' && s.title?.includes('FAQ'));
+    }
+    return null;
+  }, [contactPageContent]);
+
+  // Determine which testimonials to display
+  const displayTestimonials = useMemo(() => {
+    if (testimonialSection?.items?.length) {
+      return testimonialSection.items;
+    }
+    return apiTestimonials || testimonials;
+  }, [testimonialSection, apiTestimonials]);
 
   return (
     <>
@@ -62,20 +81,20 @@ const Contact: React.FC = () => {
                   </h1>
 
                   <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up max-w-lg" style={{ animationDelay: '0.4s' }}>
-                    {pageContent?.sections?.find(s => s.type === 'hero')?.subtitle ||
+                    {contactPageContent?.sections?.find(s => s.type === 'hero')?.subtitle ||
                       'Let\'s connect and discuss how we can help you achieve your business objectives.'}
                   </p>
 
                   <a href="#contact-form" className="inline-block animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
                     <GradientButton size="lg">
-                      {pageContent?.sections?.find(s => s.type === 'hero')?.settings?.buttonText || 'Get Started'}
+                      {contactPageContent?.sections?.find(s => s.type === 'hero')?.settings?.buttonText || 'Get Started'}
                       <i className="fas fa-arrow-right ml-2"></i>
                     </GradientButton>
                   </a>
 
                   <div className="aspect-[16/9] max-w-lg mt-12">
                     <img
-                      src={pageContent?.sections?.find(s => s.type === 'hero')?.settings?.image ||
+                      src={contactPageContent?.sections?.find(s => s.type === 'hero')?.settings?.image ||
                         "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"}
                       alt="Business professionals discussing"
                       className="rounded-lg object-cover w-full h-full"
@@ -178,10 +197,10 @@ const Contact: React.FC = () => {
         <div className="container-custom relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4 text-center text-gray-900 dark:text-white">
-              {pageContent?.sections?.find(s => s.type === 'testimonials')?.title || 'TESTIMONIALS'}
+              {testimonialSection?.title || 'TESTIMONIALS'}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              {pageContent?.sections?.find(s => s.type === 'testimonials')?.subtitle ||
+              {testimonialSection?.subtitle ||
                 'See what our clients have to say about their experience working with us.'}
             </p>
           </div>
@@ -191,26 +210,12 @@ const Contact: React.FC = () => {
               // Loading skeleton for testimonials
               Array(3).fill(0).map((_, index) => (
                 <div key={index} className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
-                  <div className="flex mb-4 space-x-1">
-                    {Array(5).fill(0).map((_, i) => (
-                      <div key={i} className="w-5 h-5 bg-gray-200 dark:bg-gray-600 rounded-full"></div>
-                    ))}
-                  </div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded mb-2 w-full"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded mb-2 w-5/6"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded mb-6 w-4/6"></div>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-600 mr-4"></div>
-                    <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/3"></div>
-                  </div>
+                  {/* Skeleton content */}
                 </div>
               ))
             ) : (
-              // If there are testimonials in the page content, use those, otherwise fall back to API testimonials
-              ((pageContent?.sections?.find(s => s.type === 'testimonials')?.items?.length) ?
-                (pageContent?.sections?.find(s => s.type === 'testimonials')?.items || [])
-                : (apiTestimonials || [])
-              ).map((testimonial: any) => (
+              // Use the memoized displayTestimonials array
+              displayTestimonials.map((testimonial: TestimonialProps) => (
                 <TestimonialCard key={testimonial.id} testimonial={testimonial} />
               ))
             )}
@@ -229,10 +234,10 @@ const Contact: React.FC = () => {
         <div className="container-custom relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-              {pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.title || 'Frequently Asked Questions'}
+              {faqSection?.title || 'Frequently Asked Questions'}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              {pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.subtitle ||
+              {faqSection?.subtitle ||
                 'Find answers to common questions about our services and how we can help your business.'}
             </p>
           </div>
@@ -242,46 +247,27 @@ const Contact: React.FC = () => {
               // Loading skeleton for FAQs
               Array(3).fill(0).map((_, index) => (
                 <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
-                  <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-3/4"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-full"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-5/6"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/6"></div>
+                  {/* Skeleton content */}
                 </div>
               ))
             ) : (
               // Check if there are FAQ items in the page content
-              pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.items ? (
-                // Map through FAQ items from Strapi
-                pageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('FAQ'))?.items?.map((faq: any, index: number) => (
+              faqSection?.items ? (
+                // Map through FAQ items
+                faqSection.items.map((faq: any, index: number) => (
                   <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
                     <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{faq.question}</h3>
                     <p className="text-gray-600 dark:text-gray-300">{faq.answer}</p>
                   </div>
                 ))
               ) : (
-                // Fallback FAQ items
-                <>
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">What services does I-VARSE provide?</h3>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      I-VARSE provides a range of digital services including web development, mobile app development, cloud infrastructure management, API programming & integration, SEO optimization, and content writing.
-                    </p>
+                // Fallback to default FAQs from contactPageContent
+                contactPageContent?.sections.find(s => s.type === 'custom')?.items?.map((faq: any, index: number) => (
+                  <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{faq.question}</h3>
+                    <p className="text-gray-600 dark:text-gray-300">{faq.answer}</p>
                   </div>
-
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">How long does it take to complete a project?</h3>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      Project timelines vary depending on scope and complexity. A typical website might take 4-6 weeks, while more complex applications could take several months. We'll provide a detailed timeline during our initial consultation.
-                    </p>
-                  </div>
-
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Do you provide ongoing support after project completion?</h3>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      Yes, we offer various support and maintenance packages to ensure your digital products continue to perform optimally after launch. Our team is always available to address any issues or implement updates.
-                    </p>
-                  </div>
-                </>
+                ))
               )
             )}
           </div>
@@ -292,3 +278,4 @@ const Contact: React.FC = () => {
 };
 
 export default Contact;
+// Get testimonials section data with fallback

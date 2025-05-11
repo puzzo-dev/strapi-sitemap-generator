@@ -1,5 +1,4 @@
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
 import GradientButton from '@/components/ui/GradientButton';
 import { ArrowRight, Award, Users, Globe, Target } from 'lucide-react';
 import { usePageContent, useTeamMembers } from '@/hooks/useStrapiContent';

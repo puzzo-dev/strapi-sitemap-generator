@@ -3,13 +3,9 @@ import { Helmet } from 'react-helmet';
 import { usePageContent } from '@/hooks/useStrapiContent';
 import DynamicContent from '../ui/DynamicContent';
 import LoadingSkeleton from '../ui/LoadingSkeleton';
+import { PolicyPageLayoutProps } from '@/lib/types';
 
-interface PolicyPageLayoutProps {
-  title: string;
-  slug: string;
-  description?: string;
-  fallbackContent: React.ReactNode;
-}
+
 
 /**
  * Generic layout for policy and information pages
@@ -19,7 +15,7 @@ const PolicyPageLayout: React.FC<PolicyPageLayoutProps> = ({
   title,
   slug,
   description,
-  fallbackContent
+  content
 }) => {
   // Fetch page content from Strapi
   const { data: pageContent, isLoading } = usePageContent(slug);
@@ -78,7 +74,7 @@ const PolicyPageLayout: React.FC<PolicyPageLayoutProps> = ({
             ) : contentDetails?.content ? (
               <DynamicContent content={contentDetails.content} />
             ) : (
-              fallbackContent
+              content
             )}
           </div>
         </div>

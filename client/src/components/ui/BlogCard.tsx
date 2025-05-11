@@ -12,20 +12,20 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
     return (
         <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-md overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700/50">
             {/* Featured Image */}
-            <Link href={`/blog/${post.slug}`}>
-                <a className="block relative overflow-hidden aspect-video">
+            <div className="relative overflow-hidden aspect-video">
+                <Link href={`/blog/${post.slug}`}>
                     <img
                         src={post.meta_image}
                         alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 cursor-pointer"
                     />
-                    {post.featured && (
-                        <div className="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
-                            Featured
-                        </div>
-                    )}
-                </a>
-            </Link>
+                </Link>
+                {post.featured && (
+                    <div className="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                        Featured
+                    </div>
+                )}
+            </div>
 
             {/* Content */}
             <div className="p-6 flex-grow flex flex-col">
@@ -36,11 +36,10 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
 
                 {/* Title */}
                 <Link href={`/blog/${post.slug}`}>
-                    <a className="text-xl font-bold text-gray-900 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                         {post.title}
-                    </a>
+                    </h3>
                 </Link>
-
                 {/* Excerpt */}
                 <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
                     {post.content?.substring(0, 120) + '...'}

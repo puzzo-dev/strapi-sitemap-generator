@@ -1,13 +1,59 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
 import { useServices } from '@/hooks/useStrapiContent';
 import { ArrowRight, Code, LayoutGrid, Cpu, CircuitBoard, Sparkles } from 'lucide-react';
+import { services as localServices } from '@/lib/data';
 
 const SpecializationsSection: React.FC = () => {
     const { t } = useTranslation();
+    const { data: apiServices, isLoading, error } = useServices();
+
+    // Get 5 services from API or fallback to local data
+    const displayServices = useMemo(() => {
+        // Use API services if available, otherwise use local services
+        const availableServices = apiServices && apiServices.length > 0
+            ? apiServices
+            : localServices;
+
+        // Take up to 5 services
+        return availableServices.slice(0, 5);
+    }, [apiServices]);
+
+        // Service slide indicators (simple dots with different colors)
+        const serviceIcons = [
+            <div className="w-2 h-2 rounded-full bg-blue-500"></div>,
+            <div className="w-2 h-2 rounded-full bg-indigo-500"></div>,
+            <div className="w-2 h-2 rounded-full bg-cyan-500"></div>,
+            <div className="w-2 h-2 rounded-full bg-purple-500"></div>,
+            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+        ];
+
+    // Distribute services into positions
+    const [leftTop, leftBottom, center, rightTop, rightBottom] = useMemo(() => {
+        // If still loading, return null for all positions
+        if (isLoading) {
+            return [null, null, null, null, null];
+        }
+
+        // Make sure we have exactly 5 services
+        const services = [...displayServices];
+        while (services.length < 5) {
+            // If we don't have enough services, duplicate the last one
+            services.push(services[services.length - 1] || localServices[0]);
+        }
+
+        // Return services for each position
+        return [
+            services[0], // Left top
+            services[1], // Left bottom
+            services[2], // Center (featured)
+            services[3], // Right top
+            services[4]  // Right bottom
+        ];
+    }, [displayServices, isLoading]);
 
     return (
         <section className="py-16 relative overflow-hidden">
@@ -25,7 +71,7 @@ const SpecializationsSection: React.FC = () => {
                         className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4"
                     >
                         <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
-                        Core Competencies
+                        {t('Core Competencies')}
                     </motion.div>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -35,7 +81,7 @@ const SpecializationsSection: React.FC = () => {
                         className="heading-md mb-4 text-blue-600 dark:text-blue-400 font-bold"
                     >
                         <span className="relative inline-block pb-2">
-                            SPECIALIZATIONS IN SERVICE OPERATIONS
+                            {t('Specializations in Service Operations')}
                             <div className="absolute bottom-0 left-1/4 right-1/4 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
                         </span>
                     </motion.h2>
@@ -47,7 +93,7 @@ const SpecializationsSection: React.FC = () => {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed"
                     >
-                        I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses toward digital success.
+                        {t('I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses toward digital success.')}
                     </motion.p>
                 </div>
 
@@ -73,20 +119,11 @@ const SpecializationsSection: React.FC = () => {
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 0.6 }}
                             >
-                                {(() => {
-                                    const { data: services, isLoading, error } = useServices()
-                                    if (isLoading) return <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                    if (error) return <div>Error loading services</div>
-
-                                    const webDev = services?.find(s => s.title.includes("WEB") || s.title.includes("Web")) || {
-                                        id: 1,
-                                        title: "Web Development",
-                                        description: "Custom websites and web applications",
-                                        icon: "fa-code"
-                                    }
-
-                                    return <ServiceCard service={webDev} />
-                                })()}
+                                {isLoading || !leftTop ? (
+                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                                ) : (
+                                    <ServiceCard service={leftTop} />
+                                )}
                             </motion.div>
 
                             {/* Mobile Apps */}
@@ -96,20 +133,11 @@ const SpecializationsSection: React.FC = () => {
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 0.6, delay: 0.1 }}
                             >
-                                {(() => {
-                                    const { data: services, isLoading, error } = useServices()
-                                    if (isLoading) return <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                    if (error) return <div>Error loading services</div>
-
-                                    const mobileApp = services?.find(s => s.title.includes("MOBILE") || s.title.includes("Mobile")) || {
-                                        id: 2,
-                                        title: "Mobile Apps",
-                                        description: "Cross-platform mobile applications for Android and iOS",
-                                        icon: "fa-pen"
-                                    }
-
-                                    return <ServiceCard service={mobileApp} />
-                                })()}
+                                {isLoading || !leftBottom ? (
+                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                                ) : (
+                                    <ServiceCard service={leftBottom} />
+                                )}
                             </motion.div>
                         </div>
 
@@ -122,20 +150,11 @@ const SpecializationsSection: React.FC = () => {
                                 transition={{ duration: 0.7 }}
                                 className="transform md:scale-105 md:-my-2"
                             >
-                                {(() => {
-                                    const { data: services, isLoading, error } = useServices()
-                                    if (isLoading) return <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                    if (error) return <div>Error loading services</div>
-
-                                    const erp = services?.find(s => s.title.includes("ERP") || s.title.includes("Enterprise")) || {
-                                        id: 5,
-                                        title: "ERP Solutions",
-                                        description: "Implementation and management of enterprise resource planning systems",
-                                        icon: "fa-database"
-                                    }
-
-                                    return <ServiceCard service={erp} />
-                                })()}
+                                {isLoading || !center ? (
+                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                                ) : (
+                                    <ServiceCard service={center} />
+                                )}
                             </motion.div>
                         </div>
 
@@ -148,20 +167,11 @@ const SpecializationsSection: React.FC = () => {
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 0.6 }}
                             >
-                                {(() => {
-                                    const { data: services, isLoading, error } = useServices()
-                                    if (isLoading) return <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                    if (error) return <div>Error loading services</div>
-
-                                    const cloud = services?.find(s => s.title.includes("CLOUD") || s.title.includes("Cloud")) || {
-                                        id: 3,
-                                        title: "Cloud Solutions",
-                                        description: "Scalable and secure cloud infrastructure deployment",
-                                        icon: "fa-server"
-                                    }
-
-                                    return <ServiceCard service={cloud} />
-                                })()}
+                                {isLoading || !rightTop ? (
+                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                                ) : (
+                                    <ServiceCard service={rightTop} />
+                                )}
                             </motion.div>
 
                             {/* AI Solutions */}
@@ -171,20 +181,11 @@ const SpecializationsSection: React.FC = () => {
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 0.6, delay: 0.1 }}
                             >
-                                {(() => {
-                                    const { data: services, isLoading, error } = useServices()
-                                    if (isLoading) return <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                    if (error) return <div>Error loading services</div>
-
-                                    const ai = services?.find(s => s.title.includes("AI") || s.title.includes("Artificial")) || {
-                                        id: 4,
-                                        title: "AI Solutions",
-                                        description: "Custom AI integrations",
-                                        icon: "fa-chart"
-                                    }
-
-                                    return <ServiceCard service={ai} />
-                                })()}
+                                {isLoading || !rightBottom ? (
+                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                                ) : (
+                                    <ServiceCard service={rightBottom} />
+                                )}
                             </motion.div>
                         </div>
                     </div>
@@ -196,7 +197,7 @@ const SpecializationsSection: React.FC = () => {
                         className="mt-6"
                     >
                         <GradientButton href="/services" className="px-10 w-56 mx-auto" endIcon={<ArrowRight />} >
-                            Get Started
+                            {t('Get Started')}
                         </GradientButton>
                     </motion.div>
                 </div>

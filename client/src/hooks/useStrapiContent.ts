@@ -20,7 +20,8 @@ import {
   getBlogPostBySlug,
   getBlogCategories,
   getFooter,
-  getBlogComments
+  getBlogComments,
+  getHeroSlides
 } from '@/lib/strapi';
 import {
   NavItem,
@@ -38,7 +39,9 @@ import {
   BlogPost,
   BlogCategory,
   BlogComment,
-  FooterProps
+  FooterProps,
+  HeroSlide,
+  FAQPageContent
 } from '@/lib/types';
 
 /**
@@ -93,58 +96,22 @@ export function usePageContent(slug: string) {
 
 /**
  * Custom hook to fetch dynamic hero content
- * This hook fetches multiple hero headers and content from Strapi
+ * This hook fetches hero slides directly from Strapi
  */
 export function useDynamicHeroContent() {
-  const { data: pageContent, isLoading, error } = usePageContent('home');
-
-  // Extract all hero sections if they exist, otherwise return a default entry
-  const heroContents = useMemo(() => {
-    if (!pageContent || !pageContent.sections) {
-      return [{
-        title: 'Innovative Digital Solutions for Modern Businesses',
-        subtitle: 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-      }];
+  return useQuery<HeroSlide[]>({
+    queryKey: ['hero-slides'],
+    queryFn: getHeroSlides,
+    select: (data) => {
+      // Ensure we have at least one hero slide
+      if (!data || data.length === 0) {
+        // Import heroSlides from data.ts as fallback
+        const { heroSlides } = require('@/lib/data');
+        return heroSlides;
+      }
+      return data;
     }
-
-    // Get all hero sections from the CMS
-    // First, find all hero sections
-    const primaryHeroSections = pageContent.sections.filter(section =>
-      section.type === 'hero'
-    );
-
-    // Then try to find any additional sections that might have hero content variants
-    // This checks for sections that might be tagged differently but contain hero content
-    const additionalHeroSections = pageContent.sections.filter(section =>
-      section.settings?.isHeroVariant === true ||
-      section.title?.includes('Hero') ||
-      section.settings?.displayAsHero === true
-    );
-
-    // Combine all hero sections
-    const allHeroSections = [...primaryHeroSections, ...additionalHeroSections];
-
-    // If no hero sections are found, return the default
-    if (allHeroSections.length === 0) {
-      return [{
-        title: 'INNOVATIVE DIGITAL SOLUTIONS FOR MODERN BUSINESSES',
-        subtitle: 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-      }];
-    }
-
-    // Map the hero sections to the format we need
-    return allHeroSections.map(section => ({
-      title: section.title || 'INNOVATIVE DIGITAL SOLUTIONS',
-      subtitle: section.subtitle || 'Elevate your business with our cutting-edge digital solutions.',
-      settings: section.settings || {},
-    }));
-  }, [pageContent]);
-
-  return {
-    heroContents,
-    isLoading,
-    error
-  };
+  });
 }
 
 /**

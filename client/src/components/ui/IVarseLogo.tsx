@@ -1,12 +1,8 @@
 import React from 'react';
 import whiteLogo from '@assets/I-VARSELogo2@3x.png'; // White logo for dark theme
 import darkLogo from '@assets/I-VARSELogo\ 1@3x.png'; // Blue/dark logo for light theme
+import { IVarseLogoProps } from '@/lib/types';
 
-interface IVarseLogoProps {
-  className?: string;
-  size?: number;
-  variant?: 'light' | 'dark' | 'auto';
-}
 
 const IVarseLogo: React.FC<IVarseLogoProps> = ({ 
   className = '', 

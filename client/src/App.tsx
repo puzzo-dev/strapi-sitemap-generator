@@ -4,15 +4,15 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { LanguageProvider } from "@/components/context/LanguageContext";
-import { Helmet } from "react-helmet";
 import MetaTags from "@/components/seo/MetaTags";
 import { generateWebsiteSchema } from "@/components/seo/StructuredData";
 import { AnimatePresence } from "framer-motion";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { footerData } from "@/lib/data";
+import { useSeoHelpers } from "@/hooks/useSeoHelpers";
 
 // Pages
 import Home from "@/pages/Home";
-import Home2 from "@/pages/Home2";
 import Services from "@/pages/Services";
 import ServiceDetail from "@/pages/ServiceDetail";
 import Products from "@/pages/Products";
@@ -24,6 +24,7 @@ import BlogPost from "@/pages/BlogPost";
 import TeamMember from "@/pages/TeamMember";
 import Careers from "@/pages/Careers";
 import JobDetail from "@/pages/JobDetail";
+import faq from "@/pages/FAQ";
 import NotFound from "@/pages/not-found";
 
 // Policy Pages
@@ -78,7 +79,6 @@ function App() {
               <AnimatePresence mode="wait">
                 <Switch>
                   <Route path="/" component={Home} />
-                  <Route path="/home" component={Home2} />
                   <Route path="/services" component={Services} />
                   <Route path="/services/:id" component={ServiceDetail} />
                   <Route path="/products" component={Products} />
@@ -90,6 +90,7 @@ function App() {
                   <Route path="/careers" component={Careers} />
                   <Route path="/careers/:id" component={JobDetail} />
                   <Route path="/contact" component={Contact} />
+                  <Route path="/faq" component={faq} />
                   {/* Policy pages */}
                   <Route path="/terms" component={Terms} />
                   <Route path="/privacy" component={Privacy} />
@@ -100,7 +101,7 @@ function App() {
                 </Switch>
               </AnimatePresence>
             </main>
-            <Footer />
+            <Footer {...footerData} />
 
             {/* Floating buttons container - positioned at root level */}
             <FloatingButtons />

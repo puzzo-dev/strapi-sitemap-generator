@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { SUPPORTED_LANGUAGES } from '@shared/schema';
+import { SUPPORTED_LANGUAGES } from '@/lib/utils';
 import { setCurrentLanguage } from './strapi';
 
 // Import translations
@@ -696,13 +696,15 @@ i18n
     },
   });
 
+import { queryClient } from './queryClient'; // You'd need to export the queryClient
+
 // Update Strapi language when i18n language changes
 i18n.on('languageChanged', (lng) => {
   // Set the current language for Strapi API calls
   setCurrentLanguage(lng);
-
-  // Additional invalidation logic could be added here
-  // For example, we could trigger a refetch of all content when language changes
+  
+  // Invalidate all queries to force refetch with new language
+  queryClient.invalidateQueries();
 });
 
 export default i18n;

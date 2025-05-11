@@ -5,7 +5,11 @@ import {
   clientLogos as localClientLogos,
   jobListings as localJobListings,
   benefits as localBenefits,
-  footerData
+  socialLinks as localSocialLinks,
+  navItems as localNavItems,
+  footerData,
+  contactPageContent,
+  defaultHeroProps
 } from '@/lib/data';
 import {
   ProductProps,
@@ -20,6 +24,8 @@ import {
   TeamMember,
   ClientLogo,
   JobListing,
+  HeroProps,
+  HeroSlide,
   Benefit,
   BlogPost,
   BlogCategory,
@@ -82,17 +88,27 @@ async function fetchData<T>(endpoint: string, fallbackData: T): Promise<T> {
       }
 
       const result = await response.json();
-      return result.data?.map((item: any) => ({
-        id: item.id,
-        ...item.attributes
-      })) || fallbackData;
+
+      // Handle both collection and single type responses from Strapi
+      if (Array.isArray(result.data)) {
+        return result.data.map((item: any) => ({
+          id: item.id,
+          ...item.attributes
+        })) as T;
+      } else if (result.data && result.data.attributes) {
+        return {
+          id: result.data.id,
+          ...result.data.attributes
+        } as T;
+      }
+
+      return fallbackData;
     }
   } catch (error) {
     console.warn(`Error fetching data (${endpoint}):`, error);
     return fallbackData;
   }
 }
-
 /**
  * Get all products from API or fallback to local data
  */
@@ -139,7 +155,13 @@ export async function getProductById(id: number): Promise<ProductProps | undefin
  * Get all services from API or fallback to local data
  */
 export async function getServices(): Promise<ServiceProps[]> {
-  return fetchData<ServiceProps[]>('services', localServices);
+  try {
+    const services = await fetchData<ServiceProps[]>('services', []);
+    return services.length > 0 ? services : localServices;
+  } catch (error) {
+    console.warn('Error fetching services:', error);
+    return localServices;
+  }
 }
 
 /**
@@ -186,15 +208,11 @@ export async function getTestimonials(): Promise<TestimonialProps[]> {
 
 /**
  * Get navigation menu items from API
+ /**
+ * Get navigation menu items from API
  */
 export async function getNavItems(): Promise<NavItem[]> {
-  const defaultNavItems: NavItem[] = [
-    { id: 1, label: 'Home', url: '/', order: 1 },
-    { id: 2, label: 'Services', url: '/services', order: 2 },
-    { id: 3, label: 'Products', url: '/products', order: 3 },
-    { id: 4, label: 'About', url: '/about', order: 4 },
-    { id: 5, label: 'Contact', url: '/contact', order: 5 },
-  ];
+  const defaultNavItems: NavItem[] = localNavItems;
 
   return fetchData<NavItem[]>('nav-items', defaultNavItems);
 }
@@ -203,11 +221,7 @@ export async function getNavItems(): Promise<NavItem[]> {
  * Get social media links from API
  */
 export async function getSocialLinks(): Promise<SocialLink[]> {
-  const defaultSocialLinks: SocialLink[] = [
-    { id: 1, platform: 'Twitter', url: 'https://twitter.com', icon: 'twitter' },
-    { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
-    { id: 3, platform: 'Facebook', url: 'https://facebook.com', icon: 'facebook' }
-  ];
+  const defaultSocialLinks: SocialLink[] = localSocialLinks;
 
   return fetchData<SocialLink[]>('social-links', defaultSocialLinks);
 }
@@ -324,10 +338,22 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
         return data;
       } catch (e) {
         console.warn(`Error fetching page content for ${slug} from internal API:`, e);
+
+        // Check if we have a local fallback for this page
+        if (slug === 'contact' && contactPageContent) {
+          return contactPageContent;
+        }
+
         return null;
       }
     } else if (!STRAPI_API_TOKEN) {
-      console.warn('No Strapi API token provided, cannot fetch page content');
+      console.warn('No Strapi API token provided, checking for local page content');
+
+      // Check if we have a local fallback for this page
+      if (slug === 'contact' && contactPageContent) {
+        return contactPageContent;
+      }
+
       return null;
     } else {
       // Use Strapi API with language param
@@ -344,6 +370,11 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
 
       const result = await response.json();
       if (!result.data || result.data.length === 0) {
+        // Check if we have a local fallback for this page
+        if (slug === 'contact' && contactPageContent) {
+          return contactPageContent;
+        }
+
         return null;
       }
 
@@ -354,6 +385,12 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
     }
   } catch (error) {
     console.warn(`Error fetching page content for ${slug}:`, error);
+
+    // Check if we have a local fallback for this page
+    if (slug === 'contact' && contactPageContent) {
+      return contactPageContent;
+    }
+
     return null;
   }
 }
@@ -642,22 +679,34 @@ export async function getBlogPosts(params: {
   featured?: boolean;
   tag?: string;
 } = {}): Promise<BlogPost[]> {
-  // Import dummy blog posts
-  const { blogPosts } = await import('./data');
+  try {
+    // Create query parameters
+    const queryParams = new URLSearchParams();
+    if (params.limit) queryParams.append('limit', params.limit.toString());
+    if (params.category) queryParams.append('category', params.category);
+    if (params.featured !== undefined) queryParams.append('featured', params.featured.toString());
+    if (params.tag) queryParams.append('tag', params.tag);
 
-  // Create query parameters
-  const queryParams = new URLSearchParams();
-  if (params.limit) queryParams.append('limit', params.limit.toString());
-  if (params.category) queryParams.append('category', params.category);
-  if (params.featured !== undefined) queryParams.append('featured', params.featured.toString());
-  if (params.tag) queryParams.append('tag', params.tag);
+    const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
 
-  const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+    // Try to fetch from ERPNext API
+    const posts = await fetchERPNextData<BlogPost[]>(`blogger/posts${queryString}`, []);
 
-  // Use blog posts from data.ts as fallback
-  return fetchERPNextData<BlogPost[]>(`blogger/posts${queryString}`, filterBlogPosts(blogPosts, params));
+    // If we got posts from the API, return them
+    if (posts.length > 0) {
+      return posts;
+    }
+
+    // Otherwise, use the local blog posts with filtering
+    const { blogPosts } = await import('./data');
+    return filterBlogPosts(blogPosts, params);
+  } catch (error) {
+    console.error(`Error fetching blog posts:`, error);
+    // Use the local blog posts with filtering as fallback
+    const { blogPosts } = await import('./data');
+    return filterBlogPosts(blogPosts, params);
+  }
 }
-
 /**
  * Filter blog posts based on params for fallback data
  */
@@ -769,20 +818,17 @@ export async function getBlogComments(postId: string): Promise<BlogComment[]> {
  * Get footer data from API
  */
 export async function getFooter(): Promise<FooterProps> {
-  // Import the footerData from data.ts
-  const defaultFooter = footerData;
-
   try {
     if (USE_LOCAL_API) {
       try {
         const data = await apiRequest<FooterProps>(`/api/footer`);
-        return data;
+        return data || footerData;
       } catch (e) {
         console.warn('Error fetching footer from internal API:', e);
-        return defaultFooter;
+        return footerData;
       }
     } else if (!STRAPI_API_TOKEN) {
-      return defaultFooter;
+      return footerData;
     } else {
       // Use Strapi API with language param
       const locale = currentLanguage;
@@ -798,16 +844,149 @@ export async function getFooter(): Promise<FooterProps> {
 
       const result = await response.json();
       if (!result.data) {
-        return defaultFooter;
+        return footerData;
       }
 
-      return {
+      // Ensure we have all required properties from the footerData
+      const strapiFooter = {
         id: result.data.id,
         ...result.data.attributes
+      };
+
+      // Merge with default footer data to ensure all properties exist
+      return {
+        ...footerData,
+        ...strapiFooter,
+        // Ensure nested properties are properly merged
+        columns: strapiFooter.columns || footerData.columns,
+        socialLinks: strapiFooter.socialLinks || footerData.socialLinks,
+        legalLinks: strapiFooter.legalLinks || footerData.legalLinks
       };
     }
   } catch (error) {
     console.warn('Error fetching footer:', error);
-    return defaultFooter;
+    return footerData;
+  }
+}
+
+/**
+ * Get hero slides from API or fallback to local data
+ */
+export async function getHeroSlides(): Promise<HeroSlide[]> {
+  try {
+    if (USE_LOCAL_API) {
+      try {
+        const data = await apiRequest<HeroSlide[]>(`/api/hero-slides`);
+        return data;
+      } catch (e) {
+        console.warn('Error fetching hero slides from internal API:', e);
+        // Import heroSlides from data.ts as fallback
+        const { heroSlides } = await import('./data');
+        return heroSlides;
+      }
+    } else if (!STRAPI_API_TOKEN) {
+      console.warn('No Strapi API token provided, using fallback hero slides');
+      // Import heroSlides from data.ts as fallback
+      const { heroSlides } = await import('./data');
+      return heroSlides;
+    } else {
+      // Use Strapi API with language param
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+      const response = await fetch(`${STRAPI_URL}/api/hero-slides?populate=*${localeSuffix}`, {
+        headers: strapiHeaders
+      });
+
+      if (!response.ok) {
+        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      if (!result.data || result.data.length === 0) {
+        // Import heroSlides from data.ts as fallback
+        const { heroSlides } = await import('./data');
+        return heroSlides;
+      }
+
+      // Map Strapi response to HeroSlide format
+      return result.data.map((item: any) => ({
+        title: item.attributes.title || 'INNOVATIVE DIGITAL SOLUTIONS',
+        subtitle: item.attributes.subtitle || 'Elevate your business with our cutting-edge digital solutions.',
+        backgroundImage: item.attributes.backgroundImage?.data?.attributes?.url || undefined,
+        primaryButton: item.attributes.primaryButton ? {
+          text: item.attributes.primaryButton.text || 'Get Started',
+          url: item.attributes.primaryButton.url || '#',
+          variant: item.attributes.primaryButton.variant || 'primary',
+        } : undefined,
+        secondaryButton: item.attributes.secondaryButton ? {
+          text: item.attributes.secondaryButton.text || 'Learn More',
+          url: item.attributes.secondaryButton.url || '#',
+          variant: item.attributes.secondaryButton.variant || 'secondary',
+        } : undefined,
+      }));
+    }
+  } catch (error) {
+    console.warn('Error fetching hero slides:', error);
+    // Import heroSlides from data.ts as fallback
+    const { heroSlides } = await import('./data');
+    return heroSlides;
+  }
+}
+
+/**
+ * Get hero content with randomized slides for the hero section
+ */
+export async function getHeroContent(): Promise<HeroProps> {
+  try {
+    // Try to fetch complete HeroProps from Strapi first
+    if (!USE_LOCAL_API && STRAPI_API_TOKEN) {
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+      const response = await fetch(`${STRAPI_URL}/api/hero-content?populate=deep${localeSuffix}`, {
+        headers: strapiHeaders
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.data && result.data.attributes) {
+          // Return the Strapi data with default functions for handlers
+          const strapiHeroProps = result.data.attributes;
+          return {
+            ...strapiHeroProps,
+            isHeroLoading: false,
+            isPageLoading: false,
+            isServicesLoading: false,
+            handleMouseEnter: () => {}, 
+            handleMouseLeave: () => {},
+          };
+        }
+      }
+    }
+    
+    // If no direct HeroProps from Strapi, build it from components
+    const heroSlides = await getHeroSlides();
+    const randomIndex = Math.floor(Math.random() * heroSlides.length);
+    const services = await getServices();
+    const products = await getProducts();
+    
+    return {
+      heroContents: heroSlides,
+      currentHeroIndex: randomIndex,
+      isHeroLoading: false,
+      isPageLoading: false,
+      services: services,
+      products: products,
+      currentIndex: 0,
+      isServicesLoading: false,
+      handleMouseEnter: () => {}, 
+      handleMouseLeave: () => {}, 
+      companyLogo: '/assets/I-VARSELogo3@3x.png',
+    };
+  } catch (error) {
+    console.warn('Error fetching hero content:', error);
+    return { ...defaultHeroProps };
   }
 }

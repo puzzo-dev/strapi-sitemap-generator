@@ -13,3 +13,7 @@ export function formatDate(dateString: string): string {
     day: 'numeric'
   }).format(date);
 }
+
+// Define supported languages
+export const SUPPORTED_LANGUAGES = ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'] as const;
+export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];

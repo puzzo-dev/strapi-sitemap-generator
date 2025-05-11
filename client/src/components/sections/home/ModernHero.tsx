@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Sparkles, CircuitBoard, Cpu } from 'lucide-react';
 import { ModernHeroProps, PageSection, ServiceProps } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import GradientButton from '@/components/ui/GradientButton';
+import { useDynamicHeroContent, useSiteConfig, useServices } from '@/hooks/useStrapiContent';
+import { services as localServices } from '@/lib/data';
 
-const ModernHero: React.FC<ModernHeroProps> = ({
-    heroContents = [],
+const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
     currentHeroIndex = 0,
-    isHeroLoading = false,
-    isPageLoading = false,
-    pageContent,
-    services = [],
     currentServiceIndex = 0,
-    isServicesLoading = false,
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
-    companyLogo,
 }) => {
+    // Fetch dynamic hero content from Strapi
+    const { heroContents, isLoading: isHeroLoading, error: heroError } = useDynamicHeroContent();
+
+    // Fetch site configuration for company logo
+    const { data: siteConfig, isLoading: isSiteConfigLoading } = useSiteConfig();
+
+    // Fetch services from Strapi
+    const { data: apiServices, isLoading: isServicesLoading } = useServices();
+
+    // Determine which services to display with fallback to local data
+    const services = useMemo(() => {
+        return apiServices && apiServices.length > 0 ? apiServices : localServices;
+    }, [apiServices]);
+
     // Extract data from heroContents if available
     const heroContent = heroContents[currentHeroIndex] || {};
 
@@ -25,29 +34,17 @@ const ModernHero: React.FC<ModernHeroProps> = ({
     const displayTitle = heroContent.title || 'Innovative Digital Solutions for Modern Businesses';
     const displaySubtitle = heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.';
 
-    // Get button info from heroContent first, then fall back to pageContent
-    const primaryBtnText =
-        heroContent.primaryButton?.text ||
-        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.text ||
-        'GET STARTED';
+    // Get button info from heroContent
+    const primaryBtnText = heroContent.settings?.primaryButton?.text || 'GET STARTED';
+    const primaryBtnUrl = heroContent.settings?.primaryButton?.url || '/services';
+    const secondaryBtnText = heroContent.settings?.secondaryButton?.text || 'LEARN MORE';
+    const secondaryBtnUrl = heroContent.settings?.secondaryButton?.url || '/#about';
 
-    const primaryBtnUrl =
-        heroContent.primaryButton?.url ||
-        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.url ||
-        '/services';
+    // Use isLoading states to determine if we should show loading UI
+    const showLoading = isHeroLoading || isSiteConfigLoading;
 
-    const secondaryBtnText =
-        heroContent.secondaryButton?.text ||
-        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.text ||
-        'LEARN MORE';
-
-    const secondaryBtnUrl =
-        heroContent.secondaryButton?.url ||
-        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.url ||
-        '/#about';
-
-    // Use isPageLoading or isHeroLoading as fallback for isLoading
-    const showLoading = isPageLoading || isHeroLoading;
+    // Get company logo from site config
+    const companyLogo = siteConfig?.logoLight || '/assets/I-VARSELogo3@3x.png';
     return (
         <section className="flex flex-col md:flex-row max-w-[85rem] justify-center md:justify-self-end overflow-hidden bg-transparent relative">
             {/* Left side */}
@@ -113,10 +110,8 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                 size="lg"
                                 endIcon={<ChevronRight />}
                                 className="w-auto py-3 animate-snowfall z-10"
-
-
-                                target={heroContent.primaryButton?.openInNewTab ? "_blank" : undefined}
-                                rel={heroContent.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                                target={heroContent.settings?.primaryButton?.openInNewTab ? "_blank" : undefined}
+                                rel={heroContent.settings?.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
                             >
                                 {primaryBtnText}
                             </GradientButton>
@@ -127,8 +122,8 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                     size="lg"
                                     href={secondaryBtnUrl}
                                     className="w-auto py-3 z-10"
-                                    target={heroContent.secondaryButton?.openInNewTab ? "_blank" : undefined}
-                                    rel={heroContent.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                                    target={heroContent.settings?.secondaryButton?.openInNewTab ? "_blank" : undefined}
+                                    rel={heroContent.settings?.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
                                 >
                                     {secondaryBtnText}
                                 </GradientButton>
@@ -199,7 +194,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                             }`}
                                     >
                                         <img
-                                            src={service.primaryImage || service.image || (service.images && service.images[0])}
+                                            src={service.image || ''}
                                             alt={service.title}
                                             className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                         />
@@ -229,10 +224,9 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                         >
                                             <div className="flex items-center">
                                                 <span className="flex items-center justify-center mr-1.5">
-                                                    {service.iconComponent || (
-                                                        service.icon ? (
+                                                    {(service.icon ? (
                                                             <span className="h-4 w-4 flex items-center justify-center">
-                                                                {/* You might need to implement a dynamic icon component here based on the icon string */}
+                                                                {/* Dynamic icon component based on the icon string */}
                                                                 <div className={`icon-${service.icon}`}></div>
                                                             </span>
                                                         ) : (

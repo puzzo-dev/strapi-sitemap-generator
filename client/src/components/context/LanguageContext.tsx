@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SUPPORTED_LANGUAGES } from '@shared/schema';
+import { SUPPORTED_LANGUAGES } from '@/lib/utils';
 import { setCurrentLanguage } from '@/lib/strapi';
 
 interface LanguageContextType {
