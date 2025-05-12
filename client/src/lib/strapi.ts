@@ -34,6 +34,7 @@ import {
   FooterProps
 } from '@/lib/types';
 import { apiRequest } from './queryClient';
+// import { useDynamicHeroContent } from '@/hooks/useStrapiContent';
 
 // Constants for API integration
 const USE_LOCAL_API = false; // Set to false to use Strapi instead of local API
@@ -969,17 +970,17 @@ export async function getHeroContent(): Promise<HeroProps> {
     // If no direct HeroProps from Strapi, build it from components
     const heroSlides = await getHeroSlides();
     const randomIndex = Math.floor(Math.random() * heroSlides.length);
+    const randomHeroSlide = heroSlides[randomIndex]; // Get a single random slide
     const services = await getServices();
     const products = await getProducts();
     
     return {
-      heroContents: heroSlides,
-      currentHeroIndex: randomIndex,
+      heroContents: randomHeroSlide, // Use the single random slide here
       isHeroLoading: false,
       isPageLoading: false,
       services: services,
       products: products,
-      currentIndex: 0,
+      currentIndex: randomIndex,
       isServicesLoading: false,
       handleMouseEnter: () => {}, 
       handleMouseLeave: () => {}, 
@@ -987,6 +988,16 @@ export async function getHeroContent(): Promise<HeroProps> {
     };
   } catch (error) {
     console.warn('Error fetching hero content:', error);
-    return { ...defaultHeroProps };
+    
+    // For fallback, get a random slide from the local data
+    const { heroSlides } = await import('./data');
+    const randomIndex = Math.floor(Math.random() * heroSlides.length);
+    const randomHeroSlide = heroSlides[randomIndex];
+    
+    return { 
+      ...defaultHeroProps,
+      heroContents: randomHeroSlide, // Use a random slide from local data
+      currentIndex: randomIndex
+    };
   }
 }

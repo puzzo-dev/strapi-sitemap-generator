@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/components/context/LanguageContext';
@@ -23,12 +23,12 @@ import { Zap } from 'lucide-react';
 
 // Import hooks and data
 import {
+    useHeroContent,
     usePageContent,
     useServices,
-    useDynamicHeroContent,
 } from '@/hooks/useStrapiContent';
-import { services } from '@/lib/data';
-import { ServiceProps, PageContent, ModernHeroProps } from '@/lib/types';
+import { services, heroSlides as localHeroSlides } from '@/lib/data';
+import { ServiceProps, PageContent, ModernHeroProps, HeroSlide } from '@/lib/types';
 
 const Home: React.FC = () => {
     const { t } = useTranslation();
@@ -45,7 +45,7 @@ const Home: React.FC = () => {
     const { data: pageContent, isLoading: isPageLoading } = usePageContent('home');
 
     // Fetch dynamic hero content
-    const { heroContents, isLoading: isHeroLoading } = useDynamicHeroContent();
+    const { data: heroData, isLoading: isHeroLoading } = useHeroContent();
 
     // Fetch services from Strapi
     const { data: apiServices, isLoading: isServicesLoading } = useServices();
@@ -54,17 +54,17 @@ const Home: React.FC = () => {
     const localServices = services;
 
     // Create service slides with fallback to local data if API fails
-    const serviceItems: ServiceProps[] = isServicesLoading
+    const serviceItems: ServiceProps[] = isServicesLoading || !apiServices?.length
         ? localServices.slice(0, 5)
-        : (apiServices?.length ? apiServices : localServices).slice(0, 5);
+        : apiServices.slice(0, 5);
 
     // Service slide indicators (simple dots with different colors)
     const serviceIcons = [
-        <div className="w-2 h-2 rounded-full bg-blue-500"></div>,
-        <div className="w-2 h-2 rounded-full bg-indigo-500"></div>,
-        <div className="w-2 h-2 rounded-full bg-cyan-500"></div>,
-        <div className="w-2 h-2 rounded-full bg-purple-500"></div>,
-        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+        <div key="icon-1" className="w-2 h-2 rounded-full bg-blue-500"></div>,
+        <div key="icon-2" className="w-2 h-2 rounded-full bg-indigo-500"></div>,
+        <div key="icon-3" className="w-2 h-2 rounded-full bg-cyan-500"></div>,
+        <div key="icon-4" className="w-2 h-2 rounded-full bg-purple-500"></div>,
+        <div key="icon-5" className="w-2 h-2 rounded-full bg-blue-500"></div>
     ];
 
     // Dummy service images for the slides
@@ -105,31 +105,51 @@ const Home: React.FC = () => {
         return () => clearInterval(timer);
     }, [currentServiceIndex, autoplayEnabled]);
 
+    // Determine which hero slides to use
+    // In getHeroContent() from strapi.ts, heroContents is a single HeroSlide object, not an array
+    // We need to handle this properly
+    const heroSlides = useMemo(() => {
+        if (isHeroLoading || !heroData) {
+            return localHeroSlides;
+        }
+
+        // If heroData.heroContents is a single object (not an array), wrap it in an array
+        if (heroData.heroContents && !Array.isArray(heroData.heroContents)) {
+            return [heroData.heroContents];
+        }
+
+        // Fallback to local hero slides
+        return localHeroSlides;
+    }, [heroData, isHeroLoading]);
+
     // Auto-rotate hero content for more dynamic feel
     useEffect(() => {
-        // If we only have one hero content or loading, don't rotate
-        if (heroContents.length <= 1) return;
+        // If we only have one hero slide or loading, don't rotate
+        if (heroSlides.length <= 1) return;
 
         // Rotate hero content every 7 seconds (slightly slower than service slides)
         const timer = setInterval(() => {
-            setCurrentHeroIndex(prev => (prev + 1) % heroContents.length);
+            setCurrentHeroIndex(prev => (prev + 1) % heroSlides.length);
         }, 7000);
 
         return () => clearInterval(timer);
-    }, [heroContents]);
+    }, [heroSlides]);
 
     // Pause autoplay on hover
     const handleMouseEnter = () => setAutoplayEnabled(false);
     const handleMouseLeave = () => setAutoplayEnabled(true);
 
-    // Prepare SEO metadata
-    const pageTitle = isHeroLoading
-        ? 'I-VARSE Technologies - Innovative Digital Solutions'
-        : generateSeoTitle(heroContents[currentHeroIndex]?.title || 'I-VARSE Technologies - Innovative Digital Solutions');
+    // Get the current hero slide with safety check
+    const currentHeroSlide = heroSlides[currentHeroIndex] || heroSlides[0] || {};
 
-    const pageDescription = isHeroLoading
-        ? 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-        : generateSeoDescription(heroContents[currentHeroIndex]?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.');
+    // Prepare SEO metadata with proper null checking
+    const pageTitle = generateSeoTitle(
+        currentHeroSlide?.title || 'I-VARSE Technologies - Innovative Digital Solutions'
+    );
+
+    const pageDescription = generateSeoDescription(
+        currentHeroSlide?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+    );
 
     // Generate structured data
     const structuredData = {
@@ -173,13 +193,11 @@ const Home: React.FC = () => {
             {/* Hero Section */}
             {showModernHero ? (
                 <ModernHero
-                    heroContents={heroContents}
-                    currentHeroIndex={currentHeroIndex}
+                    heroContents={heroSlides}
+                    currentIndex={currentHeroIndex}
                     isHeroLoading={isHeroLoading}
                     isPageLoading={isPageLoading}
-                    pageContent={pageContent || undefined}
                     services={serviceItems}
-                    currentServiceIndex={currentServiceIndex}
                     isServicesLoading={isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
@@ -187,13 +205,11 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <OriginalHero
-                    heroContents={heroContents}
-                    currentHeroIndex={currentHeroIndex}
+                    heroContents={heroSlides}
+                    currentIndex={currentHeroIndex}
                     isHeroLoading={isHeroLoading}
                     isPageLoading={isPageLoading}
-                    pageContent={pageContent || undefined}
                     services={serviceItems}
-                    currentServiceIndex={currentServiceIndex}
                     isServicesLoading={isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}

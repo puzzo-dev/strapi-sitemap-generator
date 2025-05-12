@@ -102,18 +102,40 @@ export function usePageContent(slug: string) {
  /**
  * Custom hook to fetch dynamic hero content
  */
-export function useDynamicHeroContent() {
+// export function useDynamicHeroContent() {
+//   return useQuery<HeroSlide>({
+//     queryKey: ['hero-content'],
+//     queryFn: async () => {
+//       try {
+//         const { getHeroSlides } = await import('@/lib/strapi');
+//         const slides = await getHeroSlides();
+
+//         // Select one slide - you can implement different selection strategies:
+//         // 1. Random selection
+//         const randomIndex = Math.floor(Math.random() * slides.length);
+//         return slides[randomIndex];
+//       } catch (error) {
+//         console.error('Error loading hero slides:', error);
+//         const { defaultHeroProps } = require('@/lib/data');
+//         // Return just one default hero prop
+//         return Array.isArray(defaultHeroProps) 
+//           ? defaultHeroProps[Math.floor(Math.random() * defaultHeroProps.length)] 
+//           : defaultHeroProps;
+//       }
+//     }
+//   });
+// }
+
+/**
+ * Custom hook to fetch complete hero content
+ * This hook fetches the full hero content including slides, services, and products
+ */
+export function useHeroContent() {
   return useQuery<HeroProps>({
-    queryKey: ['hero-content'],
-    queryFn: getHeroContent,
-    select: (data) => {
-      // Ensure we have valid hero content
-      if (!data || !data.heroContents || data.heroContents.length === 0) {
-        // Import defaultHeroProps from data.ts as fallback
-        const { defaultHeroProps } = require('@/lib/data');
-        return defaultHeroProps;
-      }
-      return data;
+    queryKey: ['hero-complete-content'],
+    queryFn: async () => {
+      const { getHeroContent } = await import('@/lib/strapi');
+      return getHeroContent();
     }
   });
 }

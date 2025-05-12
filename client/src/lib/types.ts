@@ -70,8 +70,7 @@ export interface ServiceProps {
 
 // Main HeroProps
 export interface HeroProps {
-  heroContents: HeroSlide[];
-  currentHeroIndex: number;
+  heroContents: HeroSlide;
   isHeroLoading: boolean;
   isPageLoading: boolean;    // Properly typed as PageContent
   services?: ServiceProps[];

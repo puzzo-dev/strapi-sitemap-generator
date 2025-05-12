@@ -1,3 +1,4 @@
+// import { useDynamicHeroContent } from "@/hooks/useStrapiContent";
 import {
   HeroSlide,
   ServiceProps,
@@ -255,19 +256,21 @@ export const products: ProductProps[] = [
 ];
 
 // Add this to the existing data.ts file
+// Replace this in data.ts
 export const defaultHeroProps: HeroProps = {
-  heroContents: heroSlides, // Using the existing heroSlides array from data.ts
-  currentHeroIndex: 0,
+  // Instead of: heroContents: useDynamicHeroContent(),
+  heroContents: heroSlides[0], // Use the first hero slide as default
   isHeroLoading: false,
   isPageLoading: false,
-  services: services, // Using the existing services array from data.ts
-  products: products, // Using the existing products array from data.ts
+  services: services,
+  products: products,
   currentIndex: 0,
   isServicesLoading: false,
-  handleMouseEnter: () => { }, // Default empty function
-  handleMouseLeave: () => { }, // Default empty function
-  companyLogo: '/assets/I-VARSELogo3@3x.png', // Default logo path
+  handleMouseEnter: () => { },
+  handleMouseLeave: () => { },
+  companyLogo: '/assets/I-VARSELogo3@3x.png',
 };
+
 
 export const testimonials: TestimonialProps[] = [
   {

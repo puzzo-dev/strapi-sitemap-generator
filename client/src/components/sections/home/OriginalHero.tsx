@@ -21,6 +21,7 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
     isPageLoading = false,
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
+    heroContents: propHeroContents,
 }) => {
     const { t } = useTranslation();
     const { currentLanguage } = useLanguage();
@@ -29,7 +30,7 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
     const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
-    // Fetch dynamic hero content from Strapi
+    // Update the hook to properly get hero content
     const { data: apiHeroContents, isLoading: isHeroLoading } = useDynamicHeroContent();
 
     // Fetch site configuration for company logo
@@ -45,12 +46,17 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
 
     // Determine which hero slides to use with fallback to local data
     const heroContents = useMemo(() => {
-        return apiHeroContents && apiHeroContents.length > 0 ? apiHeroContents : localHeroSlides;
-    }, [apiHeroContents]);
+        // First check if heroContents were passed as props
+        if (propHeroContents && propHeroContents.length > 0) {
+            return propHeroContents;
+        }
+        // Then check if we got them from the API
+        return apiHeroContents && apiHeroContents.heroContents.length > 0 ? apiHeroContents : localHeroSlides;
+    }, [apiHeroContents, propHeroContents]);
 
     // Set up auto-rotation for hero slides
     useEffect(() => {
-        if (!heroContents || heroContents.length <= 1 || isPaused) return;
+        if (!heroContents || !Array.isArray(heroContents) || heroContents.length <= 1 || isPaused) return;
 
         const interval = setInterval(() => {
             setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroContents.length);
@@ -71,33 +77,18 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
         handleMouseLeave();
     };
 
-    // Extract data from heroContents if available
-    const heroContent = heroContents?.[currentHeroIndex] || {};
+    // Fix how we extract the current hero content
+    const heroContent = Array.isArray(heroContents) ? heroContents[currentHeroIndex] || {} : {};
 
     // Use heroContent for title and subtitle
     const displayTitle = heroContent.title || 'Innovative Digital Solutions for Modern Businesses';
     const displaySubtitle = heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.';
 
-    // Get button info from heroContent first, then fall back to pageContent
-    const primaryBtnText =
-        heroContent.primaryButton?.text ||
-        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.text ||
-        'GET STARTED';
-
-    const primaryBtnUrl =
-        heroContent.primaryButton?.url ||
-        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.primaryButton?.url ||
-        '/services';
-
-    const secondaryBtnText =
-        heroContent.secondaryButton?.text ||
-        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.text ||
-        'LEARN MORE';
-
-    const secondaryBtnUrl =
-        heroContent.secondaryButton?.url ||
-        pageContent?.sections?.find((s: PageSection) => s.type === "hero")?.settings?.secondaryButton?.url ||
-        '/#about';
+    // Get button info from heroContent
+    const primaryBtnText = heroContent.primaryButton?.text || 'GET STARTED';
+    const primaryBtnUrl = heroContent.primaryButton?.url || '/services';
+    const secondaryBtnText = heroContent.secondaryButton?.text || 'LEARN MORE';
+    const secondaryBtnUrl = heroContent.secondaryButton?.url || '/#about';
 
     // Use isPageLoading or isHeroLoading as fallback for isLoading
     const showLoading = isPageLoading || isHeroLoading || isSiteConfigLoading;
@@ -344,7 +335,7 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
                                                     {services.map((service, index) => (
                                                         <div
                                                             key={service.id || index}
-                                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentServiceIndex
+                                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex
                                                                 ? "opacity-100"
                                                                 : "opacity-0"
                                                                 }`}
@@ -372,7 +363,7 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
                                                     {services.map((service, index) => (
                                                         <div
                                                             key={service.id || index}
-                                                            className={`transition-opacity duration-500 flex items-center ${index === currentServiceIndex
+                                                            className={`transition-opacity duration-500 flex items-center ${index === currentIndex
                                                                 ? "opacity-100"
                                                                 : "opacity-0 absolute inset-0"
                                                                 }`}
