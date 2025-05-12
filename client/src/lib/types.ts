@@ -41,6 +41,7 @@ export interface LinkItem extends UrlProps {
 
 // Hero content type
 export interface HeroSlide {
+  id:number;
   title: string;
   subtitle: string;
   primaryButton?: ButtonProps;

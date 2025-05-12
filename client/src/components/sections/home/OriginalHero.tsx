@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import GradientButton from "@/components/ui/GradientButton";
@@ -14,21 +14,23 @@ import {
     Sparkles,
 } from "lucide-react";
 import { useDynamicHeroContent, useSiteConfig, useServices } from "@/hooks/useStrapiContent";
-import { services as localServices } from "@/lib/data";
+import { services as localServices, heroSlides as localHeroSlides } from "@/lib/data";
 
 const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
-    currentHeroIndex = 0,
-    currentServiceIndex = 0,
+    currentIndex = 0,
     isPageLoading = false,
-    pageContent,
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
 }) => {
     const { t } = useTranslation();
     const { currentLanguage } = useLanguage();
 
+    // State for managing hero slide index
+    const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+
     // Fetch dynamic hero content from Strapi
-    const { data: heroContents, isLoading: isHeroLoading } = useDynamicHeroContent();
+    const { data: apiHeroContents, isLoading: isHeroLoading } = useDynamicHeroContent();
 
     // Fetch site configuration for company logo
     const { data: siteConfig, isLoading: isSiteConfigLoading } = useSiteConfig();
@@ -40,6 +42,34 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
     const services = useMemo(() => {
         return apiServices && apiServices.length > 0 ? apiServices : localServices;
     }, [apiServices]);
+
+    // Determine which hero slides to use with fallback to local data
+    const heroContents = useMemo(() => {
+        return apiHeroContents && apiHeroContents.length > 0 ? apiHeroContents : localHeroSlides;
+    }, [apiHeroContents]);
+
+    // Set up auto-rotation for hero slides
+    useEffect(() => {
+        if (!heroContents || heroContents.length <= 1 || isPaused) return;
+
+        const interval = setInterval(() => {
+            setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroContents.length);
+        }, 7000); // Change slide every 7 seconds
+
+        return () => clearInterval(interval);
+    }, [heroContents, isPaused]);
+
+    // Pause rotation on mouse enter
+    const handleHeroMouseEnter = () => {
+        setIsPaused(true);
+        handleMouseEnter();
+    };
+
+    // Resume rotation on mouse leave
+    const handleHeroMouseLeave = () => {
+        setIsPaused(false);
+        handleMouseLeave();
+    };
 
     // Extract data from heroContents if available
     const heroContent = heroContents?.[currentHeroIndex] || {};

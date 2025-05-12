@@ -21,7 +21,8 @@ import {
   getBlogCategories,
   getFooter,
   getBlogComments,
-  getHeroSlides
+  getHeroSlides,
+  getHeroContent
 } from '@/lib/strapi';
 import {
   NavItem,
@@ -41,6 +42,7 @@ import {
   BlogComment,
   FooterProps,
   HeroSlide,
+  HeroProps,
   FAQPageContent
 } from '@/lib/types';
 
@@ -97,17 +99,19 @@ export function usePageContent(slug: string) {
 /**
  * Custom hook to fetch dynamic hero content
  * This hook fetches hero slides directly from Strapi
+ /**
+ * Custom hook to fetch dynamic hero content
  */
 export function useDynamicHeroContent() {
-  return useQuery<HeroSlide[]>({
-    queryKey: ['hero-slides'],
-    queryFn: getHeroSlides,
+  return useQuery<HeroProps>({
+    queryKey: ['hero-content'],
+    queryFn: getHeroContent,
     select: (data) => {
-      // Ensure we have at least one hero slide
-      if (!data || data.length === 0) {
-        // Import heroSlides from data.ts as fallback
-        const { heroSlides } = require('@/lib/data');
-        return heroSlides;
+      // Ensure we have valid hero content
+      if (!data || !data.heroContents || data.heroContents.length === 0) {
+        // Import defaultHeroProps from data.ts as fallback
+        const { defaultHeroProps } = require('@/lib/data');
+        return defaultHeroProps;
       }
       return data;
     }

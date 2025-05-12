@@ -50,6 +50,7 @@ export const navItems: NavItem[] = [
 // Hero slides data for the homepage
 export const heroSlides: HeroSlide[] = [
   {
+    id: 1,
     title: "Transform Your Digital Presence",
     subtitle: "We build innovative web and mobile solutions that drive business growth",
     primaryButton: {
@@ -67,6 +68,7 @@ export const heroSlides: HeroSlide[] = [
     backgroundImage: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
   {
+    id: 2,
     title: "Cloud Infrastructure Management",
     subtitle: "Optimize your cloud resources with our expert management services",
     primaryButton: {
@@ -82,6 +84,7 @@ export const heroSlides: HeroSlide[] = [
     backgroundImage: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
   {
+    id: 3,
     title: "Custom Mobile Applications",
     subtitle: "Create stunning, high-performance apps for iOS and Android",
     primaryButton: {
@@ -99,6 +102,7 @@ export const heroSlides: HeroSlide[] = [
     backgroundImage: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
   {
+    id: 4,
     title: "Enterprise Solutions",
     subtitle: "Streamline your business operations with our comprehensive ERP solutions",
     primaryButton: {
@@ -114,6 +118,7 @@ export const heroSlides: HeroSlide[] = [
     backgroundImage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
   {
+    id: 5,
     title: "API Programming & Integration",
     subtitle: "Connect your systems seamlessly with custom API development",
     primaryButton: {

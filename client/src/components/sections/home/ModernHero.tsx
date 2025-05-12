@@ -1,20 +1,44 @@
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronRight, Sparkles, CircuitBoard, Cpu } from 'lucide-react';
-import { ModernHeroProps, PageSection, ServiceProps } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import GradientButton from '@/components/ui/GradientButton';
-import { useDynamicHeroContent, useSiteConfig, useServices } from '@/hooks/useStrapiContent';
-import { services as localServices } from '@/lib/data';
+import React, { useMemo } from "react";
+import { motion } from "framer-motion";
+import {
+    ChevronRight,
+    Sparkles,
+    CircuitBoard,
+    Cpu,
+    Code,
+    Database,
+    Globe,
+    LineChart,
+    Smartphone,
+    Cloud,
+    ShieldCheck,
+    Zap,
+} from "lucide-react";
+import {
+    ModernHeroProps,
+    ServiceProps,
+    HeroSlide,
+    SocialLink,
+} from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import GradientButton from "@/components/ui/GradientButton";
+import {
+    useDynamicHeroContent,
+    useSiteConfig,
+    useServices,
+    useSocialLinks,
+} from "@/hooks/useStrapiContent";
+import { services as localServices } from "@/lib/data";
 
 const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
     currentHeroIndex = 0,
-    currentServiceIndex = 0,
+    currentIndex = 0,
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
 }) => {
     // Fetch dynamic hero content from Strapi
-    const { heroContents, isLoading: isHeroLoading, error: heroError } = useDynamicHeroContent();
+    const { data: heroProps, isLoading: isHeroLoading } =
+        useDynamicHeroContent();
 
     // Fetch site configuration for company logo
     const { data: siteConfig, isLoading: isSiteConfigLoading } = useSiteConfig();
@@ -27,24 +51,38 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
         return apiServices && apiServices.length > 0 ? apiServices : localServices;
     }, [apiServices]);
 
-    // Extract data from heroContents if available
-    const heroContent = heroContents[currentHeroIndex] || {};
+    // Extract hero content with fallback values
+    const heroContent = useMemo(() => {
+        if (!heroProps?.heroContents || heroProps.heroContents.length === 0) {
+            return {
+                title: "Innovative Digital Solutions for Modern Businesses",
+                subtitle:
+                    "Elevate your business with our cutting-edge digital solutions.",
+                primaryButton: {
+                    text: "GET STARTED",
+                    url: "/services",
+                },
+                secondaryButton: {
+                    text: "LEARN MORE",
+                    url: "/#about",
+                },
+            } as HeroSlide;
+        }
 
-    // Use heroContent for title and subtitle
-    const displayTitle = heroContent.title || 'Innovative Digital Solutions for Modern Businesses';
-    const displaySubtitle = heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.';
+        return heroProps.heroContents;
+    }, [heroProps?.heroContents, currentHeroIndex]);
 
-    // Get button info from heroContent
-    const primaryBtnText = heroContent.settings?.primaryButton?.text || 'GET STARTED';
-    const primaryBtnUrl = heroContent.settings?.primaryButton?.url || '/services';
-    const secondaryBtnText = heroContent.settings?.secondaryButton?.text || 'LEARN MORE';
-    const secondaryBtnUrl = heroContent.settings?.secondaryButton?.url || '/#about';
-
-    // Use isLoading states to determine if we should show loading UI
+    // Then use heroContent directly without the "?" optional chaining
+    const displayTitle = heroContent.title;
+    const displaySubtitle = heroContent.subtitle;
+    const primaryBtnText = heroContent.primaryButton?.text || "GET STARTED";
+    const primaryBtnUrl = heroContent.primaryButton?.url || "/services";
+    const secondaryBtnText = heroContent.secondaryButton?.text || "LEARN MORE";
+    const secondaryBtnUrl = heroContent.secondaryButton?.url || "/#about"; // Use isLoading states to determine if we should show loading UI
     const showLoading = isHeroLoading || isSiteConfigLoading;
 
     // Get company logo from site config
-    const companyLogo = siteConfig?.logoLight || '/assets/I-VARSELogo3@3x.png';
+    const companyLogo = siteConfig?.logoLight || "/assets/I-VARSELogo3@3x.png";
     return (
         <section className="flex flex-col md:flex-row max-w-[85rem] justify-center md:justify-self-end overflow-hidden bg-transparent relative">
             {/* Left side */}
@@ -56,18 +94,86 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
 
                     {/* Tech pattern */}
                     <div className="absolute inset-0 opacity-10">
-                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                            <circle cx="20" cy="20" r="1" className="text-primary fill-current animate-pulse-light" />
-                            <circle cx="80" cy="30" r="1" className="text-accent fill-current animate-pulse-light" style={{ animationDelay: '0.5s' }} />
-                            <circle cx="50" cy="70" r="1" className="text-secondary fill-current animate-pulse-light" style={{ animationDelay: '1s' }} />
-                            <circle cx="30" cy="80" r="1" className="text-muted-foreground fill-current animate-pulse-light" style={{ animationDelay: '1.5s' }} />
-                            <circle cx="70" cy="60" r="1" className="text-primary fill-current animate-pulse-light" style={{ animationDelay: '2s' }} />
+                        <svg
+                            className="absolute inset-0 w-full h-full"
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
+                        >
+                            <circle
+                                cx="20"
+                                cy="20"
+                                r="1"
+                                className="text-primary fill-current animate-pulse-light"
+                            />
+                            <circle
+                                cx="80"
+                                cy="30"
+                                r="1"
+                                className="text-accent fill-current animate-pulse-light"
+                                style={{ animationDelay: "0.5s" }}
+                            />
+                            <circle
+                                cx="50"
+                                cy="70"
+                                r="1"
+                                className="text-secondary fill-current animate-pulse-light"
+                                style={{ animationDelay: "1s" }}
+                            />
+                            <circle
+                                cx="30"
+                                cy="80"
+                                r="1"
+                                className="text-muted-foreground fill-current animate-pulse-light"
+                                style={{ animationDelay: "1.5s" }}
+                            />
+                            <circle
+                                cx="70"
+                                cy="60"
+                                r="1"
+                                className="text-primary fill-current animate-pulse-light"
+                                style={{ animationDelay: "2s" }}
+                            />
 
-                            <line x1="20" y1="20" x2="80" y2="30" className="text-primary stroke-current" strokeWidth="0.2" />
-                            <line x1="80" y1="30" x2="50" y2="70" className="text-accent stroke-current" strokeWidth="0.2" />
-                            <line x1="50" y1="70" x2="30" y2="80" className="text-secondary stroke-current" strokeWidth="0.2" />
-                            <line x1="30" y1="80" x2="70" y2="60" className="text-muted-foreground stroke-current" strokeWidth="0.2" />
-                            <line x1="70" y1="60" x2="20" y2="20" className="text-primary stroke-current" strokeWidth="0.2" />
+                            <line
+                                x1="20"
+                                y1="20"
+                                x2="80"
+                                y2="30"
+                                className="text-primary stroke-current"
+                                strokeWidth="0.2"
+                            />
+                            <line
+                                x1="80"
+                                y1="30"
+                                x2="50"
+                                y2="70"
+                                className="text-accent stroke-current"
+                                strokeWidth="0.2"
+                            />
+                            <line
+                                x1="50"
+                                y1="70"
+                                x2="30"
+                                y2="80"
+                                className="text-secondary stroke-current"
+                                strokeWidth="0.2"
+                            />
+                            <line
+                                x1="30"
+                                y1="80"
+                                x2="70"
+                                y2="60"
+                                className="text-muted-foreground stroke-current"
+                                strokeWidth="0.2"
+                            />
+                            <line
+                                x1="70"
+                                y1="60"
+                                x2="20"
+                                y2="20"
+                                className="text-primary stroke-current"
+                                strokeWidth="0.2"
+                            />
                         </svg>
                     </div>
                 </div>
@@ -93,11 +199,14 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
                             Digital Innovation
                         </div>
 
-                        <h1 className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                        <h1
+                            className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up"
+                            style={{ animationDelay: "0.2s" }}
+                        >
                             <span className="gradient-text">
-                                {displayTitle.split(' ').slice(0, 2).join(' ')}
-                            </span>{' '}
-                            {displayTitle.split(' ').slice(2).join(' ')}
+                                {displayTitle.split(" ").slice(0, 2).join(" ")}
+                            </span>{" "}
+                            {displayTitle.split(" ").slice(2).join(" ")}
                         </h1>
 
                         <p className="text-xl text-gray-600 dark:text-gray-300 lg:pr-10 mb-8 animate-fade-in-up leading-relaxed">
@@ -110,8 +219,14 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
                                 size="lg"
                                 endIcon={<ChevronRight />}
                                 className="w-auto py-3 animate-snowfall z-10"
-                                target={heroContent.settings?.primaryButton?.openInNewTab ? "_blank" : undefined}
-                                rel={heroContent.settings?.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                                target={
+                                    heroContent.primaryButton?.openInNewTab ? "_blank" : undefined
+                                }
+                                rel={
+                                    heroContent.primaryButton?.isExternal
+                                        ? "noopener noreferrer"
+                                        : undefined
+                                }
                             >
                                 {primaryBtnText}
                             </GradientButton>
@@ -122,8 +237,16 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
                                     size="lg"
                                     href={secondaryBtnUrl}
                                     className="w-auto py-3 z-10"
-                                    target={heroContent.settings?.secondaryButton?.openInNewTab ? "_blank" : undefined}
-                                    rel={heroContent.settings?.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                                    target={
+                                        heroContent.secondaryButton?.openInNewTab
+                                            ? "_blank"
+                                            : undefined
+                                    }
+                                    rel={
+                                        heroContent.secondaryButton?.isExternal
+                                            ? "noopener noreferrer"
+                                            : undefined
+                                    }
                                 >
                                     {secondaryBtnText}
                                 </GradientButton>
@@ -134,17 +257,85 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
 
                 {/* Bottom icons */}
                 <div className="mt-auto flex items-center space-x-2 py-4 sm:space-x-6 text-muted-foreground text-lg sm:text-xl">
-                    <a href="#" className="hover:text-foreground transition-colors cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    <a
+                        href="#"
+                        className="hover:text-foreground transition-colors cursor-pointer"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="w-5 h-5"
+                        >
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
                     </a>
-                    <a href="#" className="hover:text-foreground transition-colors cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    <a
+                        href="#"
+                        className="hover:text-foreground transition-colors cursor-pointer"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="w-5 h-5"
+                        >
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
                     </a>
-                    <a href="#" className="hover:text-foreground transition-colors cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                    <a
+                        href="#"
+                        className="hover:text-foreground transition-colors cursor-pointer"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="w-5 h-5"
+                        >
+                            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                        </svg>
                     </a>
-                    <a href="#" className="hover:text-foreground transition-colors cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    <a
+                        href="#"
+                        className="hover:text-foreground transition-colors cursor-pointer"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="w-5 h-5"
+                        >
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
                     </a>
                 </div>
             </div>
@@ -169,8 +360,8 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
                                 transition: {
                                     repeat: Infinity,
                                     duration: 5,
-                                    ease: "easeInOut"
-                                }
+                                    ease: "easeInOut",
+                                },
                             }}
                         >
                             <Sparkles className="h-32 w-32 text-accent" />
@@ -178,7 +369,11 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
                     </motion.div>
                 </div>
                 {/* Service Slides Container */}
-                {services && services.length > 0 && (
+                {isServicesLoading ? (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-full h-full bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
+                    </div>
+                ) : services && services.length > 0 ? (
                     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                         <div
                             className="relative w-full h-full"
@@ -190,11 +385,11 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
                                 {services.map((service, index) => (
                                     <div
                                         key={service.id || index}
-                                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentServiceIndex ? 'opacity-100' : 'opacity-0'
+                                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
                                             }`}
                                     >
                                         <img
-                                            src={service.image || ''}
+                                            src={service.image || ""}
                                             alt={service.title}
                                             className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                         />
@@ -220,18 +415,20 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
                                     {services.map((service, index) => (
                                         <div
                                             key={service.id || index}
-                                            className={`transition-opacity duration-500 flex items-center ${index === currentServiceIndex ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}
+                                            className={`transition-opacity duration-500 flex items-center ${index === currentIndex
+                                                ? "opacity-100"
+                                                : "opacity-0 absolute inset-0"
+                                                }`}
                                         >
                                             <div className="flex items-center">
                                                 <span className="flex items-center justify-center mr-1.5">
-                                                    {(service.icon ? (
-                                                            <span className="h-4 w-4 flex items-center justify-center">
-                                                                {/* Dynamic icon component based on the icon string */}
-                                                                <div className={`icon-${service.icon}`}></div>
-                                                            </span>
-                                                        ) : (
-                                                            <div className="h-4 w-4 bg-current rounded-full"></div>
-                                                        )
+                                                    {service.icon ? (
+                                                        <span className="h-4 w-4 flex items-center justify-center">
+                                                            {/* Dynamic icon component based on the icon string */}
+                                                            <div className={`icon-${service.icon}`}></div>
+                                                        </span>
+                                                    ) : (
+                                                        <div className="h-4 w-4 bg-current rounded-full"></div>
                                                     )}
                                                 </span>
                                                 <p className="text-xs font-medium text-white whitespace-nowrap">
@@ -245,10 +442,13 @@ const ModernHero: React.FC<Partial<ModernHeroProps>> = ({
 
                             {/* Animated tech elements */}
                             <CircuitBoard className="absolute top-6 left-6 h-12 w-12 text-blue-300 dark:text-blue-700 opacity-30 animate-float" />
-                            <Cpu className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300 dark:text-indigo-700 opacity-30 animate-float" style={{ animationDelay: '1s' }} />
+                            <Cpu
+                                className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300 dark:text-indigo-700 opacity-30 animate-float"
+                                style={{ animationDelay: "1s" }}
+                            />
                         </div>
                     </div>
-                )}
+                ) : null}
 
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20 pointer-events-none"></div>
