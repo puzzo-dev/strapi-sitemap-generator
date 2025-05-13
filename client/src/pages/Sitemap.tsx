@@ -31,12 +31,16 @@ const Sitemap: React.FC = () => {
           type: section.type,
           title: section.title || "Section",
           // Access links from settings.links instead of items
-          links: (section.settings?.links || []).map((link: SitemapLink) => ({
+          links: (section.settings?.links || []).map((link: any) => ({
             title: link.title || "Link",
-            path: link?.url || "#", // Extract the url from the UrlProps object
+            // Handle different URL structures
+            url: typeof link.url === 'string' ? link.url : 
+                 link.url?.url ? link.url.url : 
+                 link.path ? (typeof link.path === 'string' ? link.path : link.path.url) : 
+                 "#",
             description: link.description,
-            openInNewTab: link?.openInNewTab,
-            isExternal: link?.isExternal
+            openInNewTab: link.openInNewTab,
+            isExternal: link.isExternal
           })),
         }));
     }
@@ -49,9 +53,13 @@ const Sitemap: React.FC = () => {
         type: section.type,
         title: section.title || "Section",
         // Access links from settings.links in the fallback data
-        links: (section.settings?.links || []).map((link: SitemapLink) => ({
+        links: (section.settings?.links || []).map((link: any) => ({
           title: link.title || "Link",
-          path: link.url || "#", // Use path directly from fallback data
+          // Handle different URL structures from fallback data
+          url: typeof link.url === 'string' ? link.url : 
+               link.url?.url ? link.url.url : 
+               link.path ? (typeof link.path === 'string' ? link.path : link.path.url) : 
+               "#",
           description: link.description,
           openInNewTab: link.openInNewTab,
           isExternal: link.isExternal
@@ -124,7 +132,7 @@ const Sitemap: React.FC = () => {
                     </h2>
                     <ul className="space-y-3">
                       {section.links && section.links.map(
-                        (link: SitemapLink, linkIndex: number) => (
+                        (link, linkIndex) => (
                           <li key={linkIndex}>
                             {link.isExternal || link.openInNewTab ? (
                               <a
@@ -161,5 +169,7 @@ const Sitemap: React.FC = () => {
     </>
   );
 };
+
+export default Sitemap;
 
 export default Sitemap;
