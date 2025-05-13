@@ -3,57 +3,60 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
-import { useServices } from '@/hooks/useStrapiContent';
+import { useServices, usePageContent } from '@/hooks/useStrapiContent';
 import { ArrowRight, Code, LayoutGrid, Cpu, CircuitBoard, Sparkles } from 'lucide-react';
 import { services as localServices } from '@/lib/data';
+import type { ServiceProps, PageSection } from '@/lib/types';
 
 const SpecializationsSection: React.FC = () => {
     const { t } = useTranslation();
-    const { data: apiServices, isLoading, error } = useServices();
+    const { data: apiServices, isLoading: isServicesLoading } = useServices();
+    const { data: pageContent, isLoading: isPageLoading } = usePageContent('home');
 
-    // Get 5 services from API or fallback to local data
+    // Get section content from page data or use defaults
+    const sectionContent = useMemo(() => {
+        const section = pageContent?.sections?.find(s => s.type === 'services') as PageSection;
+        return {
+            title: section?.title || t('Core Competencies'),
+            subtitle: section?.subtitle || t('Specializations in Service Operations'),
+            description: section?.content || t('I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses toward digital success.'),
+            buttonText: section?.settings?.primaryButton?.text || t('Get Started'),
+            buttonUrl: section?.settings?.primaryButton?.url || '/services'
+        };
+    }, [pageContent, t]);
+
+    // Get featured services from section settings or use all services
     const displayServices = useMemo(() => {
-        // Use API services if available, otherwise use local services
-        const availableServices = apiServices && apiServices.length > 0
-            ? apiServices
-            : localServices;
-
-        // Take up to 5 services
-        return availableServices.slice(0, 5);
-    }, [apiServices]);
-
-        // Service slide indicators (simple dots with different colors)
-        const serviceIcons = [
-            <div className="w-2 h-2 rounded-full bg-blue-500"></div>,
-            <div className="w-2 h-2 rounded-full bg-indigo-500"></div>,
-            <div className="w-2 h-2 rounded-full bg-cyan-500"></div>,
-            <div className="w-2 h-2 rounded-full bg-purple-500"></div>,
-            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-        ];
-
-    // Distribute services into positions
-    const [leftTop, leftBottom, center, rightTop, rightBottom] = useMemo(() => {
-        // If still loading, return null for all positions
-        if (isLoading) {
-            return [null, null, null, null, null];
+        if (isServicesLoading || !apiServices?.length) {
+            return localServices.slice(0, 5);
         }
 
-        // Make sure we have exactly 5 services
+        // Try to get featured services from section settings
+        const servicesSection = pageContent?.sections?.find(s => s.type === 'services');
+        if (servicesSection?.settings?.featured && Array.isArray(servicesSection.settings.featured)) {
+            return servicesSection.settings.featured as ServiceProps[];
+        }
+
+        // Fallback to first 5 services
+        return apiServices.slice(0, 5);
+    }, [apiServices, isServicesLoading, pageContent]);
+
+    // Distribute services into positions with proper null checking
+    const [leftTop, leftBottom, center, rightTop, rightBottom] = useMemo(() => {
         const services = [...displayServices];
         while (services.length < 5) {
-            // If we don't have enough services, duplicate the last one
             services.push(services[services.length - 1] || localServices[0]);
         }
-
-        // Return services for each position
         return [
-            services[0], // Left top
-            services[1], // Left bottom
-            services[2], // Center (featured)
-            services[3], // Right top
-            services[4]  // Right bottom
+            services[0] || null,
+            services[1] || null,
+            services[2] || null,
+            services[3] || null,
+            services[4] || null
         ];
-    }, [displayServices, isLoading]);
+    }, [displayServices]);
+
+    const isLoading = isServicesLoading || isPageLoading;
 
     return (
         <section className="py-16 relative overflow-hidden">
@@ -71,8 +74,9 @@ const SpecializationsSection: React.FC = () => {
                         className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4"
                     >
                         <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
-                        {t('Core Competencies')}
+                        {sectionContent.title}
                     </motion.div>
+                    
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -81,7 +85,7 @@ const SpecializationsSection: React.FC = () => {
                         className="heading-md mb-4 text-blue-600 dark:text-blue-400 font-bold"
                     >
                         <span className="relative inline-block pb-2">
-                            {t('Specializations in Service Operations')}
+                            {sectionContent.subtitle}
                             <div className="absolute bottom-0 left-1/4 right-1/4 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
                         </span>
                     </motion.h2>
@@ -93,13 +97,13 @@ const SpecializationsSection: React.FC = () => {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed"
                     >
-                        {t('I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses toward digital success.')}
+                        {sectionContent.description}
                     </motion.p>
                 </div>
 
-                {/* Main content with hexagonal layout */}
+                {/* Rest of the existing layout structure remains the same */}
                 <div className="relative">
-                    {/* Tech pattern background - Enhanced but subtle */}
+                    {/* Tech pattern background */}
                     <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 overflow-hidden pointer-events-none">
                         <Code className="absolute -right-20 -bottom-10 w-64 h-64 text-blue-400 dark:text-blue-600 animate-spin-slow" />
                         <LayoutGrid className="absolute -left-10 -top-10 w-48 h-48 text-blue-300 dark:text-blue-700 animate-float" style={{ animationDelay: '2s' }} />
@@ -108,11 +112,10 @@ const SpecializationsSection: React.FC = () => {
                         <Sparkles className="absolute right-1/4 top-1/4 w-20 h-20 text-cyan-400 dark:text-cyan-600 animate-pulse-light" />
                     </div>
 
-                    {/* Innovative layout with featured service in center */}
+                    {/* Service cards layout */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 md:max-h-[700px]">
-                        {/* Left column - 2 services */}
+                        {/* Left column */}
                         <div className="space-y-8">
-                            {/* Web Development */}
                             <motion.div
                                 initial={{ opacity: 0, x: -50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -125,8 +128,6 @@ const SpecializationsSection: React.FC = () => {
                                     <ServiceCard service={leftTop} />
                                 )}
                             </motion.div>
-
-                            {/* Mobile Apps */}
                             <motion.div
                                 initial={{ opacity: 0, x: -50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -141,7 +142,7 @@ const SpecializationsSection: React.FC = () => {
                             </motion.div>
                         </div>
 
-                        {/* Center column - Featured service with larger card */}
+                        {/* Center column */}
                         <div className="flex items-center">
                             <motion.div
                                 initial={{ opacity: 0, y: 50 }}
@@ -158,9 +159,8 @@ const SpecializationsSection: React.FC = () => {
                             </motion.div>
                         </div>
 
-                        {/* Right column - 2 services */}
+                        {/* Right column */}
                         <div className="space-y-8">
-                            {/* Cloud Solutions */}
                             <motion.div
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -173,8 +173,6 @@ const SpecializationsSection: React.FC = () => {
                                     <ServiceCard service={rightTop} />
                                 )}
                             </motion.div>
-
-                            {/* AI Solutions */}
                             <motion.div
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -189,16 +187,24 @@ const SpecializationsSection: React.FC = () => {
                             </motion.div>
                         </div>
                     </div>
+
+                    {/* CTA Button */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        className="mt-6"
+                        className="mt-6 flex justify-center"
                     >
-                        <GradientButton href="/services" className="px-10 w-56 mx-auto" endIcon={<ArrowRight />} >
-                            {t('Get Started')}
-                        </GradientButton>
+                        <div className="relative z-20">
+                            <GradientButton 
+                                href={sectionContent.buttonUrl} 
+                                className="px-10 w-56" 
+                                endIcon={<ArrowRight />}
+                            >
+                                {sectionContent.buttonText}
+                            </GradientButton>
+                        </div>
                     </motion.div>
                 </div>
             </div>

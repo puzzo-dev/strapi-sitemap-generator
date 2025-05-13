@@ -1,9 +1,15 @@
 import React from 'react';
 import { useClientLogos } from '@/hooks/useStrapiContent';
-import { clientLogos } from '@/lib/data';
+import { clientLogos as localClientLogos } from '@/lib/data';
+import { ClientLogo } from '@/lib/types';
 
 const ClientsSection: React.FC = () => {
   const { data: apiClientLogos, isLoading: isClientLogosLoading } = useClientLogos();
+  
+  // Use API client logos if available, otherwise fall back to local data
+  const clientLogos = apiClientLogos && apiClientLogos.length > 0 
+    ? apiClientLogos 
+    : localClientLogos;
 
   return (
     <section className="py-16 bg-gray-50 dark:bg-gray-900/50 relative overflow-hidden">
@@ -27,21 +33,27 @@ const ClientsSection: React.FC = () => {
             </div>
           ) : (
             <div className="flex overflow-x-hidden overflow-y-hidden pb-4 gap-8 justify-center items-center flex-wrap">
-              {(apiClientLogos || clientLogos).map((client, index) => (
-                <a
-                  key={index}
-                  href={client.url || "#"}
-                  className="transition-opacity duration-300 hover:opacity-80 flex items-center justify-center flex-shrink-0 mb-4"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <img
-                    src={client.image}
-                    alt={client.name}
-                    className="h-8 md:h-10 object-contain w-20 md:w-24 filter dark:invert dark:brightness-150 dark:contrast-75"
-                  />
-                </a>
-              ))}
+              {clientLogos.map((client: ClientLogo, index: number) => {
+                // Get the URL from the client.url object or use "#" as fallback
+                const href = client.url?.url || "#";
+                const openInNewTab = client.url?.openInNewTab !== false;
+                
+                return (
+                  <a
+                    key={client.id || index}
+                    href={href}
+                    className="transition-opacity duration-300 hover:opacity-80 flex items-center justify-center flex-shrink-0 mb-4"
+                    rel={openInNewTab ? "noopener noreferrer" : undefined}
+                    target={openInNewTab ? "_blank" : undefined}
+                  >
+                    <img
+                      src={client.image}
+                      alt={client.name}
+                      className="h-8 md:h-10 object-contain w-20 md:w-24 filter dark:invert dark:brightness-150 dark:contrast-75"
+                    />
+                  </a>
+                );
+              })}
             </div>
           )}
         </div>

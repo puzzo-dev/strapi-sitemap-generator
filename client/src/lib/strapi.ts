@@ -31,7 +31,8 @@ import {
   BlogCategory,
   BlogAuthor,
   BlogComment,
-  FooterProps
+  FooterProps,
+  PageSection
 } from '@/lib/types';
 import { apiRequest } from './queryClient';
 // import { useDynamicHeroContent } from '@/hooks/useStrapiContent';
@@ -722,7 +723,7 @@ function filterBlogPosts(posts: BlogPost[], params: {
   // Filter by category
   if (params.category) {
     filteredPosts = filteredPosts.filter(post =>
-      post.blog_category.toLowerCase() === params.category?.toLowerCase()
+      post.blogCategory.toLowerCase() === params.category?.toLowerCase()
     );
   }
 
@@ -904,7 +905,7 @@ export async function getHeroSlides(): Promise<HeroSlide[]> {
       }
 
       const result = await response.json();
-      
+
       if (!result.data || result.data.length === 0) {
         // Import heroSlides from data.ts as fallback
         const { heroSlides } = await import('./data');
@@ -960,20 +961,20 @@ export async function getHeroContent(): Promise<HeroProps> {
             isHeroLoading: false,
             isPageLoading: false,
             isServicesLoading: false,
-            handleMouseEnter: () => {}, 
-            handleMouseLeave: () => {},
+            handleMouseEnter: () => { },
+            handleMouseLeave: () => { },
           };
         }
       }
     }
-    
+
     // If no direct HeroProps from Strapi, build it from components
     const heroSlides = await getHeroSlides();
     const randomIndex = Math.floor(Math.random() * heroSlides.length);
     const randomHeroSlide = heroSlides[randomIndex]; // Get a single random slide
     const services = await getServices();
     const products = await getProducts();
-    
+
     return {
       heroContents: randomHeroSlide, // Use the single random slide here
       isHeroLoading: false,
@@ -982,22 +983,107 @@ export async function getHeroContent(): Promise<HeroProps> {
       products: products,
       currentIndex: randomIndex,
       isServicesLoading: false,
-      handleMouseEnter: () => {}, 
-      handleMouseLeave: () => {}, 
+      handleMouseEnter: () => { },
+      handleMouseLeave: () => { },
       companyLogo: '/assets/I-VARSELogo3@3x.png',
     };
   } catch (error) {
     console.warn('Error fetching hero content:', error);
-    
+
     // For fallback, get a random slide from the local data
     const { heroSlides } = await import('./data');
     const randomIndex = Math.floor(Math.random() * heroSlides.length);
     const randomHeroSlide = heroSlides[randomIndex];
-    
-    return { 
+
+    return {
       ...defaultHeroProps,
       heroContents: randomHeroSlide, // Use a random slide from local data
       currentIndex: randomIndex
     };
+  }
+}
+
+/**
+ * Get section content from API by section type
+ */
+export async function getSectionContent(sectionType: string): Promise<PageSection> {
+  // Default section content based on type
+  const getDefaultSection = (): PageSection => {
+    // Return different defaults based on section type
+    switch (sectionType) {
+      case 'about':
+        return {
+          id: 1,
+          type: 'about',
+          title: 'About I-VARSE',
+          subtitle: 'Who We Are',
+          content: 'Founded in 2018, I-VARSE Technologies has been at the forefront of digital innovation in Nigeria, providing cutting-edge technology solutions to businesses across various sectors. Our mission is to empower businesses with transformative digital solutions that drive growth, efficiency, and competitive advantage in an increasingly technology-driven world.',
+          settings: {
+            stats: [
+              { value: '5+', label: 'Years of Experience' },
+              { value: '100+', label: 'Projects Completed' },
+              { value: '50+', label: 'Happy Clients' },
+              { value: '20+', label: 'Team Members' }
+            ],
+            video: {
+              thumbnail: 'https://images.unsplash.com/photo-1642059863319-1481ad72fc2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+              url: { url: '#' },
+              title: 'Our Company Story',
+              description: 'Learn about our mission and values'
+            }
+          }
+        };
+      // Add cases for other section types as needed
+      default:
+        return {
+          id: 1,
+          type: sectionType as "products" | "services" | "testimonials" | "contact" | "hero" | "features" | "cta" | "team" | "about" | "clients" | "blog" | "faq" | "links" | "custom",
+          title: '',
+          subtitle: '',
+          content: '',
+        };
+    }
+  };
+
+  const defaultSection = getDefaultSection();
+
+  try {
+    if (USE_LOCAL_API) {
+      try {
+        const data = await apiRequest<PageSection>(`/api/sections/${sectionType}`);
+        return data || defaultSection;
+      } catch (e) {
+        console.warn(`Error fetching ${sectionType} section from internal API:`, e);
+        return defaultSection;
+      }
+    } else if (!STRAPI_API_TOKEN) {
+      return defaultSection;
+    } else {
+      // Use Strapi API with language param
+      const locale = currentLanguage;
+      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+      // Query for section by type
+      const response = await fetch(`${STRAPI_URL}/api/sections?filters[type][$eq]=${sectionType}&populate=deep${localeSuffix}`, {
+        headers: strapiHeaders
+      });
+
+      if (!response.ok) {
+        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      if (!result.data || result.data.length === 0) {
+        return defaultSection;
+      }
+
+      return {
+        id: result.data[0].id,
+        ...result.data[0].attributes
+      };
+    }
+  } catch (error) {
+    console.warn(`Error fetching ${sectionType} section:`, error);
+    return defaultSection;
   }
 }

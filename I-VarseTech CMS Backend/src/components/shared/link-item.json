@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_link_items",
+  "info": {
+    "displayName": "linkItem"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.url"
+    }
+  }
+}

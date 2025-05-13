@@ -373,7 +373,8 @@ const BlogPostsSection: React.FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <BlogCard
-                  post={post}
+                  {...post}
+                  url={{ url: `/blog/${post.slug}` }}
                 />
               </motion.div>
             ))

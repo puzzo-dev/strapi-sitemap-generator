@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_sections_hero_sections",
+  "info": {
+    "displayName": "HeroSection",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "HeroContent": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.hero-slide"
+    },
+    "isHeroLoading": {
+      "type": "boolean"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "services": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service"
+    },
+    "currentIndex": {
+      "type": "integer"
+    },
+    "companyLogo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.logo"
+    }
+  }
+}

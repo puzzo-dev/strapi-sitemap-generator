@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_hero_slides",
+  "info": {
+    "displayName": "HeroSlide"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text",
+      "required": true
+    },
+    "SlideButton": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.button"
+    },
+    "SlideImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

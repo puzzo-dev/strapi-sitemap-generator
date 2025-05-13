@@ -9,9 +9,34 @@ import {
     Cpu,
     CircuitBoard
 } from 'lucide-react';
+import { useSectionContent } from '@/hooks/useStrapiContent';
+import { Stat, VideoContent } from '@/lib/types';
 
 const AboutSection: React.FC = () => {
     const { t } = useTranslation();
+    const { data: aboutSection, isLoading } = useSectionContent('about');
+
+    // Extract data from the section
+    const title = aboutSection?.title || 'About I-VARSE';
+    const subtitle = aboutSection?.subtitle || 'Who We Are';
+    const content = aboutSection?.content || '';
+    const stats: Stat[] = aboutSection?.settings?.stats || [
+        { value: '5+', label: 'Years of Experience' },
+        { value: '100+', label: 'Projects Completed' },
+        { value: '50+', label: 'Happy Clients' },
+        { value: '20+', label: 'Team Members' }
+    ];
+    const video: VideoContent = aboutSection?.settings?.video || {
+        thumbnail: 'https://images.unsplash.com/photo-1642059863319-1481ad72fc2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+        url: { url: '#' },
+        title: 'Our Company Story',
+        description: 'Learn about our mission and values'
+    };
+
+    // Split content into paragraphs if it's a string
+    const contentParagraphs = typeof content === 'string' 
+        ? content.split('\n').filter(p => p.trim() !== '')
+        : [];
 
     return (
         <section className="py-24 relative overflow-hidden">
@@ -44,38 +69,40 @@ const AboutSection: React.FC = () => {
                             <div className="mb-8 animate-fade-in">
                                 <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">
                                     <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse-slow"></span>
-                                    Who We Are
+                                    {subtitle}
                                 </div>
-                                <h2 className="heading-md text-blue-600 dark:text-blue-400 mt-2">About I-VARSE</h2>
+                                <h2 className="heading-md text-blue-600 dark:text-blue-400 mt-2">{title}</h2>
                             </div>
 
                             {/* About Content */}
                             <div className="text-gray-600 dark:text-gray-300 space-y-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                                <p>
-                                    Founded in 2018, I-VARSE Technologies has been at the forefront of digital innovation in Nigeria, providing cutting-edge technology solutions to businesses across various sectors.
-                                </p>
-                                <p>
-                                    Our mission is to empower businesses with transformative digital solutions that drive growth, efficiency, and competitive advantage in an increasingly technology-driven world.
-                                </p>
+                                {contentParagraphs.length > 0 ? (
+                                    contentParagraphs.map((paragraph, index) => (
+                                        <p key={index}>{paragraph}</p>
+                                    ))
+                                ) : (
+                                    <>
+                                        <p>
+                                            Founded in 2018, I-VARSE Technologies has been at the forefront of digital innovation in Nigeria, providing cutting-edge technology solutions to businesses across various sectors.
+                                        </p>
+                                        <p>
+                                            Our mission is to empower businesses with transformative digital solutions that drive growth, efficiency, and competitive advantage in an increasingly technology-driven world.
+                                        </p>
+                                    </>
+                                )}
 
                                 {/* Key Facts */}
                                 <div className="grid grid-cols-2 gap-4 mt-8">
-                                    <div className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
-                                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">5+</div>
-                                        <div className="text-sm text-gray-600 dark:text-gray-400">Years of Experience</div>
-                                    </div>
-                                    <div className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-                                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">100+</div>
-                                        <div className="text-sm text-gray-600 dark:text-gray-400">Projects Completed</div>
-                                    </div>
-                                    <div className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
-                                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">50+</div>
-                                        <div className="text-sm text-gray-600 dark:text-gray-400">Happy Clients</div>
-                                    </div>
-                                    <div className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-                                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">20+</div>
-                                        <div className="text-sm text-gray-600 dark:text-gray-400">Team Members</div>
-                                    </div>
+                                    {stats.map((stat, index) => (
+                                        <div 
+                                            key={index} 
+                                            className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" 
+                                            style={{ animationDelay: `${0.5 + index * 0.1}s` }}
+                                        >
+                                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">{stat.value}</div>
+                                            <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -109,8 +136,8 @@ const AboutSection: React.FC = () => {
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="absolute inset-0 bg-blue-900/30"></div>
                                     <img
-                                        src="https://images.unsplash.com/photo-1642059863319-1481ad72fc2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-                                        alt="Video: About I-VARSE"
+                                        src={video.thumbnail}
+                                        alt={`Video: ${video.title}`}
                                         className="absolute inset-0 w-full h-full object-cover opacity-90"
                                     />
                                     <button className="z-20 w-20 h-20 rounded-full bg-white/90 shadow-lg flex items-center justify-center cursor-pointer hover:bg-white transition-all duration-300 hover:scale-110 animate-pulse-light">
@@ -119,8 +146,8 @@ const AboutSection: React.FC = () => {
 
                                     {/* Video title overlay */}
                                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
-                                        <div className="font-medium">Our Company Story</div>
-                                        <div className="text-sm text-gray-300">Learn about our mission and values</div>
+                                        <div className="font-medium">{video.title}</div>
+                                        <div className="text-sm text-gray-300">{video.description}</div>
                                     </div>
                                 </div>
                             </div>

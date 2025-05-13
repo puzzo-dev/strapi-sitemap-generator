@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_nav_items",
+  "info": {
+    "displayName": "NavItem"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "order": {
+      "type": "integer"
+    },
+    "url": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.url",
+      "required": true
+    }
+  }
+}

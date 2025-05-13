@@ -14,7 +14,7 @@ export const users = pgTable("users", {
 
 export const contactSubmissions = pgTable("contact_submissions", {
   id: serial("id").primaryKey(),
-  fullName: text("full_name").notNull(),
+  fullName: text("fullName").notNull(),
   email: text("email").notNull(),
   phone: text("phone").notNull(),
   message: text("message").notNull(),
@@ -71,8 +71,8 @@ export const pageContent = pgTable("page_content", {
   slug: text("slug").notNull().unique(),
   title: text("title").notNull(),
   description: text("description"),
-  metaTitle: text("meta_title"),
-  metaDescription: text("meta_description"),
+  metaTitle: text("metaDitle"),
+  metaDescription: text("metaDescription"),
   sections: jsonb("sections").notNull(),
   translations: jsonb("translations").$type<Record<SupportedLanguage, {
     title: string;

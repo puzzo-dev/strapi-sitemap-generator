@@ -43,7 +43,8 @@ import {
   FooterProps,
   HeroSlide,
   HeroProps,
-  FAQPageContent
+  FAQPageContent,
+  PageSection
 } from '@/lib/types';
 
 /**
@@ -300,5 +301,17 @@ export function useFooter() {
   return useQuery<FooterProps>({
     queryKey: ['footer'],
     queryFn: getFooter
+  });
+}
+/**
+ * Custom hook to fetch section content by type
+ */
+export function useSectionContent(sectionType: string) {
+  return useQuery<PageSection>({
+    queryKey: ['section-content', sectionType],
+    queryFn: async () => {
+      const { getSectionContent } = await import('@/lib/strapi');
+      return getSectionContent(sectionType);
+    }
   });
 }

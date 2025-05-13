@@ -27,8 +27,8 @@ import {
     usePageContent,
     useServices,
 } from '@/hooks/useStrapiContent';
-import { services, heroSlides as localHeroSlides } from '@/lib/data';
-import { ServiceProps, PageContent, ModernHeroProps, HeroSlide } from '@/lib/types';
+import { services, heroSlides as localHeroSlides, defaultHeroProps } from '@/lib/data';
+import { ServiceProps, PageContent, HeroProps, HeroSlide } from '@/lib/types';
 
 const Home: React.FC = () => {
     const { t } = useTranslation();
@@ -50,13 +50,51 @@ const Home: React.FC = () => {
     // Fetch services from Strapi
     const { data: apiServices, isLoading: isServicesLoading } = useServices();
 
-    // Import local services data
-    const localServices = services;
+    // Pause autoplay on hover
+    const handleMouseEnter = () => setAutoplayEnabled(false);
+    const handleMouseLeave = () => setAutoplayEnabled(true);
+
+    // Generate structured data
+    const structuredData = {
+        ...generateWebsiteSchema(),
+        ...generateOrganizationSchema()
+    };
+
+    // For compatibility with components expecting an array of hero slides
+    const heroSlides = useMemo((): HeroSlide[] => {
+        if (isHeroLoading || !heroData) {
+            return localHeroSlides;
+        }
+
+        // If heroData.heroContents is available, use it in an array
+        if (heroData.heroContents) {
+            return [heroData.heroContents];
+        }
+
+        // Fallback to local hero slides
+        return localHeroSlides;
+    }, [heroData, isHeroLoading]);
+
+    // Get the current hero slide with safety check
+    const currentHeroSlide = heroSlides[currentHeroIndex] || heroSlides[0] || {};
+
+    // Prepare SEO metadata with proper null checking
+    const pageTitle = generateSeoTitle(
+        currentHeroSlide?.title || 'I-VARSE Technologies - Innovative Digital Solutions'
+    );
+
+    const pageDescription = generateSeoDescription(
+        currentHeroSlide?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
+    );
+
+
 
     // Create service slides with fallback to local data if API fails
-    const serviceItems: ServiceProps[] = isServicesLoading || !apiServices?.length
-        ? localServices.slice(0, 5)
-        : apiServices.slice(0, 5);
+    const serviceItems: ServiceProps[] = useMemo(() => {
+        return isServicesLoading || !apiServices?.length
+            ? services.slice(0, 5)
+            : apiServices.slice(0, 5);
+    }, [apiServices, isServicesLoading]);
 
     // Service slide indicators (simple dots with different colors)
     const serviceIcons = [
@@ -94,6 +132,7 @@ const Home: React.FC = () => {
         setCurrentServiceIndex(index);
     };
 
+
     // Auto-rotate slides
     useEffect(() => {
         if (!autoplayEnabled) return;
@@ -105,22 +144,32 @@ const Home: React.FC = () => {
         return () => clearInterval(timer);
     }, [currentServiceIndex, autoplayEnabled]);
 
-    // Determine which hero slides to use
-    // In getHeroContent() from strapi.ts, heroContents is a single HeroSlide object, not an array
-    // We need to handle this properly
-    const heroSlides = useMemo(() => {
+    // Create a properly structured hero props object
+    const heroProps = useMemo((): HeroProps => {
         if (isHeroLoading || !heroData) {
-            return localHeroSlides;
+            // Fallback to default hero props from data.ts
+            return {
+                ...defaultHeroProps,
+                services: serviceItems,
+                isServicesLoading,
+                isHeroLoading: true,
+                isPageLoading,
+                handleMouseEnter,
+                handleMouseLeave,
+                currentIndex: currentHeroIndex
+            };
         }
 
-        // If heroData.heroContents is a single object (not an array), wrap it in an array
-        if (heroData.heroContents && !Array.isArray(heroData.heroContents)) {
-            return [heroData.heroContents];
-        }
-
-        // Fallback to local hero slides
-        return localHeroSlides;
-    }, [heroData, isHeroLoading]);
+        // Use the hero data from the API
+        return {
+            ...heroData,
+            services: serviceItems,
+            isServicesLoading,
+            handleMouseEnter,
+            handleMouseLeave,
+            currentIndex: currentHeroIndex
+        };
+    }, [heroData, isHeroLoading, isPageLoading, serviceItems, isServicesLoading, currentHeroIndex]);
 
     // Auto-rotate hero content for more dynamic feel
     useEffect(() => {
@@ -134,28 +183,6 @@ const Home: React.FC = () => {
 
         return () => clearInterval(timer);
     }, [heroSlides]);
-
-    // Pause autoplay on hover
-    const handleMouseEnter = () => setAutoplayEnabled(false);
-    const handleMouseLeave = () => setAutoplayEnabled(true);
-
-    // Get the current hero slide with safety check
-    const currentHeroSlide = heroSlides[currentHeroIndex] || heroSlides[0] || {};
-
-    // Prepare SEO metadata with proper null checking
-    const pageTitle = generateSeoTitle(
-        currentHeroSlide?.title || 'I-VARSE Technologies - Innovative Digital Solutions'
-    );
-
-    const pageDescription = generateSeoDescription(
-        currentHeroSlide?.subtitle || 'Elevate your business with our cutting-edge digital solutions. We combine innovation, technology, and strategic thinking to transform your digital presence.'
-    );
-
-    // Generate structured data
-    const structuredData = {
-        ...generateWebsiteSchema(),
-        ...generateOrganizationSchema()
-    };
 
     return (
         <>
@@ -193,24 +220,26 @@ const Home: React.FC = () => {
             {/* Hero Section */}
             {showModernHero ? (
                 <ModernHero
-                    heroContents={heroSlides}
+                    heroContents={heroProps.heroContents}
                     currentIndex={currentHeroIndex}
-                    isHeroLoading={isHeroLoading}
-                    isPageLoading={isPageLoading}
+                    isHeroLoading={heroProps.isHeroLoading}
+                    isPageLoading={heroProps.isPageLoading}
                     services={serviceItems}
-                    isServicesLoading={isServicesLoading}
+                    products={heroProps.products}
+                    isServicesLoading={heroProps.isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
                     companyLogo={IVarseLogo}
                 />
             ) : (
                 <OriginalHero
-                    heroContents={heroSlides}
+                    heroContents={heroProps.heroContents}
                     currentIndex={currentHeroIndex}
-                    isHeroLoading={isHeroLoading}
-                    isPageLoading={isPageLoading}
+                    isHeroLoading={heroProps.isHeroLoading}
+                    isPageLoading={heroProps.isPageLoading}
                     services={serviceItems}
-                    isServicesLoading={isServicesLoading}
+                    products={heroProps.products}
+                    isServicesLoading={heroProps.isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
                 />

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_stats",
+  "info": {
+    "displayName": "stat",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "value": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
+  }
+}

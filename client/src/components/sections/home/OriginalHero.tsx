@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import GradientButton from "@/components/ui/GradientButton";
-import { ServiceProps, OriginalHeroProps, PageSection } from "@/lib/types";
+import { ServiceProps, HeroProps, PageSection } from "@/lib/types";
 import { fadeInUp, scaleUp } from "@/lib/animations";
 import { useLanguage } from "@/components/context/LanguageContext";
 import {
@@ -13,10 +13,17 @@ import {
     LayoutGrid,
     Sparkles,
 } from "lucide-react";
-import { useDynamicHeroContent, useSiteConfig, useServices } from "@/hooks/useStrapiContent";
-import { services as localServices, heroSlides as localHeroSlides } from "@/lib/data";
+import {
+    useSiteConfig,
+    useServices,
+    useHeroContent,
+} from "@/hooks/useStrapiContent";
+import {
+    services as localServices,
+    heroSlides as localHeroSlides,
+} from "@/lib/data";
 
-const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
+const OriginalHero: React.FC<Partial<HeroProps>> = ({
     currentIndex = 0,
     isPageLoading = false,
     handleMouseEnter = () => { },
@@ -26,12 +33,10 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
     const { t } = useTranslation();
     const { currentLanguage } = useLanguage();
 
-    // State for managing hero slide index
-    const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
     // Update the hook to properly get hero content
-    const { data: apiHeroContents, isLoading: isHeroLoading } = useDynamicHeroContent();
+    const { data: heroData, isLoading: isHeroLoading } = useHeroContent();
 
     // Fetch site configuration for company logo
     const { data: siteConfig, isLoading: isSiteConfigLoading } = useSiteConfig();
@@ -47,23 +52,19 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
     // Determine which hero slides to use with fallback to local data
     const heroContents = useMemo(() => {
         // First check if heroContents were passed as props
-        if (propHeroContents && propHeroContents.length > 0) {
+        if (propHeroContents) {
             return propHeroContents;
         }
         // Then check if we got them from the API
-        return apiHeroContents && apiHeroContents.heroContents.length > 0 ? apiHeroContents : localHeroSlides;
-    }, [apiHeroContents, propHeroContents]);
+        return heroData?.heroContents || localHeroSlides[0];
+    }, [heroData, propHeroContents]);
 
     // Set up auto-rotation for hero slides
     useEffect(() => {
-        if (!heroContents || !Array.isArray(heroContents) || heroContents.length <= 1 || isPaused) return;
-
-        const interval = setInterval(() => {
-            setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroContents.length);
-        }, 7000); // Change slide every 7 seconds
-
-        return () => clearInterval(interval);
-    }, [heroContents, isPaused]);
+        // Since we're no longer dealing with an array of hero contents,
+        // we don't need to rotate through them
+        // This effect can be removed or modified to handle other auto-rotation needs
+    }, [isPaused]);
 
     // Pause rotation on mouse enter
     const handleHeroMouseEnter = () => {
@@ -78,29 +79,32 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
     };
 
     // Fix how we extract the current hero content
-    const heroContent = Array.isArray(heroContents) ? heroContents[currentHeroIndex] || {} : {};
+    const heroContent = heroContents || {};
 
     // Use heroContent for title and subtitle
-    const displayTitle = heroContent.title || 'Innovative Digital Solutions for Modern Businesses';
-    const displaySubtitle = heroContent.subtitle || 'Elevate your business with our cutting-edge digital solutions.';
+    const displayTitle =
+        heroContent.title || "Innovative Digital Solutions for Modern Businesses";
+    const displaySubtitle =
+        heroContent.subtitle ||
+        "Elevate your business with our cutting-edge digital solutions.";
 
     // Get button info from heroContent
-    const primaryBtnText = heroContent.primaryButton?.text || 'GET STARTED';
-    const primaryBtnUrl = heroContent.primaryButton?.url || '/services';
-    const secondaryBtnText = heroContent.secondaryButton?.text || 'LEARN MORE';
-    const secondaryBtnUrl = heroContent.secondaryButton?.url || '/#about';
+    const primaryBtnText = heroContent.primaryButton?.text || "GET STARTED";
+    const primaryBtnUrl = heroContent.primaryButton?.url || "/services";
+    const secondaryBtnText = heroContent.secondaryButton?.text || "LEARN MORE";
+    const secondaryBtnUrl = heroContent.secondaryButton?.url || "/#about";
 
     // Use isPageLoading or isHeroLoading as fallback for isLoading
     const showLoading = isPageLoading || isHeroLoading || isSiteConfigLoading;
 
     // Get company logo from site config
-    const companyLogo = siteConfig?.logoLight || '/assets/I-VARSELogo3@3x.png';
+    const companyLogo = siteConfig?.logoLight || "/assets/I-VARSELogo3@3x.png";
     // Extract data from heroContents if available
     return (
         <motion.section
             initial="initial"
             animate="animate"
-            className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-12 md:pt-18 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section"
+            className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-25 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section"
         >
             {/* Tech-inspired background elements - Enhanced with more icons */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -118,14 +122,364 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
                     className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-900/30 pointer-events-none"
                 />
 
-                {/* Rest of the background elements remain unchanged */}
-                {/* ... */}
+                {/* Enhanced tech pattern with more icons */}
+                <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20, rotate: 0 }}
+                        animate={{
+                            opacity: 0.3,
+                            y: 0,
+                            rotate: 12,
+                            transition: {
+                                duration: 0.8,
+                                delay: 0.3
+                            }
+                        }}
+                        className="absolute right-0 top-0"
+                    >
+                        <motion.div
+                            animate={{
+                                y: [0, -15, 0, 10, 0],
+                                rotate: [12, 15, 10, 13, 12],
+                                transition: {
+                                    repeat: Infinity,
+                                    duration: 10,
+                                    ease: "easeInOut"
+                                }
+                            }}
+                        >
+                            <CircuitBoard className="h-64 w-64 text-blue-800" />
+                        </motion.div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20, rotate: 0 }}
+                        animate={{
+                            opacity: 0.3,
+                            y: 0,
+                            rotate: -12,
+                            transition: {
+                                duration: 0.8,
+                                delay: 0.5
+                            }
+                        }}
+                        className="absolute left-10 bottom-10"
+                    >
+                        <motion.div
+                            animate={{
+                                y: [0, 10, 0, -15, 0],
+                                rotate: [-12, -9, -14, -10, -12],
+                                transition: {
+                                    repeat: Infinity,
+                                    duration: 12,
+                                    ease: "easeInOut"
+                                }
+                            }}
+                        >
+                            <Cpu className="h-48 w-48 text-indigo-700" />
+                        </motion.div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20, rotate: 0 }}
+                        animate={{
+                            opacity: 0.2,
+                            y: 0,
+                            rotate: 45,
+                            transition: {
+                                duration: 0.8,
+                                delay: 0.7
+                            }
+                        }}
+                        className="absolute right-1/4 bottom-1/4"
+                    >
+                        <motion.div
+                            animate={{
+                                y: [0, -10, 5, -5, 0],
+                                rotate: [45, 48, 43, 46, 45],
+                                transition: {
+                                    repeat: Infinity,
+                                    duration: 8,
+                                    ease: "easeInOut"
+                                }
+                            }}
+                        >
+                            <Code className="h-56 w-56 text-cyan-700" />
+                        </motion.div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20, rotate: 0 }}
+                        animate={{
+                            opacity: 0.25,
+                            y: 0,
+                            rotate: -6,
+                            transition: {
+                                duration: 0.8,
+                                delay: 0.9
+                            }
+                        }}
+                        className="absolute left-1/4 top-1/3"
+                    >
+                        <motion.div
+                            animate={{
+                                y: [0, 5, -5, 10, 0],
+                                rotate: [-6, -4, -8, -3, -6],
+                                transition: {
+                                    repeat: Infinity,
+                                    duration: 9,
+                                    ease: "easeInOut"
+                                }
+                            }}
+                        >
+                            <LayoutGrid className="h-40 w-40 text-blue-600" />
+                        </motion.div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{
+                            opacity: 0.2,
+                            scale: 1,
+                            transition: {
+                                duration: 1,
+                                delay: 1.1
+                            }
+                        }}
+                        className="absolute left-10 top-10"
+                    >
+                        <motion.div
+                            animate={{
+                                scale: [1, 1.05, 0.98, 1.02, 1],
+                                opacity: [0.2, 0.3, 0.2, 0.25, 0.2],
+                                transition: {
+                                    repeat: Infinity,
+                                    duration: 5,
+                                    ease: "easeInOut"
+                                }
+                            }}
+                        >
+                            <Sparkles className="h-32 w-32 text-purple-600" />
+                        </motion.div>
+                    </motion.div>
+                </div>
+
+                {/* Animated tech scan line */}
+                <motion.div
+                    initial={{ opacity: 0, top: '100%' }}
+                    animate={{
+                        opacity: [0, 0.6, 0.1],
+                        top: ['100%', '0%', '0%'],
+                        transition: {
+                            duration: 3,
+                            repeat: Infinity,
+                            repeatDelay: 5
+                        }
+                    }}
+                    className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent"
+                />
+
+                {/* Snowfall particles */}
+                <div className="absolute inset-0 z-0 overflow-hidden">
+                    {Array.from({ length: 15 }).map((_, i) => {
+                        // Precalculate random values to avoid React errors
+                        const randomLeft = (i * 6.67) % 100; // Distribute evenly across width
+                        const randomScale = 0.5 + ((i % 5) * 0.1); // 0.5 to 0.9
+                        const randomDuration = 8 + ((i % 5) * 1); // 8 to 12 seconds
+                        const randomDelay = (i % 5) * 1; // 0 to 4 seconds
+
+                        return (
+                            <motion.div
+                                key={`snowfall-particle-${i}`}
+                                className="absolute h-1 w-1 rounded-full bg-blue-500/50 dark:bg-blue-400/50"
+                                initial={{
+                                    y: -20,
+                                    opacity: 0,
+                                    scale: randomScale
+                                }}
+                                animate={{
+                                    y: '120%',
+                                    opacity: [0, 0.8, 0.5, 0],
+                                    transition: {
+                                        duration: randomDuration,
+                                        delay: randomDelay,
+                                        repeat: Infinity,
+                                        ease: "linear"
+                                    }
+                                }}
+                                style={{
+                                    left: `${randomLeft}%`,
+                                }}
+                            />
+                        );
+                    })}
+                </div>
+
+                {/* Animated network connections */}
+                <svg className="absolute inset-0 w-full h-full z-0 opacity-10 dark:opacity-15" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <motion.circle
+                        cx="20" cy="20" r="2"
+                        className="text-blue-500 fill-current"
+                        initial={{ opacity: 0, r: 0 }}
+                        animate={{
+                            opacity: 1,
+                            r: [0, 2, 1.5, 2],
+                            transition: {
+                                duration: 3,
+                                delay: 0.2,
+                                repeat: Infinity,
+                                repeatType: "reverse",
+                                times: [0, 0.3, 0.8, 1]
+                            }
+                        }}
+                    />
+                    <motion.circle
+                        cx="80" cy="30" r="2"
+                        className="text-cyan-500 fill-current"
+                        initial={{ opacity: 0, r: 0 }}
+                        animate={{
+                            opacity: 1,
+                            r: [0, 2, 1.5, 2],
+                            transition: {
+                                duration: 3,
+                                delay: 0.7,
+                                repeat: Infinity,
+                                repeatType: "reverse",
+                                times: [0, 0.3, 0.8, 1]
+                            }
+                        }}
+                    />
+                    <motion.circle
+                        cx="50" cy="70" r="2"
+                        className="text-indigo-500 fill-current"
+                        initial={{ opacity: 0, r: 0 }}
+                        animate={{
+                            opacity: 1,
+                            r: [0, 2, 1.5, 2],
+                            transition: {
+                                duration: 3,
+                                delay: 1.2,
+                                repeat: Infinity,
+                                repeatType: "reverse",
+                                times: [0, 0.3, 0.8, 1]
+                            }
+                        }}
+                    />
+                    <motion.circle
+                        cx="30" cy="80" r="2"
+                        className="text-purple-500 fill-current"
+                        initial={{ opacity: 0, r: 0 }}
+                        animate={{
+                            opacity: 1,
+                            r: [0, 2, 1.5, 2],
+                            transition: {
+                                duration: 3,
+                                delay: 1.7,
+                                repeat: Infinity,
+                                repeatType: "reverse",
+                                times: [0, 0.3, 0.8, 1]
+                            }
+                        }}
+                    />
+                    <motion.circle
+                        cx="70" cy="60" r="2"
+                        className="text-blue-500 fill-current"
+                        initial={{ opacity: 0, r: 0 }}
+                        animate={{
+                            opacity: 1,
+                            r: [0, 2, 1.5, 2],
+                            transition: {
+                                duration: 3,
+                                delay: 2.2,
+                                repeat: Infinity,
+                                repeatType: "reverse",
+                                times: [0, 0.3, 0.8, 1]
+                            }
+                        }}
+                    />
+
+                    <motion.line
+                        x1="20" y1="20" x2="80" y2="30"
+                        className="text-blue-500 stroke-current"
+                        initial={{ opacity: 0, strokeWidth: 0 }}
+                        animate={{
+                            opacity: 0.5,
+                            strokeWidth: 0.2,
+                            pathLength: [0, 1],
+                            transition: {
+                                duration: 2,
+                                delay: 0.5,
+                                ease: "easeInOut"
+                            }
+                        }}
+                    />
+                    <motion.line
+                        x1="80" y1="30" x2="50" y2="70"
+                        className="text-cyan-500 stroke-current"
+                        initial={{ opacity: 0, strokeWidth: 0 }}
+                        animate={{
+                            opacity: 0.5,
+                            strokeWidth: 0.2,
+                            pathLength: [0, 1],
+                            transition: {
+                                duration: 2,
+                                delay: 1,
+                                ease: "easeInOut"
+                            }
+                        }}
+                    />
+                    <motion.line
+                        x1="50" y1="70" x2="30" y2="80"
+                        className="text-indigo-500 stroke-current"
+                        initial={{ opacity: 0, strokeWidth: 0 }}
+                        animate={{
+                            opacity: 0.5,
+                            strokeWidth: 0.2,
+                            pathLength: [0, 1],
+                            transition: {
+                                duration: 2,
+                                delay: 1.5,
+                                ease: "easeInOut"
+                            }
+                        }}
+                    />
+                    <motion.line
+                        x1="30" y1="80" x2="70" y2="60"
+                        className="text-purple-500 stroke-current"
+                        initial={{ opacity: 0, strokeWidth: 0 }}
+                        animate={{
+                            opacity: 0.5,
+                            strokeWidth: 0.2,
+                            pathLength: [0, 1],
+                            transition: {
+                                duration: 2,
+                                delay: 2,
+                                ease: "easeInOut"
+                            }
+                        }}
+                    />
+                    <motion.line
+                        x1="70" y1="60" x2="20" y2="20"
+                        className="text-blue-500 stroke-current"
+                        initial={{ opacity: 0, strokeWidth: 0 }}
+                        animate={{
+                            opacity: 0.5,
+                            strokeWidth: 0.2,
+                            pathLength: [0, 1],
+                            transition: {
+                                duration: 2,
+                                delay: 2.5,
+                                ease: "easeInOut"
+                            }
+                        }}
+                    />
+                </svg>
             </div>
 
-            <div className="container-custom relative z-20 mx-auto">
+            <div className="container-custom relative z-20 mx-auto h-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center relative">
                     {/* Mobile Header (Shows above the slider on mobile) */}
-                    <div className="block lg:hidden w-full mb-4">
+                    <div className="block lg:hidden w-full mb-4 pt-10">
                         {showLoading ? (
                             <div className="space-y-3">
                                 <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
@@ -141,15 +495,17 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
                                     className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up"
                                     style={{ animationDelay: "0.2s" }}
                                 >
-                                    <span className="gradient-text">{displayTitle.split(' ').slice(0, 2).join(' ')}</span>{" "}
-                                    {displayTitle.split(' ').slice(2).join(' ')}
+                                    <span className="gradient-text">
+                                        {displayTitle.split(" ").slice(0, 2).join(" ")}
+                                    </span>{" "}
+                                    {displayTitle.split(" ").slice(2).join(" ")}
                                 </h1>
                             </>
                         )}
                     </div>
 
                     {/* Left column - Content (Shows second on mobile, first on desktop) */}
-                    <div className="order-2 lg:order-1 z-10 relative">
+                    <div className="order-2 lg:order-1 z-10 relative ">
                         <div className="space-y-6 md:space-y-8">
                             {/* Desktop-only heading - hidden on mobile */}
                             <div className="hidden lg:block">
@@ -168,8 +524,10 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
                                             className="heading-xl text-5xl md:text-6xl font-black mb-6 animate-fade-in-up"
                                             style={{ animationDelay: "0.2s" }}
                                         >
-                                            <span className="gradient-text">{displayTitle.split(' ').slice(0, 2).join(' ')}</span>{" "}
-                                            {displayTitle.split(' ').slice(2).join(' ')}
+                                            <span className="gradient-text">
+                                                {displayTitle.split(" ").slice(0, 2).join(" ")}
+                                            </span>{" "}
+                                            {displayTitle.split(" ").slice(2).join(" ")}
                                         </h1>
                                     </>
                                 )}
@@ -183,7 +541,7 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
                                 </div>
                             ) : (
                                 <p
-                                    className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
+                                    className="text-xl hidden md:block text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
                                     style={{ animationDelay: "0.4s" }}
                                 >
                                     {displaySubtitle}
@@ -341,7 +699,7 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
                                                                 }`}
                                                         >
                                                             <img
-                                                                src={(service.image || '')}
+                                                                src={service.image || ""}
                                                                 alt={service.title}
                                                                 className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                                             />
@@ -478,7 +836,7 @@ const OriginalHero: React.FC<Partial<OriginalHeroProps>> = ({
                     </div>
 
                     {/* Mobile-only content - Shows third on mobile, after the slideshow */}
-                    <div className="w-full block md:hidden lg:hidden order-3 mt-16 mb-12 space-y-8 mobile-space-y staggered-fade-in">
+                    <div className="w-full block md:hidden lg:hidden order-3 mb-12 space-y-8 mobile-space-y staggered-fade-in">
                         {isPageLoading ? (
                             <div className="space-y-3">
                                 <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
