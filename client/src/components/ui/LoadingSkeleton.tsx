@@ -1,10 +1,5 @@
 import React from 'react';
 
-interface LoadingSkeletonProps {
-  lines?: number;
-  variant?: 'text' | 'card' | 'image';
-}
-
 /**
  * Loading skeleton component for content placeholders
  */

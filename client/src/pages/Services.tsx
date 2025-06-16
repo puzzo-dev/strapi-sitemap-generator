@@ -9,7 +9,7 @@ import { ServiceProps, TestimonialProps } from '@/lib/types';
 const Services: React.FC = () => {
   const { data: apiServices, isLoading: isServicesLoading } = useServices();
   const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useTestimonials();
-  
+
   // Use the API data if available, otherwise fall back to local data
   const displayServices = apiServices?.length ? apiServices : services;
   const displayTestimonials = apiTestimonials?.length ? apiTestimonials : testimonials;
@@ -22,7 +22,7 @@ const Services: React.FC = () => {
           {/* Animated gradient orbs */}
           <div className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40 animate-pulse-slow" />
           <div className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30 animate-pulse-slower" />
-          
+
           {/* Tech pattern elements */}
           <div className="hidden md:block absolute top-10 left-10 w-24 h-24 border border-blue-200 dark:border-blue-800/50 rounded-lg rotate-12"></div>
           <div className="hidden md:block absolute bottom-20 left-1/4 w-20 h-20 border-2 border-blue-200 dark:border-blue-800/50 rounded-full"></div>
@@ -34,15 +34,15 @@ const Services: React.FC = () => {
               <span className="h-4 w-4 mr-2">🔧</span>
               Our Services
             </div>
-            
+
             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <span className="gradient-text">Professional Services</span> for<br />Your Business Needs
             </h1>
-            
+
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               Expert solutions tailored to your business requirements. Our team delivers high-quality services designed to help you succeed in today's competitive market.
             </p>
-            
+
             <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
               <GradientButton href="#services" size="lg">
                 Explore Services
@@ -54,7 +54,7 @@ const Services: React.FC = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Services Grid Section */}
       <section id="services" className="py-24 bg-white dark:bg-[#132f4c]">
         <div className="container-custom">
@@ -68,12 +68,14 @@ const Services: React.FC = () => {
               We provide comprehensive tech solutions tailored to meet your business needs
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
             {isServicesLoading ? (
-              // Loading skeleton for services
-              Array(6).fill(0).map((_, index) => (
-                <div key={index} className="bg-white dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/30 animate-pulse">
+              // Loading skeleton for services with 2/3/2 layout
+              <>
+                {/* First row - 2 cards */}
+                {/* Card 1 */}
+                <div className="md:col-span-3 bg-white dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/30 animate-pulse">
                   <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-6"></div>
                   <div className="h-6 bg-blue-100 dark:bg-blue-800/50 rounded mb-3 w-3/4"></div>
                   <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-full"></div>
@@ -81,11 +83,93 @@ const Services: React.FC = () => {
                   <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-6 w-4/6"></div>
                   <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded w-1/3"></div>
                 </div>
-              ))
+
+                {/* Card 2 */}
+                <div className="md:col-span-3 bg-white dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/30 animate-pulse">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-6"></div>
+                  <div className="h-6 bg-blue-100 dark:bg-blue-800/50 rounded mb-3 w-3/4"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-full"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-5/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-6 w-4/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded w-1/3"></div>
+                </div>
+
+                {/* Second row - 3 cards */}
+                {/* Card 3 */}
+                <div className="md:col-span-2 bg-white dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/30 animate-pulse">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-6"></div>
+                  <div className="h-6 bg-blue-100 dark:bg-blue-800/50 rounded mb-3 w-3/4"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-full"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-5/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-6 w-4/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded w-1/3"></div>
+                </div>
+
+                {/* Card 4 */}
+                <div className="md:col-span-2 bg-white dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/30 animate-pulse">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-6"></div>
+                  <div className="h-6 bg-blue-100 dark:bg-blue-800/50 rounded mb-3 w-3/4"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-full"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-5/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-6 w-4/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded w-1/3"></div>
+                </div>
+
+                {/* Card 5 */}
+                <div className="md:col-span-2 bg-white dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/30 animate-pulse">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-6"></div>
+                  <div className="h-6 bg-blue-100 dark:bg-blue-800/50 rounded mb-3 w-3/4"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-full"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-5/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-6 w-4/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded w-1/3"></div>
+                </div>
+
+                {/* Third row - 2 cards */}
+                {/* Card 6 */}
+                <div className="md:col-span-3 bg-white dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/30 animate-pulse">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-6"></div>
+                  <div className="h-6 bg-blue-100 dark:bg-blue-800/50 rounded mb-3 w-3/4"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-full"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-5/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-6 w-4/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded w-1/3"></div>
+                </div>
+
+                {/* Card 7 */}
+                <div className="md:col-span-3 bg-white dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/30 animate-pulse">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-6"></div>
+                  <div className="h-6 bg-blue-100 dark:bg-blue-800/50 rounded mb-3 w-3/4"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-full"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2 w-5/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-6 w-4/6"></div>
+                  <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded w-1/3"></div>
+                </div>
+              </>
             ) : (
-              displayServices.map(service => (
-                <ServiceCard key={service.id} service={service} />
-              ))
+              // Actual services with 2/3/2 layout
+              <>
+                {/* First row - 2 cards */}
+                {displayServices.slice(0, 2).map((service, index) => (
+                  <div key={service.id} className="md:col-span-3">
+                    <ServiceCard service={service} />
+                  </div>
+                ))}
+                
+                {/* Second row - 3 cards */}
+                {displayServices.slice(2, 5).map((service, index) => (
+                  <div key={service.id} className="md:col-span-2">
+                    <ServiceCard service={service} />
+                  </div>
+                ))}
+                
+                {/* Third row - 2 cards */}
+                {displayServices.slice(5, 7).map((service, index) => (
+                  <div key={service.id} className="md:col-span-3">
+                    <ServiceCard service={service} />
+                  </div>
+                ))}
+              </>
             )}
           </div>
         </div>
@@ -104,7 +188,7 @@ const Services: React.FC = () => {
               We follow a streamlined process to ensure your project is delivered efficiently and with the highest quality
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Process Step 1 */}
             <div className="bg-white dark:bg-blue-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800/50 relative group hover:shadow-md transition-all">
@@ -116,7 +200,7 @@ const Services: React.FC = () => {
                 We analyze your requirements and business goals to create a strategic roadmap.
               </p>
             </div>
-            
+
             {/* Process Step 2 */}
             <div className="bg-white dark:bg-blue-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800/50 relative group hover:shadow-md transition-all">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center mb-6 text-white font-bold group-hover:scale-110 transition-transform">
@@ -127,7 +211,7 @@ const Services: React.FC = () => {
                 Our design team creates prototypes and wireframes based on your requirements.
               </p>
             </div>
-            
+
             {/* Process Step 3 */}
             <div className="bg-white dark:bg-blue-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800/50 relative group hover:shadow-md transition-all">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center mb-6 text-white font-bold group-hover:scale-110 transition-transform">
@@ -138,7 +222,7 @@ const Services: React.FC = () => {
                 Our developers build your solution using the latest technologies and best practices.
               </p>
             </div>
-            
+
             {/* Process Step 4 */}
             <div className="bg-white dark:bg-blue-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800/50 relative group hover:shadow-md transition-all">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-6 text-white font-bold group-hover:scale-110 transition-transform">
@@ -166,7 +250,7 @@ const Services: React.FC = () => {
               Our success is measured by the satisfaction and achievements of those we serve
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {isTestimonialsLoading ? (
               // Loading skeleton for testimonials

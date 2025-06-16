@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { Helmet } from "react-helmet";
 import { usePageContent } from "@/hooks/useStrapiContent";
 import LoadingSkeleton from "@/components/ui/LoadingSkeleton";
-import { SitemapLink, PageSection } from "@/lib/types";
+import { SitemapLink, PageSection, AppLinkProps } from "@/lib/types";
 import { sitemapContent } from "@/lib/data";
 
 const Sitemap: React.FC = () => {
@@ -34,10 +34,10 @@ const Sitemap: React.FC = () => {
           links: (section.settings?.links || []).map((link: any) => ({
             title: link.title || "Link",
             // Handle different URL structures
-            url: typeof link.url === 'string' ? link.url : 
-                 link.url?.url ? link.url.url : 
-                 link.path ? (typeof link.path === 'string' ? link.path : link.path.url) : 
-                 "#",
+            url: typeof link.url === 'string' ? link.url :
+              link.url?.url ? link.url.url :
+                link.path ? (typeof link.path === 'string' ? link.path : link.path.url) :
+                  "#",
             description: link.description,
             openInNewTab: link.openInNewTab,
             isExternal: link.isExternal
@@ -56,10 +56,10 @@ const Sitemap: React.FC = () => {
         links: (section.settings?.links || []).map((link: any) => ({
           title: link.title || "Link",
           // Handle different URL structures from fallback data
-          url: typeof link.url === 'string' ? link.url : 
-               link.url?.url ? link.url.url : 
-               link.path ? (typeof link.path === 'string' ? link.path : link.path.url) : 
-               "#",
+          url: typeof link.url === 'string' ? link.url :
+            link.url?.url ? link.url.url :
+              link.path ? (typeof link.path === 'string' ? link.path : link.path.url) :
+                "#",
           description: link.description,
           openInNewTab: link.openInNewTab,
           isExternal: link.isExternal
@@ -132,11 +132,11 @@ const Sitemap: React.FC = () => {
                     </h2>
                     <ul className="space-y-3">
                       {section.links && section.links.map(
-                        (link, linkIndex) => (
+                        (link: SitemapLink, linkIndex: number) => (
                           <li key={linkIndex}>
                             {link.isExternal || link.openInNewTab ? (
                               <a
-                                href={link.url}
+                                href={link.href}
                                 target={link.openInNewTab ? "_blank" : undefined}
                                 rel={link.openInNewTab ? "noopener noreferrer" : undefined}
                                 className="text-blue-600 dark:text-blue-400 hover:underline font-medium cursor-pointer"
@@ -144,7 +144,7 @@ const Sitemap: React.FC = () => {
                                 {link.title}
                               </a>
                             ) : (
-                              <Link href={link.url}>
+                              <Link href={link.href}>
                                 <div className="text-blue-600 dark:text-blue-400 hover:underline font-medium cursor-pointer">
                                   {link.title}
                                 </div>
@@ -169,7 +169,5 @@ const Sitemap: React.FC = () => {
     </>
   );
 };
-
-export default Sitemap;
 
 export default Sitemap;

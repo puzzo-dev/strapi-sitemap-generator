@@ -1,5 +1,6 @@
 import React from 'react';
-import { useLanguage } from '@/components/context/LanguageContext'; 
+import { useLanguage } from '@/components/context/LanguageContext';
+import { LanguageSelectorProps } from '@/lib/types';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,9 +11,6 @@ import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-interface LanguageSelectorProps {
-  compact?: boolean;
-}
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) => {
   const { t } = useTranslation();
@@ -21,9 +19,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) 
   // Function to get flag emoji based on language code
   const getFlag = (lang: string) => {
     switch (lang) {
-      case 'en': return '🇬🇧';
-      case 'yo': 
-      case 'ig': 
+      case 'en': return "🇬🇧";
+      case 'yo': return "🇳🇬";
+      case 'ig': return "🇳🇬";
       case 'ha': return '🇳🇬';
       case 'fr': return '🇫🇷';
       case 'es': return '🇪🇸';
@@ -79,9 +77,8 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) 
           <DropdownMenuItem
             key={lang}
             onClick={() => setLanguage(lang)}
-            className={`flex items-center gap-2 ${
-              currentLanguage === lang ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''
-            }`}
+            className={`flex items-center gap-2 ${currentLanguage === lang ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''
+              }`}
           >
             <span>{getFlag(lang)}</span>
             <span>{getLanguageName(lang)}</span>

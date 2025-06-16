@@ -1,8 +1,6 @@
 import React from 'react';
 
-interface DynamicContentProps {
-  content: string | { [key: string]: any };
-}
+
 
 /**
  * Component to render dynamic content from Strapi CMS

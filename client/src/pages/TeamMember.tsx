@@ -3,113 +3,36 @@ import { Link, useRoute } from 'wouter';
 import { ArrowLeft, Briefcase, Mail, Phone, Linkedin, Twitter, Github, ArrowRight, Calendar, MapPin } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { useTeamMembers } from '@/hooks/useStrapiContent';
-import { TeamMember as TeamMemberType } from '@/lib/types';
-
-// Extended team member interface
-interface ExtendedTeamMember extends Partial<TeamMemberType> {
-  role?: string;
-  expertise?: string[];
-  location?: string;
-  joinDate?: string;
-  email?: string;
-  phone?: string;
-  socialMedia?: {
-    linkedin?: string;
-    twitter?: string;
-    github?: string;
-  };
-  projects?: Array<{
-    title: string;
-    description: string;
-    year: string;
-  }>;
-  relatedTeamMembers?: number[];
-}
-
-// Extended team members data for fallback and additional info
-const extendedTeamMembers: ExtendedTeamMember[] = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    position: "Cloud Solutions Architect",
-    role: "Cloud Solutions Architect",
-    bio: `Sarah is a passionate cloud solutions architect with over 10 years of experience in designing and implementing scalable cloud infrastructure. She specializes in multi-cloud strategies and digital transformation.
-
-With a background in computer science and a master's degree in information systems, Sarah has helped numerous organizations optimize their IT infrastructure and migrate to the cloud. She is certified in AWS, Azure, and Google Cloud platforms.
-
-Throughout her career, Sarah has led multiple cloud migration projects for Fortune 500 companies, resulting in significant cost savings and improved operational efficiency. She is passionate about helping businesses leverage cloud technologies to achieve their strategic goals.
-
-Sarah regularly contributes to our blog, sharing insights on cloud computing trends, best practices, and emerging technologies. She is also a frequent speaker at industry conferences and webinars.`,
-    expertise: ["Cloud Architecture", "Multi-Cloud Strategy", "Digital Transformation", "Infrastructure as Code", "DevOps"],
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-    email: "sarah.johnson@example.com",
-    phone: "+1 (555) 123-4567",
-    location: "San Francisco, CA",
-    joinDate: "January 2018",
-    socialMedia: {
-      linkedin: "https://linkedin.com",
-      twitter: "https://twitter.com",
-      github: "https://github.com"
-    },
-    projects: [
-      {
-        title: "Enterprise Cloud Migration for Financial Services Firm",
-        description: "Led a team that successfully migrated a financial services firm's entire IT infrastructure to AWS, resulting in 40% cost savings and improved performance.",
-        year: "2022"
-      },
-      {
-        title: "Multi-Cloud Strategy Implementation",
-        description: "Designed and implemented a multi-cloud strategy for a healthcare organization, enabling seamless data sharing across platforms while maintaining compliance.",
-        year: "2021"
-      },
-      {
-        title: "Cloud-Native Application Modernization",
-        description: "Guided the modernization of legacy applications to cloud-native architectures using containerization and microservices.",
-        year: "2020"
-      }
-    ],
-    relatedTeamMembers: [2, 3, 4]
-  },
-  {
-    id: 2,
-    name: "David Chen",
-    position: "Mobile Development Lead",
-    role: "Mobile Development Lead",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-    expertise: ["iOS Development", "Android Development", "React Native", "Flutter", "UI/UX Design"]
-  },
-  {
-    id: 3,
-    name: "Emily Roberts",
-    position: "AI Solutions Specialist",
-    role: "AI Solutions Specialist",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-    expertise: ["Machine Learning", "Natural Language Processing", "Computer Vision", "Data Science", "AI Ethics"]
-  },
-  {
-    id: 4,
-    name: "Michael Anderson",
-    position: "Cybersecurity Director",
-    role: "Cybersecurity Director",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-    expertise: ["Security Architecture", "Penetration Testing", "Threat Intelligence", "Compliance", "Risk Management"]
-  }
-];
+import { extendedTeamMembers } from '@/lib/data';
+import { TeamMember as TeamMemberType, ExtendedTeamMember } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
 
 const TeamMemberPage: React.FC = () => {
   const [, params] = useRoute('/team/:id');
   const memberId = params?.id ? parseInt(params.id, 10) : -1;
+  const { toast } = useToast();
 
   // Fetch team members from Strapi
-  const { data: apiTeamMembers, isLoading } = useTeamMembers();
+  const { data: apiTeamMembers, isLoading, error } = useTeamMembers();
 
-  // Get base team member from API
+  // If there's an error loading from API, show a toast notification
+  React.useEffect(() => {
+    if (error) {
+      toast({
+        title: "API Data Unavailable",
+        description: "Using local data as fallback.",
+        variant: "default",
+      });
+    }
+  }, [error, toast]);
+
+  // Get base team member from API or fallback to local data
   const apiMember = apiTeamMembers?.find(member => member.id === memberId);
 
-  // Get extended data
+  // Get extended data from local data
   const extendedMemberData = extendedTeamMembers.find(member => member.id === memberId);
 
-  // Combine API data with extended data
+  // Combine API data with extended data, or just use extended data if API fails
   const member = apiMember
     ? { ...extendedMemberData, ...apiMember }
     : extendedMemberData;
@@ -345,9 +268,11 @@ const TeamMemberPage: React.FC = () => {
                       </div>
                       <div className="ml-3">
                         <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Email</div>
-                        <a href={`mailto:${member.email}`} className="text-blue-600 dark:text-blue-400 hover:underline break-all">
-                          {member.email}
-                        </a>
+                        <div className="text-gray-800 dark:text-white">
+                          <a href={`mailto:${member.email}`} className="hover:text-blue-600 dark:hover:text-blue-400">
+                            {member.email}
+                          </a>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -359,48 +284,134 @@ const TeamMemberPage: React.FC = () => {
                       </div>
                       <div className="ml-3">
                         <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</div>
-                        <a href={`tel:${member.phone}`} className="text-blue-600 dark:text-blue-400 hover:underline">
-                          {member.phone}
-                        </a>
+                        <div className="text-gray-800 dark:text-white">
+                          <a href={`tel:${member.phone}`} className="hover:text-blue-600 dark:hover:text-blue-400">
+                            {member.phone}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {member.position && (
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 mt-1">
+                        <Briefcase className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Position</div>
+                        <div className="text-gray-800 dark:text-white">{member.position}</div>
                       </div>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Related team members */}
-              {relatedMembers.length > 0 && (
-                <div className="card p-6 md:p-8">
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Team Collaborators</h3>
-                  <div className="space-y-4">
-                    {relatedMembers.map(related => related && (
-                      <Link key={related.id} href={`/team/${related.id}`}>
-                        <a className="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                          <img
-                            src={related.image}
-                            alt={related.name}
-                            className="w-12 h-12 rounded-full object-cover mr-4"
-                          />
-                          <div>
-                            <div className="font-medium text-gray-800 dark:text-white">{related.name}</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">{related.role}</div>
+              {/* Expertise */}
+              {member.expertise && member.expertise.length > 0 && (
+                <div className="card p-6 md:p-8 mb-8">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Areas of Expertise</h3>
+                  <ul className="space-y-2">
+                    {member.expertise.map((skill, index) => (
+                      <li key={index} className="flex items-start">
+                        <div className="flex-shrink-0 mt-1">
+                          <div className="flex items-center justify-center w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30">
+                            <svg className="h-3 w-3 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                            </svg>
                           </div>
-                          <ArrowRight className="h-4 w-4 ml-auto text-gray-400" />
-                        </a>
-                      </Link>
+                        </div>
+                        <span className="ml-3 text-gray-600 dark:text-gray-300">{skill}</span>
+                      </li>
                     ))}
-                  </div>
-
-                  <div className="mt-6">
-                    <Link href="/team">
-                      <a className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:underline">
-                        <span>View all team members</span>
-                        <ArrowRight className="h-4 w-4 ml-1" />
-                      </a>
-                    </Link>
-                  </div>
+                  </ul>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Team Members */}
+      {relatedMembers && relatedMembers.length > 0 && (
+        <section className="content-section bg-gray-50 dark:bg-[#0a1929]">
+          <div className="container-custom">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">Meet More Team Members</h2>
+              <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Discover other talented professionals who make our team exceptional.
+              </p>
+            </div>
+
+            {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {relatedMembers.map((relatedMember) => (
+                <div key={relatedMember.id} className="card p-6 hover-lift group">
+                  <div className="flex items-center mb-6">
+                    <div className="w-16 h-16 rounded-full overflow-hidden mr-4">
+                      <img
+                        src={relatedMember.image}
+                        alt={relatedMember.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800 dark:text-white">{relatedMember.name}</h3>
+                      <p className="text-gray-600 dark:text-gray-300">{relatedMember.position || relatedMember.role}</p>
+                    </div>
+                  </div>
+
+                  {relatedMember.expertise && relatedMember.expertise.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {relatedMember.expertise.slice(0, 3).map((skill, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs text-gray-700 dark:text-gray-300"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                      {relatedMember.expertise.length > 3 && (
+                        <span className="px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs text-gray-700 dark:text-gray-300">
+                          +{relatedMember.expertise.length - 3} more
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <Link href={`/team/${relatedMember.id}`}>
+                    <a className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group">
+                      <span>View Profile</span>
+                      <ArrowRight className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" />
+                    </a>
+                  </Link>
+                </div>
+              ))}
+            </div> */}
+
+            <div className="mt-12 text-center">
+              <GradientButton href="/team" variant="outline">
+                View All Team Members
+              </GradientButton>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CTA Section */}
+      <section className="content-section bg-white dark:bg-[#132f4c]">
+        <div className="container-custom">
+          <div className="card p-8 md:p-12 gradient-bg shadow-lg text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Ready to Work With Our Team?</h2>
+            <p className="text-white/90 max-w-3xl mx-auto mb-8">
+              Contact us today to discuss how our experts can help you achieve your business goals.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <GradientButton href="/contact" variant="light" className="border border-white/20">
+                Get in Touch
+              </GradientButton>
+              <GradientButton href="/services" variant="light" className="border border-white/20">
+                Explore Our Services
+              </GradientButton>
             </div>
           </div>
         </div>

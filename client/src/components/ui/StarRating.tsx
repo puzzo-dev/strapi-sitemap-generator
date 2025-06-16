@@ -1,10 +1,7 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 
-interface StarRatingProps {
-  rating: number;
-  maxRating?: number;
-}
+
 
 const StarRating: React.FC<StarRatingProps> = ({ rating, maxRating = 5 }) => {
   return (

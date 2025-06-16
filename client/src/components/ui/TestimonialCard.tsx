@@ -2,9 +2,6 @@ import React from 'react';
 import { Star } from 'lucide-react';
 import { TestimonialProps } from '@/lib/types';
 
-interface TestimonialCardProps {
-  testimonial: TestimonialProps;
-}
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (

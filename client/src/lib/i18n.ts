@@ -91,6 +91,10 @@ const resources = {
       blog: {
         title: 'TechVision Insights',
         subtitle: 'Explore our latest industry insights, technology trends, and expert perspectives',
+        latestInsights: 'Latest Insights',
+        insightsExpertise: 'Insights & Expertise',
+        stayUpdated: 'Stay updated with the latest trends, insights, and news from our technology experts.',
+        viewAllArticles: 'View All Articles',
         searchPlaceholder: 'Search articles...',
         selectCategory: 'Select Category',
         selectTag: 'Select Tag',
@@ -130,8 +134,7 @@ const resources = {
         sharePost: 'Share this Post',
         postNotFound: 'Blog post not found.',
         backToBlog: 'Back to Blog',
-      },
-    },
+      },    },
   },
   yo: {
     translation: {
@@ -184,10 +187,17 @@ const resources = {
       },
       products: {
         title: 'Àwọn Ọjà Wa',
-        subtitle: 'Àwọn Ojú Ọ̀nà Tuntun',
-        description: 'Àwọn ọjà tí a ṣe láti yí iṣẹ́ rẹ padà.',
-        features: 'Àwọn Ẹ̀yà Pàtàkì',
-        benefits: 'Àwọn Àǹfààní',
+        subtitle: 'Ojú Ọ̀nà Tuntun',
+        description: 'ọjà tí a ṣe láti yí iṣẹ́ rẹ padà.',
+        features: 'Ẹ̀yà Pàtàkì',
+        benefits: 'Àǹfààní',
+      },
+      blog: {
+        title: 'Àwọn Ìmọ̀ TechVision',
+        latestInsights: 'Àwọn Ìmọ̀ Tuntun',
+        insightsExpertise: 'Ìmọ̀ & Òye',
+        stayUpdated: 'Ṣe àtúnṣe pẹ̀lú àwọn ìlọsíwájú tuntun, ìmọ̀, àti ìròyìn láti ọ̀dọ̀ àwọn aṣàmọ̀ ìmọ̀ ẹ̀rọ wa.',
+        viewAllArticles: 'Wo Gbogbo Àwọn Àpilẹ̀kọ',
       },
       contact: {
         title: 'Kàn Sí Wa',
@@ -215,8 +225,7 @@ const resources = {
         },
       },
     },
-  },
-  ig: {
+  },  ig: {
     translation: {
       language: {
         en: 'English',
@@ -271,6 +280,13 @@ const resources = {
         description: 'Ngwá ahịa dị oke ọnụ e mere iji gbanwee ọrụ azụmahịa gị.',
         features: 'Atụmatụ Dị Mkpa',
         benefits: 'Uru',
+      },
+      blog: {
+        title: 'Echiche TechVision',
+        latestInsights: 'Echiche Kacha Ọhụrụ',
+        insightsExpertise: 'Echiche & Ọkachamara',
+        stayUpdated: 'Nọgide na-enweta mgbanwe nke oge a, echiche, na akụkọ site n\'aka ndị ọkachamara teknụzụ anyị.',
+        viewAllArticles: 'Lelee Edemede Niile',
       },
       contact: {
         title: 'Kpọtụrụ Anyị',
@@ -355,6 +371,13 @@ const resources = {
         features: 'Caractéristiques Clés',
         benefits: 'Avantages',
       },
+      blog: {
+        title: 'TechVision Insights',
+        latestInsights: 'Dernières Perspectives',
+        insightsExpertise: 'Perspectives & Expertise',
+        stayUpdated: 'Restez à jour avec les dernières tendances, perspectives et nouvelles de nos experts en technologie.',
+        viewAllArticles: 'Voir Tous Les Articles',
+      },
       contact: {
         title: 'Contactez-nous',
         subtitle: 'Entrer en Contact',
@@ -438,6 +461,13 @@ const resources = {
         features: 'Características Clave',
         benefits: 'Beneficios',
       },
+      blog: {
+        title: 'TechVision Insights',
+        latestInsights: 'Últimas Perspectivas',
+        insightsExpertise: 'Perspectivas y Experiencia',
+        stayUpdated: 'Manténgase actualizado con las últimas tendencias, perspectivas y noticias de nuestros expertos en tecnología.',
+        viewAllArticles: 'Ver Todos Los Artículos',
+      },
       contact: {
         title: 'Contáctenos',
         subtitle: 'Póngase en Contacto',
@@ -464,8 +494,7 @@ const resources = {
         },
       },
     },
-  },
-  ha: {
+  },  ha: {
     translation: {
       language: {
         en: 'English',
@@ -560,6 +589,10 @@ const resources = {
         showingResults: 'Nuna {{count}} sakamakon',
         featuredPosts: 'Zaɓaɓɓun Posts',
         latestPosts: 'Sabbin Posts',
+        latestInsights: 'Sabbin Basira',
+        insightsExpertise: 'Basira & Ƙwarewa',
+        stayUpdated: 'Kasance da sabuntawa game da sabbin juyi, basira, da labarai daga masanin fasaharmu.',
+        viewAllArticles: 'Duba Dukan Labarai',
         noPosts: 'Babu posts a yanzu.',
         clearFilters: 'Share Matsayar',
         categories: 'Rukuni',
@@ -589,8 +622,7 @@ const resources = {
         sharePost: 'Raba wannan Post',
         postNotFound: 'Ba a sami post ba.',
         backToBlog: 'Koma Blog',
-      },
-    },
+      },    },
   },
   sw: {
     translation: {
@@ -659,6 +691,13 @@ const resources = {
         message: 'Ujumbe Wako',
         success: 'Asante! Ujumbe wako umetumwa kwa mafanikio.',
         error: 'Kulikuwa na hitilafu wakati wa kutuma ujumbe wako. Tafadhali jaribu tena.',
+      },
+      blog: {
+        title: 'Utambuzi wa TechVision',
+        latestInsights: 'Utambuzi wa Hivi Karibuni',
+        insightsExpertise: 'Utambuzi & Utaalamu',
+        stayUpdated: 'Endelea kupata mwelekeo wa hivi karibuni, utambuzi, na habari kutoka kwa wataalam wetu wa teknolojia.',
+        viewAllArticles: 'Tazama Makala Zote',
       },
       footer: {
         copyright: '© {{year}} I-VARSE Technologies. Haki zote zimehifadhiwa.',

@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface ScrollToTopButtonProps {
-  threshold?: number;
-  size?: 'sm' | 'md' | 'lg';
-  position?: 'bottom-right' | 'bottom-left';
-  ariaLabel?: string;
-}
+
 
 /**
  * ScrollToTopButton - A button that appears when the user scrolls down 

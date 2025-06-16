@@ -396,14 +396,14 @@ const Products: React.FC = () => {
                       whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.1)" }}
                       transition={{ duration: 0.2 }}
                     >
-                      Entry-E
+                      Entry-X
                     </motion.th>
                     <motion.th 
                       className="border border-blue-100 dark:border-blue-800/30 p-4 text-center text-blue-700 dark:text-blue-300 font-bold"
                       whileHover={{ backgroundColor: "rgba(59, 130, 246, 0.1)" }}
                       transition={{ duration: 0.2 }}
                     >
-                      Business in a Box
+                      OpsCloud
                     </motion.th>
                   </motion.tr>
                 </motion.thead>

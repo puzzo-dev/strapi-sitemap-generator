@@ -3,68 +3,84 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import GradientButton from '@/components/ui/GradientButton';
 import ServiceCard from '@/components/ui/ServiceCard';
-import { useServices, usePageContent } from '@/hooks/useStrapiContent';
+import { useServices, usePageContent, useSectionContent } from '@/hooks/useStrapiContent';
 import { ArrowRight, Code, LayoutGrid, Cpu, CircuitBoard, Sparkles } from 'lucide-react';
 import { services as localServices } from '@/lib/data';
-import type { ServiceProps, PageSection } from '@/lib/types';
+import type { ServiceProps, PageSection, AppLinkProps } from '@/lib/types';
 
 const SpecializationsSection: React.FC = () => {
     const { t } = useTranslation();
     const { data: apiServices, isLoading: isServicesLoading } = useServices();
     const { data: pageContent, isLoading: isPageLoading } = usePageContent('home');
+    const { data: sectionData, isLoading: isSectionLoading } = useSectionContent('services');
 
-    // Get section content from page data or use defaults
+    // Get section content from page data, section data, or use defaults
     const sectionContent = useMemo(() => {
         const section = pageContent?.sections?.find(s => s.type === 'services') as PageSection;
+        const title = section?.title || sectionData?.title || t('Core Competencies');
+        const subtitle = section?.subtitle || sectionData?.subtitle || t('Specializations in Service Operations');
+        const description = section?.content || sectionData?.content || t('I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses toward digital success.');
+        const buttonSettings = section?.settings?.primaryButton || sectionData?.settings?.primaryButton || {} as AppLinkProps;
+        const buttonText = buttonSettings?.title || t('Get Started');
+        const buttonUrl = (buttonSettings as AppLinkProps)?.href || '/services';
+
         return {
-            title: section?.title || t('Core Competencies'),
-            subtitle: section?.subtitle || t('Specializations in Service Operations'),
-            description: section?.content || t('I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses toward digital success.'),
-            buttonText: section?.settings?.primaryButton?.text || t('Get Started'),
-            buttonUrl: section?.settings?.primaryButton?.url || '/services'
+            title,
+            subtitle,
+            description,
+            buttonText,
+            buttonUrl
         };
-    }, [pageContent, t]);
+
+    }, [pageContent, sectionData, t]);
+
+    // Get all services from API or fallback to local data
+    const allServices = useMemo(() => {
+        if (isServicesLoading || !apiServices?.length) {
+            return localServices;
+        }
+        return apiServices;
+    }, [apiServices, isServicesLoading]);
 
     // Get featured services from section settings or use all services
     const displayServices = useMemo(() => {
-        if (isServicesLoading || !apiServices?.length) {
-            return localServices.slice(0, 5);
-        }
-
-        // Try to get featured services from section settings
         const servicesSection = pageContent?.sections?.find(s => s.type === 'services');
         if (servicesSection?.settings?.featured && Array.isArray(servicesSection.settings.featured)) {
             return servicesSection.settings.featured as ServiceProps[];
         }
-
-        // Fallback to first 5 services
-        return apiServices.slice(0, 5);
-    }, [apiServices, isServicesLoading, pageContent]);
-
-    // Distribute services into positions with proper null checking
-    const [leftTop, leftBottom, center, rightTop, rightBottom] = useMemo(() => {
-        const services = [...displayServices];
-        while (services.length < 5) {
-            services.push(services[services.length - 1] || localServices[0]);
+        if (sectionData?.settings?.featured && Array.isArray(sectionData.settings.featured)) {
+            return sectionData.settings.featured as ServiceProps[];
         }
-        return [
-            services[0] || null,
-            services[1] || null,
-            services[2] || null,
-            services[3] || null,
-            services[4] || null
-        ];
+        return allServices;
+    }, [allServices, pageContent, sectionData]);
+
+    // Organize services into a layout with 7 positions
+    const serviceLayout = useMemo(() => {
+        const services = [...displayServices];
+        while (services.length < 7) {
+            services.push(services[services.length % services.length] || localServices[0]);
+        }
+        const selectedServices = services.slice(0, 7);
+        const featuredIndex = 3;
+
+        return {
+            topRow: [selectedServices[0], selectedServices[1]],
+            middleRow: [
+                selectedServices[2],
+                { ...selectedServices[featuredIndex], featured: true },
+                selectedServices[4]
+            ],
+            bottomRow: [selectedServices[5], selectedServices[6]]
+        };
     }, [displayServices]);
 
-    const isLoading = isServicesLoading || isPageLoading;
+    const isLoading = isServicesLoading || isPageLoading || isSectionLoading;
 
     return (
-        <section className="py-16 relative overflow-hidden">
-            {/* Background gradient effect */}
+        <section className="py-24 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/30 to-transparent dark:via-blue-950/30 pointer-events-none"></div>
 
             <div className="container-custom">
-                {/* Section Header with staggered animation */}
                 <div className="text-center mb-16 relative">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -76,7 +92,7 @@ const SpecializationsSection: React.FC = () => {
                         <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
                         {sectionContent.title}
                     </motion.div>
-                    
+
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -101,9 +117,7 @@ const SpecializationsSection: React.FC = () => {
                     </motion.p>
                 </div>
 
-                {/* Rest of the existing layout structure remains the same */}
                 <div className="relative">
-                    {/* Tech pattern background */}
                     <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 overflow-hidden pointer-events-none">
                         <Code className="absolute -right-20 -bottom-10 w-64 h-64 text-blue-400 dark:text-blue-600 animate-spin-slow" />
                         <LayoutGrid className="absolute -left-10 -top-10 w-48 h-48 text-blue-300 dark:text-blue-700 animate-float" style={{ animationDelay: '2s' }} />
@@ -112,94 +126,113 @@ const SpecializationsSection: React.FC = () => {
                         <Sparkles className="absolute right-1/4 top-1/4 w-20 h-20 text-cyan-400 dark:text-cyan-600 animate-pulse-light" />
                     </div>
 
-                    {/* Service cards layout */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 md:max-h-[700px]">
-                        {/* Left column */}
-                        <div className="space-y-8">
-                            <motion.div
-                                initial={{ opacity: 0, x: -50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.6 }}
-                            >
-                                {isLoading || !leftTop ? (
-                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                ) : (
-                                    <ServiceCard service={leftTop} />
-                                )}
-                            </motion.div>
-                            <motion.div
-                                initial={{ opacity: 0, x: -50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.6, delay: 0.1 }}
-                            >
-                                {isLoading || !leftBottom ? (
-                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                ) : (
-                                    <ServiceCard service={leftBottom} />
-                                )}
-                            </motion.div>
-                        </div>
+                    {/* Top row - 2 cards with equal width */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10 mb-8">
+                        <motion.div
+                            initial={{ opacity: 0, y: -30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.6 }}
+                            className="col-span-1"
+                        >
+                            {isLoading || !serviceLayout.topRow[0] ? (
+                                <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                            ) : (
+                                <ServiceCard service={serviceLayout.topRow[0]} />
+                            )}
+                        </motion.div>
 
-                        {/* Center column */}
-                        <div className="flex items-center">
-                            <motion.div
-                                initial={{ opacity: 0, y: 50 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.7 }}
-                                className="transform md:scale-105 md:-my-2"
-                            >
-                                {isLoading || !center ? (
-                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                ) : (
-                                    <ServiceCard service={center} />
-                                )}
-                            </motion.div>
-                        </div>
-
-                        {/* Right column */}
-                        <div className="space-y-8">
-                            <motion.div
-                                initial={{ opacity: 0, x: 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.6 }}
-                            >
-                                {isLoading || !rightTop ? (
-                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                ) : (
-                                    <ServiceCard service={rightTop} />
-                                )}
-                            </motion.div>
-                            <motion.div
-                                initial={{ opacity: 0, x: 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.6, delay: 0.1 }}
-                            >
-                                {isLoading || !rightBottom ? (
-                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-                                ) : (
-                                    <ServiceCard service={rightBottom} />
-                                )}
-                            </motion.div>
-                        </div>
+                        <motion.div
+                            initial={{ opacity: 0, y: -30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="col-span-1"
+                        >
+                            {isLoading || !serviceLayout.topRow[1] ? (
+                                <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                            ) : (
+                                <ServiceCard service={serviceLayout.topRow[1]} />
+                            )}
+                        </motion.div>
                     </div>
 
-                    {/* CTA Button */}
+                    {/* Middle row - 3 cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10 mb-6">
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="col-span-1"
+                        >
+                            {isLoading || !serviceLayout.middleRow[0] ? (
+                                <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                            ) : (
+                                <ServiceCard service={serviceLayout.middleRow[0]} />
+                            )}
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.7 }}
+                            className="col-span-1 transform md:scale-105"
+                        >
+                            {isLoading || !serviceLayout.middleRow[1] ? (
+                                <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                            ) : (
+                                <ServiceCard service={serviceLayout.middleRow[1]} featured={true} />
+                            )}
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="col-span-1"
+                        >
+                            {isLoading || !serviceLayout.middleRow[2] ? (
+                                <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                            ) : (
+                                <ServiceCard service={serviceLayout.middleRow[2]} />
+                            )}
+                        </motion.div>
+                    </div>
+
+                    {/* Bottom row - 2 cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                        {serviceLayout.bottomRow.map((service, index) => (
+                            <motion.div
+                                key={`bottom-${service.id}-${index}`}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-100px" }}
+                                transition={{ duration: 0.6, delay: 0.3 + (index * 0.1) }}
+                                className="col-span-1"
+                            >
+                                {isLoading ? (
+                                    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                                ) : (
+                                    <ServiceCard service={service} />
+                                )}
+                            </motion.div>
+                        ))}
+                    </div>
+
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                        className="mt-6 flex justify-center"
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="mt-20 flex justify-center"
                     >
                         <div className="relative z-20">
-                            <GradientButton 
-                                href={sectionContent.buttonUrl} 
-                                className="px-10 w-56" 
+                            <GradientButton
+                                href={sectionContent.buttonUrl}
+                                className="px-10 w-56"
                                 endIcon={<ArrowRight />}
                             >
                                 {sectionContent.buttonText}

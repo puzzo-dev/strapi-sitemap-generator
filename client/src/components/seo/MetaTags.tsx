@@ -1,22 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-
-interface MetaTagsProps {
-  title: string;
-  description: string;
-  keywords?: string[];
-  ogImage?: string;
-  ogUrl?: string;
-  ogType?: 'website' | 'article' | 'product' | 'profile';
-  twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
-  canonicalUrl?: string;
-  noIndex?: boolean;
-  structuredData?: Record<string, any>;
-  alternateLanguages?: {
-    lang: string;
-    url: string;
-  }[];
-}
+import { MetaTagsProps } from '@/lib/types';
 
 /**
  * Component for setting SEO meta tags

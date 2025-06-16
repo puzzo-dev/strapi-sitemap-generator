@@ -1,64 +1,39 @@
-import { QueryClient, QueryFunction } from "@tanstack/react-query";
-
-async function throwIfResNotOk(res: Response) {
-  if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
-  }
-}
-
-export async function apiRequest<T = any>(
-  url: string,
-  options?: RequestInit,
-): Promise<T> {
-  const method = options?.method || 'GET';
-  const headers = options?.headers || {};
-  const data = options?.body;
-  
-  const res = await fetch(url, {
-    method,
-    headers: {
-      ...(data ? { "Content-Type": "application/json" } : {}),
-      ...headers
-    },
-    body: data ? (typeof data === 'string' ? data : JSON.stringify(data)) : undefined,
-    credentials: "include",
-    ...options
-  });
-
-  await throwIfResNotOk(res);
-  return await res.json() as T;
-}
-
-type UnauthorizedBehavior = "returnNull" | "throw";
-export const getQueryFn: <T>(options: {
-  on401: UnauthorizedBehavior;
-}) => QueryFunction<T> =
-  ({ on401: unauthorizedBehavior }) =>
-  async ({ queryKey }) => {
-    const res = await fetch(queryKey[0] as string, {
-      credentials: "include",
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
-    }
-
-    await throwIfResNotOk(res);
-    return await res.json();
-  };
+import { QueryClient } from '@tanstack/react-query';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn({ on401: "throw" }),
-      refetchInterval: false,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-      retry: false,
-    },
-    mutations: {
-      retry: false,
+      // Reduce stale time to ensure fresh data on refresh
+      staleTime: 1000 * 60 * 2, // 2 minutes instead of longer
+      // Enable refetch on window focus for better UX
+      refetchOnWindowFocus: true,
+      // Retry failed requests
+      retry: 2,
+      // Refetch on mount if data is stale
+      refetchOnMount: 'always',
+      // Enable background refetching
+      refetchOnReconnect: true,
     },
   },
 });
+
+// Utility function for API requests with better error handling
+export async function apiRequest<T>(endpoint: string): Promise<T> {
+  try {
+    const response = await fetch(endpoint, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`API request error for ${endpoint}:`, error);
+    throw error;
+  }
+}

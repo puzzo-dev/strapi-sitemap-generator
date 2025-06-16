@@ -21,9 +21,6 @@ const newsletterSchema = z.object({
 
 type NewsletterFormData = z.infer<typeof newsletterSchema>;
 
-interface NewsletterFormProps {
-  className?: string;
-}
 
 const NewsletterForm: React.FC<NewsletterFormProps> = ({ className }) => {
   const { toast } = useToast();

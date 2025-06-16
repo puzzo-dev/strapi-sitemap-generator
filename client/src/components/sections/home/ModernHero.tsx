@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
     ChevronRight,
@@ -20,6 +20,7 @@ import {
     ServiceProps,
     HeroSlide,
     SocialLink,
+
 } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import GradientButton from "@/components/ui/GradientButton";
@@ -29,7 +30,7 @@ import {
     useSocialLinks,
     useHeroContent
 } from "@/hooks/useStrapiContent";
-import { services as localServices, socialLinks } from "@/lib/data";
+import { services as localServices, socialLinks, defaultHeroProps, heroSlides as localHeroSlides } from "@/lib/data";
 import { fadeInUp, scaleUp } from "@/lib/animations";
 
 // Helper function to get social icon paths
@@ -71,10 +72,13 @@ const renderServiceIcon = (iconName: string) => {
 };
 
 const ModernHero: React.FC<Partial<HeroProps>> = ({
-    currentIndex = 0,
-    handleMouseEnter = () => { },
-    handleMouseLeave = () => { },
+    currentIndex: initialIndex = 0,
+    handleMouseEnter: externalHandleMouseEnter = () => { },
+    handleMouseLeave: externalHandleMouseLeave = () => { },
 }) => {
+    // Local state for current slide index
+    const [currentIndex, setCurrentIndex] = useState(initialIndex);
+
     // Fetch dynamic hero content from Strapi
     const { data: heroProps, isLoading: isHeroLoading } = useHeroContent();
 
@@ -94,32 +98,53 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
 
     // Extract hero content with fallback values
     const heroContent = useMemo(() => {
-        if (!heroProps?.heroContents) {
-            return {
-                title: "Innovative Digital Solutions for Modern Businesses",
-                subtitle:
-                    "Elevate your business with our cutting-edge digital solutions.",
-                primaryButton: {
-                    text: "GET STARTED",
-                    url: "/services",
-                },
-                secondaryButton: {
-                    text: "LEARN MORE",
-                    url: "/#about",
-                },
-            } as HeroSlide;
+        // First try to get content from Strapi
+        if (heroProps?.heroContents) {
+            return heroProps.heroContents;
         }
 
-        return heroProps.heroContents;
+        // If no Strapi content, use default hero props
+        return defaultHeroProps.heroContents;
     }, [heroProps?.heroContents]);
 
-    // Then use heroContent directly without the "?" optional chaining
-    const displayTitle = heroContent.title;
-    const displaySubtitle = heroContent.subtitle;
-    const primaryBtnText = heroContent.primaryButton?.text || "GET STARTED";
-    const primaryBtnUrl = heroContent.primaryButton?.url || "/services";
-    const secondaryBtnText = heroContent.secondaryButton?.text || "LEARN MORE";
-    const secondaryBtnUrl = heroContent.secondaryButton?.url || "/#about";
+    // Get hero slides with fallback
+    const heroSlides = useMemo(() => {
+        // First try to get slides from Strapi
+        if (heroProps?.heroSlides && heroProps.heroSlides.length > 0) {
+            return heroProps.heroSlides;
+        }
+        // If no Strapi slides, use local hero slides
+        return localHeroSlides;
+    }, [heroProps?.heroSlides]);
+
+    // Handle mouse events for slide transitions
+    const handleMouseEnter = () => {
+        externalHandleMouseEnter();
+    };
+
+    const handleMouseLeave = () => {
+        externalHandleMouseLeave();
+    };
+
+    // Auto-rotate slides
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) =>
+                prevIndex === (heroSlides.length - 1) ? 0 : prevIndex + 1
+            );
+        }, 5000); // Change slide every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [heroSlides.length]);
+
+    // Extract content from current hero slide based on currentIndex
+    const currentSlide = heroSlides && heroSlides.length > 0 ? heroSlides[currentIndex] : heroContent;
+    const displayTitle = currentSlide.title;
+    const displaySubtitle = currentSlide.subtitle;
+    const primaryBtnText = currentSlide.primaryButton?.title || currentSlide.primaryButton?.title || "GET STARTED";
+    const primaryBtnUrl = currentSlide.primaryButton?.href || currentSlide.primaryButton?.href || "/services";
+    const secondaryBtnText = currentSlide.secondaryButton?.title || currentSlide.secondaryButton?.title || "LEARN MORE";
+    const secondaryBtnUrl = currentSlide.secondaryButton?.href || currentSlide.secondaryButton?.href || "/#about";
 
     // Use isLoading states to determine if we should show loading UI
     const showLoading = isHeroLoading || isSiteConfigLoading;
@@ -129,7 +154,7 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
 
     return (
         <>          {/* Tech-inspired background elements - Enhanced with more icons */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 top-0 z-0 overflow-hidden pointer-events-none">
                 {/* Animated gradient orbs */}
                 <motion.div
                     variants={scaleUp(0.8, 1.5, 0.2)}
@@ -497,9 +522,9 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                     />
                 </svg>
             </div>
-            <section className="flex flex-col md:flex-row container-custom justify-center md:justify-self-end overflow-hidden bg-transparent relative">
+            <section className="flex flex-col md:flex-row container-custom justify-center md:justify-self-end overflow-hidden bg-transparent relative mt-10">
                 {/* Left side */}
-                <div className="flex flex-col justify-center px-3 sm:px-10 md:px-10 py-12 sm:py-10 md:w-1/2 bg-gradient-to-br from-primary/30 via-primary/20 to-primary/10 dark:from-sidebar-primary/40 dark:via-sidebar-primary dark:to-sidebar-primary/80 border-x border-b relative z-20 rounded-bl-[10%] md:rounded-bl-[15%] drop-shadow-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="mb-10 h-full md:h-[80vh] flex flex-col justify-center px-10 py-12 sm:py-10 md:w-1/2 bg-white/30 dark:bg-gray-900/30 backdrop-blur-md backdrop-saturate-150 border-x border-b relative z-20 rounded-bl-[10%] md:rounded-bl-[15%] drop-shadow-xl shadow-lg hover:shadow-xl transition-all duration-300">
                     {/* Background elements */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
                         <div className="absolute -right-[10%] top-[10%] h-[30%] w-[30%] rounded-full bg-primary/40 blur-3xl dark:bg-primary/40"></div>
@@ -633,10 +658,10 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                                     endIcon={<ChevronRight />}
                                     className="w-auto py-3 animate-snowfall z-10"
                                     target={
-                                        heroContent.primaryButton?.openInNewTab ? "_blank" : undefined
+                                        currentSlide.primaryButton?.openInNewTab ? "_blank" : undefined
                                     }
                                     rel={
-                                        heroContent.primaryButton?.isExternal
+                                        currentSlide.primaryButton?.isExternal
                                             ? "noopener noreferrer"
                                             : undefined
                                     }
@@ -651,12 +676,12 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                                         href={secondaryBtnUrl}
                                         className="w-auto py-3 z-10"
                                         target={
-                                            heroContent.secondaryButton?.openInNewTab
+                                            currentSlide.secondaryButton?.openInNewTab
                                                 ? "_blank"
                                                 : undefined
                                         }
                                         rel={
-                                            heroContent.secondaryButton?.isExternal
+                                            currentSlide.secondaryButton?.isExternal
                                                 ? "noopener noreferrer"
                                                 : undefined
                                         }
@@ -780,7 +805,7 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                     </div>
                 </div>
                 {/* Right side (Image) */}
-                <div className="md:w-1/2 w-full relative flex items-center justify-center bg-muted overflow-hidden border-x border-b z-20 rounded-br-[10%] md:rounded-br-[15%] drop-shadow-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="md:w-1/2 w-full h-full md:h-[80vh] relative flex items-center justify-center bg-muted overflow-hidden border-x border-b z-20 rounded-br-[10%] md:rounded-br-[15%] drop-shadow-xl shadow-lg hover:shadow-xl transition-all duration-300">
                     {/* Background gradient */}
                     <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/40 to-card dark:from-sidebar dark:via-background dark:to-card opacity-50"></div>
 
@@ -808,12 +833,12 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                         </motion.div>
                     </div>
 
-                    {/* Service Slides Container */}
-                    {isServicesLoading ? (
+                    {/* Hero Slides Container */}
+                    {isHeroLoading ? (
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className="w-full h-full bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
                         </div>
-                    ) : services && services.length > 0 ? (
+                    ) : heroSlides && heroSlides.length > 0 ? (
                         <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                             <div
                                 className="relative w-full h-full"
@@ -822,15 +847,16 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                             >
                                 {/* Main image with gradient overlay */}
                                 <div className="absolute inset-0 z-10">
-                                    {services.map((service, index) => (
+                                    {heroSlides.map((slide, index) => (
                                         <div
-                                            key={service.id || index}
-                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
-                                                }`}
+                                            key={slide.id || index}
+                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                                                index === currentIndex ? "opacity-100" : "opacity-0"
+                                            }`}
                                         >
                                             <img
-                                                src={service.image || ""}
-                                                alt={service.title}
+                                                src={slide.backgroundImage || ""}
+                                                alt={slide.title}
                                                 className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
@@ -849,29 +875,21 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                                     </div>
                                 )}
 
-                                {/* Current service overlay content - super tiny in top right */}
-                                {services && services.length > 0 && (
+                                {/* Current slide indicator - tiny in top right */}
+                                {heroSlides && heroSlides.length > 0 && (
                                     <div className="absolute top-0 right-0 z-20 py-0.5 px-1 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
-                                        {services.map((service, index) => (
+                                        {heroSlides.map((slide, index) => (
                                             <div
-                                                key={service.id || index}
-                                                className={`transition-opacity duration-500 flex items-center ${index === currentIndex
-                                                    ? "opacity-100"
-                                                    : "opacity-0 absolute inset-0"
-                                                    }`}
+                                                key={slide.id || index}
+                                                className={`transition-opacity duration-500 flex items-center ${
+                                                    index === currentIndex
+                                                        ? "opacity-100"
+                                                        : "opacity-0 absolute inset-0"
+                                                }`}
                                             >
                                                 <div className="flex items-center">
-                                                    <span className="flex items-center justify-center mr-1.5">
-                                                        {service.icon ? (
-                                                            <span className="h-4 w-4 flex items-center justify-center text-white">
-                                                                {renderServiceIcon(service.icon)}
-                                                            </span>
-                                                        ) : (
-                                                            <div className="h-4 w-4 bg-current rounded-full"></div>
-                                                        )}
-                                                    </span>
                                                     <p className="text-xs font-medium text-white whitespace-nowrap">
-                                                        {service.title}
+                                                        {slide.title.split(' ').slice(0, 2).join(' ')}
                                                     </p>
                                                 </div>
                                             </div>
@@ -888,7 +906,6 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                             </div>
                         </div>
                     ) : null}
-
                     {/* Overlay gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20 pointer-events-none"></div>
                 </div>

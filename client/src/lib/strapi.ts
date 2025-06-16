@@ -9,7 +9,9 @@ import {
   navItems as localNavItems,
   footerData,
   contactPageContent,
-  defaultHeroProps
+  defaultHeroProps,
+  defaultSiteConfig,
+  footerLinks
 } from '@/lib/data';
 import {
   ProductProps,
@@ -91,13 +93,25 @@ async function fetchData<T>(endpoint: string, fallbackData: T): Promise<T> {
 
       const result = await response.json();
 
+
       // Handle both collection and single type responses from Strapi
       if (Array.isArray(result.data)) {
-        return result.data.map((item: any) => ({
-          id: item.id,
-          ...item.attributes
-        })) as T;
+        // console.log("Array response from Strapi:", result.data);
+        // // Log the first item to see its structure
+        // if (result.data.length > 0) {
+        //   console.log("First item structure:", result.data[0]);
+        // }
+        return result.data.map((item: any) => {
+          const mappedItem = {
+            id: item.id,
+            ...item
+          };
+          // console.log("Mapped item:", mappedItem);
+          return mappedItem;
+        }) as T;
       } else if (result.data && result.data.attributes) {
+        // console.log("Single item response from Strapi:", result.data);
+        // console.log("Mapped single item:", {...result.data});
         return {
           id: result.data.id,
           ...result.data.attributes
@@ -232,41 +246,9 @@ export async function getSocialLinks(): Promise<SocialLink[]> {
  * Get footer columns from API
  */
 export async function getFooterColumns(): Promise<FooterColumn[]> {
-  const defaultFooterColumns: FooterColumn[] = [
-    {
-      id: 1,
-      title: 'Company',
-      links: [
-        { label: 'About Us', url: '/about' },
-        { label: 'Careers', url: '/careers' },
-        { label: 'Contact', url: '/contact' },
-        { label: 'Insights Pages', url: '/blog' },
-        { label: 'Our Team', url: '/about#team' }
-      ]
-    },
-    {
-      id: 2,
-      title: 'Services',
-      links: [
-        { label: 'Web Development', url: '/services/web-development' },
-        { label: 'Mobile App Development', url: '/services/mobile-development' },
-        { label: 'Cloud Solutions', url: '/services/cloud-solutions' },
-        { label: 'AI Solutions', url: '/services/ai-solutions' },
-        { label: 'Digital Marketing', url: '/services/digital-marketing' },
-        { label: 'View All Services', url: '/services' }
-      ]
-    },
-    {
-      id: 3,
-      title: 'Resources',
-      links: [
-        { label: 'Blog', url: '/blog' },
-        { label: 'Documentation', url: '/docs' },
-        { label: 'Support', url: '/support' }
-      ]
-    }
-  ];
-
+  // Use the columns from footerLinks as the fallback data
+  const defaultFooterColumns = footerLinks.columns;
+  // Use fetchData to get the data from Strapi with proper fallback
   return fetchData<FooterColumn[]>('footer-columns', defaultFooterColumns);
 }
 
@@ -274,16 +256,16 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
  * Get site configuration from API
  */
 export async function getSiteConfig(): Promise<SiteConfig> {
-  const defaultSiteConfig: SiteConfig = {
-    siteName: 'I-Varse Technologies',
-    siteDescription: 'Digital solutions for modern businesses',
-    contactEmail: 'info@itechnologies.ng',
-    contactPhone: '+1234567890',
-    contactAddress: '123 Tech Boulevard, Silicon Valley, CA',
-    logoLight: '/assets/I-VARSELogo3@3x.png',
-    logoDark: '/assets/I-VARSELogo4@3x.png',
-    favicon: '/assets/I-VARSEIcon1@3x.png'
-  };
+  // const defaultSiteConfig: SiteConfig = {
+  //   siteName: 'I-Varse Technologies',
+  //   siteDescription: 'Digital solutions for modern businesses',
+  //   contactEmail: 'info@itechnologies.ng',
+  //   contactPhone: '+1234567890',
+  //   contactAddress: '123 Tech Boulevard, Silicon Valley, CA',
+  //   logoLight: '/assets/I-VARSELogo3@3x.png',
+  //   logoDark: '/assets/I-VARSELogo4@3x.png',
+  //   favicon: '/assets/I-VARSEIcon1@3x.png'
+  // };
 
   try {
     if (USE_LOCAL_API) {
@@ -942,63 +924,37 @@ export async function getHeroSlides(): Promise<HeroSlide[]> {
  */
 export async function getHeroContent(): Promise<HeroProps> {
   try {
-    // Try to fetch complete HeroProps from Strapi first
-    if (!USE_LOCAL_API && STRAPI_API_TOKEN) {
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-
-      const response = await fetch(`${STRAPI_URL}/api/hero-content?populate=deep${localeSuffix}`, {
-        headers: strapiHeaders
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        if (result.data && result.data.attributes) {
-          // Return the Strapi data with default functions for handlers
-          const strapiHeroProps = result.data.attributes;
-          return {
-            ...strapiHeroProps,
-            isHeroLoading: false,
-            isPageLoading: false,
-            isServicesLoading: false,
-            handleMouseEnter: () => { },
-            handleMouseLeave: () => { },
-          };
-        }
-      }
-    }
-
-    // If no direct HeroProps from Strapi, build it from components
+    // Fetch hero slides from Strapi
     const heroSlides = await getHeroSlides();
-    const randomIndex = Math.floor(Math.random() * heroSlides.length);
-    const randomHeroSlide = heroSlides[randomIndex]; // Get a single random slide
-    const services = await getServices();
-    const products = await getProducts();
 
-    return {
-      heroContents: randomHeroSlide, // Use the single random slide here
-      isHeroLoading: false,
-      isPageLoading: false,
-      services: services,
-      products: products,
-      currentIndex: randomIndex,
-      isServicesLoading: false,
-      handleMouseEnter: () => { },
-      handleMouseLeave: () => { },
-      companyLogo: '/assets/I-VARSELogo3@3x.png',
-    };
+    // If we have hero slides, use the first one as the default content
+    if (heroSlides && heroSlides.length > 0) {
+      return {
+        heroContents: heroSlides[0],
+        isHeroLoading: false,
+        isPageLoading: false,
+        currentIndex: 0,
+        isServicesLoading: false,
+        handleMouseEnter: () => { },
+        handleMouseLeave: () => { },
+        companyLogo: '/assets/I-VARSELogo3@3x.png',
+        heroSlides: heroSlides // Include all slides for carousel functionality
+      };
+    } else {
+      // If no slides from Strapi, use default hero props
+      const { defaultHeroProps, heroSlides } = await import('./data');
+      return {
+        ...defaultHeroProps,
+        heroSlides: heroSlides // Include default hero slides
+      };
+    }
   } catch (error) {
-    console.warn('Error fetching hero content:', error);
-
-    // For fallback, get a random slide from the local data
-    const { heroSlides } = await import('./data');
-    const randomIndex = Math.floor(Math.random() * heroSlides.length);
-    const randomHeroSlide = heroSlides[randomIndex];
-
+    console.error('Error fetching hero content:', error);
+    // Fall back to default hero props in case of error
+    const { defaultHeroProps, heroSlides } = await import('./data');
     return {
       ...defaultHeroProps,
-      heroContents: randomHeroSlide, // Use a random slide from local data
-      currentIndex: randomIndex
+      heroSlides: heroSlides // Include default hero slides
     };
   }
 }

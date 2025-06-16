@@ -150,8 +150,6 @@ const Home: React.FC = () => {
             // Fallback to default hero props from data.ts
             return {
                 ...defaultHeroProps,
-                services: serviceItems,
-                isServicesLoading,
                 isHeroLoading: true,
                 isPageLoading,
                 handleMouseEnter,
@@ -163,8 +161,6 @@ const Home: React.FC = () => {
         // Use the hero data from the API
         return {
             ...heroData,
-            services: serviceItems,
-            isServicesLoading,
             handleMouseEnter,
             handleMouseLeave,
             currentIndex: currentHeroIndex
@@ -224,9 +220,6 @@ const Home: React.FC = () => {
                     currentIndex={currentHeroIndex}
                     isHeroLoading={heroProps.isHeroLoading}
                     isPageLoading={heroProps.isPageLoading}
-                    services={serviceItems}
-                    products={heroProps.products}
-                    isServicesLoading={heroProps.isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
                     companyLogo={IVarseLogo}
@@ -237,9 +230,6 @@ const Home: React.FC = () => {
                     currentIndex={currentHeroIndex}
                     isHeroLoading={heroProps.isHeroLoading}
                     isPageLoading={heroProps.isPageLoading}
-                    services={serviceItems}
-                    products={heroProps.products}
-                    isServicesLoading={heroProps.isServicesLoading}
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
                 />

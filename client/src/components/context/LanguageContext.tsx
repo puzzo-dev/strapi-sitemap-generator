@@ -2,12 +2,7 @@ import React, { createContext, useState, useContext, useEffect, ReactNode } from
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGUAGES } from '@/lib/utils';
 import { setCurrentLanguage } from '@/lib/strapi';
-
-interface LanguageContextType {
-  currentLanguage: string;
-  setLanguage: (lang: string) => void;
-  supportedLanguages: typeof SUPPORTED_LANGUAGES;
-}
+import { LanguageContextType, LanguageProviderProps } from '@/lib/types';
 
 const defaultContext: LanguageContextType = {
   currentLanguage: 'en',
@@ -18,9 +13,7 @@ const defaultContext: LanguageContextType = {
 // Create context with a consistent name
 const LanguageContext = createContext<LanguageContextType>(defaultContext);
 
-interface LanguageProviderProps {
-  children: ReactNode;
-}
+
 
 // Use function declarations for components, as recommended for Fast Refresh
 function LanguageProvider({ children }: LanguageProviderProps) {

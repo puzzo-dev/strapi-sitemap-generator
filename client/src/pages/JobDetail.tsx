@@ -129,55 +129,7 @@ const JobDetail: React.FC = () => {
 
   // Render error state or use dummy data
   if (error || !job) {
-    // If the id parameter exists but no job is found, create dummy job data
-    if (id) {
-      // Create a dummy job based on ID
-      const dummyJob = {
-        id: jobId,
-        title: jobId === 1 ? "Senior Full Stack Developer" :
-          jobId === 2 ? "UX/UI Designer" :
-            jobId === 3 ? "DevOps Engineer" :
-              jobId === 4 ? "Product Manager" :
-                jobId === 5 ? "Data Scientist" :
-                  "Technical Position",
-        department: "Engineering",
-        location: "Lagos, Nigeria",
-        type: "Full-time",
-        description: "We're looking for an experienced professional to join our growing team and help us build cutting-edge solutions for our clients.",
-        responsibilities: [
-          "Design and implement scalable solutions",
-          "Collaborate with cross-functional teams",
-          "Mentor junior team members",
-          "Participate in code reviews and technical discussions",
-          "Stay updated with the latest industry trends and technologies"
-        ],
-        requirements: [
-          "5+ years of relevant experience",
-          "Strong proficiency in required technical skills",
-          "Excellent problem-solving abilities",
-          "Good communication and teamwork skills",
-          "Bachelor's degree in Computer Science or related field (or equivalent experience)"
-        ],
-        benefits: [
-          "Competitive salary and benefits package",
-          "Remote work options",
-          "Professional development opportunities",
-          "Collaborative and innovative work environment",
-          "Opportunity to work on challenging and impactful projects"
-        ],
-        qualifications: [
-          "Experience with Agile development methodologies",
-          "Knowledge of best practices and design patterns",
-          "Ability to work independently and as part of a team",
-          "Strong attention to detail"
-        ],
-        salary: "Competitive"
-      };
-
-      return renderJobDetail(dummyJob);
-    }
-
-    // If no id parameter or job could be found, show error
+    // If no job could be found in API or local data, show error
     return (
       <div className="bg-slate-50 dark:bg-slate-900 min-h-screen py-12">
         <div className="container mx-auto px-4">
@@ -458,7 +410,7 @@ const JobDetail: React.FC = () => {
                                       <Input
                                         type="file"
                                         accept=".pdf,.doc,.docx"
-                                        onChange={(e) => {
+                                        onChange={(e: { target: { files: any[]; }; }) => {
                                           onChange(e.target.files?.[0] || null);
                                         }}
                                         {...fieldProps}

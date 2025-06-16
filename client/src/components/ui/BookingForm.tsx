@@ -1,4 +1,5 @@
 import React from 'react';
+import { BookingFormProps } from "@/lib/types";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -29,9 +30,7 @@ const bookingFormSchema = z.object({
 
 type BookingFormData = z.infer<typeof bookingFormSchema>;
 
-interface BookingFormProps {
-  className?: string;
-}
+
 
 const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
   const { toast } = useToast();
@@ -84,17 +83,17 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-300">Full Name *</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="Enter your full name" 
-                      {...field} 
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
+                    <Input
+                      placeholder="Enter your full name"
+                      {...field}
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="email"
@@ -102,11 +101,11 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-300">Email *</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="Enter your email address" 
+                    <Input
+                      placeholder="Enter your email address"
                       type="email"
-                      {...field} 
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
+                      {...field}
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                     />
                   </FormControl>
                   <FormMessage />
@@ -114,7 +113,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               )}
             />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -123,18 +122,18 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-300">Phone *</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="Enter your phone number" 
+                    <Input
+                      placeholder="Enter your phone number"
                       type="tel"
-                      {...field} 
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
+                      {...field}
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="topic"
@@ -142,10 +141,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-300">Topic *</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="Meeting topic" 
-                      {...field} 
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
+                    <Input
+                      placeholder="Meeting topic"
+                      {...field}
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                     />
                   </FormControl>
                   <FormMessage />
@@ -153,7 +152,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               )}
             />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
@@ -162,17 +161,17 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-300">Date *</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       type="date"
-                      {...field} 
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
+                      {...field}
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="time"
@@ -180,10 +179,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-300">Time *</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       type="time"
-                      {...field} 
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
+                      {...field}
+                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                     />
                   </FormControl>
                   <FormMessage />
@@ -191,7 +190,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               )}
             />
           </div>
-          
+
           <FormField
             control={form.control}
             name="message"
@@ -199,10 +198,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               <FormItem>
                 <FormLabel className="text-sm font-medium text-gray-300">Message *</FormLabel>
                 <FormControl>
-                  <Textarea 
-                    placeholder="Tell us more about what you'd like to discuss" 
+                  <Textarea
+                    placeholder="Tell us more about what you'd like to discuss"
                     rows={4}
-                    {...field} 
+                    {...field}
                     className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                   />
                 </FormControl>
@@ -210,7 +209,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               </FormItem>
             )}
           />
-          
+
           <Button
             type="submit"
             className="w-full gradient-bg px-6 py-3 rounded-lg text-white font-medium hover:opacity-90 transition-opacity"

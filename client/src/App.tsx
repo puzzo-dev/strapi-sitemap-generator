@@ -74,8 +74,8 @@ function App() {
           />
 
           <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white">
-            <Navbar onMenuToggle={toggleMobileMenu} />
-            <main className="flex-grow pt-20">
+            <Navbar onMenuToggle={toggleMobileMenu} logo={""} navItems={[]} />
+            <main className="flex-grow pt-10">
               <AnimatePresence mode="wait">
                 <Switch>
                   <Route path="/" component={Home} />

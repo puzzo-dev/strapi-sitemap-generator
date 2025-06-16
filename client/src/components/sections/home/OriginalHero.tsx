@@ -50,21 +50,49 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
     }, [apiServices]);
 
     // Determine which hero slides to use with fallback to local data
+    const heroSlides = useMemo(() => {
+        // First check if we got slides from the API
+        if (heroData?.heroSlides && heroData.heroSlides.length > 0) {
+            return heroData.heroSlides;
+        }
+        // Fall back to local data
+        return localHeroSlides;
+    }, [heroData]);
+
+    // Determine which hero content to use with fallback to local data
     const heroContents = useMemo(() => {
         // First check if heroContents were passed as props
         if (propHeroContents) {
             return propHeroContents;
         }
         // Then check if we got them from the API
-        return heroData?.heroContents || localHeroSlides[0];
+        if (heroData?.heroContents) {
+            return heroData.heroContents;
+        }
+        // Fall back to local data
+        return localHeroSlides[0];
     }, [heroData, propHeroContents]);
 
     // Set up auto-rotation for hero slides
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(currentIndex);
+
     useEffect(() => {
-        // Since we're no longer dealing with an array of hero contents,
-        // we don't need to rotate through them
-        // This effect can be removed or modified to handle other auto-rotation needs
-    }, [isPaused]);
+        if (isPaused || !heroSlides || heroSlides.length <= 1) return;
+
+        const interval = setInterval(() => {
+            setCurrentSlideIndex((prevIndex) =>
+                prevIndex === (heroSlides.length - 1) ? 0 : prevIndex + 1
+            );
+        }, 5000); // Change slide every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [isPaused, heroSlides]);
+
+    // Get the current slide content
+    const currentSlide = useMemo(() => {
+        return heroSlides && heroSlides.length > 0 ?
+            heroSlides[currentSlideIndex] : heroContents;
+    }, [heroSlides, currentSlideIndex, heroContents]);
 
     // Pause rotation on mouse enter
     const handleHeroMouseEnter = () => {
@@ -78,21 +106,19 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
         handleMouseLeave();
     };
 
-    // Fix how we extract the current hero content
-    const heroContent = heroContents || {};
-
-    // Use heroContent for title and subtitle
+    // Replace the existing content extraction with this
+    // Use currentSlide for title and subtitle
     const displayTitle =
-        heroContent.title || "Innovative Digital Solutions for Modern Businesses";
+        currentSlide.title || "Innovative Digital Solutions for Modern Businesses";
     const displaySubtitle =
-        heroContent.subtitle ||
+        currentSlide.subtitle ||
         "Elevate your business with our cutting-edge digital solutions.";
 
-    // Get button info from heroContent
-    const primaryBtnText = heroContent.primaryButton?.text || "GET STARTED";
-    const primaryBtnUrl = heroContent.primaryButton?.url || "/services";
-    const secondaryBtnText = heroContent.secondaryButton?.text || "LEARN MORE";
-    const secondaryBtnUrl = heroContent.secondaryButton?.url || "/#about";
+    // Get button info from currentSlide
+    const primaryBtnText = currentSlide.primaryButton?.children || "GET STARTED";
+    const primaryBtnUrl = currentSlide.primaryButton?.href || "/services";
+    const secondaryBtnText = currentSlide.secondaryButton?.children || "LEARN MORE";
+    const secondaryBtnUrl = currentSlide.secondaryButton?.href || "/#about";
 
     // Use isPageLoading or isHeroLoading as fallback for isLoading
     const showLoading = isPageLoading || isHeroLoading || isSiteConfigLoading;
@@ -104,8 +130,7 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
         <motion.section
             initial="initial"
             animate="animate"
-            className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-25 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section"
-        >
+            className="h-fit md:h-[calc(100vh-2rem)] relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-25 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section">
             {/* Tech-inspired background elements - Enhanced with more icons */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 {/* Animated gradient orbs */}
@@ -521,7 +546,7 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                             Digital Innovation
                                         </div>
                                         <h1
-                                            className="heading-xl text-5xl md:text-6xl font-black mb-6 animate-fade-in-up"
+                                            className="heading-xl text-5xl md:text-6xl font-black mb-4 animate-fade-in-up"
                                             style={{ animationDelay: "0.2s" }}
                                         >
                                             <span className="gradient-text">
@@ -541,13 +566,12 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                 </div>
                             ) : (
                                 <p
-                                    className="text-xl hidden md:block text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
+                                    className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
                                     style={{ animationDelay: "0.4s" }}
                                 >
                                     {displaySubtitle}
                                 </p>
                             )}
-
                             {/* Desktop-only buttons */}
                             <div className="pt-4 md:flex-row gap-4 hidden md:flex">
                                 <GradientButton
@@ -555,6 +579,8 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                     size="lg"
                                     endIcon={<ChevronRight />}
                                     className="w-auto py-3 animate-snowfall z-10"
+                                    target={currentSlide.primaryButton?.openInNewTab ? "_blank" : undefined}
+                                    rel={currentSlide.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
                                 >
                                     {primaryBtnText}
                                 </GradientButton>
@@ -563,6 +589,34 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                     variant="outline"
                                     size="lg"
                                     className="w-auto py-3 z-10"
+                                    target={currentSlide.secondaryButton?.openInNewTab ? "_blank" : undefined}
+                                    rel={currentSlide.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                                >
+                                    {secondaryBtnText}
+                                </GradientButton>
+                            </div>
+
+                            {/* Mobile buttons */}
+                            <div className="md:hidden py-6 flex flex-col gap-5 w-full">
+                                <GradientButton
+                                    href={primaryBtnUrl}
+                                    size="lg"
+                                    endIcon={<ChevronRight />}
+                                    className="w-full py-5 justify-center animate-snowfall text-lg"
+                                    fullWidth
+                                    target={currentSlide.primaryButton?.openInNewTab ? "_blank" : undefined}
+                                    rel={currentSlide.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                                >
+                                    {primaryBtnText}
+                                </GradientButton>
+                                <GradientButton
+                                    href={secondaryBtnUrl}
+                                    variant="outline"
+                                    size="lg"
+                                    className="w-full py-5 justify-center text-lg"
+                                    fullWidth
+                                    target={currentSlide.secondaryButton?.openInNewTab ? "_blank" : undefined}
+                                    rel={currentSlide.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
                                 >
                                     {secondaryBtnText}
                                 </GradientButton>
@@ -679,9 +733,9 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                         </svg>
                                     </div>
 
-                                    {/* Service Slides Container - Original Design */}
+                                    {/* Hero Slides Container - Original Design */}
                                     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                                        {isServicesLoading ? (
+                                        {isHeroLoading ? (
                                             // Loading state
                                             <div className="flex items-center justify-center h-full">
                                                 <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -690,17 +744,17 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                             <div className="relative w-full h-full">
                                                 {/* Main image with gradient overlay */}
                                                 <div className="absolute inset-0 z-10">
-                                                    {services.map((service, index) => (
+                                                    {heroSlides.map((slide, index) => (
                                                         <div
-                                                            key={service.id || index}
-                                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex
+                                                            key={slide.id || index}
+                                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlideIndex
                                                                 ? "opacity-100"
                                                                 : "opacity-0"
                                                                 }`}
                                                         >
                                                             <img
-                                                                src={service.image || ""}
-                                                                alt={service.title}
+                                                                src={slide.backgroundImage || ""}
+                                                                alt={slide.title}
                                                                 className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                                             />
                                                             <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
@@ -716,12 +770,13 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                                         className="w-full h-full object-contain"
                                                     />
                                                 </div>
-                                                {/* Current service overlay content - super tiny in top right */}
+
+                                                {/* Current slide overlay content - super tiny in top right */}
                                                 <div className="absolute top-0 right-0 z-20 py-0.5 px-1 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
-                                                    {services.map((service, index) => (
+                                                    {heroSlides.map((slide, index) => (
                                                         <div
-                                                            key={service.id || index}
-                                                            className={`transition-opacity duration-500 flex items-center ${index === currentIndex
+                                                            key={slide.id || index}
+                                                            className={`transition-opacity duration-500 flex items-center ${index === currentSlideIndex
                                                                 ? "opacity-100"
                                                                 : "opacity-0 absolute inset-0"
                                                                 }`}
@@ -731,7 +786,7 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                                                     <div className="h-4 w-4 bg-current rounded-full"></div>
                                                                 </span>
                                                                 <h3 className="text-[11px] font-medium text-white whitespace-nowrap">
-                                                                    {service.title}
+                                                                    {slide.title.split(' ').slice(0, 2).join(' ')}
                                                                 </h3>
                                                             </div>
                                                         </div>
@@ -832,44 +887,6 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* Mobile-only content - Shows third on mobile, after the slideshow */}
-                    <div className="w-full block md:hidden lg:hidden order-3 mb-12 space-y-8 mobile-space-y staggered-fade-in">
-                        {isPageLoading ? (
-                            <div className="space-y-3">
-                                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
-                                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
-                            </div>
-                        ) : (
-                            <p
-                                className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
-                                style={{ animationDelay: "0.4s" }}
-                            >
-                                {displaySubtitle}
-                            </p>
-                        )}
-
-                        <div className="pt-6 flex flex-col gap-5 w-full">
-                            <GradientButton
-                                href={primaryBtnUrl}
-                                size="lg"
-                                endIcon={<ChevronRight />}
-                                className="w-full py-5 justify-center animate-snowfall text-lg"
-                                fullWidth
-                            >
-                                {primaryBtnText}
-                            </GradientButton>
-                            <GradientButton
-                                href={secondaryBtnUrl}
-                                variant="outline"
-                                size="lg"
-                                className="w-full py-5 justify-center text-lg"
-                                fullWidth
-                            >
-                                {secondaryBtnText}
-                            </GradientButton>
                         </div>
                     </div>
                 </div>

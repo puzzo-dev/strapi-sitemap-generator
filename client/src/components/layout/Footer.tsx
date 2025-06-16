@@ -109,7 +109,7 @@ const Footer: React.FC<FooterProps> = () => {
                     displayData.socialLinks.map((link) => (
                       <a
                         key={link.id}
-                        href={link.url}
+                        href={link.href}
                         aria-label={link.platform}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -146,10 +146,10 @@ const Footer: React.FC<FooterProps> = () => {
                     {displayData.columns[0].links.map((link, index) => (
                       <li key={index}>
                         <AppLink
-                          href={link.url}
+                          href={link.href}
                           className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
                         >
-                          {link.label}
+                          {link.title}
                         </AppLink>
                       </li>
                     ))}
@@ -182,10 +182,10 @@ const Footer: React.FC<FooterProps> = () => {
                     {displayData.columns[1].links.map((link, index) => (
                       <li key={index}>
                         <AppLink
-                          href={link.url}
+                          href={link.href}
                           className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
                         >
-                          {link.label}
+                          {link.title}
                         </AppLink>
                       </li>
                     ))}
@@ -201,10 +201,10 @@ const Footer: React.FC<FooterProps> = () => {
                     {footerData.columns[1].links.map((link, index) => (
                       <li key={index}>
                         <AppLink
-                          href={link.url}
+                          href={link.href}
                           className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
                         >
-                          {link.label}
+                          {link.title}
                         </AppLink>
                       </li>
                     ))}
@@ -235,10 +235,10 @@ const Footer: React.FC<FooterProps> = () => {
             {displayData.legalLinks.map((link, index) => (
               <AppLink
                 key={index}
-                href={link.url}
+                href={link.href}
                 className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
-                {link.label}
+                {link.title}
               </AppLink>
             ))}
           </div>

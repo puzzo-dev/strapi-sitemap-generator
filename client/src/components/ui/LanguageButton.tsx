@@ -14,15 +14,11 @@ import {
   RadioGroupItem,
 } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { LanguageButtonProps } from '@/lib/types';
 
-interface LanguageButtonProps {
-  variant?: "ghost" | "link" | "default" | "destructive" | "outline" | "secondary";
-  size?: "icon" | "default" | "sm" | "lg";
-  className?: string;
-}
 
-const LanguageButton: React.FC<LanguageButtonProps> = ({ 
-  variant = "ghost", 
+const LanguageButton: React.FC<LanguageButtonProps> = ({
+  variant = "ghost",
   size = "icon",
   className = ""
 }) => {
@@ -48,7 +44,7 @@ const LanguageButton: React.FC<LanguageButtonProps> = ({
               {t('language.select', 'Select Language')}
             </DialogTitle>
           </DialogHeader>
-          <RadioGroup 
+          <RadioGroup
             defaultValue={currentLanguage}
             onValueChange={(value) => {
               setLanguage(value);

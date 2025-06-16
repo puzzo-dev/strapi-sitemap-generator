@@ -15,7 +15,7 @@ const extendedProducts: (ProductProps & {
 })[] = [
     {
       id: 1,
-      title: 'Entry-E',
+      title: 'Entry-X',
       description: 'A comprehensive event management platform for organizers.',
       keyFeatures: [
         'Attendee registration and management',
@@ -30,7 +30,7 @@ const extendedProducts: (ProductProps & {
         'Enhance attendee experience with mobile tickets'
       ],
       image: '/assets/product-1.jpg',
-      fullDescription: 'Entry-E is our comprehensive event management platform designed specifically for event organizers and planners. The platform streamlines every aspect of your event management process, from registration to post-event analysis.\n\nWith Entry-E, you can create beautiful, customized landing pages for your events that reflect your brand identity. The intuitive drag-and-drop editor makes it easy to design professional-looking pages without any coding knowledge.\n\nThe attendee management system allows you to handle registrations, send automated confirmations, and track attendance with our QR code-based system. The mobile app allows your staff to check in attendees quickly and efficiently, reducing wait times and improving the attendee experience.\n\nOur real-time analytics dashboard gives you instant insights into ticket sales, attendee demographics, and engagement metrics. This information helps you make data-driven decisions to optimize your current event and plan better for future ones.',
+      fullDescription: 'Entry-X is our comprehensive event management platform designed specifically for event organizers and planners. The platform streamlines every aspect of your event management process, from registration to post-event analysis.\n\nWith Entry-X, you can create beautiful, customized landing pages for your events that reflect your brand identity. The intuitive drag-and-drop editor makes it easy to design professional-looking pages without any coding knowledge.\n\nThe attendee management system allows you to handle registrations, send automated confirmations, and track attendance with our QR code-based system. The mobile app allows your staff to check in attendees quickly and efficiently, reducing wait times and improving the attendee experience.\n\nOur real-time analytics dashboard gives you instant insights into ticket sales, attendee demographics, and engagement metrics. This information helps you make data-driven decisions to optimize your current event and plan better for future ones.',
       features: [
         {
           icon: <Shield className="h-6 w-6 text-blue-500" />,
@@ -95,7 +95,7 @@ const extendedProducts: (ProductProps & {
     },
     {
       id: 2,
-      title: 'Business in a Box',
+      title: 'OpsCloud',
       description: 'An all-in-one business management suite for SMEs.',
       keyFeatures: [
         'Inventory management and tracking',
@@ -110,7 +110,7 @@ const extendedProducts: (ProductProps & {
         'Streamline inventory and reduce waste'
       ],
       image: '/assets/product-2.jpg',
-      fullDescription: 'Business in a Box is our comprehensive solution designed specifically for small and medium-sized enterprises that need to manage multiple aspects of their operations efficiently.\n\nThis all-in-one platform combines inventory management, customer relationship management, financial tools, and team coordination features into a single, intuitive interface. By centralizing these critical business functions, Business in a Box eliminates the need for multiple software subscriptions and reduces the complexity of managing your business operations.\n\nThe inventory management module allows you to track stock levels, set reorder points, and generate purchase orders automatically. The system provides real-time visibility into your inventory across multiple locations, helping you optimize stock levels and reduce carrying costs.\n\nThe built-in CRM system maintains detailed customer profiles, interaction histories, and purchase behaviors, enabling your team to provide personalized service and targeted marketing campaigns. The analytics dashboard gives you actionable insights into customer segments, buying patterns, and retention rates.\n\nFor financial management, Business in a Box offers professional invoice generation, payment processing, expense tracking, and basic financial reporting. You can automate recurring invoices, send payment reminders, and reconcile accounts to keep your cash flow healthy.\n\nThe team management module helps coordinate your staff with task assignments, scheduling, and performance tracking. Team members can collaborate on projects, share documents, and report their progress through the platform.',
+      fullDescription: 'OpsCloud is our comprehensive solution designed specifically for small and medium-sized enterprises that need to manage multiple aspects of their operations efficiently.\n\nThis all-in-one platform combines inventory management, customer relationship management, financial tools, and team coordination features into a single, intuitive interface. By centralizing these critical business functions, OpsCloud eliminates the need for multiple software subscriptions and reduces the complexity of managing your business operations.\n\nThe inventory management module allows you to track stock levels, set reorder points, and generate purchase orders automatically. The system provides real-time visibility into your inventory across multiple locations, helping you optimize stock levels and reduce carrying costs.\n\nThe built-in CRM system maintains detailed customer profiles, interaction histories, and purchase behaviors, enabling your team to provide personalized service and targeted marketing campaigns. The analytics dashboard gives you actionable insights into customer segments, buying patterns, and retention rates.\n\nFor financial management, OpsCloud offers professional invoice generation, payment processing, expense tracking, and basic financial reporting. You can automate recurring invoices, send payment reminders, and reconcile accounts to keep your cash flow healthy.\n\nThe team management module helps coordinate your staff with task assignments, scheduling, and performance tracking. Team members can collaborate on projects, share documents, and report their progress through the platform.',
       features: [
         {
           icon: <Shield className="h-6 w-6 text-blue-500" />,

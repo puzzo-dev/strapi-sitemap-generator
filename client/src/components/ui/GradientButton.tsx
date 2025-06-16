@@ -1,23 +1,13 @@
 import React, { ButtonHTMLAttributes, AnchorHTMLAttributes, HTMLAttributes, MouseEvent } from 'react';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
+import { BaseGradientButtonProps } from '@/lib/types';
 
 // Create a custom type for onClick handlers that works with any HTML element
-type ClickHandler = (event: MouseEvent<Element>) => void;
+export type ClickHandler = (event: MouseEvent<Element>) => void;
 
 // Base props shared by all variants
-interface BaseGradientButtonProps {
-  className?: string;
-  variant?: 'default' | 'outline' | 'ghost' | 'light';
-  size?: 'default' | 'sm' | 'lg' | 'icon';
-  endIcon?: React.ReactNode;
-  startIcon?: React.ReactNode;
-  fullWidth?: boolean;
-  children?: React.ReactNode;
-  as?: 'button' | 'a' | 'div' | 'span';
-  onClick?: ClickHandler;
-  href?: string;
-}
+
 
 // Type for button variant
 type ButtonGradientProps = BaseGradientButtonProps & Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof BaseGradientButtonProps>;

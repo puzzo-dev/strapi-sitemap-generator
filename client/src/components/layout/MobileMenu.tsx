@@ -7,11 +7,8 @@ import NewsletterForm from '@/components/ui/NewsletterForm';
 import { ChevronRight } from 'lucide-react';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useLanguage } from '@/components/context/LanguageContext';
+import { MobileMenuProps } from '@/lib/types';
 
-interface MobileMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const [location] = useLocation();

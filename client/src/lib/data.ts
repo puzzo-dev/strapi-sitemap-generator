@@ -1,3 +1,4 @@
+// import { ExtendedProductProps } from './data';
 // import { useDynamicHeroContent } from "@/hooks/useStrapiContent";
 import {
   HeroSlide,
@@ -11,8 +12,61 @@ import {
   SocialLink,
   ClientLogo,
   NavItem,
-  HeroProps
-} from "./types";
+  HeroProps,
+  JobListing,
+  ExtendedTeamMember,
+  ExtendedServiceProps,
+  SiteConfig,
+  Benefit,
+  BlogPost,
+  BlogCategory,
+  PageSection,
+  FooterColumn,
+  AppLinkProps,
+  ExtendedProductProps,
+  TeamMember
+} from '@/lib/types';
+
+export const defaultSiteConfig: SiteConfig = {
+  siteName: "I-VARSE Technologies",
+  siteDescription: "Digital solutions for modern businesses",
+  contactEmail: "info@itechnologies.ng",
+  contactPhone: "+234 803 123 4567",
+  contactAddress: "4 Adana Street, Off Tejuosho Rd, Surulere, Lagos, Nigeria, 101283",
+  logoLight: { variant: "light" },
+  logoDark: { variant: "dark" },
+  favicon: "../../assets/IconSolid.png"
+};
+
+export const defaultMetaTags = {
+  title: defaultSiteConfig.siteName,
+  description: defaultSiteConfig.siteDescription,
+  keywords: ["technology", "digital solutions", "software development", "IT services", "Nigeria", "AI", "Business Automation"],
+  ogImage: "/assets/I-VARSELogo3@3x.png",
+  ogUrl: "https://itechnologies.ng",
+  ogType: "website" as const,
+  twitterCard: "summary_large_image" as const,
+  canonicalUrl: "https://itechnologies.ng",
+  noIndex: false,
+  structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": defaultSiteConfig.siteName,
+    "description": defaultSiteConfig.siteDescription,
+    "url": "https://itechnologies.ng",
+    "logo": "https://itechnologies.ng/assets/I-VARSELogo3@3x.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": defaultSiteConfig.contactPhone,
+      "email": defaultSiteConfig.contactEmail,
+      "contactType": "customer service"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": defaultSiteConfig.contactAddress
+    }
+  }
+};
 
 
 export const navItems: NavItem[] = [
@@ -21,31 +75,50 @@ export const navItems: NavItem[] = [
     label: "Home",
     url: { url: "/" },
     order: 1,
+    isButton: false
   },
   {
     id: 2,
-    label: "Services",
-    url: { url: "/services" },
+    label: "About Us",
+    url: { url: "/about" },
     order: 2,
+    isButton: false
   },
   {
     id: 3,
-    label: "About",
-    url: { url: "/about" },
+    label: "Services",
+    url: { url: "/services" },
     order: 3,
+    isButton: false
   },
   {
     id: 4,
-    label: "Careers",
-    url: { url: "/careers" },
+    label: "Solutions",
+    url: { url: "/products" },
     order: 4,
+    isButton: false
   },
   {
     id: 5,
-    label: "Contact",
-    url: { url: "/contact" },
+    label: "Tech Insights",
+    url: { url: "/blog" },
     order: 5,
+    isButton: false
   },
+  {
+    id: 6,
+    label: "Careers",
+    url: { url: "/careers" },
+    order: 6,
+    isButton: false
+  },
+  {
+    id: 7,
+    label: "Contact Us",
+    url: { url: "/contact" },
+    order: 7,
+    isButton: true
+  }
 ];
 
 // Hero slides data for the homepage
@@ -55,16 +128,17 @@ export const heroSlides: HeroSlide[] = [
     title: "Transform Your Digital Presence",
     subtitle: "We build innovative web and mobile solutions that drive business growth",
     primaryButton: {
-      text: "Our Services",
-      url: "/services",
-      variant: "primary",
-      icon: "arrow-right",
-      iconPosition: "right"
+      title: "Our Services",
+      href: "/services",
+      variant: "default",
+      endIcon: "arrow-right",
+      children: "Our Services"
     },
     secondaryButton: {
-      text: "Contact Us",
-      url: "/contact",
+      title: "Contact Us",
+      href: "/contact",
       variant: "outline",
+      children: "Contact Us"
     },
     backgroundImage: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
@@ -73,14 +147,16 @@ export const heroSlides: HeroSlide[] = [
     title: "Cloud Infrastructure Management",
     subtitle: "Optimize your cloud resources with our expert management services",
     primaryButton: {
-      text: "Learn More",
-      url: "/services/cloud-infrastructure",
-      variant: "primary",
+      title: "Learn More",
+      href: "/services/cloud-infrastructure",
+      variant: "default",
+      children: "Learn More"
     },
     secondaryButton: {
-      text: "Get a Quote",
-      url: "/contact",
+      title: "Get a Quote",
+      href: "/contact",
       variant: "outline",
+      children: "Get a Quote"
     },
     backgroundImage: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
@@ -89,16 +165,17 @@ export const heroSlides: HeroSlide[] = [
     title: "Custom Mobile Applications",
     subtitle: "Create stunning, high-performance apps for iOS and Android",
     primaryButton: {
-      text: "View Portfolio",
-      url: "/portfolio",
-      variant: "primary",
-      icon: "phone",
-      iconPosition: "left"
+      title: "View Portfolio",
+      href: "/portfolio",
+      variant: "default",
+      startIcon: "phone",
+      children: "View Portfolio"
     },
     secondaryButton: {
-      text: "Our Process",
-      url: "/services/mobile-development",
+      title: "Our Process",
+      href: "/services/mobile-development",
       variant: "outline",
+      children: "Our Process"
     },
     backgroundImage: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
@@ -107,100 +184,70 @@ export const heroSlides: HeroSlide[] = [
     title: "Enterprise Solutions",
     subtitle: "Streamline your business operations with our comprehensive ERP solutions",
     primaryButton: {
-      text: "Discover Solutions",
-      url: "/services/erp-solutions",
-      variant: "primary",
+      title: "Discover Solutions",
+      href: "/services/erp-solutions",
+      variant: "default",
+      children: "Discover Solutions"
     },
     secondaryButton: {
-      text: "Schedule Demo",
-      url: "/contact?demo=erp",
+      title: "Schedule Demo",
+      href: "/contact?demo=erp",
       variant: "outline",
+      children: "Schedule Demo"
     },
     backgroundImage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
   {
     id: 5,
-    title: "API Programming & Integration",
+    title: "Api Engineering & Integration",
     subtitle: "Connect your systems seamlessly with custom API development",
     primaryButton: {
-      text: "Our Approach",
-      url: "/services/api-integration",
-      variant: "primary",
-      icon: "code",
-      iconPosition: "left"
+      title: "Our Approach",
+      href: "/services/api-integration",
+      variant: "default",
+      startIcon: "code",
+      children: "Our Approach"
     },
     secondaryButton: {
-      text: "Talk to an Expert",
-      url: "/contact",
+      title: "Talk to an Expert",
+      href: "/contact",
       variant: "outline",
+      children: "Talk to an Expert"
     },
     backgroundImage: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   }
 ];
 
-export const socialLinks: SocialLink[] = [
-  {
-    id: 1,
-    platform: "Facebook",
-    icon: "fa-facebook-f",
-    url: "https://facebook.com/ivarse",
-  },
-  {
-    id: 2,
-    platform: "Twitter",
-    icon: "fa-twitter",
-    url: "https://twitter.com/ivarse",
-  },
-  {
-    id: 3,
-    platform: "LinkedIn",
-    icon: "fa-linkedin-in",
-    url: "https://linkedin.com/company/ivarse",
-  },
-  {
-    id: 4,
-    platform: "Instagram",
-    icon: "fa-instagram",
-    url: "https://instagram.com/ivarse",
-  },
+export const socialLinks: SocialLink[] = [{
+  id: 1,
+  platform: "Facebook",
+  icon: "fa-facebook-f",
+  href: "https://facebook.com/ivarse",
+},
+{
+  id: 2,
+  platform: "Twitter",
+  icon: "fa-twitter",
+  href: "https://twitter.com/ivarse",
+},
+{
+  id: 3,
+  platform: "LinkedIn",
+  icon: "fa-linkedin-in",
+  href: "https://linkedin.com/company/ivarse",
+},
+{
+  id: 4,
+  platform: "Instagram",
+  icon: "fa-instagram",
+  href: "https://instagram.com/ivarse",
+},
 ];
 
 export const services: ServiceProps[] = [
   {
-    id: 1,
-    title: "CLOUD INFRA MANAGEMENT",
-    description:
-      "Optimize your cloud infrastructure with our expert management services. We handle scaling, security, and performance tuning to ensure your applications run smoothly.",
-    icon: "fa-cloud",
-    image: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-  },
-  {
-    id: 2,
-    title: "MOBILE APP DEVELOPMENT",
-    description:
-      "Create stunning, high-performance mobile applications for iOS and Android. Our development team builds user-friendly apps that engage customers and drive business growth.",
-    icon: "fa-mobile-alt",
-    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-  },
-  {
-    id: 3,
-    title: "API PROGRAMMING & INTEGRATION",
-    description:
-      "Connect your systems and applications seamlessly with custom API development. We design, build, and integrate APIs that enable powerful data exchange and functionality.",
-    icon: "fa-code",
-    image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-  },
-  {
-    id: 4,
-    title: "BUSINESS VISIBILITY MANAGEMENT",
-    description:
-      "Boost your online visibility and drive organic traffic with our comprehensive SEO services. We implement proven strategies to improve your search engine rankings.",
-    icon: "fa-search",
-    image: "https://images.unsplash.com/photo-1677442135131-4668bd807267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-  },
-  {
     id: 5,
-    title: "ERP SOLUTIONS",
+    title: "CustomERP Solutions (OpsCloud)",
     description:
       "Streamline your business operations with our comprehensive ERP solutions. We implement customized enterprise resource planning systems that integrate all aspects of your business for improved efficiency and productivity.",
     icon: "fa-cogs",
@@ -208,11 +255,51 @@ export const services: ServiceProps[] = [
   },
   {
     id: 6,
-    title: "CONTENT WRITING",
+    title: "Neuralcore Private AI Cloud",
     description:
-      "Engage your audience with compelling, SEO-optimized content. Our professional writers create blog posts, website copy, and marketing materials that convert readers into customers.",
-    icon: "fa-pen-fancy",
+      "Secure AI infrastructure tailored for regulated industries. Our private cloud solution provides compliant, isolated environments for deploying AI workloads with enterprise-grade security, governance, and automation capabilities.",
+    icon: "fa-cloud-shield",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    id: 1,
+    title: "Cloud Infrastructure Management",
+    description:
+      "Optimize your cloud infrastructure with our expert management services. We handle scaling, security, and performance tuning to ensure your applications run smoothly.",
+    icon: "fa-cloud",
+    image: "https://images.unsplash.com/photo-1639322537504-6427a16b0a28?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    id: 3,
+    title: "API Development & Integration",
+    description:
+      "Connect your systems and applications seamlessly with custom API development. We design, build, and integrate APIs that enable powerful data exchange and functionality.",
+    icon: "fa-code",
     image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    id: 2,
+    title: "Mobile App Development",
+    description:
+      "Create stunning, high-performance mobile applications for iOS and Android. Our development team builds user-friendly apps that engage customers and drive business growth.",
+    icon: "fa-mobile-alt",
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    id: 4,
+    title: "IT Service Management",
+    description:
+      "Optimize your IT operations with our comprehensive service management solutions. We streamline processes, enhance service delivery, and ensure reliable IT support aligned with your business objectives.",
+    icon: "fa-server",
+    image: "https://images.unsplash.com/photo-1563770557593-978789a964ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    id: 7,
+    title: "Business Visibility Management",
+    description:
+      "Boost your online visibility and drive organic traffic with our comprehensive SEO services. We implement proven strategies to improve your search engine rankings.",
+    icon: "fa-search",
+    image: "https://images.unsplash.com/photo-1677442135131-4668bd807267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
   },
 ];
 
@@ -236,7 +323,7 @@ export const products: ProductProps[] = [
   },
   {
     id: 2,
-    title: "Business in a Box",
+    title: "OpsCloud",
     description: "Complete business management solution for SMEs",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
@@ -255,6 +342,37 @@ export const products: ProductProps[] = [
   },
 ];
 
+export const defaultTeamMembers: TeamMember[] = [
+  {
+    id: 1,
+    name: "Samuel Johnson",
+    position: "CEO & Founder",
+    bio: "Leader and innovator",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    id: 2,
+    name: "Janet Lewis",
+    position: "CTO",
+    bio: "Technical expert",
+    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    id: 3,
+    name: "David Chen",
+    position: "Lead Developer",
+    bio: "Development expert",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    id: 4,
+    name: "Tunde Ogunle",
+    position: "Design Director",
+    bio: "Design leader",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80"
+  }
+];
+
 // Add this to the existing data.ts file
 // Replace this in data.ts
 export const defaultHeroProps: HeroProps = {
@@ -262,15 +380,12 @@ export const defaultHeroProps: HeroProps = {
   heroContents: heroSlides[0], // Use the first hero slide as default
   isHeroLoading: false,
   isPageLoading: false,
-  services: services,
-  products: products,
   currentIndex: 0,
   isServicesLoading: false,
   handleMouseEnter: () => { },
   handleMouseLeave: () => { },
   companyLogo: '/assets/I-VARSELogo3@3x.png',
 };
-
 
 export const testimonials: TestimonialProps[] = [
   {
@@ -335,8 +450,159 @@ export const clientLogos: ClientLogo[] = [
   },
 ];
 
+export const extendedTeamMembers: ExtendedTeamMember[] = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    position: "Cloud Solutions Architect",
+    role: "Cloud Solutions Architect",
+    bio: `Sarah is a passionate cloud solutions architect with over 10 years of experience in designing and implementing scalable cloud infrastructure. She specializes in multi-cloud strategies and digital transformation.
+
+With a background in computer science and a master's degree in information systems, Sarah has helped numerous organizations optimize their IT infrastructure and migrate to the cloud. She is certified in AWS, Azure, and Google Cloud platforms.
+
+Throughout her career, Sarah has led multiple cloud migration projects for Fortune 500 companies, resulting in significant cost savings and improved operational efficiency. She is passionate about helping businesses leverage cloud technologies to achieve their strategic goals.
+
+Sarah regularly contributes to our blog, sharing insights on cloud computing trends, best practices, and emerging technologies. She is also a frequent speaker at industry conferences and webinars.`,
+    expertise: ["Cloud Architecture", "Multi-Cloud Strategy", "Digital Transformation", "Infrastructure as Code", "DevOps"],
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
+    email: "sarah.johnson@example.com",
+    phone: "+1 (555) 123-4567",
+    location: "San Francisco, CA",
+    joinDate: "January 2018",
+    socialMedia: {
+      linkedin: "https://linkedin.com",
+      twitter: "https://twitter.com",
+      github: "https://github.com"
+    },
+    projects: [
+      {
+        title: "Enterprise Cloud Migration for Financial Services Firm",
+        description: "Led a team that successfully migrated a financial services firm's entire IT infrastructure to AWS, resulting in 40% cost savings and improved performance.",
+        year: "2022"
+      },
+      {
+        title: "Multi-Cloud Strategy Implementation",
+        description: "Designed and implemented a multi-cloud strategy for a healthcare organization, enabling seamless data sharing across platforms while maintaining compliance.",
+        year: "2021"
+      },
+      {
+        title: "Cloud-Native Application Modernization",
+        description: "Guided the modernization of legacy applications to cloud-native architectures using containerization and microservices.",
+        year: "2020"
+      }
+    ],
+    relatedTeamMembers: [2, 3, 4]
+  },
+  {
+    id: 2,
+    name: "David Chen",
+    position: "Mobile Development Lead",
+    role: "Mobile Development Lead",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
+    expertise: ["iOS Development", "Android Development", "React Native", "Flutter", "UI/UX Design"]
+  },
+  {
+    id: 3,
+    name: "Emily Roberts",
+    position: "AI Solutions Specialist",
+    role: "AI Solutions Specialist",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
+    expertise: ["Machine Learning", "Natural Language Processing", "Computer Vision", "Data Science", "AI Ethics"]
+  },
+  {
+    id: 4,
+    name: "Michael Anderson",
+    position: "Cybersecurity Director",
+    role: "Cybersecurity Director",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
+    expertise: ["Security Architecture", "Penetration Testing", "Threat Intelligence", "Compliance", "Risk Management"]
+  }
+];
+
+export const extendedServices: ExtendedServiceProps[] = [
+  {
+    ...services[0],
+    fullDescription: `Our Cloud Infrastructure Management services provide comprehensive solutions for organizations looking to optimize their cloud resources, enhance security, and improve operational efficiency.
+
+We handle every aspect of your cloud environment, from initial assessment and design to ongoing management and optimization. Our team of certified cloud experts ensures your infrastructure aligns with industry best practices while meeting your specific business requirements.
+
+Whether you're looking to migrate to the cloud, optimize existing cloud resources, or implement a multi-cloud strategy, our services are designed to help you achieve maximum value from your cloud investments.`,
+    benefits: [
+      "Reduced operational costs through optimized resource allocation",
+      "Enhanced security and compliance with industry standards",
+      "Improved scalability to meet changing business demands",
+      "24/7 monitoring and support for maximum uptime",
+      "Streamlined operations through automation and standardization"
+    ],
+    process: [
+      {
+        title: "Assessment",
+        description: "We begin with a thorough assessment of your current infrastructure, identifying opportunities for optimization and improvement."
+      },
+      {
+        title: "Strategic Planning",
+        description: "Based on our assessment, we develop a strategic roadmap tailored to your business needs and objectives."
+      },
+      {
+        title: "Implementation",
+        description: "Our experts implement the recommended changes, ensuring minimal disruption to your operations."
+      },
+      {
+        title: "Continuous Optimization",
+        description: "We continuously monitor and optimize your cloud environment to ensure optimal performance and cost-efficiency."
+      }
+    ],
+    casestudies: [
+      {
+        title: "Financial Services Firm",
+        description: "Implemented a secure cloud infrastructure that reduced operational costs by 35% while ensuring compliance with financial regulations.",
+        result: "35% cost reduction, improved security posture, and enhanced compliance"
+      },
+      {
+        title: "Healthcare Provider",
+        description: "Designed and implemented a hybrid cloud solution that improved system availability and enhanced data protection.",
+        result: "99.99% uptime, strengthened data security, and streamlined operations"
+      }
+    ],
+    faqs: [
+      {
+        question: "How can cloud infrastructure management benefit my business?",
+        answer: "Cloud infrastructure management can reduce costs, improve scalability, enhance security, and provide greater flexibility for your business operations. It allows you to focus on your core business while we handle the complexities of your IT infrastructure."
+      },
+      {
+        question: "Do you support multi-cloud environments?",
+        answer: "Yes, we have expertise in all major cloud platforms including AWS, Azure, and Google Cloud. We can help you implement a multi-cloud strategy that leverages the strengths of each platform while avoiding vendor lock-in."
+      },
+      {
+        question: "How do you ensure security in the cloud?",
+        answer: "We implement comprehensive security measures including identity and access management, encryption, network security, and continuous monitoring. We also ensure compliance with relevant industry standards and regulations."
+      },
+      {
+        question: "Can you help with cloud migration?",
+        answer: "Yes, we offer end-to-end cloud migration services, from assessment and planning to execution and post-migration optimization. We ensure a smooth transition with minimal disruption to your business."
+      }
+    ]
+  },
+  {
+    ...services[1],
+    fullDescription: `Our Mobile App Development services deliver cutting-edge mobile applications for iOS and Android platforms that engage users and drive business growth.
+
+We specialize in creating intuitive, high-performance mobile applications that provide exceptional user experiences across devices. From concept to deployment, our team of expert developers works closely with you to bring your vision to life.
+
+Whether you need a consumer-facing app or an enterprise solution, we leverage the latest technologies and best practices to deliver mobile applications that exceed expectations.`
+  },
+  {
+    ...services[2],
+    fullDescription: `Our Api Engineering & Integration services enable seamless connections between your systems and applications, facilitating efficient data exchange and functionality.
+
+We design, build, and integrate APIs that power your digital ecosystem, allowing different software components to communicate effectively. Our team ensures reliable, secure, and scalable API solutions tailored to your specific requirements.
+
+From RESTful APIs to GraphQL and webhook implementations, we provide comprehensive API services that enhance your business capabilities and create new opportunities for innovation.`
+  }
+];
+
 // Job listings data for Careers page
-export const jobListings = [
+export const jobListings: JobListing[] = [
   {
     id: 1,
     title: "Senior Full Stack Developer",
@@ -357,6 +623,20 @@ export const jobListings = [
       "Experience with cloud infrastructure (AWS, Azure, or GCP)",
       "Strong problem-solving skills and attention to detail",
     ],
+    benefits: [
+      "Competitive salary and benefits package",
+      "Remote work options",
+      "Professional development opportunities",
+      "Collaborative and innovative work environment",
+      "Opportunity to work on challenging and impactful projects"
+    ],
+    qualifications: [
+      "Experience with Agile development methodologies",
+      "Knowledge of best practices and design patterns",
+      "Ability to work independently and as part of a team",
+      "Strong attention to detail"
+    ],
+    salary: "Competitive"
   },
   {
     id: 2,
@@ -378,6 +658,20 @@ export const jobListings = [
       "Strong portfolio demonstrating user-centered design projects",
       "Understanding of accessibility and responsive design principles",
     ],
+    benefits: [
+      "Competitive salary and benefits package",
+      "Remote work options",
+      "Professional development opportunities",
+      "Collaborative and innovative work environment",
+      "Opportunity to work on challenging and impactful projects"
+    ],
+    qualifications: [
+      "Experience with design systems",
+      "Knowledge of user research methodologies",
+      "Ability to communicate design decisions effectively",
+      "Understanding of front-end development constraints"
+    ],
+    salary: "Competitive"
   },
   {
     id: 3,
@@ -399,6 +693,20 @@ export const jobListings = [
       "Knowledge of infrastructure as code (Terraform, CloudFormation)",
       "Familiarity with monitoring tools and log management systems",
     ],
+    benefits: [
+      "Competitive salary and benefits package",
+      "Remote work options",
+      "Professional development opportunities",
+      "Collaborative and innovative work environment",
+      "Opportunity to work on challenging and impactful projects"
+    ],
+    qualifications: [
+      "Experience with cloud platforms (AWS, Azure, GCP)",
+      "Knowledge of security best practices",
+      "Ability to troubleshoot complex systems",
+      "Understanding of networking concepts"
+    ],
+    salary: "Competitive"
   },
   {
     id: 4,
@@ -420,11 +728,60 @@ export const jobListings = [
       "Experience with marketing analytics tools",
       "Strong written and verbal communication skills",
     ],
+    benefits: [
+      "Competitive salary and benefits package",
+      "Remote work options",
+      "Professional development opportunities",
+      "Collaborative and innovative work environment",
+      "Opportunity to work on challenging and impactful projects"
+    ],
+    qualifications: [
+      "Experience with content management systems",
+      "Knowledge of email marketing platforms",
+      "Ability to create compelling content",
+      "Understanding of conversion rate optimization"
+    ],
+    salary: "Competitive"
+  },
+  {
+    id: 5,
+    title: "Product Manager",
+    department: "Product",
+    location: "Lagos, Nigeria",
+    type: "Full-time",
+    description:
+      "We're looking for a Product Manager to lead the development and launch of innovative digital products.",
+    responsibilities: [
+      "Define product vision, strategy, and roadmap",
+      "Gather and prioritize product requirements",
+      "Work closely with engineering, design, and marketing teams",
+      "Analyze market trends and competitive landscape",
+    ],
+    requirements: [
+      "3+ years of experience in product management",
+      "Strong understanding of software development lifecycle",
+      "Experience with agile methodologies",
+      "Excellent communication and leadership skills",
+    ],
+    benefits: [
+      "Competitive salary and benefits package",
+      "Remote work options",
+      "Professional development opportunities",
+      "Collaborative and innovative work environment",
+      "Opportunity to work on challenging and impactful projects"
+    ],
+    qualifications: [
+      "Experience with product analytics tools",
+      "Knowledge of user research methodologies",
+      "Ability to translate business requirements into product features",
+      "Understanding of technical constraints and possibilities"
+    ],
+    salary: "Competitive"
   },
 ];
 
 // Benefits data for Careers page
-export const benefits = [
+export const benefits: Benefit[] = [
   {
     title: "Competitive Compensation",
     description:
@@ -464,7 +821,7 @@ export const benefits = [
 ];
 
 // Blog posts dummy data for when Strapi/ERPNext isn't available
-export const blogPosts = [
+export const blogPosts: BlogPost[] = [
   {
     name: "ai-revolution-in-business",
     title: "The AI Revolution in Modern Business",
@@ -483,13 +840,12 @@ export const blogPosts = [
     published: true,
     featured: true,
     metaImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-    meta_title:
+    metaTitle:
       "Technology Trends That Will Define 2025 | I-Varse Technologies",
     metaDescription:
       "Explore the top technology trends for 2025 that will reshape industries and create new opportunities for innovation and growth.",
     author: "john.doe",
     authorDetails: {
-      name: "john.doe",
       fullName: "John Doe",
       userImage: "https://randomuser.me/api/portraits/men/32.jpg",
       bio: "Technology futurist and innovation strategist with over 15 years in the tech industry.",
@@ -502,8 +858,7 @@ export const blogPosts = [
       "Sustainable Tech",
       "Innovation",
     ],
-  },
-  {
+  }, {
     name: "cybersecurity-best-practices",
     title: "Essential Cybersecurity Best Practices",
     slug: "cybersecurity-best-practices",
@@ -521,21 +876,19 @@ export const blogPosts = [
     published: true,
     featured: true,
     metaImage: "https://images.unsplash.com/photo-1563013544-824ae1b704d3",
-    meta_title:
+    metaTitle:
       "Essential Cybersecurity Practices for Business Protection | I-Varse",
     metaDescription:
       "Learn the critical cybersecurity measures every business needs to implement to protect against today's sophisticated digital threats.",
     author: "sarah.chen",
     authorDetails: {
-      name: "sarah.chen",
       fullName: "Sarah Chen",
       userImage: "https://randomuser.me/api/portraits/women/44.jpg",
       bio: "Cybersecurity expert specializing in threat intelligence and organizational security posture assessment.",
     },
     readTime: 6,
     tags: ["Cybersecurity", "Zero Trust", "Data Protection", "Risk Management"],
-  },
-  {
+  }, {
     name: "cloud-computing-trends",
     title: "Top Cloud Computing Trends for 2025",
     slug: "cloud-computing-trends",
@@ -558,15 +911,13 @@ export const blogPosts = [
       "Discover practical, proven strategies to reduce cloud spending while maintaining performance and reliability for your applications.",
     author: "miguel.rivera",
     authorDetails: {
-      name: "miguel.rivera",
       fullName: "Miguel Rivera",
       userImage: "https://randomuser.me/api/portraits/men/67.jpg",
       bio: "Cloud architect with expertise in multi-cloud environments and FinOps practices.",
     },
     readTime: 7,
     tags: ["Cloud Computing", "Cost Optimization", "AWS", "Azure", "FinOps"],
-  },
-  {
+  }, {
     name: "ai-ethics",
     title: "Building Ethical AI Systems: Principles and Practices",
     slug: "ethical-ai-principles-practices",
@@ -586,11 +937,10 @@ export const blogPosts = [
     metaImage: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485",
     metaTitle:
       "Ethical AI Development: Principles and Best Practices | I-Varse",
-    metaTescription:
+    metaDescription:
       "Explore the essential principles and practical approaches for building AI systems that are ethical, fair, and beneficial to society.",
     author: "aisha.johnson",
     authorDetails: {
-      name: "aisha.johnson",
       fullName: "Aisha Johnson",
       userImage: "https://randomuser.me/api/portraits/women/22.jpg",
       bio: "AI ethics researcher and consultant working on responsible innovation frameworks.",
@@ -627,7 +977,6 @@ export const blogPosts = [
       "Learn what successful digital transformation really entails and how to move past the buzzwords to create lasting business value.",
     author: "raj.patel",
     authorDetails: {
-      name: "raj.patel",
       fullName: "Raj Patel",
       userImage: "https://randomuser.me/api/portraits/men/78.jpg",
       bio: "Digital strategy consultant who has led transformation initiatives across multiple industries.",
@@ -639,8 +988,7 @@ export const blogPosts = [
       "Change Management",
       "Business Strategy",
     ],
-  },
-  {
+  }, {
     name: "devops-evolution",
     title:
       "The Evolution of DevOps: From Collaboration to Platform Engineering",
@@ -666,7 +1014,6 @@ export const blogPosts = [
       "Discover how DevOps is evolving from a collaborative philosophy to platform engineering and what this means for software teams.",
     author: "emma.wilson",
     authorDetails: {
-      name: "emma.wilson",
       fullName: "Emma Wilson",
       userImage: "https://randomuser.me/api/portraits/women/56.jpg",
       bio: "Platform engineering lead specializing in building internal developer platforms and self-service infrastructure.",
@@ -679,11 +1026,10 @@ export const blogPosts = [
       "CI/CD",
       "Infrastructure as Code",
     ],
-  },
-];
+  },];
 
 // Blog categories dummy data
-export const blogCategories = [
+export const blogCategories: BlogCategory[] = [
   {
     name: "technology",
     title: "Technology",
@@ -727,6 +1073,54 @@ export const blogCategories = [
   },
 ];
 // Add this to the existing data
+export const footerLinks: {
+  columns: FooterColumn[];
+  legalLinks: AppLinkProps[];
+} = {
+  columns: [
+    {
+      id: 1,
+      title: "Company",
+      links: [
+        { title: "About Us", href: "/about" },
+        { title: "Services", href: "/services" },
+        { title: "Products", href: "/products" },
+        { title: "Insights", href: "/blog" },
+        { title: "Careers", href: "/careers" },
+        { title: "Contact", href: "/contact" },
+        { title: "Our Team", href: "/team" },
+        { title: "FAQ", href: "/faq" },
+        { title: "Insights Pages", href: "/blog" },
+      ],
+    },
+    {
+      id: 2,
+      title: "Services",
+      links: [
+        { title: "Web Development", href: "/services/web-development" },
+        {
+          title: "Mobile App Development",
+          href: "/services/mobile-development",
+        },
+        {
+          title: "Cloud Infrastructure",
+          href: "/services/cloud-infrastructure",
+        },
+        { title: "IT Consulting", href: "/services/consulting" },
+        { title: "AI Solutions", href: "/services/ai-solutions" },
+        { title: "ERP Integration", href: "/services/erp-integration" },
+        { title: "View All Services", href: "/services" },
+      ],
+    },
+  ],
+  legalLinks: [
+    { title: "Terms of Service", href: "/terms" },
+    { title: "Privacy Policy", href: "/privacy" },
+    { title: "Cookie Policy", href: "/cookies" },
+    { title: "Accessibility", href: "/accessibility" },
+    { title: "Sitemap", href: "/sitemap" },
+  ],
+};
 
 export const footerData: FooterProps = {
   companyDescription:
@@ -734,72 +1128,18 @@ export const footerData: FooterProps = {
   contactAddress: "4 Adana Street, Off Tejuosho Rd, Surulere, Lagos, Nigeria",
   contactPhone: "+234 123 456 7890",
   contactEmail: "contact@itechnologies.ng",
-  socialLinks: [
-    { id: 1, platform: "Twitter", url: "https://twitter.com", icon: "twitter" },
-    {
-      id: 2,
-      platform: "LinkedIn",
-      url: "https://linkedin.com",
-      icon: "linkedin",
-    },
-    {
-      id: 3,
-      platform: "Facebook",
-      url: "https://facebook.com",
-      icon: "facebook",
-    },
-    {
-      id: 4,
-      platform: "Instagram",
-      url: "https://instagram.com",
-      icon: "instagram",
-    },
-  ],
-  columns: [
-    {
-      id: 1,
-      title: "Company",
-      links: [
-        { label: "About Us", url: "/about" },
-        { label: "Services", url: "/services" },
-        { label: "Products", url: "/products" },
-        { label: "Insights", url: "/blog" },
-        { label: "Careers", url: "/careers" },
-        { label: "Contact", url: "/contact" },
-        { label: "Our Team", url: "/about#team" },
-        { label: "FAQ", url: "/faq" },
-        { label: "Insights Pages", url: "/blog" },
-      ],
-    },
-    {
-      id: 2,
-      title: "Services",
-      links: [
-        { label: "Web Development", url: "/services/web-development" },
-        {
-          label: "Mobile App Development",
-          url: "/services/mobile-development",
-        },
-        {
-          label: "Cloud Infrastructure",
-          url: "/services/cloud-infrastructure",
-        },
-        { label: "IT Consulting", url: "/services/consulting" },
-        { label: "Digital Marketing", url: "/services/digital-marketing" },
-        { label: "UI/UX Design", url: "/services/ui-ux-design" },
-        { label: "AI Solutions", url: "/services/ai-solutions" },
-        { label: "ERP Integration", url: "/services/erp-integration" },
-        { label: "View All Services", url: "/services" },
-      ],
-    },
-  ],
-  legalLinks: [
-    { label: "Terms of Service", url: "/terms" },
-    { label: "Privacy Policy", url: "/privacy" },
-    { label: "Cookie Policy", url: "/cookies" },
-    { label: "Accessibility", url: "/accessibility" },
-    { label: "Sitemap", url: "/sitemap" },
-  ],
+  socialLinks: socialLinks,
+  columns: footerLinks.columns.map(column => ({
+    ...column,
+    links: column.links.map(link => ({
+      title: link.title,
+      href: link.href // Convert href to url
+    }))
+  })),
+  legalLinks: footerLinks.legalLinks.map(link => ({
+    title: link.title,
+    href: link.href // Convert href to url
+  })),
   companyName: "I-VARSE Technologies",
 };
 
@@ -819,7 +1159,7 @@ export const termsContent: PolicyPageLayoutProps = {
     <h2>2. Description of Services</h2>
     <p>
       I-Varse Technologies provides various digital services including but not limited to web development,
-      mobile application development, cloud infrastructure management, API programming & integration,
+      mobile application development, cloud infrastructure management, Api Engineering & integration,
       SEO optimization, and content writing. The specific details, deliverables, and timelines of these
       services will be outlined in individual agreements or statements of work.
     </p>
@@ -886,7 +1226,7 @@ export const termsContent: PolicyPageLayoutProps = {
 
     <p><strong>Last Updated:</strong> April 2023</p>
   `,
-};
+}
 
 export const privacyContent: PolicyPageLayoutProps = {
   title: "Privacy Policy",
@@ -1246,6 +1586,7 @@ export const accessibilityContent: PolicyPageLayoutProps = {
     </p>
   `,
 };
+
 // Add this to the existing data.ts file
 export const sitemapContent: PageContent = {
   id: 1,
@@ -1318,7 +1659,7 @@ export const sitemapContent: PageContent = {
             description: "Cloud infrastructure and management services",
           },
           {
-            title: "API Programming & Integration",
+            title: "Api Engineering & Integration",
             path: "/services/api-integration",
             description: "Connect your systems with third-party services",
           },
@@ -1395,7 +1736,7 @@ export const sitemapContent: PageContent = {
     },
   ],
 };
-// FAQ data
+
 export const faqContent: FAQPageContent = {
   id: 5,
   title: "Frequently Asked Questions",
@@ -1449,7 +1790,7 @@ export const faqContent: FAQPageContent = {
     {
       id: 4,
       question: "What services does I-Varse provide?",
-      answer: "I-Varse provides a comprehensive range of digital services including web development, mobile app development, cloud infrastructure management, API programming & integration, SEO optimization, ERP solutions, and content writing.",
+      answer: "I-Varse provides a comprehensive range of digital services including web development, mobile app development, cloud infrastructure management, Api Engineering & integration, SEO optimization, ERP solutions, and content writing.",
       categoryIds: [2],
     },
     {
@@ -1552,7 +1893,7 @@ export const contactPageContent: PageContent = {
     },
     {
       id: 3,
-      type: "custom",
+      type: "faq",
       title: "Frequently Asked Questions",
       subtitle:
         "Find answers to common questions about our services and how we can help your business.",
@@ -1566,3 +1907,475 @@ export const contactPageContent: PageContent = {
     },
   ],
 };
+
+// Blog page content following PageContent structure
+export const blogPageContent: PageContent = {
+  id: 6,
+  slug: "blog",
+  title: "Tech Insights & Resources",
+  description: "Explore our latest articles, guides, and insights on technology, digital transformation, and industry trends.",
+  metaTitle: "Tech Insights & Resources | I-Varse Technologies",
+  metaDescription: "Stay updated with the latest technology trends, best practices, and industry insights from our expert team at I-Varse Technologies.",
+  sections: [
+    {
+      id: 1,
+      type: "hero",
+      title: "Tech Insights & Resources",
+      subtitle: "Explore our latest articles, guides, and insights on technology, digital transformation, and industry trends.",
+      content: "Our team of experts regularly shares valuable insights, practical guides, and thought leadership content to help you navigate the ever-evolving technology landscape.",
+      settings: {
+        primaryButton: {
+          children: "Browse Articles",
+          variant: "default"
+        },
+        secondaryButton: {
+          children: "Subscribe to Newsletter",
+          variant: "outline"
+        },
+        backgroundImage: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      }
+    },
+    {
+      id: 2,
+      type: "blog",
+      title: "Latest Articles",
+      subtitle: "Stay updated with our most recent publications",
+      settings: {
+        postsToShow: 9,
+        layout: "grid",
+        columns: 3,
+        gap: "medium",
+        padding: "medium",
+        showFeaturedOnly: false,
+        featured: blogPosts.filter(post => post.featured).slice(0, 2),
+        recentPosts: blogPosts.slice(0, 6),
+        animation: {
+          type: "fade",
+          duration: 0.5,
+          delay: 0.1
+        }
+      }
+    },
+    {
+      id: 3,
+      type: "cta",
+      title: "Stay Informed",
+      subtitle: "Subscribe to our newsletter to receive the latest insights directly in your inbox",
+      content: "Join our community of technology enthusiasts and business leaders to receive exclusive content, early access to new resources, and invitations to special events.",
+      settings: {
+        primaryButton: {
+          children: "Subscribe Now",
+          variant: "default"
+        },
+        backgroundColor: "bg-blue-50 dark:bg-blue-900/20"
+      }
+    },
+    {
+      id: 4,
+      type: "custom",
+      title: "Browse by Category",
+      subtitle: "Find content relevant to your interests",
+      settings: {
+        items: blogCategories.map(category => ({
+          id: category.id || category.name,
+          title: category.title,
+          description: category.description,
+          slug: category.slug,
+          count: blogPosts.filter(post => post.blogCategory.toLowerCase() === category.name.toLowerCase()).length
+        })),
+        layout: "grid",
+        columns: 3,
+        gap: "medium"
+      }
+    },
+    {
+      id: 5,
+      type: "custom",
+      title: "Popular Topics",
+      subtitle: "Explore our most discussed subjects",
+      settings: {
+        items: (() => {
+          // Extract all tags and count their occurrences
+          const tagCounts = blogPosts.reduce((acc, post) => {
+            if (post.tags && Array.isArray(post.tags)) {
+              post.tags.forEach(tag => {
+                acc[tag] = (acc[tag] || 0) + 1;
+              });
+            }
+            return acc;
+          }, {} as Record<string, number>);
+
+          // Convert to array and sort by count
+          return Object.entries(tagCounts)
+            .map(([tag, count]) => ({ tag, count }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 10);
+        })(),
+        layout: "list"
+      }
+    }
+  ]
+};
+
+export const blogPostsSectionFallback: PageSection = {
+  id: 1,
+  type: 'blog',
+  title: 'Insights & Expertise',
+  subtitle: 'Stay updated with the latest trends, insights, and news from our technology experts.',
+  content: 'Explore our latest blog posts to gain valuable insights from our technology experts.',
+  backgroundColor: 'bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]',
+  textColor: 'text-gray-600 dark:text-gray-300',
+  settings: {
+    postsToShow: 3,
+    layout: 'grid',
+    columns: 3,
+    gap: 'large',
+    primaryButton: {
+      title: 'View All Articles',
+      href: '/blog',
+      variant: 'default',
+      size: 'lg',
+      endIcon: 'ArrowRight'
+    },
+    animation: {
+      type: 'fade',
+      duration: 0.5,
+      delay: 0.1
+    }
+  }
+};
+
+// Add this after the existing products array
+export const extendedProducts: ExtendedProductProps[] = [
+  {
+    id: 1,
+    title: "Entry-X: Event Ticketing SaaS",
+    description: "A complete event ticketing solution for event organizers",
+    fullDescription: `Entry-X is a comprehensive event ticketing platform designed to streamline the entire event management process. From ticket creation to attendee check-in, our solution provides everything event organizers need to run successful events.
+
+Built with modern web technologies and a mobile-first approach, Entry-X offers a seamless experience for both event organizers and attendees. The platform supports various ticket types, pricing tiers, and promotional campaigns to maximize event revenue.
+
+Whether you're organizing a small workshop or a large conference, Entry-X scales to meet your needs while providing detailed analytics and insights to help you understand your audience and improve future events.`,
+    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    keyFeatures: [
+      "Ticket Sales Management",
+      "Events Dashboard",
+      "Customizable Ticketing System",
+      "Check-in & Attendance",
+      "Real-time Analytics",
+      "Mobile App Integration",
+      "Payment Gateway Integration",
+      "Email Marketing Tools",
+      "Social Media Integration",
+      "Multi-language Support"
+    ],
+    benefits: [
+      "Simplified Event Management",
+      "Real-time Analytics",
+      "Secure Payment Processing",
+      "Multi-device Compatibility",
+      "Increased Revenue Opportunities",
+      "Enhanced Attendee Experience",
+      "Reduced Administrative Overhead",
+      "Professional Event Branding"
+    ],
+    technicalSpecs: {
+      platform: "Web & Mobile",
+      technologies: ["React", "Node.js", "MongoDB", "Stripe API", "Socket.io"],
+      integrations: ["PayPal", "Stripe", "Mailchimp", "Google Analytics", "Facebook Pixel"],
+      security: ["SSL Encryption", "PCI DSS Compliant", "GDPR Compliant", "Two-Factor Authentication"],
+      performance: {
+        uptime: "99.9%",
+        responseTime: "<200ms",
+        concurrentUsers: "10,000+",
+        dataBackup: "Real-time"
+      }
+    },
+    pricing: {
+      plans: [
+        {
+          name: "Starter",
+          price: "$29/month",
+          features: ["Up to 500 tickets/month", "Basic analytics", "Email support", "Standard templates"],
+          recommended: false
+        },
+        {
+          name: "Professional",
+          price: "$79/month",
+          features: ["Up to 2,000 tickets/month", "Advanced analytics", "Priority support", "Custom branding", "API access"],
+          recommended: true
+        },
+        {
+          name: "Enterprise",
+          price: "Custom",
+          features: ["Unlimited tickets", "White-label solution", "Dedicated support", "Custom integrations", "SLA guarantee"],
+          recommended: false
+        }
+      ],
+      trialPeriod: "14 days free trial",
+      setupFee: "None"
+    },
+    screenshots: [
+      {
+        title: "Event Dashboard",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        description: "Comprehensive overview of your event performance and ticket sales"
+      },
+      {
+        title: "Ticket Creation",
+        image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        description: "Easy-to-use ticket creation interface with customizable options"
+      },
+      {
+        title: "Mobile Check-in",
+        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        description: "Quick and efficient attendee check-in using mobile devices"
+      }
+    ],
+    testimonials: [
+      {
+        id: 1,
+        name: "Sarah Mitchell",
+        company: "Lagos Tech Conference",
+        content: "Entry-X transformed how we manage our annual tech conference. The platform is intuitive and the analytics help us make better decisions.",
+        rating: 5,
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+      },
+      {
+        id: 2,
+        name: "David Okafor",
+        company: "Abuja Business Summit",
+        content: "The seamless integration and professional look of our ticketing page impressed our sponsors and attendees alike.",
+        rating: 5,
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+      }
+    ],
+    caseStudies: [
+      {
+        title: "Lagos Tech Conference 2023",
+        description: "How Entry-X helped increase ticket sales by 150% and streamlined event management for Nigeria's largest tech conference.",
+        metrics: {
+          ticketsSold: "2,500+",
+          revenueIncrease: "150%",
+          checkInTime: "50% faster",
+          attendeeSatisfaction: "98%"
+        },
+        challenge: "Managing a large-scale tech conference with multiple ticket types, sponsors, and complex logistics.",
+        solution: "Implemented Entry-X with custom branding, integrated payment processing, and real-time analytics dashboard.",
+        results: "Achieved record attendance, streamlined operations, and received overwhelmingly positive feedback from attendees and sponsors."
+      }
+    ],
+    faqs: [
+      {
+        question: "How does Entry-X handle payment processing?",
+        answer: "Entry-X integrates with leading payment processors like Stripe and PayPal to ensure secure, PCI-compliant transactions. We support multiple currencies and payment methods."
+      },
+      {
+        question: "Can I customize the look of my ticketing page?",
+        answer: "Yes! Entry-X offers extensive customization options including custom branding, colors, logos, and even white-label solutions for enterprise clients."
+      },
+      {
+        question: "What kind of analytics and reporting does Entry-X provide?",
+        answer: "Our platform provides comprehensive analytics including ticket sales trends, attendee demographics, revenue tracking, and real-time event performance metrics."
+      },
+      {
+        question: "Is there a mobile app for event organizers?",
+        answer: "Yes, Entry-X includes a mobile app for event organizers that allows you to manage your events, check in attendees, and monitor sales on the go."
+      }
+    ],
+    demoUrl: "https://demo.entry-x.com",
+    downloadUrl: "https://apps.entry-x.com",
+    supportUrl: "https://support.entry-x.com",
+    category: "SaaS Platform",
+    tags: ["Event Management", "Ticketing", "SaaS", "Analytics", "Mobile"],
+    status: "Active",
+    launchDate: "2023-01-15",
+    lastUpdated: "2024-12-01"
+  },
+  {
+    id: 2,
+    title: "OpsCloud",
+    description: "Complete business management solution for SMEs",
+    fullDescription: `OpsCloud is an all-in-one business management platform specifically designed for small and medium enterprises. It combines CRM, inventory management, financial reporting, and customer communication tools into a single, integrated solution.
+
+Built on modern cloud architecture, OpsCloud provides businesses with the tools they need to streamline operations, improve customer relationships, and make data-driven decisions. The platform is designed to grow with your business, offering scalable solutions that adapt to your changing needs.
+
+With OpsCloud, businesses can eliminate the complexity of managing multiple software solutions and focus on what matters most - growing their business and serving their customers better.`,
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+    keyFeatures: [
+      "Complete CRM for Business",
+      "Inventory Management",
+      "Financial Reporting",
+      "Customer Support and Communication",
+      "Sales Pipeline Management",
+      "Automated Workflows",
+      "Multi-location Support",
+      "Advanced Analytics Dashboard",
+      "Document Management",
+      "Team Collaboration Tools",
+      "Mobile Access",
+      "Third-party Integrations"
+    ],
+    benefits: [
+      "Centralized Business Operations",
+      "Enhanced Productivity",
+      "Reduced Operational Costs",
+      "Tailored Solutions for Small and Medium Business",
+      "Improved Customer Satisfaction",
+      "Better Decision Making with Analytics",
+      "Scalable Growth Support",
+      "Streamlined Communication"
+    ],
+    technicalSpecs: {
+      platform: "Cloud-based Web Application",
+      technologies: ["Vue.js", "Laravel", "PostgreSQL", "Redis", "Docker"],
+      integrations: ["QuickBooks", "Xero", "Slack", "Microsoft 365", "Google Workspace", "WhatsApp Business"],
+      security: ["End-to-end Encryption", "Role-based Access Control", "Regular Security Audits", "ISO 27001 Compliant"],
+      performance: {
+        uptime: "99.95%",
+        responseTime: "<150ms",
+        concurrentUsers: "5,000+",
+        dataBackup: "Hourly automated backups"
+      }
+    },
+    pricing: {
+      plans: [
+        {
+          name: "Essential",
+          price: "$49/month",
+          features: ["Up to 5 users", "Basic CRM", "Inventory tracking", "Standard reports", "Email support"],
+          recommended: false
+        },
+        {
+          name: "Professional",
+          price: "$99/month",
+          features: ["Up to 25 users", "Advanced CRM", "Full inventory management", "Custom reports", "Priority support", "API access"],
+          recommended: true
+        },
+        {
+          name: "Enterprise",
+          price: "$199/month",
+          features: ["Unlimited users", "Multi-location support", "Advanced analytics", "Custom integrations", "Dedicated account manager", "SLA guarantee"],
+          recommended: false
+        }
+      ],
+      trialPeriod: "30 days free trial",
+      setupFee: "Free setup and migration"
+    },
+    screenshots: [
+      {
+        title: "Business Dashboard",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        description: "Comprehensive business overview with key metrics and performance indicators"
+      },
+      {
+        title: "CRM Interface",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        description: "Intuitive customer relationship management with contact tracking and communication history"
+      },
+      {
+        title: "Inventory Management",
+        image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        description: "Real-time inventory tracking with automated reorder points and supplier management"
+      },
+      {
+        title: "Financial Reports",
+        image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        description: "Detailed financial reporting with profit/loss statements and cash flow analysis"
+      }
+    ],
+    testimonials: [
+      {
+        id: 1,
+        name: "Adebayo Adeyemi",
+        company: "Adeyemi Trading Company",
+        content: "OpsCloud revolutionized our business operations. We can now track inventory, manage customers, and generate reports all in one place.",
+        rating: 5,
+        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+      },
+      {
+        id: 2,
+        name: "Fatima Hassan",
+        company: "Hassan Logistics",
+        content: "The multi-location support and real-time reporting have been game-changers for our growing logistics business.",
+        rating: 5,
+        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+      },
+      {
+        id: 3,
+        name: "Chinedu Okwu",
+        company: "Okwu Manufacturing",
+        content: "OpsCloud's inventory management helped us reduce waste by 30% and improve our supplier relationships significantly.",
+        rating: 5,
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+      }
+    ],
+    caseStudies: [
+      {
+        title: "Adeyemi Trading Company Digital Transformation",
+        description: "How OpsCloud helped a traditional trading company modernize operations and increase efficiency by 200%.",
+        metrics: {
+          efficiencyIncrease: "200%",
+          costReduction: "35%",
+          customerSatisfaction: "95%",
+          inventoryAccuracy: "99.5%"
+        },
+        challenge: "Managing multiple locations, tracking inventory across different product lines, and maintaining customer relationships manually.",
+        solution: "Implemented OpsCloud with custom workflows, automated inventory tracking, and integrated CRM system.",
+        results: "Achieved significant operational improvements, reduced manual errors, and enabled data-driven decision making across all business units."
+      },
+      {
+        title: "Hassan Logistics Growth Story",
+        description: "Supporting rapid business expansion with scalable cloud-based operations management.",
+        metrics: {
+          locationGrowth: "From 2 to 8 locations",
+          revenueIncrease: "180%",
+          operationalEfficiency: "150%",
+          customerRetention: "92%"
+        },
+        challenge: "Scaling operations across multiple locations while maintaining service quality and operational visibility.",
+        solution: "Deployed OpsCloud's multi-location features with centralized reporting and distributed access controls.",
+        results: "Successfully supported rapid expansion while maintaining operational excellence and customer satisfaction."
+      }
+    ],
+    faqs: [
+      {
+        question: "Can OpsCloud integrate with our existing accounting software?",
+        answer: "Yes, OpsCloud integrates with popular accounting software including QuickBooks, Xero, and other major platforms. We also offer custom integration services for specialized systems."
+      },
+      {
+        question: "How does OpsCloud handle multi-location businesses?",
+        answer: "OpsCloud is designed for multi-location operations with centralized management, location-specific reporting, and role-based access controls. You can manage inventory, staff, and operations across all locations from a single dashboard."
+      },
+      {
+        question: "What kind of customer support does OpsCloud provide?",
+        answer: "We offer comprehensive support including email support for all plans, priority support for Professional plans, and dedicated account management for Enterprise clients. We also provide extensive documentation and video tutorials."
+      },
+      {
+        question: "Is my business data secure with OpsCloud?",
+        answer: "Absolutely. OpsCloud uses enterprise-grade security including end-to-end encryption, regular security audits, and compliance with international standards like ISO 27001. Your data is backed up hourly and stored in secure, redundant data centers."
+      },
+      {
+        question: "Can I customize OpsCloud to fit my specific business needs?",
+        answer: "Yes, OpsCloud offers extensive customization options including custom fields, workflows, reports, and integrations. Our Enterprise plan includes custom development services for specialized requirements."
+      },
+      {
+        question: "How long does it take to implement OpsCloud?",
+        answer: "Most businesses can be up and running within 1-2 weeks. We provide free setup assistance, data migration services, and comprehensive training to ensure a smooth transition."
+      }
+    ],
+    demoUrl: "https://demo.opscloud.com",
+    downloadUrl: "https://app.opscloud.com",
+    supportUrl: "https://support.opscloud.com",
+    category: "Business Management",
+    tags: ["CRM", "Inventory", "Business Management", "SME", "Cloud", "Analytics"],
+    status: "Active",
+    launchDate: "2022-08-20",
+    lastUpdated: "2024-11-28"
+  }
+];
+
+// You'll also need to add the ExtendedProductProps type to your types file
+// Add this to client/src/lib/types.ts:
+
+

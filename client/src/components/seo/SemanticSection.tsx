@@ -1,22 +1,8 @@
 import React, { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import { SemanticSectionProps } from '@/lib/types';
 
-interface SemanticSectionProps {
-  as?: 'section' | 'article' | 'aside' | 'main' | 'header' | 'footer' | 'nav' | 'div';
-  children: ReactNode;
-  className?: string;
-  id?: string;
-  ariaLabel?: string;
-  ariaLabelledby?: string;
-  ariaDescribedby?: string;
-  role?: string;
-  itemScope?: boolean;
-  itemType?: string;
-  itemProp?: string;
-  ariaHidden?: boolean;
-  tabIndex?: number;
-  dataTestId?: string;
-}
+
 
 /**
  * Semantic HTML section with accessibility and structured data attributes
