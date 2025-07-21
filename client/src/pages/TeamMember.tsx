@@ -2,7 +2,9 @@ import React, { useMemo } from 'react';
 import { useRoute } from 'wouter';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { usePageContent } from '@/hooks/useStrapiContent';
+// import { useERPNextTeamMember } from '@/hooks/useERPNextContent';
 import { teamMemberDetailPageContent as localTeamMemberDetailPageContent } from '@/lib/data/pages';
+import { defaultTeamMembers } from '@/lib/data/team';
 import { TeamMember } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
 import MetaTags from '@/components/seo/MetaTags';
@@ -28,15 +30,32 @@ const TeamMemberPage: React.FC = () => {
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('team-member-detail');
   const displayPageContent = pageContent || localTeamMemberDetailPageContent;
 
-  // Get team members from page content settings ONLY
-  const teamMembers = useMemo(() => {
-    return displayPageContent?.sections?.[0]?.settings?.teamMembers || [];
-  }, [displayPageContent]);
-
-  // Find team member by slug from page content team members
+  // Get team member from fallback data (temporarily until ERPNext is configured)
   const member = useMemo(() => {
-    return teamMembers.find((member: TeamMember) => member.slug === memberSlug);
-  }, [memberSlug, teamMembers]);
+    console.log('TeamMember page - memberSlug:', memberSlug);
+    console.log('TeamMember page - defaultTeamMembers length:', defaultTeamMembers.length);
+    console.log('TeamMember page - available slugs:', defaultTeamMembers.map(m => m.slug));
+    
+    if (!memberSlug) {
+      console.log('TeamMember page - no memberSlug, returning undefined');
+      return undefined;
+    }
+    
+    // Find member by slug, with fallback to first member if none found
+    const foundMember = defaultTeamMembers.find((member: TeamMember) => member.slug === memberSlug);
+    
+    if (!foundMember) {
+      console.warn(`Team member with slug "${memberSlug}" not found. Available slugs:`, 
+        defaultTeamMembers.map(m => m.slug));
+      console.log('TeamMember page - using first member as fallback:', defaultTeamMembers[0]?.name);
+      
+      // Return first member as fallback to ensure page shows content
+      return defaultTeamMembers[0];
+    }
+    
+    console.log('TeamMember page - found member:', foundMember.name);
+    return foundMember;
+  }, [memberSlug]);
 
   // SEO metadata
   const pageTitle = useMemo(() => {

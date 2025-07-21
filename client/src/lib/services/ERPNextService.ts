@@ -7,7 +7,7 @@
 
 import { BaseFormService, BaseCMSService } from './BaseService';
 import { IFormSubmissionProvider, ILoggerService } from '@/lib/abstractions';
-import { BlogPost, BlogCategory, ContactFormData, BookingFormData } from '@/lib/types';
+import { BlogPost, BlogCategory, ContactFormData, BookingFormData, TeamMember, JobListing } from '@/lib/types';
 
 /**
  * ERPNext configuration interface
@@ -48,6 +48,46 @@ interface IERPNextBlogCategory {
   title: string;
   description: string;
   route: string;
+}
+
+/**
+ * ERPNext employee interface (from ERPNext API)
+ */
+interface IERPNextEmployee {
+  name: string;
+  employee_name: string;
+  designation: string;
+  department: string;
+  email: string;
+  cell_number?: string;
+  image?: string;
+  status: 'Active' | 'Inactive' | 'Left';
+  date_of_joining: string;
+  employee_number: string;
+  bio?: string;
+  personal_email?: string;
+  current_address?: string;
+}
+
+/**
+ * ERPNext job opening interface (from ERPNext API)
+ */
+interface IERPNextJobOpening {
+  name: string;
+  job_title: string;
+  department: string;
+  designation: string;
+  description: string;
+  status: 'Open' | 'Closed';
+  posted_on: string;
+  application_deadline?: string;
+  location?: string;
+  employment_type?: string;
+  experience?: string;
+  qualifications?: string;
+  responsibilities?: string;
+  benefits?: string;
+  salary_range?: string;
 }
 
 /**
@@ -285,6 +325,76 @@ export class ERPNextFormService extends BaseFormService implements IFormSubmissi
   }
 
   /**
+   * Get team members from ERPNext
+   */
+  public async getTeamMembers(): Promise<TeamMember[]> {
+    try {
+      const config = await this.getConfig();
+      
+      const response = await this.get<{ data: IERPNextEmployee[] }>('/api/resource/Employee', {
+        'filters': JSON.stringify([['status', '=', 'Active']]),
+        'fields': JSON.stringify([
+          'name', 'employee_name', 'designation', 'department', 
+          'email', 'cell_number', 'image', 'date_of_joining',
+          'employee_number', 'bio', 'personal_email', 'current_address'
+        ])
+      });
+
+      return response.data.map(this.transformEmployeeToTeamMember);
+    } catch (error) {
+      this.logger?.error('Failed to fetch team members from ERPNext', error as Error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get team member by employee number
+   */
+  public async getTeamMemberByEmployeeNumber(employeeNumber: string): Promise<TeamMember | null> {
+    try {
+      const response = await this.get<IERPNextEmployee>(`/api/resource/Employee/${employeeNumber}`);
+      return this.transformEmployeeToTeamMember(response);
+    } catch (error) {
+      this.logger?.error(`Failed to fetch team member ${employeeNumber}`, error as Error);
+      return null;
+    }
+  }
+
+  /**
+   * Get job openings from ERPNext
+   */
+  public async getJobListings(): Promise<JobListing[]> {
+    try {
+      const response = await this.get<{ data: IERPNextJobOpening[] }>('/api/resource/Job Opening', {
+        'filters': JSON.stringify([['status', '=', 'Open']]),
+        'fields': JSON.stringify([
+          'name', 'job_title', 'department', 'designation', 'description',
+          'posted_on', 'application_deadline', 'location', 'employment_type',
+          'experience', 'qualifications', 'responsibilities', 'benefits', 'salary_range'
+        ])
+      });
+
+      return response.data.map(this.transformJobOpeningToJobListing);
+    } catch (error) {
+      this.logger?.error('Failed to fetch job listings from ERPNext', error as Error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get job opening by name
+   */
+  public async getJobListingById(jobId: string): Promise<JobListing | null> {
+    try {
+      const response = await this.get<IERPNextJobOpening>(`/api/resource/Job Opening/${jobId}`);
+      return this.transformJobOpeningToJobListing(response);
+    } catch (error) {
+      this.logger?.error(`Failed to fetch job listing ${jobId}`, error as Error);
+      return null;
+    }
+  }
+
+  /**
    * Submit job application
    */
   public async submitJobApplication(formData: any): Promise<boolean> {
@@ -343,6 +453,60 @@ export class ERPNextFormService extends BaseFormService implements IFormSubmissi
   }
 
   /**
+   * Transform ERPNext employee to TeamMember
+   */
+  private transformEmployeeToTeamMember(employee: IERPNextEmployee): TeamMember {
+    return {
+      id: parseInt(employee.employee_number) || Math.random(),
+      name: employee.employee_name,
+      position: employee.designation,
+      role: employee.designation,
+      bio: employee.bio || `${employee.employee_name} is a ${employee.designation} at I-Varse Technologies.`,
+      description: `${employee.designation} specializing in ${employee.department}`,
+      email: employee.email,
+      phone: employee.cell_number,
+      location: employee.current_address,
+      joinDate: employee.date_of_joining,
+      image: employee.image || '/assets/team/default-avatar.jpg',
+      slug: employee.employee_name.toLowerCase().replace(/\s+/g, '-'),
+      translationKey: employee.employee_name.toLowerCase().replace(/\s+/g, '-'),
+      socialLinks: [],
+      erpNextId: employee.name,
+      erpNextStatus: employee.status.toLowerCase() as 'active' | 'inactive' | 'terminated',
+      erpNextDepartment: employee.department
+    };
+  }
+
+  /**
+   * Transform ERPNext job opening to JobListing
+   */
+  private transformJobOpeningToJobListing(job: IERPNextJobOpening): JobListing {
+    return {
+      id: Math.random(), // ERPNext uses string IDs, but our interface expects number
+      title: job.job_title,
+      slug: job.job_title.toLowerCase().replace(/\s+/g, '-'),
+      translationKey: job.job_title.toLowerCase().replace(/\s+/g, '-'),
+      department: job.department,
+      location: job.location || 'Remote',
+      type: job.employment_type || 'Full-time',
+      description: job.description,
+      responsibilities: job.responsibilities ? job.responsibilities.split('\n').filter(Boolean) : [],
+      requirements: job.qualifications ? job.qualifications.split('\n').filter(Boolean) : [],
+      benefits: job.benefits ? job.benefits.split('\n').filter(Boolean) : [],
+      qualifications: job.qualifications ? job.qualifications.split('\n').filter(Boolean) : [],
+      salary: job.salary_range || 'Competitive',
+      featured: false,
+      postedAt: job.posted_on,
+      erpNextId: job.name,
+      erpNextStatus: job.status.toLowerCase() as 'open' | 'closed' | 'draft',
+      erpNextDepartment: job.department,
+      erpNextLocation: job.location,
+      erpNextType: job.employment_type,
+      erpNextApplicationDeadline: job.application_deadline
+    };
+  }
+
+  /**
    * Transform job application data to ERPNext format
    */
   private transformJobApplicationData(formData: any) {
@@ -359,6 +523,64 @@ export class ERPNextFormService extends BaseFormService implements IFormSubmissi
 }
 
 /**
+ * ERPNext Team Data Source
+ * Handles team member CRUD operations with ERPNext
+ */
+export class ERPNextTeamSource {
+  constructor(
+    private service: ERPNextService,
+    private logger?: ILoggerService
+  ) {}
+
+  public async getAll(): Promise<TeamMember[]> {
+    return this.service.getTeamMembers();
+  }
+
+  public async getById(id: string): Promise<TeamMember | null> {
+    return this.service.getTeamMemberByEmployeeNumber(id);
+  }
+
+  public async getBySlug(slug: string): Promise<TeamMember | null> {
+    try {
+      const allMembers = await this.getAll();
+      return allMembers.find(member => member.slug === slug) || null;
+    } catch (error) {
+      this.logger?.error(`Failed to fetch team member with slug ${slug}`, error as Error);
+      return null;
+    }
+  }
+}
+
+/**
+ * ERPNext Jobs Data Source
+ * Handles job listing CRUD operations with ERPNext
+ */
+export class ERPNextJobsSource {
+  constructor(
+    private service: ERPNextService,
+    private logger?: ILoggerService
+  ) {}
+
+  public async getAll(): Promise<JobListing[]> {
+    return this.service.getJobListings();
+  }
+
+  public async getById(id: string): Promise<JobListing | null> {
+    return this.service.getJobListingById(id);
+  }
+
+  public async getBySlug(slug: string): Promise<JobListing | null> {
+    try {
+      const allJobs = await this.getAll();
+      return allJobs.find(job => job.slug === slug) || null;
+    } catch (error) {
+      this.logger?.error(`Failed to fetch job listing with slug ${slug}`, error as Error);
+      return null;
+    }
+  }
+}
+
+/**
  * Factory function to create ERPNext services
  * Follows Dependency Inversion Principle
  */
@@ -368,6 +590,8 @@ export function createERPNextServices(logger?: ILoggerService) {
   return {
     service,
     blog: new ERPNextBlogService(service, logger),
-    forms: new ERPNextFormService(service, logger)
+    forms: new ERPNextFormService(service, logger),
+    team: new ERPNextTeamSource(service, logger),
+    jobs: new ERPNextJobsSource(service, logger)
   };
 }

@@ -1,6 +1,8 @@
 import React from 'react';
-import { usePageContent, useJobListings } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useStrapiContent';
+// import { useERPNextJobListings } from '@/hooks/useERPNextContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
+import { jobListings } from '@/lib/data';
 import MetaTags from '@/components/seo/MetaTags';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { careersPageContent as localCareersPageContent } from '@/lib/data/pages';
@@ -21,8 +23,9 @@ const Careers: React.FC = () => {
   // Fetch page content from Strapi or use local data
     const { data: pageContent, isLoading: isPageLoading } = usePageContent('careers');
 
-  // Fetch job listings from ERPNext (as requested)
-  const { data: jobListings, isLoading: isJobsLoading } = useJobListings();
+  // Use fallback job listings (temporarily until ERPNext is configured)
+  const jobListingsData = jobListings;
+  const isJobsLoading = false;
 
   // Use local page content if Strapi data is not available
   const displayPageContent = pageContent || localCareersPageContent;
@@ -64,9 +67,9 @@ const Careers: React.FC = () => {
                 pageContent={displayPageContent}
             />
 
-      {/* Open Positions Section - Using ERPNext data as requested */}
+      {/* Open Positions Section - Using fallback data temporarily */}
       <OpenPositionsSection
-        jobListings={jobListings || []}
+        jobListings={jobListingsData || []}
         isLoading={isJobsLoading}
         pageContent={displayPageContent}
       />

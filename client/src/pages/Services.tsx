@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
-import { useServices, usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useStrapiContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { servicesPageContent as localServicesPageContent } from '@/lib/data/pages';
+import { services as fallbackServices } from '@/lib/data';
 import { ServiceProps, TestimonialProps } from '@/lib/types/content';
 import MetaTags from '@/components/seo/MetaTags';
 
@@ -18,27 +19,15 @@ import {
 const Services: React.FC = () => {
   const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
 
-  // Fetch data from Strapi
-  const { data: apiServices, isLoading: isServicesLoading } = useServices();
+  // Use fallback data temporarily until Strapi is configured
+  const isServicesLoading = false;
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('services');
 
   // Use local page content if Strapi data is not available
   const displayPageContent = pageContent || localServicesPageContent;
 
-  // Use the API data if available, otherwise fall back to section data
-  const displayServices = useMemo((): ServiceProps[] => {
-    if (apiServices?.length) return apiServices;
-    
-    // Fallback to services from page content
-    const servicesSection = displayPageContent.sections?.find(s => s.type === 'services');
-    const featuredServices = servicesSection?.settings?.featured;
-    
-    if (featuredServices && Array.isArray(featuredServices)) {
-      return featuredServices as ServiceProps[];
-    }
-    
-    return [];
-  }, [apiServices, displayPageContent]);
+  // Use fallback services data
+  const displayServices = fallbackServices;
 
   // Get testimonials from page content
   const testimonialsSection = displayPageContent.sections?.find(s => s.type === 'testimonials');

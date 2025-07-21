@@ -8,7 +8,7 @@ import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/
 import { productsPageContent as localProductsPageContent } from '@/lib/data/pages';
 import { defaultSiteConfig } from '@/lib/data/';
 import { ProductProps, TestimonialProps } from '@/lib/types/content';
-import { products as directProducts } from '@/lib/data/products';
+import { products as fallbackProducts } from '@/lib/data/products';
 
 // Import section components
 import {
@@ -37,77 +37,8 @@ const Products: React.FC = () => {
   // Only show loading if we're loading AND don't have fallback content
   const shouldShowLoading = isPageLoading && !displayPageContent;
 
-  // Get products from page content using prop drilling
-  const displayProducts = useMemo((): ProductProps[] => {
-    const productsSection = displayPageContent.sections?.find(s => s.type === 'products');
-    const featuredProducts = productsSection?.settings?.featured;
-    
-    let products: ProductProps[] = [];
-    
-    if (featuredProducts && Array.isArray(featuredProducts)) {
-      products = featuredProducts as ProductProps[];
-    } else if (directProducts && Array.isArray(directProducts) && directProducts.length > 0) {
-      // Fallback to direct products import if no featured products found
-      products = directProducts;
-    } else {
-      // Final fallback - create a simple test product
-      const testProduct: ProductProps = {
-        id: 999,
-        title: "Test Product",
-        slug: "test-product",
-        description: "This is a test product to verify rendering",
-        image: "/src/assets/images/IMG_2247.JPG",
-        keyFeatures: ["Feature 1", "Feature 2", "Feature 3"],
-        benefits: {
-          id: 1,
-          title: "Benefits",
-          content: "Test benefits",
-          items: [
-            { id: 1, title: "Benefit 1", description: "Test benefit 1" },
-            { id: 2, title: "Benefit 2", description: "Test benefit 2" }
-          ]
-        },
-        industries: {
-          id: 1,
-          title: "Industries",
-          content: "Test industries",
-          items: [
-            { id: 1, title: "Industry 1", description: "Test industry 1" }
-          ]
-        },
-        casestudies: {
-          id: 1,
-          title: "Case Studies",
-          content: "Test case studies",
-          items: [
-            { id: 1, title: "Case Study 1", description: "Test case study 1" }
-          ]
-        },
-        faqs: {
-          id: 1,
-          title: "FAQs",
-          content: "Test FAQs",
-          items: [
-            { id: 1, title: "FAQ 1", description: "Test FAQ 1" }
-          ]
-        },
-        pricing: [],
-        demoUrl: "#",
-        downloadUrl: "#",
-        supportUrl: "#",
-        status: "Active",
-        category: ["test"],
-        tags: ["test"]
-      };
-      
-      products = [testProduct];
-    }
-    
-    // Limit to only 4 products
-    const limitedProducts = products.slice(0, 4);
-    
-    return limitedProducts;
-  }, [displayPageContent]);
+  // Use fallback products data (temporarily until Strapi is configured)
+  const displayProducts = fallbackProducts;
 
   // Get testimonials from page content
   const testimonialsSection = displayPageContent.sections?.find(s => s.type === 'testimonials');

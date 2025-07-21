@@ -1,11 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { useParams } from 'wouter';
-import { useJobById, usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useStrapiContent';
+// import { useERPNextJobListing } from '@/hooks/useERPNextContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
+import { jobListings } from '@/lib/data';
 import { generateJobPostingSchema } from '@/components/seo/StructuredData';
 import MetaTags from '@/components/seo/MetaTags';
 import { jobDetailPageContent as localJobDetailPageContent } from '@/lib/data/pages';
-import { jobListings } from '@/lib/data/';
 import { PageContent } from '@/lib/types/core';
 import { JobListing } from '@/lib/types/content';
 
@@ -39,18 +40,12 @@ const JobDetail: React.FC = () => {
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('job-detail');
   const displayPageContent = pageContent || localJobDetailPageContent;
 
-  // Find job by slug from local job listings
-  const matchedJob = useMemo(() => {
-    return jobListings.find((job: JobListing) => job.slug === slug);
-  }, [slug]);
-
-  // Fetch job details from API if we have an ID
-  const { data: apiJob, isLoading, error } = useJobById(matchedJob?.id || 0);
-
-  // Use API data if available, otherwise use matched job data
+  // Get job from fallback data (temporarily until ERPNext is configured)
   const job = useMemo(() => {
-    return apiJob || matchedJob;
-  }, [apiJob, matchedJob]);
+    return jobListings.find((job) => job.slug === slug);
+  }, [slug]);
+  const isLoading = false;
+  const error = null;
 
   // Get job content from page content settings
   const jobContent = useMemo(() => {

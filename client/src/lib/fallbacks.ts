@@ -172,17 +172,30 @@ export const PAGE_FALLBACKS: Record<string, Partial<PageContent>> = {
 // CONTENT TYPE FALLBACKS (Minimal data for when APIs fail)
 // =============================================================================
 
+// Import actual fallback data from the original data files temporarily
+import {
+  services as originalServices,
+  products as originalProducts,
+  blogPosts as originalBlogs,
+  testimonials as originalTestimonials,
+  defaultTeamMembers as originalTeam,
+  servicesCaseStudies as originalCaseStudies,
+  jobListings as originalJobs,
+  clientLogos as originalClients,
+  faqItems as originalFaqs
+} from '@/lib/data';
+
 export const CONTENT_FALLBACKS = {
-  products: [] as ProductProps[],
-  services: [] as ServiceProps[],
-  blogs: [] as BlogPost[],
-  testimonials: [] as TestimonialProps[],
-  team: [] as TeamMember[],
-  caseStudies: [] as CaseStudyProps[],
+  products: originalProducts,
+  services: originalServices,
+  blogs: originalBlogs,
+  testimonials: originalTestimonials,
+  team: originalTeam, // Will be replaced by ERPNext data
+  caseStudies: originalCaseStudies,
   industries: [] as IndustryProps[],
-  jobs: [] as JobListing[],
-  clients: [] as ClientLogo[],
-  faqs: [] as FAQItem[]
+  jobs: originalJobs, // Will be replaced by ERPNext data
+  clients: originalClients,
+  faqs: originalFaqs
 };
 
 // =============================================================================

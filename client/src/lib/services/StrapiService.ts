@@ -98,6 +98,7 @@ export class StrapiPageContentSource extends BaseDataSource<PageContent> {
     return {
       id: item.id,
       title: item.attributes?.title || '',
+      description: item.attributes?.description || '',
       slug: item.attributes?.slug || '',
       metaTitle: item.attributes?.metaTitle || '',
       metaDescription: item.attributes?.metaDescription || '',
@@ -153,17 +154,14 @@ export class StrapiServicesSource extends BaseDataSource<ServiceProps> {
       id: item.id,
       title: attrs.title || '',
       slug: attrs.slug || '',
-      translationKey: attrs.translationKey,
+      subtitle: attrs.subtitle || '',
       description: attrs.description || '',
-      image: attrs.image?.data?.attributes?.url,
-      features: attrs.features || [],
-      technologies: attrs.technologies || [],
-      process: attrs.process || { id: 0, title: '', content: '', items: [] },
+      fullDescription: attrs.fullDescription || '',
       benefits: attrs.benefits || { id: 0, title: '', content: '', items: [] },
-      caseStudies: attrs.caseStudies || [],
-      pricing: attrs.pricing || [],
-      category: attrs.category || [],
-      tags: attrs.tags || []
+      casestudies: attrs.casestudies || { id: 0, title: '', content: '', items: [] },
+      faqs: attrs.faqs || { id: 0, title: '', content: '', items: [] },
+      icon: attrs.icon || 'fa-cog',
+      image: attrs.image?.data?.attributes?.url || attrs.image
     };
   }
 }
@@ -206,16 +204,19 @@ export class StrapiTeamSource extends BaseDataSource<TeamMember> {
       id: item.id,
       name: attrs.name || '',
       position: attrs.position || '',
+      translationKey: attrs.translationKey,
       bio: attrs.bio || '',
+      role: attrs.role || attrs.position || '',
       image: attrs.image?.data?.attributes?.url || '',
+      slug: attrs.slug || '',
+      description: attrs.description || '',
       email: attrs.email,
       phone: attrs.phone,
+      location: attrs.location,
+      joinDate: attrs.joinDate,
       socialLinks: attrs.socialLinks || [],
-      skills: attrs.skills || [],
-      experience: attrs.experience || '',
-      education: attrs.education || [],
-      certifications: attrs.certifications || [],
-      languages: attrs.languages || []
+      projects: attrs.projects,
+      relatedTeamMembers: attrs.relatedTeamMembers
     };
   }
 }

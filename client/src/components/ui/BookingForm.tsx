@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { submitAppointmentBooking } from '@/lib/erpnext';
 import { useUIText } from '@/hooks/useContent';
+import { UI_TEXT_FALLBACKS } from '@/lib/fallbacks';
 
 const bookingFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -52,7 +53,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
     mutationFn: scheduleAppointment,
     onSuccess: () => {
       toast({
-        title: "Success!",
+        title: UI_TEXT_FALLBACKS.forms.messages.success,
         description: "Your appointment has been scheduled. We'll get back to you with a confirmation shortly.",
         variant: "default",
       });
@@ -60,7 +61,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
     },
     onError: (error) => {
       toast({
-        title: "Error!",
+        title: UI_TEXT_FALLBACKS.forms.messages.error,
         description: error instanceof Error ? error.message : "There was a problem scheduling your appointment. Please try again.",
         variant: "destructive",
       });
@@ -73,7 +74,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
 
   return (
     <div className={`bg-secondary-dark rounded-xl p-8 border border-gray-800 ${className}`}>
-      <h3 className="text-xl font-semibold mb-6">BOOK AN APPOINTMENT</h3>
+      <h3 className="text-xl font-semibold mb-6">{UI_TEXT_FALLBACKS.buttons.bookAppointment.toUpperCase()}</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -82,10 +83,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-300">Full Name *</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.fullName} *</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your full name"
+                      placeholder={UI_TEXT_FALLBACKS.forms.placeholders.fullName}
                       {...field}
                       className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                     />
@@ -100,10 +101,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-300">Email *</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.email} *</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your email address"
+                      placeholder={UI_TEXT_FALLBACKS.forms.placeholders.email}
                       type="email"
                       {...field}
                       className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
@@ -121,10 +122,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-300">Phone *</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.phone} *</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your phone number"
+                      placeholder={UI_TEXT_FALLBACKS.forms.placeholders.phone}
                       type="tel"
                       {...field}
                       className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
@@ -140,10 +141,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               name="topic"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-300">Topic *</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.topic} *</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Meeting topic"
+                      placeholder={UI_TEXT_FALLBACKS.forms.placeholders.topic}
                       {...field}
                       className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
                     />
@@ -160,7 +161,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               name="date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-300">Date *</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.date} *</FormLabel>
                   <FormControl>
                     <Input
                       type="date"
@@ -178,7 +179,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
               name="time"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-300">Time *</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.time} *</FormLabel>
                   <FormControl>
                     <Input
                       type="time"
@@ -197,7 +198,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-300">Message *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.message} *</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Tell us more about what you'd like to discuss"
@@ -222,10 +223,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Booking...
+                {UI_TEXT_FALLBACKS.buttons.booking}
               </span>
             ) : (
-              'Book Appointment'
+              UI_TEXT_FALLBACKS.buttons.bookAppointment
             )}
           </Button>
         </form>

@@ -1,10 +1,12 @@
 import React from 'react';
-import { usePageContent, useTeamMembers } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useStrapiContent';
+// import { useERPNextTeamMembers } from '@/hooks/useERPNextContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import MetaTags from '@/components/seo/MetaTags';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { aboutPageContent as localAboutPageContent } from '@/lib/data/pages';
 import { industries } from '@/lib/data/industries';
+import { defaultTeamMembers } from '@/lib/data/team';
 
 // Import section components
 import {
@@ -22,8 +24,9 @@ const About: React.FC = () => {
   // Fetch page content from Strapi or use local data
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('about');
 
-  // Fetch team members from Strapi
-  const { data: teamMembers, isLoading: isTeamLoading } = useTeamMembers();
+  // Temporarily use fallback team data until ERPNext is configured
+  const teamMembers = defaultTeamMembers;
+  const isTeamLoading = false;
 
   // Use local page content if Strapi data is not available
   const displayPageContent = pageContent || localAboutPageContent;

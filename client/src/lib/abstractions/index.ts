@@ -147,7 +147,12 @@ export interface IQueryResult<T> {
 /**
  * List query result
  */
-export interface IListQueryResult<T> extends IQueryResult<T[]> {
+export interface IListQueryResult<T> {
+  readonly data: T[];
+  readonly isLoading: boolean;
+  readonly error: Error | null;
+  readonly isSuccess: boolean;
+  readonly isError: boolean;
   readonly isEmpty: boolean;
   readonly hasData: boolean;
   readonly count: number;

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import MetaTags from '@/components/seo/MetaTags';
 import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';
-
-// Import company logo for service slider
 
 // Import section components
 import OriginalHero from '@/components/sections/home/OriginalHero';
@@ -15,15 +13,22 @@ import ClientsSection from '@/components/sections/home/ClientsSection';
 import TestimonialsSection from '@/components/sections/home/TestimonialsSection';
 import BlogPostsSection from '@/components/sections/home/BlogPostsSection';
 
-// Import data
+// Import hooks and services (temporarily using fallback data directly)
+// import { 
+//     useGenericList,
+//     useGenericPageContent 
+// } from '@/hooks/useGenericContent';
+// import { StrapiService, StrapiPageContentSource } from '@/lib/services/StrapiService';
+
+// Import fallback data for now (will be removed once Strapi is fully set up)
 import {
     homePageContent as localHomePageContent,
-    services,
-    products,
-    caseStudies,
-    clients,
-    testimonials,
-    blogPosts
+    services as fallbackServices,
+    products as fallbackProducts,
+    caseStudies as fallbackCaseStudies,
+    clients as fallbackClients,
+    testimonials as fallbackTestimonials,
+    blogPosts as fallbackBlogPosts
 } from '@/lib/data';
 
 // Import types
@@ -32,34 +37,90 @@ import { PageContent } from '@/lib/types/core';
 const Home: React.FC = () => {
     const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
 
-    // State for loading and data
-    const [isLoading, setIsLoading] = useState(true);
-    const [homePageContent, setHomePageContent] = useState<PageContent | null>(null);
+    // Initialize services (temporarily disabled)
+    // const strapiService = new StrapiService();
+    // const pageContentSource = new StrapiPageContentSource(strapiService);
 
-    // Simulate loading from Strapi (since useStrapiContent is not available)
-    useEffect(() => {
-        const loadData = async () => {
-            setIsLoading(true);
-            try {
-                // Simulate API call delay
-                await new Promise(resolve => setTimeout(resolve, 500));
+    // For now, use fallback page content directly until Strapi is configured
+    const pageContentQuery = { 
+        data: localHomePageContent, 
+        isLoading: false, 
+        error: null, 
+        isSuccess: true, 
+        isError: false 
+    };
 
-                // Use local fallback data since Strapi is not available
-                setHomePageContent(localHomePageContent);
-            } catch (error) {
-                console.error('Error loading home page data:', error);
-                // Fallback to local data on error
-                setHomePageContent(localHomePageContent);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    // For now, use fallback data directly until Strapi is fully configured
+    // This ensures the homepage works while we set up the CMS
+    const servicesQuery = { 
+        data: fallbackServices, 
+        isLoading: false, 
+        error: null, 
+        isSuccess: true, 
+        isError: false,
+        isEmpty: false,
+        hasData: true,
+        count: fallbackServices.length
+    };
 
-        loadData();
-    }, []);
+    const productsQuery = { 
+        data: fallbackProducts, 
+        isLoading: false, 
+        error: null, 
+        isSuccess: true, 
+        isError: false,
+        isEmpty: false,
+        hasData: true,
+        count: fallbackProducts.length
+    };
 
-    // Use fallback data if no content is loaded
-    const displayHomePageContent = homePageContent || localHomePageContent;
+    const caseStudiesQuery = { 
+        data: fallbackCaseStudies, 
+        isLoading: false, 
+        error: null, 
+        isSuccess: true, 
+        isError: false,
+        isEmpty: false,
+        hasData: true,
+        count: fallbackCaseStudies.length
+    };
+
+    const testimonialsQuery = { 
+        data: fallbackTestimonials, 
+        isLoading: false, 
+        error: null, 
+        isSuccess: true, 
+        isError: false,
+        isEmpty: false,
+        hasData: true,
+        count: fallbackTestimonials.length
+    };
+
+    const clientsQuery = { 
+        data: fallbackClients, 
+        isLoading: false, 
+        error: null, 
+        isSuccess: true, 
+        isError: false,
+        isEmpty: false,
+        hasData: true,
+        count: fallbackClients.length
+    };
+
+    const blogPostsQuery = { 
+        data: fallbackBlogPosts, 
+        isLoading: false, 
+        error: null, 
+        isSuccess: true, 
+        isError: false,
+        isEmpty: false,
+        hasData: true,
+        count: fallbackBlogPosts.length
+    };
+
+    // Extract data with fallbacks
+    const displayHomePageContent = pageContentQuery.data;
+    const isLoading = false; // Using fallback data, so no loading state needed
 
     // SEO data
     const seoTitle = generateSeoTitle(displayHomePageContent?.title || 'I-VARSE Technologies');
@@ -93,7 +154,7 @@ const Home: React.FC = () => {
                 {/* Specializations Section (includes services) */}
                 <SpecializationsSection
                     homePageContent={displayHomePageContent}
-                    services={services}
+                    services={servicesQuery.data}
                     isLoading={isLoading}
                 />
 
@@ -106,34 +167,34 @@ const Home: React.FC = () => {
                 {/* Products Section */}
                 <ProductsSection
                     homePageContent={displayHomePageContent}
-                    products={products}
+                    products={productsQuery.data}
                     isLoading={isLoading}
                 />
 
                 {/* Case Studies Section */}
                 <CaseStudiesSection
                     homePageContent={displayHomePageContent}
-                    caseStudies={caseStudies}
+                    caseStudies={caseStudiesQuery.data}
                     isLoading={isLoading}
                 />
 
                 {/* Testimonials Section */}
                 <TestimonialsSection
                     homePageContent={displayHomePageContent}
-                    testimonials={testimonials}
+                    testimonials={testimonialsQuery.data}
                     isLoading={isLoading}
                 />
 
                 {/* Blog Posts Section */}
                 <BlogPostsSection
                     homePageContent={displayHomePageContent}
-                    blogPosts={blogPosts}
+                    blogPosts={blogPostsQuery.data}
                     isLoading={isLoading}
                 />
                 {/* Clients Section */}
                 <ClientsSection
                     homePageContent={displayHomePageContent}
-                    clientLogos={clients}
+                    clientLogos={clientsQuery.data}
                     isLoading={isLoading}
                 />
             </main>

@@ -18,6 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ContactFormData } from '@/lib/types';
 import { submitContactForm } from '@/lib/erpnext';
 import { useUIContent, useUIText } from '@/hooks/useContent';
+import { getUIText as getUITextFallback, UI_TEXT_FALLBACKS } from '@/lib/fallbacks';
 
 const contactFormSchema = z.object({
   fullName: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -134,10 +135,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">Phone *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.phone} *</FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Enter your phone number" 
+                    placeholder={UI_TEXT_FALLBACKS.forms.placeholders.phone} 
                     type="tel"
                     {...field} 
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -153,7 +154,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="requestType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">Request Type *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.requestType} *</FormLabel>
                 <FormControl>
                   <select
                     {...field}
@@ -176,10 +177,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">Message *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.message} *</FormLabel>
                 <FormControl>
                   <Textarea 
-                    placeholder="Tell us about your project" 
+                    placeholder={UI_TEXT_FALLBACKS.forms.placeholders.message} 
                     rows={4}
                     {...field} 
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

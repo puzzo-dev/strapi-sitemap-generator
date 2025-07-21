@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import AppLink from '@/components/ui/AppLink';
 import { TeamMember } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
+import { findSection } from '@/lib/utils/section-helpers';
+import { SkeletonHero } from '@/components/ui/LoadingSkeleton';
 
 interface TeamMemberHeroSectionProps {
     member: TeamMember;
@@ -18,40 +20,23 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
     isLoading = false, 
     pageContent 
 }) => {
-    // Get hero section from page content
-    const heroSection = pageContent?.sections?.find(s => s.type === 'hero');
+    // Get hero section using centralized utility
+    const heroSection = findSection(pageContent, 'hero');
     
-    // Get team members from page content settings
-    const teamMembers = useMemo(() => {
-        return pageContent?.sections?.[0]?.settings?.teamMembers || [];
-    }, [pageContent]);
-
-    // Get current member from page content if not provided
-    const currentMember = useMemo(() => {
-        if (member) return member as TeamMember;
-        // If no member provided, try to get from URL or default to first member
-        // This is a fallback for when the component is used standalone
-        return teamMembers[0] as TeamMember;
-    }, [member, teamMembers]);
+    // Use the member prop directly - it's already resolved in the parent component
+    const currentMember = member;
 
     if (isLoading || !currentMember) {
         return (
             <section className={`relative overflow-hidden ${heroSection?.backgroundColor || 'bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]'} py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section`}>
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="max-w-6xl mx-auto">
-                        <div className="animate-pulse">
-                            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-32 mb-8"></div>
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-                                <div className="lg:col-span-1">
-                                    <div className="w-full h-96 lg:h-[500px] bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
-                                </div>
-                                <div className="lg:col-span-2 space-y-6">
-                                    <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                                    <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-                                    <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <SkeletonHero 
+                            showBadge={true}
+                            titleLines={1} 
+                            descriptionLines={2}
+                            showButtons={false}
+                        />
                     </div>
                 </div>
             </section>
@@ -105,44 +90,10 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
                                 {/* Title and Subtitle from page content */}
                                 <div>
                                     <h1 className="heading-xl mb-4 leading-tight">
-                                        {heroSection?.title || (currentMember.name ? (
-                                            (() => {
-                                                const words = currentMember.name.split(' ');
-                                                let highlightedWords = '';
-                                                let regularWords = '';
-
-                                                if (words.length >= 3) {
-                                                    // 3+ words: highlight last 2 words
-                                                    highlightedWords = words.slice(-2).join(' ');
-                                                    regularWords = words.slice(0, -2).join(' ');
-                                                } else if (words.length === 2) {
-                                                    // 2 words: highlight only the last word
-                                                    highlightedWords = words[1];
-                                                    regularWords = words[0];
-                                                } else {
-                                                    // 1 word: no highlighting
-                                                    regularWords = words[0];
-                                                }
-
-                                                return (
-                                                    <>
-                                                        {regularWords}{' '}
-                                                        {highlightedWords && (
-                                                            <span className="gradient-text">
-                                                                {highlightedWords}
-                                                            </span>
-                                                        )}
-                                                    </>
-                                                );
-                                            })()
-                                        ) : (
-                                            <>
-                                                Meet Our <span className="gradient-text">Team Member</span>
-                                            </>
-                                        ))}
+                                        {currentMember.name || heroSection?.title || 'Team Member'}
                                     </h1>
                                     <p className="text-2xl md:text-3xl text-blue-800 dark:text-blue-200 font-semibold mb-2">
-                                        {heroSection?.subtitle || currentMember.position}
+                                        {currentMember.position || heroSection?.subtitle}
                                     </p>
                                     {currentMember.role && currentMember.role !== currentMember.position && (
                                         <p className="text-lg text-gray-600 dark:text-gray-300">
@@ -151,11 +102,11 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
                                     )}
                                 </div>
 
-                                {/* Description from page content or member */}
-                                {(heroSection?.content || currentMember.description) && (
+                                {/* Description from member or page content */}
+                                {(currentMember.description || heroSection?.content) && (
                                     <div>
                                         <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                                            {heroSection?.content || currentMember.description}
+                                            {currentMember.description || heroSection?.content}
                                         </p>
                                     </div>
                                 )}
