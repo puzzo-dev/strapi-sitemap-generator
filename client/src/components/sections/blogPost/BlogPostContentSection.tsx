@@ -5,7 +5,8 @@ import { FiTag, FiShare2 } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import type { BlogPost } from '@/lib/types';
+import type { BlogPost } from '@/lib/types/content';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface BlogPostContentSectionProps {
     post: BlogPost;
@@ -21,8 +22,8 @@ const BlogPostContentSection: React.FC<BlogPostContentSectionProps> = ({ post, o
     };
 
     return (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden">
-            <div className="p-6 md:p-10">
+        <Card className="shadow-md overflow-hidden">
+            <CardContent className="p-6 md:p-10">
                 {/* Post intro */}
                 <div className="text-lg md:text-xl text-muted-foreground mb-8 font-medium border-l-4 border-primary pl-4 py-2 bg-primary/5 dark:bg-primary/10 rounded-r-lg italic">
                     {post.blogIntro}
@@ -75,11 +76,11 @@ const BlogPostContentSection: React.FC<BlogPostContentSectionProps> = ({ post, o
                 {/* Share button */}
                 <div className="mt-10 pt-6 border-t">
                     <Button variant="outline" onClick={onShare} className="flex items-center">
-                        <FiShare2 className="mr-2" /> {t('blog.sharePost')}
+                        <FiShare2 className="mr-2" /> {t('ui.sharePost')}
                     </Button>
                 </div>
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     );
 };
 

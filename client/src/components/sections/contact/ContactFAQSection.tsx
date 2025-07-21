@@ -2,30 +2,38 @@ import React from 'react';
 import BackgroundDecoration from '@/components/ui/BackgroundDecoration';
 
 interface ContactFAQSectionProps {
-    faqSection: any;
-    isPageLoading: boolean;
+    faqSection?: any;
+    faqItems?: any[];
+    isLoading?: boolean;
+    isPageLoading?: boolean;
 }
 
 const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
     faqSection,
+    faqItems,
+    isLoading,
     isPageLoading,
 }) => {
+    // Determine which data to use and loading state
+    const displayFAQItems = faqItems || faqSection?.settings?.items || faqSection?.settings?.featured || [];
+    const isDataLoading = isLoading || isPageLoading;
+
     return (
         <section className="bg-white dark:bg-[#0a1929] py-24 relative overflow-hidden">
             <BackgroundDecoration variant="faq" />
 
             <div className="container-custom relative z-10">
-                <header className="text-center mb-16">
-                    <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-                        {faqSection?.title || 'Frequently Asked Questions'}
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold mb-4 text-blue-900 dark:text-blue-200 !text-3xl md:!text-4xl lg:!text-5xl">
+                        Frequently Asked Questions
                     </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        {faqSection?.subtitle}
+                    <p className="text-gray-600 dark:text-gray-300 !text-base md:!text-lg lg:!text-xl">
+                        Find answers to common questions about our services and how we can help your business.
                     </p>
-                </header>
+                </div>
 
                 <div className="max-w-3xl mx-auto space-y-6">
-                    {isPageLoading ? (
+                    {isDataLoading ? (
                         // Loading skeleton for FAQs
                         Array(3).fill(0).map((_, index) => (
                             <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 animate-pulse" aria-hidden="true">
@@ -36,17 +44,17 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
                             </div>
                         ))
                     ) : (
-                        // Display FAQ items from the settings.featured property
-                        faqSection?.settings?.featured?.map((faq: any, index: number) => (
+                        // Display FAQ items
+                        displayFAQItems.map((faq: any, index: number) => (
                             <article
-                                key={index}
+                                key={faq.id || index}
                                 className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
                             >
-                                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                                    {faq.question}
+                                <h3 className="!text-xl md:!text-2xl lg:!text-3xl font-semibold mb-2 text-gray-900 dark:text-white">
+                                    {faq.question || faq.title}
                                 </h3>
-                                <div className="text-gray-600 dark:text-gray-300">
-                                    {faq.answer}
+                                <div className="!text-base md:!text-lg lg:!text-xl text-gray-600 dark:text-gray-300">
+                                    {faq.answer || faq.description}
                                 </div>
                             </article>
                         ))

@@ -1,105 +1,55 @@
-import React, { useState, useMemo } from "react";
-import { Helmet } from "react-helmet";
-import { usePageContent } from "../hooks/useStrapiContent";
-import { faqContent } from "../lib/data";
-import { FAQItem, FAQCategory, FAQPageContent } from "../lib/types";
-import { useSeoHelpers } from "@/hooks/useSeoHelpers";
-import MetaTags from "@/components/seo/MetaTags";
+import React, { useState } from 'react';
+import { usePageContent, useFAQItems } from '@/hooks/useStrapiContent';
+import { useSeoHelpers } from '@/hooks/useSeoHelpers';
+import MetaTags from '@/components/seo/MetaTags';
+import { generateOrganizationSchema } from '@/components/seo/StructuredData';
+import { faqPageContent as localFAQPageContent } from '@/lib/data/pages';
 
 // Import section components
 import {
     FAQHeroSection,
-    FAQStatsSection,
-    FAQPopularSection,
     FAQCategoriesSection,
     FAQContactSection
 } from "@/components/sections/faq";
 
 const FAQ: React.FC = () => {
-    const { data: faqPageContent, isLoading, error } = usePageContent("faq");
     const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
 
-    // Use fallback data if API data is not available
-    const faqData = useMemo(() => {
-        return (faqPageContent as FAQPageContent) || faqContent;
-    }, [faqPageContent]);
-
-    const title = faqData.title;
-    const description = faqData.description;
-    const categories = faqData.categories || [];
-
-    // Get items directly from the page content level as per the type definition
-    const faqItems = useMemo(() => {
-        return faqData.items || [];
-    }, [faqData]);
-
-    const [activeCategory, setActiveCategory] = useState<number>(
-        categories && categories.length > 0 ? categories[0].id : 1
-    );
+    // State for FAQ categories section
+    const [activeCategory, setActiveCategory] = useState<number>(1);
     const [expandedItems, setExpandedItems] = useState<number[]>([]);
 
+    // Fetch page content from Strapi or use local data
+    const { data: pageContent, isLoading: isPageLoading } = usePageContent('faq');
+
+    // Fetch FAQ items from Strapi
+    const { data: apiFAQItems, isLoading: isFAQLoading } = useFAQItems();
+
+    // Use local page content if Strapi data is not available
+    const displayPageContent = pageContent || localFAQPageContent;
+
+    // Use API FAQ items if available, otherwise fall back to local data from faqPageContent
+    const displayFAQItems = apiFAQItems || localFAQPageContent.sections?.find(s => s.type === 'custom')?.settings?.faqItems || [];
+    const displayCategories = localFAQPageContent.sections?.find(s => s.type === 'custom')?.settings?.faqCategories || [];
+
+    // Generate SEO metadata using comprehensive prop drilling
+    const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
+    const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
+    const structuredData = generateOrganizationSchema();
+
+    // Extract sections with fallback to local data
+    const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero') || { id: 0 };
+    const categoriesSection = displayPageContent?.sections?.find(s => s.type === 'custom') || { id: 0 };
+    const contactSection = displayPageContent?.sections?.find(s => s.type === 'contact') || { id: 0 };
+
+    // Handle FAQ item expansion
     const toggleItem = (itemId: number) => {
-        setExpandedItems((prev) =>
+        setExpandedItems(prev => 
             prev.includes(itemId)
-                ? prev.filter((id) => id !== itemId)
+                ? prev.filter(id => id !== itemId)
                 : [...prev, itemId]
         );
     };
-
-    const handlePopularQuestionClick = (itemId: number) => {
-        // Expand the item and scroll to the categories section
-        setExpandedItems((prev) =>
-            prev.includes(itemId) ? prev : [...prev, itemId]
-        );
-
-        // Find the category for this item and set it as active
-        const item = faqItems.find(faq => faq.id === itemId);
-        if (item && item.categoryIds && item.categoryIds.length > 0) {
-            setActiveCategory(item.categoryIds[0]);
-        }
-
-        // Scroll to the categories section
-        const categoriesSection = document.getElementById('faq-categories');
-        if (categoriesSection) {
-            categoriesSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
-    // SEO metadata
-    const pageTitle = generateSeoTitle(title);
-    const pageDescription = generateSeoDescription(description);
-
-    // Structured data for FAQ
-    const faqStructuredData = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqItems.map(item => ({
-            "@type": "Question",
-            "name": item.question,
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": item.answer
-            }
-        }))
-    };
-
-    // Error handling
-    if (error) {
-        return (
-            <main className="container-custom py-16">
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading FAQ</h1>
-                    <p className="text-red-500">Failed to load FAQ content. Please try again later.</p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                    >
-                        Retry
-                    </button>
-                </div>
-            </main>
-        );
-    }
 
     return (
         <>
@@ -108,53 +58,33 @@ const FAQ: React.FC = () => {
                 title={pageTitle}
                 description={pageDescription}
                 canonicalUrl="https://itechnologies.ng/faq"
-                ogImage="https://itechnologies.ng/og-faq.jpg"
+                ogImage="https://itechnologies.ng/faq-og-image.jpg"
                 ogUrl="https://itechnologies.ng/faq"
                 ogType="website"
-                keywords={['FAQ', 'frequently asked questions', 'help', 'support', 'I-VARSE Technologies']}
-                structuredData={faqStructuredData}
+                twitterCard="summary_large_image"
+                structuredData={structuredData}
             />
 
-            <main>
                 {/* Hero Section */}
                 <FAQHeroSection
-                    title={title}
-                    description={description}
-                    isLoading={isLoading}
+                title={heroSection.title || "Frequently Asked Questions"}
+                description={heroSection.content || "Find answers to common questions about our services and solutions."}
+                isLoading={isPageLoading}
                 />
 
-                {/* Stats Section */}
-                {!isLoading && (
-                    <FAQStatsSection
-                        categories={categories}
-                        faqItems={faqItems}
-                    />
-                )}
-
-                {/* Popular Questions Section */}
-                {!isLoading && faqItems.length > 0 && (
-                    <FAQPopularSection
-                        faqItems={faqItems}
-                        onQuestionClick={handlePopularQuestionClick}
-                    />
-                )}
-
-                {/* Categories and FAQ Items Section */}
-                <div id="faq-categories">
+            {/* FAQ Categories Section */}
                     <FAQCategoriesSection
-                        categories={categories}
-                        faqItems={faqItems}
+                categories={displayCategories}
+                faqItems={displayFAQItems}
                         activeCategory={activeCategory}
                         setActiveCategory={setActiveCategory}
                         expandedItems={expandedItems}
                         toggleItem={toggleItem}
-                        isLoading={isLoading}
+                        isLoading={isFAQLoading}
                     />
-                </div>
 
                 {/* Contact Section */}
                 <FAQContactSection />
-            </main>
         </>
     );
 };

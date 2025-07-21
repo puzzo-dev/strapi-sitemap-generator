@@ -8,7 +8,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import type { BlogCategory } from '@/lib/types';
+import type { BlogCategory } from '@/lib/types/content';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface BlogFiltersSectionProps {
     search: string;
@@ -18,7 +19,7 @@ interface BlogFiltersSectionProps {
     tag: string;
     setTag: (value: string) => void;
     categories: BlogCategory[];
-    allTags: string[];
+    allTags: { tag: string; count: number }[];
 }
 
 const BlogFiltersSection: React.FC<BlogFiltersSectionProps> = ({
@@ -34,48 +35,50 @@ const BlogFiltersSection: React.FC<BlogFiltersSectionProps> = ({
     const { t } = useTranslation();
 
     return (
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md mb-8">
-            <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-grow">
-                    <Input
-                        placeholder={t('blog.searchPlaceholder')}
-                        value={search}
-                        onChange={(e: { target: { value: string; }; }) => setSearch(e.target.value)}
-                        className="w-full"
-                    />
+        <Card className="p-6 shadow-md mb-8">
+            <CardContent>
+                <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex-grow">
+                        <Input
+                            placeholder={t('ui.searchPlaceholder')}
+                            value={search}
+                            onChange={(e: { target: { value: string; }; }) => setSearch(e.target.value)}
+                            className="w-full"
+                        />
+                    </div>
+                    <div className="w-full md:w-44">
+                        <Select value={category} onValueChange={setCategory}>
+                            <SelectTrigger>
+                                <SelectValue placeholder={t('ui.selectCategory')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">{t('ui.allCategories')}</SelectItem>
+                                {categories.map(cat => (
+                                    <SelectItem key={cat.slug} value={cat.slug}>
+                                        {cat.title}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="w-full md:w-44">
+                        <Select value={tag} onValueChange={setTag}>
+                            <SelectTrigger>
+                                <SelectValue placeholder={t('ui.selectTag')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">{t('ui.allTags')}</SelectItem>
+                                {allTags.map(({ tag: tagName, count }) => (
+                                    <SelectItem key={tagName} value={tagName}>
+                                        {tagName} ({count})
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
-                <div className="w-full md:w-44">
-                    <Select value={category} onValueChange={setCategory}>
-                        <SelectTrigger>
-                            <SelectValue placeholder={t('blog.selectCategory')} />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">{t('blog.allCategories')}</SelectItem>
-                            {categories.map(cat => (
-                                <SelectItem key={cat.slug} value={cat.slug}>
-                                    {cat.title}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div className="w-full md:w-44">
-                    <Select value={tag} onValueChange={setTag}>
-                        <SelectTrigger>
-                            <SelectValue placeholder={t('blog.selectTag')} />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">{t('blog.allTags')}</SelectItem>
-                            {allTags.map(t => (
-                                <SelectItem key={t} value={t}>
-                                    {t}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     );
 };
 

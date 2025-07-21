@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiArrowLeft, FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import { Badge } from '@/components/ui/badge';
-import type { BlogPost } from '@/lib/types';
+import type { BlogPost } from '@/lib/types/content';
 import { formatDate } from '@/lib/utils';
 
 interface BlogPostHeroSectionProps {
@@ -40,7 +40,7 @@ const BlogPostHeroSection: React.FC<BlogPostHeroSectionProps> = ({ post }) => {
         <Link href="/blog">
           <div className="inline-flex items-center text-white/90 hover:text-white mb-10 group/back transition-colors">
             <FiArrowLeft className="mr-2 group-hover/back:-translate-x-1 transition-transform" />
-            <span className="font-medium">{t('blog.backToBlog')}</span>
+            <span className="font-medium">{t('ui.backToBlog')}</span>
           </div>
         </Link>
 

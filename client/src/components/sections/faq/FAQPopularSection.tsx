@@ -1,6 +1,6 @@
 import React from 'react';
-import { FAQItem } from '@/lib/types';
-import { TrendingUp, ArrowRight } from 'lucide-react';
+import { FAQItem } from '@/lib/types/content';
+import { ArrowRight } from 'lucide-react';
 
 interface FAQPopularSectionProps {
     faqItems: FAQItem[];
@@ -24,15 +24,15 @@ const FAQPopularSection: React.FC<FAQPopularSectionProps> = ({
         <section className={`py-16 bg-white dark:bg-gray-900 ${className}`}>
             <div className="container-custom">
                 <div className="text-center mb-12">
-                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 mb-4">
-                        <TrendingUp className="h-4 w-4 mr-2" />
-                        <span className="text-sm font-medium">Most Popular</span>
+                    <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+                        <span className="text-lg mr-2">📈</span>
+                        Popular Questions
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                        Frequently Asked Questions
+                    <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-4">
+                        Popular Questions
                     </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        Quick answers to the questions you're most likely to have.
+                    <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                        Find answers to the most commonly asked questions about our services.
                     </p>
                 </div>
 
@@ -43,7 +43,7 @@ const FAQPopularSection: React.FC<FAQPopularSectionProps> = ({
                             className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors cursor-pointer group"
                             onClick={() => onQuestionClick(item.id)}
                         >
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                 {item.question}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-4">

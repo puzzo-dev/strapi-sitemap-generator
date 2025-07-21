@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { FAQItem, FAQCategory } from '@/lib/types';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { FAQItem, FAQCategory, FAQCategoriesSectionProps } from '@/lib/types/content';
 import FAQSearchSection from './FAQSearchSection';
-
-interface FAQCategoriesSectionProps {
-    categories: FAQCategory[];
-    faqItems: FAQItem[];
-    activeCategory: number;
-    setActiveCategory: (categoryId: number) => void;
-    expandedItems: number[];
-    toggleItem: (itemId: number) => void;
-    isLoading: boolean;
-}
 
 const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
     categories,
@@ -45,7 +37,7 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
 
     const displayTitle = isSearching 
         ? "Search Results" 
-        : categories.find((c: FAQCategory) => c.id === activeCategory)?.title || "Frequently Asked Questions";
+        : categories.find((c: FAQCategory) => c.id === activeCategory)?.title;
 
     const displayDescription = isSearching 
         ? "Results matching your search query" 
@@ -89,37 +81,37 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
                                 />
 
                                 {/* Categories */}
-                                <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 shadow-sm">
+                                <Card>
+                                    <CardContent className="p-4">
                                     <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
                                         Categories
                                     </h3>
                                     <ul className="space-y-2">
                                         {categories.map((category: FAQCategory) => (
                                             <li key={category.id}>
-                                                <button
+                                                    <Button
+                                                        variant={activeCategory === category.id && !isSearching ? "default" : "ghost"}
                                                     onClick={() => {
                                                         setActiveCategory(category.id);
                                                         setIsSearching(false);
                                                         setSearchResults([]);
                                                     }}
-                                                    className={`w-full text-left px-3 py-2 rounded-md transition ${
-                                                        activeCategory === category.id && !isSearching
-                                                            ? "bg-blue-600 text-white"
-                                                            : "hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-                                                    }`}
+                                                        className="w-full justify-start"
                                                 >
                                                     {category.title}
-                                                </button>
+                                                    </Button>
                                             </li>
                                         ))}
                                     </ul>
-                                </div>
+                                    </CardContent>
+                                </Card>
                             </div>
                         </div>
 
                         <div className="lg:col-span-9">
-                            <div className="bg-white dark:bg-gray-900/30 rounded-lg shadow-sm p-6">
-                                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+                            <Card>
+                                <CardContent className="p-6">
+                                <h2 className="text-xl font-bold mb-6 text-blue-900 dark:text-blue-200">
                                     {displayTitle}
                                 </h2>
                                 {displayDescription && (
@@ -131,17 +123,15 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
                                 <div className="space-y-4">
                                     {filteredItems.length > 0 ? (
                                         filteredItems.map((item: FAQItem) => (
-                                            <div
-                                                key={item.id}
-                                                className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
-                                            >
-                                                <button
+                                                <Card key={item.id}>
+                                                    <Button
+                                                        variant="ghost"
                                                     onClick={() => toggleItem(item.id)}
                                                     aria-expanded={expandedItems.includes(item.id)}
                                                     aria-controls={`faq-content-${item.id}`}
-                                                    className="w-full flex justify-between items-center p-4 text-left bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                                                        className="w-full flex justify-between items-center p-4 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                                                 >
-                                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                                                    <h3 className="text-base font-medium text-gray-900 dark:text-white">
                                                         {item.question}
                                                     </h3>
                                                     {expandedItems.includes(item.id) ? (
@@ -149,7 +139,7 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
                                                     ) : (
                                                         <ChevronDown className="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
                                                     )}
-                                                </button>
+                                                    </Button>
 
                                                 <div
                                                     id={`faq-content-${item.id}`}
@@ -157,11 +147,11 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
                                                         expandedItems.includes(item.id) ? 'max-h-96' : 'max-h-0'
                                                     }`}
                                                 >
-                                                    <div className="p-4 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300">
+                                                        <div className="p-4 text-gray-700 dark:text-gray-300">
                                                         <p>{item.answer}</p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </Card>
                                         ))
                                     ) : (
                                         <div className="text-center py-8">
@@ -174,7 +164,8 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
                                         </div>
                                     )}
                                 </div>
-                            </div>
+                                </CardContent>
+                            </Card>
                         </div>
                     </div>
                 )}

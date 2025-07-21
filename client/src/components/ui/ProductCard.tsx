@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'wouter';
 import { ArrowRight, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
-import GradientButton from './GradientButton';
-import { ProductCardProps, ProductProps } from '@/lib/types';
-import { fadeInUp } from '@/lib/animations';
+import { ProductCardProps } from '@/lib/types';
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }) => {
+  // Extract benefits array from PageSection structure
+  const benefits = product?.benefits?.items || [];
+  
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 md:gap-8 items-center">
       {/* Image column */}
@@ -76,7 +77,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
               Key Features
             </h4>
             <ul className="space-y-1.5 sm:space-y-2">
-              {product?.keyFeatures.map((feature, index) => (
+              {product?.keyFeatures?.map((feature, index) => (
                 <motion.li
                   key={index}
                   className="flex items-start"
@@ -107,9 +108,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
               Benefits
             </h4>
             <ul className="space-y-1.5 sm:space-y-2">
-              {product?.benefits.map((benefit, index) => (
+              {benefits.map((benefit, index) => (
                 <motion.li
-                  key={index}
+                  key={benefit.id || index}
                   className="flex items-start"
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -122,7 +123,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
                   >
                     <Check className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500 dark:text-purple-400" />
                   </motion.span>
-                  <span className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300">{benefit}</span>
+                  <span className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300">{benefit.title}</span>
                 </motion.li>
               ))}
             </ul>
@@ -135,7 +136,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.4 }}
         >
-          <Link href={`/products/${product?.id}`}>
+          <Link href={`/products/${product?.slug}`}>
             <motion.div
               className="button-spec inline-flex items-center text-blue-600 dark:text-blue-400 text-sm sm:text-base font-medium group"
               whileHover={{ scale: 1.02 }}

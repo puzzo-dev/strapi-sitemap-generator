@@ -1,13 +1,13 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SUPPORTED_LANGUAGES } from '@/lib/utils';
 import { setCurrentLanguage } from '@/lib/strapi';
 import { LanguageContextType, LanguageProviderProps } from '@/lib/types';
+import { useLanguageConfig, useUITranslations } from '@/hooks/useLanguageConfig';
 
 const defaultContext: LanguageContextType = {
   currentLanguage: 'en',
   setLanguage: () => {},
-  supportedLanguages: SUPPORTED_LANGUAGES,
+  supportedLanguages: ['en'], // Will be updated from Strapi
 };
 
 // Create context with a consistent name
@@ -18,12 +18,34 @@ const LanguageContext = createContext<LanguageContextType>(defaultContext);
 // Use function declarations for components, as recommended for Fast Refresh
 function LanguageProvider({ children }: LanguageProviderProps) {
   const { i18n } = useTranslation();
+  
+  // Fetch language configuration from Strapi
+  const { data: languageConfig, isLoading: isConfigLoading } = useLanguageConfig();
+  
   const [currentLanguage, setCurrentLang] = useState(() => {
     const saved = localStorage.getItem('preferredLanguage');
-    return saved && SUPPORTED_LANGUAGES.includes(saved as any) 
-      ? saved 
-      : 'en';
+    // Will validate against Strapi supported languages after config loads
+    return saved || 'en';
   });
+
+  // Validate and update language when config loads
+  useEffect(() => {
+    if (languageConfig && !isConfigLoading) {
+      const supportedLanguages = languageConfig.supportedLanguages;
+      const saved = localStorage.getItem('preferredLanguage');
+      
+      // Validate saved language against Strapi supported languages
+      if (saved && supportedLanguages.includes(saved)) {
+        if (currentLanguage !== saved) {
+          setCurrentLang(saved);
+        }
+      } else if (languageConfig.defaultLanguage && currentLanguage !== languageConfig.defaultLanguage) {
+        // Use Strapi default language if current language not supported
+        setCurrentLang(languageConfig.defaultLanguage);
+        localStorage.setItem('preferredLanguage', languageConfig.defaultLanguage);
+      }
+    }
+  }, [languageConfig, isConfigLoading, currentLanguage]);
 
   useEffect(() => {
     i18n.changeLanguage(currentLanguage);
@@ -31,6 +53,13 @@ function LanguageProvider({ children }: LanguageProviderProps) {
 
   const setLanguage = (lang: string) => {
     if (currentLanguage === lang) return; // No change if same language
+    
+    // Validate against Strapi supported languages
+    const supportedLanguages = languageConfig?.supportedLanguages || ['en'];
+    if (!supportedLanguages.includes(lang)) {
+      console.warn(`Language ${lang} not supported. Supported: ${supportedLanguages.join(', ')}`);
+      return;
+    }
     
     setCurrentLang(lang);
     localStorage.setItem('preferredLanguage', lang);
@@ -47,7 +76,7 @@ function LanguageProvider({ children }: LanguageProviderProps) {
       value={{ 
         currentLanguage, 
         setLanguage, 
-        supportedLanguages: SUPPORTED_LANGUAGES
+        supportedLanguages: languageConfig?.supportedLanguages || ['en']
       }}
     >
       {children}

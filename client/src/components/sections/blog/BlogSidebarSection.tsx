@@ -5,48 +5,44 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import NewsletterForm from '@/components/ui/NewsletterForm';
-import type { BlogCategory, PageSection } from '@/lib/types';
+import type { BlogCategory } from '@/lib/types/content';
+import type { PageContent } from '@/lib/types/core';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface BlogSidebarSectionProps {
     categories: BlogCategory[];
-    isLoadingCategories: boolean;
     category: string;
     setCategory: (value: string) => void;
-    allTags: string[];
-    isLoadingPosts: boolean;
+    allTags: { tag: string; count: number }[];
     tag: string;
     setTag: (value: string) => void;
-    categoriesSection?: PageSection;
-    topicsSection?: PageSection;
+    categoryCounts: Map<string, number>;
+    pageContent: PageContent;
 }
 
 const BlogSidebarSection: React.FC<BlogSidebarSectionProps> = ({
     categories,
-    isLoadingCategories,
     category,
     setCategory,
     allTags,
-    isLoadingPosts,
     tag,
     setTag,
-    categoriesSection,
-    topicsSection,
+    categoryCounts,
+    pageContent,
 }) => {
     const { t } = useTranslation();
+
+    // Get sidebar sections from page content
+    const categoriesSection = pageContent?.sections?.find(s => s.type === 'custom' && s.title?.toLowerCase().includes('category'));
+    const topicsSection = pageContent?.sections?.find(s => s.type === 'custom' && s.title?.toLowerCase().includes('tag'));
 
     return (
         <div className="md:w-1/4 space-y-8">
             {/* Categories */}
-            <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold mb-4">{categoriesSection?.title || t('blog.categories')}</h3>
-                <Separator className="mb-4" />
-                {isLoadingCategories ? (
-                    <div className="space-y-2">
-                        {Array(5).fill(0).map((_, index) => (
-                            <Skeleton key={index} className="h-6 w-full" />
-                        ))}
-                    </div>
-                ) : (
+            <Card className="p-6 shadow-md">
+                <CardContent>
+                    <h3 className="text-xl font-bold mb-4">{categoriesSection?.title || t('ui.categories')}</h3>
+                    <Separator className="mb-4" />
                     <ul className="space-y-2">
                         {categories.map(cat => (
                             <li key={cat.slug}>
@@ -57,51 +53,47 @@ const BlogSidebarSection: React.FC<BlogSidebarSectionProps> = ({
                                 >
                                     {cat.title}
                                     <span className="ml-auto text-xs bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">
-                                        {(categoriesSection?.settings?.items?.find((item: any) => item.slug === cat.slug)?.count) || 0}
+                                        {categoryCounts.get(cat.slug) || 0}
                                     </span>
                                 </Button>
                             </li>
                         ))}
                     </ul>
-                )}
-            </div>
+                </CardContent>
+            </Card>
 
             {/* Tags */}
-            <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold mb-4">{topicsSection?.title || t('blog.popularTags')}</h3>
-                <Separator className="mb-4" />
-                {isLoadingPosts ? (
+            <Card className="p-6 shadow-md">
+                <CardContent>
+                    <h3 className="text-xl font-bold mb-4">{topicsSection?.title || t('ui.popularTags')}</h3>
+                    <Separator className="mb-4" />
                     <div className="flex flex-wrap gap-2">
-                        {Array(10).fill(0).map((_, index) => (
-                            <Skeleton key={index} className="h-8 w-16" />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="flex flex-wrap gap-2">
-                        {allTags.map(t => (
+                        {allTags.map(({ tag: tagName, count }) => (
                             <Badge
-                                key={t}
-                                variant={tag === t ? 'default' : 'outline'}
+                                key={tagName}
+                                variant={tag === tagName ? 'default' : 'outline'}
                                 className="cursor-pointer hover:bg-primary/80"
-                                onClick={() => setTag(tag === t ? 'all' : t)}
+                                onClick={() => setTag(tag === tagName ? 'all' : tagName)}
                             >
-                                {t}
+                                {tagName}
                                 <span className="ml-1 text-xs">
-                                    {(topicsSection?.settings?.items?.find((item: any) => item.tag === t)?.count) || 0}
+                                    {count}
                                 </span>
                             </Badge>
                         ))}
                     </div>
-                )}
-            </div>
+                </CardContent>
+            </Card>
 
             {/* Newsletter */}
-            <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold mb-4">{t('blog.subscribe')}</h3>
-                <Separator className="mb-4" />
-                <p className="text-muted-foreground mb-4">{t('blog.subscribeText')}</p>
-                <NewsletterForm />
-            </div>
+            <Card className="p-6 shadow-md">
+                <CardContent>
+                    <h3 className="text-xl font-bold mb-4">{t('ui.subscribe')}</h3>
+                    <Separator className="mb-4" />
+                    <p className="text-muted-foreground mb-4">{t('ui.subscribeText')}</p>
+                    <NewsletterForm />
+                </CardContent>
+            </Card>
         </div>
     );
 };

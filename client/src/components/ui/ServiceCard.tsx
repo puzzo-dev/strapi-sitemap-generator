@@ -10,7 +10,7 @@ interface ServiceCardProps {
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) => {
-  const { id, title, description, icon } = service;
+  const { id, title, description, icon, slug } = service;
 
   // Map FontAwesome icon names to Lucide React icons
   const getIcon = () => {
@@ -82,13 +82,20 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) 
 
         {/* Link with enhanced hover effect */}
         <div className="mt-3 transform translate-y-0 group-hover:translate-y-0 transition-transform duration-300">
-          <Link
-            href={`/services/${id}`}
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium text-sm group/link"
-          >
-            Learn more
-            <ArrowRight className="ml-1 transform group-hover/link:translate-x-1.5 transition-transform h-4 w-4" />
-          </Link>
+          {slug ? (
+            <Link
+              href={`/services/${slug}`}
+              className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium text-sm group/link"
+            >
+              Learn more
+              <ArrowRight className="ml-1 transform group-hover/link:translate-x-1.5 transition-transform h-4 w-4" />
+            </Link>
+          ) : (
+            <span className="inline-flex items-center text-gray-400 dark:text-gray-500 font-medium text-sm">
+              Learn more
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </span>
+          )}
         </div>
       </div>
 

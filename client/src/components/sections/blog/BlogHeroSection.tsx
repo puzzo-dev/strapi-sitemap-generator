@@ -127,7 +127,7 @@ const BlogHeroSection: React.FC<BlogHeroSectionProps> = ({
             </div>
 
             {/* Content */}
-            <div className="container mx-auto px-4 relative z-10">
+            <div className="container-custom mx-auto px-4 relative z-10">
                 <motion.div
                     variants={staggerChildren(0.1)}
                     className="flex flex-col md:flex-row items-center justify-between gap-8"
@@ -137,12 +137,12 @@ const BlogHeroSection: React.FC<BlogHeroSectionProps> = ({
                         className="w-full md:w-2/3 text-center md:text-left"
                     >
                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                            <FiFileText className="h-4 w-4 mr-2" />
+                            <span className="text-lg mr-2">📝</span>
                             Insights
                         </div>
                         <motion.h1
                             variants={fadeInUp(20, 0.7)}
-                            className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white"
+                            className="text-3xl md:text-4xl font-bold mb-6 text-blue-900 dark:text-blue-200"
                         >
                             <span className="gradient-text">
                                 {heroSection?.title || pageContent?.title}
@@ -156,7 +156,7 @@ const BlogHeroSection: React.FC<BlogHeroSectionProps> = ({
                         </motion.p>
                         <motion.div variants={fadeInUp(20, 0.7, 0.5)} className="flex flex-wrap justify-center md:justify-start gap-4">
                             <Input
-                                placeholder={t('blog.searchPlaceholder')}
+                                placeholder={t('ui.searchPlaceholder')}
                                 value={search}
                                 onChange={(e: { target: { value: string; }; }) => setSearch(e.target.value)}
                                 className="w-full max-w-xs"

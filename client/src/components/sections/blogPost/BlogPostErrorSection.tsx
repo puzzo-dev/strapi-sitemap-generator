@@ -18,12 +18,12 @@ const BlogPostErrorSection: React.FC<BlogPostErrorSectionProps> = ({ slug }) => 
         <div className="max-w-4xl mx-auto">
           <Alert variant="destructive" className="mb-8">
             <AlertDescription>
-              {t('blog.postNotFound')}
+              {t('ui.postNotFound')}
             </AlertDescription>
           </Alert>
           <Link href="/blog">
             <Button variant="outline" className="flex items-center">
-              <FiArrowLeft className="mr-2" /> {t('blog.backToBlog')}
+              <FiArrowLeft className="mr-2" /> {t('ui.backToBlog')}
             </Button>
           </Link>
         </div>

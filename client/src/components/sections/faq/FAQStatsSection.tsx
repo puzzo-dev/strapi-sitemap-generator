@@ -1,5 +1,6 @@
 import React from 'react';
-import { FAQItem, FAQCategory } from '@/lib/types';
+import { Card, CardContent } from '@/components/ui/card';
+import { FAQItem, FAQCategory } from '@/lib/types/content';
 import { HelpCircle, Users, Clock, CheckCircle } from 'lucide-react';
 
 interface FAQStatsSectionProps {
@@ -51,24 +52,23 @@ const FAQStatsSection: React.FC<FAQStatsSectionProps> = ({
                     {stats.map((stat) => {
                         const IconComponent = stat.icon;
                         return (
-                            <div
-                                key={stat.name}
-                                className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700"
-                            >
-                                <div className="flex items-center">
-                                    <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                                        <IconComponent className={`h-6 w-6 ${stat.color}`} />
+                            <Card key={stat.name}>
+                                <CardContent className="p-6">
+                                    <div className="flex items-center">
+                                        <div className={`p-3 rounded-lg ${stat.bgColor}`}>
+                                            <IconComponent className={`h-6 w-6 ${stat.color}`} />
+                                        </div>
+                                        <div className="ml-4">
+                                            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                                                {stat.name}
+                                            </p>
+                                            <p className="text-2xl font-semibold text-gray-900 dark:text-white">
+                                                {stat.value}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className="ml-4">
-                                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                            {stat.name}
-                                        </p>
-                                        <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-                                            {stat.value}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                                </CardContent>
+                            </Card>
                         );
                     })}
                 </div>

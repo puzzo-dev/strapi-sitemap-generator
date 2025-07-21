@@ -5,7 +5,7 @@ const FAQContactSection: React.FC = () => {
         <section className="py-16 bg-gray-50 dark:bg-gray-900/30">
             <div className="container-custom">
                 <div className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+                    <h2 className="text-3xl font-bold mb-4 text-blue-900 dark:text-blue-200">
                         Still have questions?
                     </h2>
                     <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">

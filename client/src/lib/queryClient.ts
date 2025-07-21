@@ -16,24 +16,3 @@ export const queryClient = new QueryClient({
     },
   },
 });
-
-// Utility function for API requests with better error handling
-export async function apiRequest<T>(endpoint: string): Promise<T> {
-  try {
-    const response = await fetch(endpoint, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`API request error for ${endpoint}:`, error);
-    throw error;
-  }
-}

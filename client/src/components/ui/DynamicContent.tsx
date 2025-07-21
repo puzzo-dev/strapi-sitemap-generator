@@ -1,4 +1,5 @@
 import React from 'react';
+import { DynamicContentProps } from '@/lib/types';
 
 
 

@@ -28,12 +28,15 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   // Format the meta title
   const metaTitle = title ? `${title} | ${COMPANY_NAME}` : COMPANY_NAME;
 
+  // Handle keywords array
+  const keywordsArray = keywords || [];
+
   return (
     <Helmet>
       {/* Basic Meta Tags */}
       <title>{metaTitle}</title>
       <meta name="description" content={description} />
-      {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+      {keywordsArray.length > 0 && <meta name="keywords" content={keywordsArray.join(', ')} />}
 
       {/* Canonical URL */}
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}

@@ -9,32 +9,29 @@ import {
     Cpu,
     CircuitBoard
 } from 'lucide-react';
-import { useSectionContent } from '@/hooks/useStrapiContent';
-import { Stat, VideoContent } from '@/lib/types';
+import { PageContent } from '@/lib/types/core';
+import { Button } from '@/components/ui/button';
 
-const AboutSection: React.FC = () => {
-    const { t } = useTranslation();
-    const { data: aboutSection, isLoading } = useSectionContent('about');
+interface AboutSectionProps {
+    homePageContent: PageContent;
+    isLoading: boolean;
+}
+
+const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
+
+    // Get about section from homePageContent
+    const aboutSection = homePageContent?.sections?.find(s => s.type === 'about');
 
     // Extract data from the section
-    const title = aboutSection?.title || 'About I-VARSE';
-    const subtitle = aboutSection?.subtitle || 'Who We Are';
-    const content = aboutSection?.content || '';
-    const stats: Stat[] = aboutSection?.settings?.stats || [
-        { value: '5+', label: 'Years of Experience' },
-        { value: '100+', label: 'Projects Completed' },
-        { value: '50+', label: 'Happy Clients' },
-        { value: '20+', label: 'Team Members' }
-    ];
-    const video: VideoContent = aboutSection?.settings?.video || {
-        thumbnail: 'https://images.unsplash.com/photo-1642059863319-1481ad72fc2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        url: { url: '#' },
-        title: 'Our Company Story',
-        description: 'Learn about our mission and values'
-    };
+    const title = aboutSection?.title;
+    const badge = aboutSection?.badge;
+    const subtitle = aboutSection?.subtitle;
+    const content = aboutSection?.content;
+    const stats = aboutSection?.settings?.stats || [];
+    const video = aboutSection?.settings?.video;
 
     // Split content into paragraphs if it's a string
-    const contentParagraphs = typeof content === 'string' 
+    const contentParagraphs = typeof content === 'string'
         ? content.split('\n').filter(p => p.trim() !== '')
         : [];
 
@@ -62,16 +59,16 @@ const AboutSection: React.FC = () => {
             </div>
 
             <div className="container-custom relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-12">
+                <div className="flex flex-col lg:flex-row items-center gap-8">
                     <div className="w-full lg:w-1/2">
                         <div className="relative">
                             {/* Section Title */}
                             <div className="mb-8 animate-fade-in">
                                 <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">
                                     <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse-slow"></span>
-                                    {subtitle}
+                                    {badge}
                                 </div>
-                                <h2 className="heading-md text-blue-600 dark:text-blue-400 mt-2">{title}</h2>
+                                <h2 className="heading-md text-blue-900 dark:text-blue-200 mt-2">{title}</h2>
                             </div>
 
                             {/* About Content */}
@@ -81,22 +78,17 @@ const AboutSection: React.FC = () => {
                                         <p key={index}>{paragraph}</p>
                                     ))
                                 ) : (
-                                    <>
-                                        <p>
-                                            Founded in 2018, I-VARSE Technologies has been at the forefront of digital innovation in Nigeria, providing cutting-edge technology solutions to businesses across various sectors.
-                                        </p>
-                                        <p>
-                                            Our mission is to empower businesses with transformative digital solutions that drive growth, efficiency, and competitive advantage in an increasingly technology-driven world.
-                                        </p>
-                                    </>
+                                    <p className="text-gray-500 dark:text-gray-400 italic">
+                                        Content will be displayed here when available.
+                                    </p>
                                 )}
 
                                 {/* Key Facts */}
                                 <div className="grid grid-cols-2 gap-4 mt-8">
-                                    {stats.map((stat, index) => (
-                                        <div 
-                                            key={index} 
-                                            className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up" 
+                                    {stats.map((stat: any, index: number) => (
+                                        <div
+                                            key={index}
+                                            className="border border-blue-100 dark:border-blue-800/50 rounded-lg p-4 bg-blue-50/50 dark:bg-blue-900/20 animate-fade-in-up"
                                             style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                                         >
                                             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">{stat.value}</div>
@@ -136,18 +128,22 @@ const AboutSection: React.FC = () => {
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="absolute inset-0 bg-blue-900/30"></div>
                                     <img
-                                        src={video.thumbnail}
-                                        alt={`Video: ${video.title}`}
+                                        src={video?.thumbnail}
+                                        alt={`Video: ${video?.title}`}
                                         className="absolute inset-0 w-full h-full object-cover opacity-90"
                                     />
-                                    <button className="z-20 w-20 h-20 rounded-full bg-white/90 shadow-lg flex items-center justify-center cursor-pointer hover:bg-white transition-all duration-300 hover:scale-110 animate-pulse-light">
+                                    <Button 
+                                        size="lg"
+                                        variant="ghost"
+                                        className="z-20 w-20 h-20 rounded-full bg-white/90 shadow-lg flex items-center justify-center cursor-pointer hover:bg-white transition-all duration-300 hover:scale-110 animate-pulse-light p-0"
+                                    >
                                         <PlayCircle className="h-12 w-12 text-blue-600" />
-                                    </button>
+                                    </Button>
 
                                     {/* Video title overlay */}
                                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
-                                        <div className="font-medium">{video.title}</div>
-                                        <div className="text-sm text-gray-300">{video.description}</div>
+                                        <div className="font-medium">{video?.title}</div>
+                                        <div className="text-sm text-gray-300">{video?.description}</div>
                                     </div>
                                 </div>
                             </div>

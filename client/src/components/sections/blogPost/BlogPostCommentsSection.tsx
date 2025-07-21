@@ -64,18 +64,18 @@ const BlogPostCommentsSection: React.FC<BlogPostCommentsSectionProps> = ({
 
   return (
     <div className="mt-8 bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 md:p-10">
-      <h2 className="text-2xl font-bold mb-6 flex items-center">
+      <h2 className="text-2xl font-bold mb-6 flex items-center text-blue-900 dark:text-blue-200">
         <FiMessageSquare className="mr-2" />
-        {t('blog.comments')} ({comments.length})
+        {t('ui.comments')} ({comments.length})
       </h2>
 
       <Tabs value={commentTab} onValueChange={setCommentTab} className="w-full">
         <TabsList className="mb-6">
           <TabsTrigger value="read">
-            {t('blog.readComments')}
+            {t('ui.readComments')}
           </TabsTrigger>
           <TabsTrigger value="write">
-            {t('blog.writeComment')}
+            {t('ui.writeComment')}
           </TabsTrigger>
         </TabsList>
 
@@ -103,9 +103,9 @@ const BlogPostCommentsSection: React.FC<BlogPostCommentsSectionProps> = ({
             </div>
           ) : comments.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-muted-foreground mb-4">{t('blog.noComments')}</p>
+              <p className="text-muted-foreground mb-4">{t('ui.noComments')}</p>
               <Button onClick={() => setCommentTab('write')}>
-                {t('blog.beFirstToComment')}
+                {t('ui.beFirstToComment')}
               </Button>
             </div>
           ) : (
@@ -138,8 +138,8 @@ const BlogPostCommentsSection: React.FC<BlogPostCommentsSectionProps> = ({
 
         <TabsContent value="write">
           <div className="mb-4">
-            <h3 className="text-xl font-bold mb-2">{t('blog.leaveComment')}</h3>
-            <p className="text-muted-foreground">{t('blog.commentPolicy')}</p>
+            <h3 className="text-xl font-bold mb-2">{t('ui.leaveComment')}</h3>
+            <p className="text-muted-foreground">{t('ui.commentPolicy')}</p>
           </div>
 
           <Form {...form}>
@@ -150,9 +150,9 @@ const BlogPostCommentsSection: React.FC<BlogPostCommentsSectionProps> = ({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('blog.yourName')}</FormLabel>
+                      <FormLabel>{t('ui.yourName')}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t('blog.namePlaceholder')} {...field} />
+                        <Input placeholder={t('ui.namePlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -164,9 +164,9 @@ const BlogPostCommentsSection: React.FC<BlogPostCommentsSectionProps> = ({
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('blog.yourEmail')}</FormLabel>
+                      <FormLabel>{t('ui.yourEmail')}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t('blog.emailPlaceholder')} {...field} />
+                        <Input placeholder={t('ui.emailPlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -179,10 +179,10 @@ const BlogPostCommentsSection: React.FC<BlogPostCommentsSectionProps> = ({
                 name="comment"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('blog.yourComment')}</FormLabel>
+                    <FormLabel>{t('ui.yourComment')}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={t('blog.commentPlaceholder')}
+                        placeholder={t('ui.commentPlaceholder')}
                         className="min-h-32"
                         {...field}
                       />
@@ -197,13 +197,13 @@ const BlogPostCommentsSection: React.FC<BlogPostCommentsSectionProps> = ({
                 disabled={commentMutation.isPending}
                 className="w-full md:w-auto"
               >
-                {commentMutation.isPending ? t('blog.submittingComment') : t('blog.submitComment')}
+                {commentMutation.isPending ? t('ui.submittingComment') : t('ui.submitComment')}
               </Button>
 
               {commentMutation.isError && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {t('blog.commentError')}
+                    {t('ui.commentError')}
                   </AlertDescription>
                 </Alert>
               )}

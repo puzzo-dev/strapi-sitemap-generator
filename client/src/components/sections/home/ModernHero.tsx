@@ -20,18 +20,13 @@ import {
     ServiceProps,
     HeroSlide,
     SocialLink,
-
+    SiteConfig,
 } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import GradientButton from "@/components/ui/GradientButton";
-import {
-    useSiteConfig,
-    useServices,
-    useSocialLinks,
-    useHeroContent
-} from "@/hooks/useStrapiContent";
-import { services as localServices, socialLinks, defaultHeroProps, heroSlides as localHeroSlides } from "@/lib/data";
+import { services as localServices, socialLinks as localSocialLinks, defaultHeroProps, heroSlides as localHeroSlides } from "@/lib/data/";
 import { fadeInUp, scaleUp } from "@/lib/animations";
+import IVarseLogo from "@/components/ui/IVarseLogo";
 
 // Helper function to get social icon paths
 const getSocialIconPath = (platform: string): string => {
@@ -71,51 +66,47 @@ const renderServiceIcon = (iconName: string) => {
     }
 };
 
-const ModernHero: React.FC<Partial<HeroProps>> = ({
+interface ModernHeroProps extends Partial<HeroProps> {
+    heroData?: any;
+    siteConfig?: SiteConfig;
+    services?: ServiceProps[];
+    socialLinks?: SocialLink[];
+    heroSlides?: HeroSlide[];
+}
+
+const ModernHero: React.FC<ModernHeroProps> = ({
     currentIndex: initialIndex = 0,
     handleMouseEnter: externalHandleMouseEnter = () => { },
     handleMouseLeave: externalHandleMouseLeave = () => { },
+    heroData,
+    siteConfig,
+    services: propServices,
+    socialLinks: propSocialLinks,
+    heroSlides: propHeroSlides,
 }) => {
-    // Local state for current slide index
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
-    // Fetch dynamic hero content from Strapi
-    const { data: heroProps, isLoading: isHeroLoading } = useHeroContent();
+    // Use props instead of hooks
+    const isHeroLoading = false; // No longer loading from hook
+    const isSiteConfigLoading = false; // No longer loading from hook
+    const isSocialLinksLoading = false; // No longer loading from hook
 
-    // Fetch site configuration for company logo
-    const { data: siteConfig, isLoading: isSiteConfigLoading } = useSiteConfig();
-
-    // Fetch services from Strapi
-    const { data: apiServices, isLoading: isServicesLoading } = useServices();
-
-    // Fetch social links
-    const { data: socialLinks, isLoading: isSocialLinksLoading } = useSocialLinks();
-
-    // Determine which services to display with fallback to local data
-    const services = useMemo(() => {
-        return apiServices && apiServices.length > 0 ? apiServices : localServices;
-    }, [apiServices]);
+    // Use props data with fallbacks
+    const services = propServices || localServices;
+    const socialLinks = propSocialLinks || localSocialLinks;
+    const heroSlides = propHeroSlides || localHeroSlides;
 
     // Extract hero content with fallback values
     const heroContent = useMemo(() => {
-        // First try to get content from Strapi
-        if (heroProps?.heroContents) {
-            return heroProps.heroContents;
+        if (heroData?.heroContents) {
+            return heroData.heroContents;
         }
-
-        // If no Strapi content, use default hero props
         return defaultHeroProps.heroContents;
-    }, [heroProps?.heroContents]);
+    }, [heroData]);
 
-    // Get hero slides with fallback
-    const heroSlides = useMemo(() => {
-        // First try to get slides from Strapi
-        if (heroProps?.heroSlides && heroProps.heroSlides.length > 0) {
-            return heroProps.heroSlides;
-        }
-        // If no Strapi slides, use local hero slides
-        return localHeroSlides;
-    }, [heroProps?.heroSlides]);
+    const displaySocialLinks = useMemo(() => {
+        return socialLinks && socialLinks.length > 0 ? socialLinks : [];
+    }, [socialLinks]);
 
     // Handle mouse events for slide transitions
     const handleMouseEnter = () => {
@@ -137,8 +128,17 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
         return () => clearInterval(interval);
     }, [heroSlides.length]);
 
-    // Extract content from current hero slide based on currentIndex
-    const currentSlide = heroSlides && heroSlides.length > 0 ? heroSlides[currentIndex] : heroContent;
+    // Update the currentSlide logic:
+    const currentSlide = useMemo(() => {
+        // Use heroSlides if available, otherwise fallback to heroContent
+        if (heroSlides && heroSlides.length > 0) {
+            return heroSlides[currentIndex] || heroSlides[0];
+        }
+
+        // Fallback to heroContent or first item from localHeroSlides
+        return heroContent || localHeroSlides[0];
+    }, [heroSlides, currentIndex, heroContent]);
+
     const displayTitle = currentSlide.title;
     const displaySubtitle = currentSlide.subtitle;
     const primaryBtnText = currentSlide.primaryButton?.title || currentSlide.primaryButton?.title || "GET STARTED";
@@ -633,7 +633,7 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                             className="relative z-10"
                         >
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                <Cpu className="h-4 w-4 mr-2" />
+                                <span className="text-lg mr-2">💻</span>
                                 Digital Innovation
                             </div>
 
@@ -696,18 +696,15 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                     {/* Bottom icons */}
                     <div className="mt-auto flex items-center space-x-2 py-4 sm:space-x-6 text-muted-foreground text-lg sm:text-xl">
                         {isSocialLinksLoading ? (
-                            // Loading placeholders for social links
-                            <>
-                                {[1, 2, 3, 4].map((i) => (
-                                    <div key={i} className="w-5 h-5 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-                                ))}
-                            </>
-                        ) : socialLinks && socialLinks.length > 0 ? (
-                            // Render actual social links
-                            socialLinks.map((link) => (
+                            // Loading placeholders
+                            Array(4).fill(0).map((_, i) => (
+                                <div key={i} className="w-5 h-5 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                            ))
+                        ) : (
+                            displaySocialLinks.map((link) => (
                                 <a
                                     key={link.id}
-                                    href={link.url}
+                                    href={link.href || link.href}
                                     className="hover:text-foreground transition-colors cursor-pointer"
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -729,78 +726,6 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                                     </svg>
                                 </a>
                             ))
-                        ) : (
-                            // Fallback to default social icons if no data
-                            <>
-                                <a href="#" className="hover:text-foreground transition-colors cursor-pointer">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="w-5 h-5"
-                                    >
-                                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                                    </svg>
-                                </a>
-                                <a href="#" className="hover:text-foreground transition-colors cursor-pointer">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="w-5 h-5"
-                                    >
-                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                    </svg>
-                                </a>
-                                <a href="#" className="hover:text-foreground transition-colors cursor-pointer">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="w-5 h-5"
-                                    >
-                                        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                                    </svg>
-                                </a>
-                                <a href="#" className="hover:text-foreground transition-colors cursor-pointer">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="w-5 h-5"
-                                    >
-                                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                                        <rect x="2" y="9" width="4" height="12"></rect>
-                                        <circle cx="4" cy="4" r="2"></circle>
-                                    </svg>
-                                </a>
-                            </>
                         )}
                     </div>
                 </div>
@@ -850,9 +775,8 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                                     {heroSlides.map((slide, index) => (
                                         <div
                                             key={slide.id || index}
-                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                                                index === currentIndex ? "opacity-100" : "opacity-0"
-                                            }`}
+                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
+                                                }`}
                                         >
                                             <img
                                                 src={slide.backgroundImage || ""}
@@ -866,11 +790,11 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
 
                                 {/* Company logo */}
                                 {companyLogo && (
-                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-64 opacity-10 dark:opacity-20">
-                                        <img
-                                            src={companyLogo}
-                                            alt="Company Logo"
-                                            className="w-full h-full object-contain"
+                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10 dark:opacity-20">
+                                        <IVarseLogo
+                                            size={150} // equivalent to w-72 h-64 (288px width, height auto-calculated)
+                                            variant="auto" // will automatically switch based on theme
+                                            className="filter grayscale opacity-50" // additional styling for background effect
                                         />
                                     </div>
                                 )}
@@ -881,11 +805,10 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
                                         {heroSlides.map((slide, index) => (
                                             <div
                                                 key={slide.id || index}
-                                                className={`transition-opacity duration-500 flex items-center ${
-                                                    index === currentIndex
-                                                        ? "opacity-100"
-                                                        : "opacity-0 absolute inset-0"
-                                                }`}
+                                                className={`transition-opacity duration-500 flex items-center ${index === currentIndex
+                                                    ? "opacity-100"
+                                                    : "opacity-0 absolute inset-0"
+                                                    }`}
                                             >
                                                 <div className="flex items-center">
                                                     <p className="text-xs font-medium text-white whitespace-nowrap">
@@ -913,5 +836,4 @@ const ModernHero: React.FC<Partial<HeroProps>> = ({
         </>
     );
 };
-
 export default ModernHero;

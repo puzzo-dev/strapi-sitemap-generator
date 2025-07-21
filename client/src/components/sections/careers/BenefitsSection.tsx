@@ -1,42 +1,85 @@
 import React from 'react';
-import { Award, Loader } from 'lucide-react';
-import { useCareersPageState } from '@/hooks/useCareersPageState';
-import { getBenefitIcon } from '@/lib/benefitUtils';
+import { Benefit, PageContent } from '@/lib/types/core';
+import { PieChart, Heart, Laptop, Award, Coffee, Globe } from 'lucide-react';
 
-const BenefitsSection: React.FC = () => {
-  const { benefits: displayBenefits, isBenefitsLoading } = useCareersPageState();
+interface BenefitsSectionProps {
+  benefits: Benefit[];
+  isLoading: boolean;
+  pageContent?: PageContent | null;
+}
+
+const BenefitsSection: React.FC<BenefitsSectionProps> = ({
+  benefits: displayBenefits,
+  isLoading: isBenefitsLoading,
+  pageContent
+}) => {
+  // Get benefits section from page content (Strapi)
+  const benefitsSection = pageContent?.sections?.find(s => s.type === 'custom');
+
+  // If no page content or benefits section, don't render anything
+  if (!pageContent || !benefitsSection) {
+    return null;
+  }
+
+  const title = benefitsSection.title;
+  const subtitle = benefitsSection.subtitle;
+  const content = benefitsSection.content;
+  const backgroundColor = benefitsSection.backgroundColor;
+
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'PieChart': return PieChart;
+      case 'Heart': return Heart;
+      case 'Laptop': return Laptop;
+      case 'Award': return Award;
+      case 'Coffee': return Coffee;
+      case 'Globe': return Globe;
+      default: return Award;
+    }
+  };
 
   return (
-    <section className="content-section bg-gray-50 dark:bg-[#0a1929]">
+    <section className={`content-section ${backgroundColor || 'bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]'}`}>
       <div className="container-custom">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            <Award className="h-4 w-4 mr-2" />
-            Employee Benefits
+            <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+            {benefitsSection.settings?.badge || "Benefits & Perks"}
           </div>
-          <h2 className="section-title">What We Offer</h2>
+          <h2 className="section-title text-blue-900 dark:text-blue-200">{title}</h2>
           <p className="section-subtitle">
-            We believe in taking care of our team members with comprehensive benefits and perks.
+            {subtitle}
           </p>
         </div>
 
         {isBenefitsLoading ? (
-          <div className="flex justify-center items-center py-12">
-            <Loader className="h-8 w-8 text-blue-500 animate-spin" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayBenefits.map((benefit, index) => (
-              <div key={index} className="card p-8 hover-lift">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-200 dark:shadow-blue-900/20">
-                  {getBenefitIcon(benefit.icon)}
-                </div>
-                <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{benefit.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {benefit.description}
-                </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Array(6).fill(0).map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <div className="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4"></div>
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
               </div>
             ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {displayBenefits.map((benefit) => {
+              const IconComponent = getIconComponent(benefit.icon);
+              return (
+                <div key={benefit.id || benefit.title} className="text-center group">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <IconComponent className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {benefit.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

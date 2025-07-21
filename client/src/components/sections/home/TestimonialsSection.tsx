@@ -2,25 +2,26 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import TestimonialCard from '@/components/ui/TestimonialCard';
-import { useTestimonials } from '@/hooks/useStrapiContent';
-import { testimonials as localTestimonials } from '@/lib/data';
 import { 
   Sparkles, 
   CircuitBoard, 
   Code 
 } from 'lucide-react';
-import { TestimonialProps } from '@/lib/types';
+import type { TestimonialProps } from '@/lib/types/content';
+import type { PageContent } from '@/lib/types/core';
 
-const TestimonialsSection: React.FC = () => {
-  const { t } = useTranslation();
-  const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useTestimonials();
-  
-  // Use API testimonials if available, otherwise fall back to local data
-  const testimonials = useMemo(() => {
-    return apiTestimonials && apiTestimonials.length > 0 
-      ? apiTestimonials 
-      : localTestimonials;
-  }, [apiTestimonials]);
+interface TestimonialsSectionProps {
+  homePageContent: PageContent;
+  testimonials: TestimonialProps[];
+  isLoading: boolean;
+}
+
+const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ homePageContent, testimonials, isLoading }) => {
+  // Extract section content from homePageContent
+  const testimonialsSection = homePageContent?.sections?.find(s => s.type === 'testimonials');
+  const title = testimonialsSection?.title;
+  const subtitle = testimonialsSection?.subtitle;
+  const badge = testimonialsSection?.badge;
 
   return (
     <section className="py-24 relative overflow-hidden">
@@ -67,17 +68,17 @@ const TestimonialsSection: React.FC = () => {
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">
             <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
-            {t('testimonials.badge')}
+            {badge}
           </div>
-          <h2 className="heading-md text-blue-600 dark:text-blue-400 mb-6">{t('testimonials.title', 'WHAT OUR CLIENTS SAY')}</h2>
+          <h2 className="heading-md text-blue-900 dark:text-blue-200 mb-4">{title}</h2>
           <p className="text-gray-600 dark:text-gray-300">
-            {t('testimonials.subtitle', 'Don\'t just take our word for it. See what our satisfied clients have to say about our services and solutions.')}
+            {subtitle}
           </p>
         </div>
 
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {isTestimonialsLoading ? (
+          {isLoading ? (
             // Loading placeholders
             Array(3).fill(0).map((_, i) => (
               <div key={i} className="bg-white dark:bg-gray-800/50 p-6 rounded-xl shadow-md animate-pulse h-64 flex flex-col">

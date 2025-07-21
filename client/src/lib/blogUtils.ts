@@ -89,9 +89,16 @@ export const generateDummyBlogPost = (slug: string): BlogPost => {
     published: true,
     featured: Math.random() > 0.7, // 30% chance of being featured
     blogCategory: postData.category,
+    blogCategories: [{
+      id: 1,
+      name: postData.category,
+      title: postData.category,
+      slug: postData.category.toLowerCase().replace(/\s+/g, '-'),
+      description: ''
+    }],
     blogIntro: postData.intro,
     content: postData.content,
-    publishedDate: publishDate.toISOString(),
+    publishedAt: publishDate.toISOString(),
     readTime: Math.floor(Math.random() * 10) + 5,
     tags: postData.tags,
     metaImage: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?auto=format&fit=crop&q=80&w=1470`,
@@ -103,15 +110,3 @@ export const generateDummyBlogPost = (slug: string): BlogPost => {
   };
 };
 
-export const generateDummyRelatedPosts = (currentSlug: string, count: number = 3): BlogPost[] => {
-  const relatedSlugs = [
-    'ai-revolution-in-business',
-    'cloud-computing-trends', 
-    'cybersecurity-best-practices',
-    'digital-transformation-guide',
-    'modern-web-development',
-    'data-analytics-insights'
-  ].filter(slug => slug !== currentSlug);
-
-  return relatedSlugs.slice(0, count).map(slug => generateDummyBlogPost(slug));
-};

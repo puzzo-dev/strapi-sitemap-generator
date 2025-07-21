@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { usePageContent } from '@/hooks/useStrapiContent';
 import PolicyPageLayout from '@/components/layout/PolicyPageLayout';
-import { termsContent } from '@/lib/data';
+import { termsContent } from '@/lib/data/';
 
 const Terms: React.FC = () => {
   // Fetch terms content from Strapi if available
@@ -24,7 +24,7 @@ const Terms: React.FC = () => {
     ) {
       return pageContent.sections[0].content;
     }
-    
+
     // Otherwise use the default content from data.ts
     return termsContent.content;
   }, [pageContent]);
@@ -35,9 +35,9 @@ const Terms: React.FC = () => {
       slug="terms"
       description={pageDescription}
       content={content ? <div dangerouslySetInnerHTML={{ __html: content }} /> : null}
-      // metaTitle={metaTitle}
-      // metaDescription={metaDescription}
-      // loading={isLoading}
+    // metaTitle={metaTitle}
+    // metaDescription={metaDescription}
+    // loading={isLoading}
     />
   );
 

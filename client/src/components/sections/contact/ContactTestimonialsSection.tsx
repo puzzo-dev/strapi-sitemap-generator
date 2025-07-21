@@ -1,35 +1,41 @@
 import React from 'react';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import BackgroundDecoration from '@/components/ui/BackgroundDecoration';
-import { TestimonialProps } from '@/lib/types';
+import { TestimonialProps } from '@/lib/types/content';
 
 interface ContactTestimonialsSectionProps {
-    testimonialSection: any;
-    displayTestimonials: TestimonialProps[];
-    isTestimonialsLoading: boolean;
+    testimonialSection?: any;
+    testimonials?: TestimonialProps[];
+    isLoading?: boolean;
+    isTestimonialsLoading?: boolean;
 }
 
 const ContactTestimonialsSection: React.FC<ContactTestimonialsSectionProps> = ({
     testimonialSection,
-    displayTestimonials,
+    testimonials,
+    isLoading,
     isTestimonialsLoading,
 }) => {
+    // Determine which data to use and loading state
+    const displayTestimonials = testimonials || testimonialSection?.settings?.featured || [];
+    const isDataLoading = isLoading || isTestimonialsLoading;
+
     return (
         <section className="bg-gray-50 dark:bg-gray-900 py-24 relative overflow-hidden">
             <BackgroundDecoration variant="testimonials" />
 
             <div className="container-custom relative z-10">
-                <header className="text-center mb-16">
-                    <h2 className="text-3xl font-bold mb-4 text-center text-gray-900 dark:text-white">
-                        {testimonialSection?.title || 'Testimonials'}
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold mb-4 text-center text-blue-900 dark:text-blue-200">
+                        What Our Clients Say
                     </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        {testimonialSection?.subtitle}
+                    <p className="text-gray-600 dark:text-gray-300">
+                        Discover what our valued clients have to say about their experience working with I-VARSE Technologies.
                     </p>
-                </header>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {isTestimonialsLoading ? (
+                    {isDataLoading ? (
                         // Loading skeleton for testimonials
                         Array(3).fill(0).map((_, index) => (
                             <div key={index} className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 animate-pulse" aria-hidden="true">

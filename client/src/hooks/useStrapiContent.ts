@@ -12,17 +12,14 @@ import {
   getServices,
   getServiceById,
   getTestimonials,
-  getClientLogos,
   getJobListings,
   getJobById,
-  getBenefits,
   getBlogPosts,
   getBlogPostBySlug,
   getBlogCategories,
   getFooter,
   getBlogComments,
-  getHeroSlides,
-  getHeroContent
+  getFAQItems,
 } from '@/lib/strapi';
 import {
   NavItem,
@@ -44,7 +41,8 @@ import {
   HeroSlide,
   HeroProps,
   FAQPageContent,
-  PageSection
+  PageSection,
+  FAQItem
 } from '@/lib/types';
 
 /**
@@ -53,7 +51,23 @@ import {
 export function useNavigation() {
   return useQuery<NavItem[]>({
     queryKey: ['navigation'],
-    queryFn: getNavItems
+    queryFn: async () => {
+      try {
+        // Try to get from Strapi first
+        const strapiNavItems = await getNavItems();
+
+        // If Strapi returns data, use it
+        if (strapiNavItems && strapiNavItems.length > 0) {
+          return strapiNavItems;
+        }
+      } catch (error) {
+        // If Strapi fails, continue to fallback
+      }
+
+      // If no Strapi data, fall back to local data
+      const { navItems } = await import('@/lib/data/config');
+      return navItems;
+    }
   });
 }
 
@@ -93,50 +107,53 @@ export function useSiteConfig() {
 export function usePageContent(slug: string) {
   return useQuery<PageContent | null>({
     queryKey: ['page-content', slug],
-    queryFn: () => getPageContent(slug)
-  });
-}
-
-/**
- * Custom hook to fetch dynamic hero content
- * This hook fetches hero slides directly from Strapi
- /**
- * Custom hook to fetch dynamic hero content
- */
-// export function useDynamicHeroContent() {
-//   return useQuery<HeroSlide>({
-//     queryKey: ['hero-content'],
-//     queryFn: async () => {
-//       try {
-//         const { getHeroSlides } = await import('@/lib/strapi');
-//         const slides = await getHeroSlides();
-
-//         // Select one slide - you can implement different selection strategies:
-//         // 1. Random selection
-//         const randomIndex = Math.floor(Math.random() * slides.length);
-//         return slides[randomIndex];
-//       } catch (error) {
-//         console.error('Error loading hero slides:', error);
-//         const { defaultHeroProps } = require('@/lib/data');
-//         // Return just one default hero prop
-//         return Array.isArray(defaultHeroProps) 
-//           ? defaultHeroProps[Math.floor(Math.random() * defaultHeroProps.length)] 
-//           : defaultHeroProps;
-//       }
-//     }
-//   });
-// }
-
-/**
- * Custom hook to fetch complete hero content
- * This hook fetches the full hero content including slides, services, and products
- */
-export function useHeroContent() {
-  return useQuery<HeroProps>({
-    queryKey: ['hero-complete-content'],
     queryFn: async () => {
-      const { getHeroContent } = await import('@/lib/strapi');
-      return getHeroContent();
+      // Try to get from Strapi first
+      const strapiContent = await getPageContent(slug);
+
+      // If Strapi returns data, use it
+      if (strapiContent) {
+        return strapiContent;
+      }
+
+      // If no Strapi data, fall back to local data based on slug
+      const {
+        contactPageContent,
+        careersPageContent,
+        teamPageContent,
+        homePageContent,
+        aboutPageContent,
+        servicesPageContent,
+        blogPageContent,
+        productsPageContent,
+        serviceDetailPageContent,
+        faqPageContent
+      } = await import('@/lib/data/');
+
+      switch (slug) {
+        case 'contact':
+          return contactPageContent;
+        case 'careers':
+          return careersPageContent;
+        case 'team':
+          return teamPageContent;
+        case 'home':
+          return homePageContent;
+        case 'about':
+          return aboutPageContent;
+        case 'services':
+          return servicesPageContent;
+        case 'blog':
+          return blogPageContent;
+        case 'products':
+          return productsPageContent;
+        case 'service-detail':
+          return serviceDetailPageContent;
+        case 'faq':
+          return faqPageContent;
+        default:
+          return null;
+      }
     }
   });
 }
@@ -147,7 +164,8 @@ export function useHeroContent() {
 export function useTeamMembers() {
   return useQuery<TeamMember[]>({
     queryKey: ['team-members'],
-    queryFn: getTeamMembers
+    queryFn: getTeamMembers,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
 
@@ -204,114 +222,107 @@ export function useTestimonials() {
 }
 
 /**
- * Custom hook to fetch client logos
- */
-export function useClientLogos() {
-  return useQuery<ClientLogo[]>({
-    queryKey: ['client-logos'],
-    queryFn: getClientLogos
-  });
-}
-
-/**
- * Custom hook to fetch job listings
+ * Custom hook to fetch job listings with ERPNext integration
  */
 export function useJobListings() {
   return useQuery<JobListing[]>({
     queryKey: ['job-listings'],
-    queryFn: getJobListings
+    queryFn: getJobListings,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false
   });
 }
 
 /**
- * Custom hook to fetch job by ID
+ * Custom hook to fetch job by ID with ERPNext integration
  */
 export function useJobById(id: number) {
   return useQuery<JobListing | undefined>({
     queryKey: ['job-listings', id],
     queryFn: () => getJobById(id),
-    enabled: !!id
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false
   });
 }
 
 /**
- * Custom hook to fetch benefits
- */
-export function useBenefits() {
-  return useQuery<Benefit[]>({
-    queryKey: ['benefits'],
-    queryFn: getBenefits
-  });
-}
-
-/**
- * Custom hook to fetch blog posts
+ * Custom hook to fetch blog posts with ERPNext integration
  */
 export function useBlogPosts(params?: {
   limit?: number;
   category?: string;
   featured?: boolean;
   tag?: string;
+  author?: string;
+  status?: 'draft' | 'published' | 'archived';
 }) {
   return useQuery<BlogPost[]>({
     queryKey: ['blog-posts', params],
     queryFn: () => getBlogPosts(params || {}),
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    refetchOnWindowFocus: false
   });
 }
 
 /**
- * Custom hook to fetch a blog post by slug
+ * Custom hook to fetch a blog post by slug with ERPNext integration
  */
 export function useBlogPostBySlug(slug: string) {
   return useQuery<BlogPost | null>({
     queryKey: ['blog-post', slug],
     queryFn: () => getBlogPostBySlug(slug),
-    enabled: !!slug, // Only run the query if a slug is provided
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false
   });
 }
 
 /**
- * Custom hook to fetch blog categories
+ * Custom hook to fetch blog categories with ERPNext integration
  */
 export function useBlogCategories() {
   return useQuery<BlogCategory[]>({
     queryKey: ['blog-categories'],
     queryFn: getBlogCategories,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false
   });
 }
 
 /**
- * Custom hook to fetch blog comments for a post
- */
-/**
- * Custom hook to fetch blog comments for a post
+ * Custom hook to fetch blog comments for a post with ERPNext integration
  */
 export function useBlogComments(postId: string) {
   return useQuery<BlogComment[]>({
     queryKey: ['blog-comments', postId],
     queryFn: () => getBlogComments(postId),
-    enabled: !!postId, // Only run the query if a postId is provided
+    enabled: !!postId,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    refetchOnWindowFocus: false
   });
 }
 
 /**
- * Custom hook to fetch footer data
+ * Custom hook to fetch FAQ items with ERPNext integration
+ */
+export function useFAQItems() {
+  return useQuery<FAQItem[]>({
+    queryKey: ['faq-items'],
+    queryFn: getFAQItems,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false
+  });
+}
+
+/**
+ * Custom hook to fetch footer data with ERPNext integration
  */
 export function useFooter() {
   return useQuery<FooterProps>({
     queryKey: ['footer'],
-    queryFn: getFooter
-  });
-}
-/**
- * Custom hook to fetch section content by type
- */
-export function useSectionContent(sectionType: string) {
-  return useQuery<PageSection>({
-    queryKey: ['section-content', sectionType],
-    queryFn: async () => {
-      const { getSectionContent } = await import('@/lib/strapi');
-      return getSectionContent(sectionType);
-    }
+    queryFn: getFooter,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false
   });
 }

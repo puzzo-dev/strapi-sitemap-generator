@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useLanguage } from '@/components/context/LanguageContext';
+import { useSiteConfig } from './useStrapiContent';
+import { defaultSiteConfig } from '@/lib/data/';
 
 /**
  * Hook for generating SEO-friendly title and descriptions
@@ -7,7 +9,9 @@ import { useLanguage } from '@/components/context/LanguageContext';
  */
 export function useSeoHelpers() {
   const { currentLanguage } = useLanguage();
-  
+  const { data: siteConfig } = useSiteConfig();
+  const currentSiteConfig = siteConfig || defaultSiteConfig;
+
   return useMemo(() => {
     /**
      * Generates SEO-friendly title
@@ -17,17 +21,17 @@ export function useSeoHelpers() {
      */
     const generateSeoTitle = (title: string, maxLength = 60): string => {
       if (!title) return "";
-      
+
       // Clean the title of any HTML tags
       const cleanTitle = title.replace(/<\/?[^>]+(>|$)/g, "");
-      
+
       // If title is already short enough, return it
       if (cleanTitle.length <= maxLength) return cleanTitle;
-      
+
       // Truncate and add ellipsis
       return cleanTitle.substring(0, maxLength - 3) + "...";
     };
-    
+
     /**
      * Generates SEO-friendly description
      * @param content - The content to generate description from
@@ -36,32 +40,32 @@ export function useSeoHelpers() {
      */
     const generateSeoDescription = (content: string, maxLength = 155): string => {
       if (!content) return "";
-      
+
       // Clean the content of any HTML tags and extra spaces
       const cleanContent = content
         .replace(/<\/?[^>]+(>|$)/g, "")
         .replace(/\s+/g, " ")
         .trim();
-      
+
       // If content is already short enough, return it
       if (cleanContent.length <= maxLength) return cleanContent;
-      
+
       // Find a good breakpoint (end of sentence or phrase)
       let breakpoint = cleanContent.substring(0, maxLength - 3).lastIndexOf(". ");
-      
+
       // If no good sentence breakpoint, try to break at a comma
       if (breakpoint === -1 || breakpoint < maxLength / 2) {
         breakpoint = cleanContent.substring(0, maxLength - 3).lastIndexOf(", ");
       }
-      
+
       // If still no good breakpoint, just truncate at the max length
       if (breakpoint === -1 || breakpoint < maxLength / 2) {
         breakpoint = maxLength - 3;
       }
-      
+
       return cleanContent.substring(0, breakpoint) + "...";
     };
-    
+
     /**
      * Generates keywords based on content
      * @param content - The content to extract keywords from
@@ -75,13 +79,13 @@ export function useSeoHelpers() {
       maxKeywords = 10
     ): string[] => {
       if (!content) return additionalKeywords;
-      
+
       // Clean the content
       const cleanContent = content
         .replace(/<\/?[^>]+(>|$)/g, "")
         .replace(/[^\w\s]/gi, " ")
         .toLowerCase();
-      
+
       // Common words to exclude
       const stopWords = [
         "a", "about", "above", "after", "again", "against", "all", "am", "an", "and",
@@ -105,37 +109,37 @@ export function useSeoHelpers() {
         "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours",
         "yourself", "yourselves"
       ];
-      
+
       // Split into words and filter out common words
       const words = cleanContent
         .split(/\s+/)
         .filter(word => word.length > 3 && !stopWords.includes(word));
-      
+
       // Count word frequency
       const wordCounts: Record<string, number> = {};
       words.forEach(word => {
         wordCounts[word] = (wordCounts[word] || 0) + 1;
       });
-      
+
       // Sort by frequency
       const sortedWords = Object.keys(wordCounts).sort(
         (a, b) => wordCounts[b] - wordCounts[a]
       );
-      
+
       // Take top keywords and combine with additional keywords
       const extractedKeywords = sortedWords.slice(0, maxKeywords - additionalKeywords.length);
-      
+
       // Create a unique list by using an object as a map
       const uniqueKeywordsMap: Record<string, boolean> = {};
       [...additionalKeywords, ...extractedKeywords].forEach(keyword => {
         uniqueKeywordsMap[keyword] = true;
       });
       const combinedKeywords = Object.keys(uniqueKeywordsMap);
-      
+
       // Return combined list limited to max keywords
       return combinedKeywords.slice(0, maxKeywords);
     };
-    
+
     /**
      * Generates alternate language links
      * @param baseUrl - The base URL path
@@ -147,23 +151,37 @@ export function useSeoHelpers() {
       supportedLanguages: string[] = ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw']
     ) => {
       const baseUrlWithoutLang = baseUrl.replace(/^\/[a-z]{2}\//, '/');
-      
+
       return supportedLanguages.map(lang => ({
         lang,
-        url: lang === 'en' 
-          ? baseUrlWithoutLang 
+        url: lang === 'en'
+          ? baseUrlWithoutLang
           : `/${lang}${baseUrlWithoutLang}`
       }));
     };
-    
+
+    const getCanonicalUrl = (path: string) => {
+      return `${currentSiteConfig.siteUrl}${path.startsWith('/') ? path : `/${path}`}`;
+    };
+
+    const getOgImage = (imagePath?: string, defaultImage?: string) => {
+      if (imagePath) {
+        return imagePath.startsWith('http') ? imagePath : `${currentSiteConfig.siteUrl}${imagePath.startsWith('/') ? imagePath : `/${imagePath}`}`;
+      }
+      return defaultImage ? `${currentSiteConfig.siteUrl}${defaultImage.startsWith('/') ? defaultImage : `/${defaultImage}`}` : `${currentSiteConfig.siteUrl}/og-image.jpg`;
+    };
+
     return {
       generateSeoTitle,
       generateSeoDescription,
       generateKeywords,
       generateAlternateLanguages,
+      getCanonicalUrl,
+      getOgImage,
+      siteConfig: currentSiteConfig,
       currentLanguage
     };
-  }, [currentLanguage]);
+  }, [currentLanguage, siteConfig]);
 }
 
 export default useSeoHelpers;

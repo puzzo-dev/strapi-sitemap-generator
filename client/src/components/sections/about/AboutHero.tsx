@@ -2,14 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { CircuitBoard, Cpu, Code, LayoutGrid } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
-import { PageSection } from '@/lib/types';
+import { AboutHeroProps } from '@/lib/types/content';
 import {
     fadeInUp,
     staggerChildren,
     floatingShapeAnimation
 } from '@/lib/animations';
 
-const AboutHero: React.FC<PageSection & { isPageLoading: boolean }> = ({
+const AboutHero: React.FC<AboutHeroProps> = ({
     title,
     subtitle,
     settings,
@@ -78,11 +78,7 @@ const AboutHero: React.FC<PageSection & { isPageLoading: boolean }> = ({
                                             </>
                                         );
                                     })()
-                                ) : (
-                                    <>
-                                        Innovative Solutions <span className="gradient-text">for Digital Excellence</span>
-                                    </>
-                                )}
+                                ) : null}
                             </h1>
 
                             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>

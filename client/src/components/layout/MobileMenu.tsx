@@ -4,26 +4,48 @@ import { useTranslation } from 'react-i18next';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
 import NewsletterForm from '@/components/ui/NewsletterForm';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, X } from 'lucide-react';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useLanguage } from '@/components/context/LanguageContext';
-import { MobileMenuProps } from '@/lib/types';
+import { MobileMenuProps, NavItem } from '@/lib/types';
+import { navItems as defaultNavItems } from '@/lib/data/config';
+import { Button } from '@/components/ui/button';
 
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
+const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navItems = defaultNavItems }) => {
   const [location] = useLocation();
   const { t } = useTranslation();
   const { currentLanguage, setLanguage, supportedLanguages } = useLanguage();
 
-  const navLinks = [
-    { id: 1, name: t('nav.home', 'Home'), path: '/', category: 'main' },
-    { id: 2, name: t('nav.about', 'About Us'), path: '/about', category: 'main' },
-    { id: 3, name: t('nav.services', 'Services'), path: '/services', category: 'main' },
-    { id: 4, name: t('nav.products', 'Solutions'), path: '/products', category: 'main' },
-    { id: 5, name: t('nav.blog', 'TechVision Insights'), path: '/blog', category: 'resources' },
-    { id: 6, name: t('nav.careers', 'Careers'), path: '/careers', category: 'company' },
-    { id: 7, name: t('nav.contact', 'Contact'), path: '/contact', category: 'main', isButton: true }
-  ];
+  // Transform NavItem[] to the format expected by the mobile menu
+  interface MobileNavLink {
+    id: number;
+    name: string;
+    path: string;
+    category: 'main' | 'resources' | 'company';
+    isButton?: boolean;
+    children?: MobileNavLink[];
+  }
+
+  const transformNavItems = (items: NavItem[]): MobileNavLink[] => {
+    return items.map(item => ({
+      id: item.id,
+      name: item.translationKey ? t(item.translationKey, item.label) : item.label,
+      path: item.url.url,
+      category: getCategoryForPath(item.url.url),
+      isButton: item.isButton,
+      children: item.children ? transformNavItems(item.children) : undefined
+    }));
+  };
+
+  // Helper function to categorize navigation items
+  const getCategoryForPath = (path: string): 'main' | 'resources' | 'company' => {
+    if (path === '/blog') return 'resources';
+    if (path === '/careers') return 'company';
+    return 'main';
+  };
+
+  const navLinks = transformNavItems(navItems);
 
   const isActive = (path: string) => location === path;
 
@@ -53,15 +75,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               <IVarseLogo size={32} className="w-8 h-8 sm:w-9 sm:h-9" />
             </div>
           </Link>
-          <button
-            className="text-gray-700 dark:text-gray-200 p-1.5 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800/50 focus:outline-none"
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-gray-700 dark:text-gray-200 p-1.5 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800/50"
             onClick={onClose}
             aria-label="Close mobile menu"
           >
-            <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
+            <X className="h-5 w-5 sm:h-6 sm:w-6" />
+          </Button>
         </div>
 
         {/* Menu Items - Organized into categories */}
@@ -72,8 +94,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               {t('nav.main', 'Main Navigation')}
             </div>
             {navLinks
-              .filter(link => link.category === 'main' && !link.isButton)
-              .map((link) => (
+              .filter((link: MobileNavLink) => link.category === 'main' && !link.isButton)
+              .map((link: MobileNavLink) => (
                 <Link key={link.id} href={link.path}>
                   <div
                     className={`block cursor-pointer text-base sm:text-lg font-semibold py-2.5 sm:py-3 px-3 sm:px-4 my-1 sm:my-1.5 rounded-lg transition-colors ${
@@ -95,8 +117,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               {t('nav.resourcesSection', 'Resources & Information')}
             </div>
             {navLinks
-              .filter(link => link.category === 'resources' && !link.isButton)
-              .map((link) => (
+              .filter((link: MobileNavLink) => link.category === 'resources' && !link.isButton)
+              .map((link: MobileNavLink) => (
                 <Link key={link.id} href={link.path}>
                   <div
                     className={`block cursor-pointer text-base sm:text-lg font-semibold py-2.5 sm:py-3 px-3 sm:px-4 my-1 sm:my-1.5 rounded-lg transition-colors ${
@@ -118,8 +140,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               {t('nav.companySection', 'Company')}
             </div>
             {navLinks
-              .filter(link => link.category === 'company' && !link.isButton)
-              .map((link) => (
+              .filter((link: MobileNavLink) => link.category === 'company' && !link.isButton)
+              .map((link: MobileNavLink) => (
                 <Link key={link.id} href={link.path}>
                   <div
                     className={`block cursor-pointer text-base sm:text-lg font-semibold py-2.5 sm:py-3 px-3 sm:px-4 my-1 sm:my-1.5 rounded-lg transition-colors ${

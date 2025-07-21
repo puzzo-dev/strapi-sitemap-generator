@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx"
+import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -29,5 +29,14 @@ export function formatDate(dateString: string | undefined): string {
 }
 
 // Define supported languages
-export const SUPPORTED_LANGUAGES = ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'] as const;
-export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
+// Default supported languages - will be overridden by Strapi configuration
+export const DEFAULT_SUPPORTED_LANGUAGES = ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'] as const;
+export type SupportedLanguage = string; // Now dynamic from Strapi
+
+/**
+ * Get supported languages from language config hook
+ * This is a utility function that components can use to access current supported languages
+ */
+export const getSupportedLanguages = (languageConfig?: { supportedLanguages: string[] }): string[] => {
+  return languageConfig?.supportedLanguages || [...DEFAULT_SUPPORTED_LANGUAGES];
+};

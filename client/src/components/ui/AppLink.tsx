@@ -10,8 +10,6 @@ import { useLocation } from 'wouter';
 const AppLink: React.FC<AppLinkProps> = ({ href, children, className, style, onClick }) => {
   const [, navigate] = useLocation();
 
-  console.log(href);
-
   const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     // Only apply our custom logic for internal links that don't have hash
     if (

@@ -4,8 +4,8 @@ import IVarseLogo from '@/components/ui/IVarseLogo';
 import NewsletterForm from '@/components/ui/NewsletterForm';
 import { useFooter, useSiteConfig } from '@/hooks/useStrapiContent';
 import AppLink from '@/components/ui/AppLink';
-import { FooterProps } from '@/lib/types';
-import { footerData } from '@/lib/data';
+import { FooterProps } from '@/lib/types/';
+import { footerData } from '@/lib/data/';
 
 // Import icons
 import { MapPin, Phone, Mail, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
@@ -21,6 +21,7 @@ const Footer: React.FC<FooterProps> = () => {
     contactAddress: footer?.contactAddress || siteConfig?.contactAddress || footerData.contactAddress,
     contactPhone: footer?.contactPhone || siteConfig?.contactPhone || footerData.contactPhone,
     contactEmail: footer?.contactEmail || siteConfig?.contactEmail || footerData.contactEmail,
+    contactSectionTitle: footer?.contactSectionTitle || footerData.contactSectionTitle,
     socialLinks: footer?.socialLinks || footerData.socialLinks,
     columns: footer?.columns || footerData.columns,
     legalLinks: footer?.legalLinks || footerData.legalLinks,
@@ -75,7 +76,9 @@ const Footer: React.FC<FooterProps> = () => {
 
               {/* Contact Details */}
               <div className="space-y-4">
-                <h4 className="text-sm md:text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider">Contact Us</h4>
+                <h4 className="text-sm md:text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+                  {displayData.contactSectionTitle}
+                </h4>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-2 sm:mr-3 flex-shrink-0" />
@@ -119,7 +122,8 @@ const Footer: React.FC<FooterProps> = () => {
                       </a>
                     ))
                   )}
-                </div>              </div>
+                </div>              
+              </div>
             </div>
 
             {/* Links section - Takes 3 cols on medium screens */}

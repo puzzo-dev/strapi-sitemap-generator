@@ -1,15 +1,49 @@
 import React from 'react';
 import { Link } from 'wouter';
-import { Calendar, Clock, User } from 'lucide-react';
+import { Calendar, User } from 'lucide-react';
 import { BlogCardProps } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
 
-const BlogCard: React.FC<BlogCardProps> = (props) => {
-    // Check if we're receiving a post object or if the props themselves are the post
-    const post = props;
+const BlogCard: React.FC<BlogCardProps> = ({
+    id,
+    name,
+    title,
+    slug,
+    blogCategories,
+    blogIntro,
+    publishedDate,
+    publishedAt,
+    featured,
+    metaImage,
+    author,
+    authorDetails,
+    readTime,
+    tags,
+    url,
+    ...rest
+}) => {
+    // Use the passed props directly as the post data
+    const post = {
+        id,
+        name,
+        title,
+        slug,
+        blogCategories,
+        blogIntro,
+        publishedDate,
+        publishedAt,
+        featured,
+        metaImage,
+        author,
+        authorDetails,
+        readTime,
+        tags,
+        url,
+        ...rest
+    };
     
     // Handle the case where url is passed separately (as seen in BlogPostsSection)
-    const postUrl = props.url?.url || `/blog/${post.slug || ''}`;
+    const postUrl = url?.url || `/blog/${post.slug || ''}`;
     
     // Safely get image URL with fallback
     const imageUrl = post.metaImage || 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&auto=format&fit=crop';

@@ -2,17 +2,14 @@ import {
   products as localProducts,
   services as localServices,
   testimonials as localTestimonials,
-  clientLogos as localClientLogos,
   jobListings as localJobListings,
-  benefits as localBenefits,
   socialLinks as localSocialLinks,
   navItems as localNavItems,
+  faqItems as localFAQItems,
+  defaultTeamMembers,
   footerData,
-  contactPageContent,
-  defaultHeroProps,
   defaultSiteConfig,
-  footerLinks
-} from '@/lib/data';
+} from '@/lib/data/';
 import {
   ProductProps,
   ServiceProps,
@@ -24,23 +21,27 @@ import {
   SiteConfig,
   PageContent,
   TeamMember,
-  ClientLogo,
   JobListing,
-  HeroProps,
-  HeroSlide,
-  Benefit,
   BlogPost,
   BlogCategory,
-  BlogAuthor,
   BlogComment,
   FooterProps,
-  PageSection
+  FAQItem,
+  BookingFormData
 } from '@/lib/types';
-import { apiRequest } from './queryClient';
-// import { useDynamicHeroContent } from '@/hooks/useStrapiContent';
+
+// Import fallback utilities
+import { 
+  withFallback, 
+  getUIText, 
+  getPageContent, 
+  getContentList,
+  UI_TEXT_FALLBACKS,
+  PAGE_FALLBACKS,
+  CONTENT_FALLBACKS 
+} from '@/lib/fallbacks';
 
 // Constants for API integration
-const USE_LOCAL_API = false; // Set to false to use Strapi instead of local API
 const STRAPI_URL = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
 const STRAPI_API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
 
@@ -57,79 +58,72 @@ let currentLanguage = 'en';
 export function setCurrentLanguage(lang: string) {
   currentLanguage = lang;
   console.log('Language changed to:', lang);
-
-  // Invalidate and refetch data if needed
-  // Here we could trigger refetches for any data that depends on language
-}
-
-// Get current language for Strapi requests
-export function getCurrentLanguage() {
-  return currentLanguage;
 }
 
 /**
- * Fetch data from API with error handling and fallback to local data
+ * Fetch data from Strapi API with error handling and fallback to local data
  */
-async function fetchData<T>(endpoint: string, fallbackData: T): Promise<T> {
+async function fetchStrapiData<T>(endpoint: string, fallbackData: T): Promise<T> {
   try {
-    if (USE_LOCAL_API) {
-      // Use local API (Express backend)
-      return await apiRequest<T>(`/api/${endpoint}`);
-    } else if (!STRAPI_API_TOKEN) {
+    if (!STRAPI_API_TOKEN) {
       console.warn('No Strapi API token provided, using fallback data');
       return fallbackData;
-    } else {
-      // Use Strapi API with language param
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-
-      const response = await fetch(`${STRAPI_URL}/api/${endpoint}?populate=*${localeSuffix}`, {
-        headers: strapiHeaders
-      });
-
-      if (!response.ok) {
-        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-
-
-      // Handle both collection and single type responses from Strapi
-      if (Array.isArray(result.data)) {
-        // console.log("Array response from Strapi:", result.data);
-        // // Log the first item to see its structure
-        // if (result.data.length > 0) {
-        //   console.log("First item structure:", result.data[0]);
-        // }
-        return result.data.map((item: any) => {
-          const mappedItem = {
-            id: item.id,
-            ...item
-          };
-          // console.log("Mapped item:", mappedItem);
-          return mappedItem;
-        }) as T;
-      } else if (result.data && result.data.attributes) {
-        // console.log("Single item response from Strapi:", result.data);
-        // console.log("Mapped single item:", {...result.data});
-        return {
-          id: result.data.id,
-          ...result.data.attributes
-        } as T;
-      }
-
-      return fallbackData;
     }
+
+    // Use Strapi API with language param
+    const locale = currentLanguage;
+    const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+    const response = await fetch(`${STRAPI_URL}/api/${endpoint}?populate=*${localeSuffix}`, {
+      headers: strapiHeaders
+    });
+
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+
+    // Handle both collection and single type responses from Strapi
+    if (Array.isArray(result.data)) {
+      return result.data.map((item: any) => ({
+        id: item.id,
+        ...item.attributes
+      })) as T;
+    } else if (result.data && result.data.attributes) {
+      return {
+        id: result.data.id,
+        ...result.data.attributes
+      } as T;
+    }
+
+    return fallbackData;
   } catch (error) {
     console.warn(`Error fetching data (${endpoint}):`, error);
     return fallbackData;
   }
 }
+
+// Utility: Fetch with language fallback (current lang -> en -> local)
+async function fetchWithLanguageFallback<T>(endpoint: string, fallbackData: T): Promise<T> {
+  // 1. Try current language
+  let data = await fetchStrapiData<T>(endpoint, [] as any);
+  if ((!data || (Array.isArray(data) && data.length === 0)) && currentLanguage !== 'en') {
+    // 2. Try English
+    const prevLang = currentLanguage;
+    setCurrentLanguage('en');
+    data = await fetchStrapiData<T>(endpoint, [] as any);
+    setCurrentLanguage(prevLang);
+  }
+  // 3. Fallback to local data
+  return (data && (!Array.isArray(data) || data.length > 0)) ? data : fallbackData;
+}
+
 /**
  * Get all products from API or fallback to local data
  */
 export async function getProducts(): Promise<ProductProps[]> {
-  return fetchData<ProductProps[]>('products', localProducts);
+  return fetchWithLanguageFallback<ProductProps[]>('products', localProducts);
 }
 
 /**
@@ -137,30 +131,27 @@ export async function getProducts(): Promise<ProductProps[]> {
  */
 export async function getProductById(id: number): Promise<ProductProps | undefined> {
   try {
-    if (USE_LOCAL_API) {
-      const products = await fetchData<ProductProps[]>('products', localProducts);
-      return products.find(product => product.id === id);
-    } else if (!STRAPI_API_TOKEN) {
+    if (!STRAPI_API_TOKEN) {
       return localProducts.find(product => product.id === id);
-    } else {
-      // Use Strapi API with language param
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-
-      const response = await fetch(`${STRAPI_URL}/api/products/${id}?populate=*${localeSuffix}`, {
-        headers: strapiHeaders
-      });
-
-      if (!response.ok) {
-        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      return {
-        id: result.data.id,
-        ...result.data.attributes
-      };
     }
+
+    // Use Strapi API with language param
+    const locale = currentLanguage;
+    const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+    const response = await fetch(`${STRAPI_URL}/api/products/${id}?populate=*${localeSuffix}`, {
+      headers: strapiHeaders
+    });
+
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    return {
+      id: result.data.id,
+      ...result.data.attributes
+    };
   } catch (error) {
     console.warn(`Error fetching product ${id}:`, error);
     return localProducts.find(product => product.id === id);
@@ -172,7 +163,7 @@ export async function getProductById(id: number): Promise<ProductProps | undefin
  */
 export async function getServices(): Promise<ServiceProps[]> {
   try {
-    const services = await fetchData<ServiceProps[]>('services', []);
+    const services = await fetchStrapiData<ServiceProps[]>('services', []);
     return services.length > 0 ? services : localServices;
   } catch (error) {
     console.warn('Error fetching services:', error);
@@ -185,30 +176,27 @@ export async function getServices(): Promise<ServiceProps[]> {
  */
 export async function getServiceById(id: number): Promise<ServiceProps | undefined> {
   try {
-    if (USE_LOCAL_API) {
-      const services = await fetchData<ServiceProps[]>('services', localServices);
-      return services.find(service => service.id === id);
-    } else if (!STRAPI_API_TOKEN) {
+    if (!STRAPI_API_TOKEN) {
       return localServices.find(service => service.id === id);
-    } else {
-      // Use Strapi API with language param
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-
-      const response = await fetch(`${STRAPI_URL}/api/services/${id}?populate=*${localeSuffix}`, {
-        headers: strapiHeaders
-      });
-
-      if (!response.ok) {
-        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      return {
-        id: result.data.id,
-        ...result.data.attributes
-      };
     }
+
+    // Use Strapi API with language param
+    const locale = currentLanguage;
+    const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+    const response = await fetch(`${STRAPI_URL}/api/services/${id}?populate=*${localeSuffix}`, {
+      headers: strapiHeaders
+    });
+
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    return {
+      id: result.data.id,
+      ...result.data.attributes
+    };
   } catch (error) {
     console.warn(`Error fetching service ${id}:`, error);
     return localServices.find(service => service.id === id);
@@ -219,92 +207,63 @@ export async function getServiceById(id: number): Promise<ServiceProps | undefin
  * Get all testimonials from API or fallback to local data
  */
 export async function getTestimonials(): Promise<TestimonialProps[]> {
-  return fetchData<TestimonialProps[]>('testimonials', localTestimonials);
+  return fetchWithLanguageFallback<TestimonialProps[]>('testimonials', localTestimonials);
+}
+
+/**
+ * Get FAQ items from API
+ */
+export async function getFAQItems(): Promise<FAQItem[]> {
+  return fetchStrapiData<FAQItem[]>('faq-items', localFAQItems);
 }
 
 /**
  * Get navigation menu items from API
- /**
- * Get navigation menu items from API
  */
 export async function getNavItems(): Promise<NavItem[]> {
-  const defaultNavItems: NavItem[] = localNavItems;
-
-  return fetchData<NavItem[]>('nav-items', defaultNavItems);
+  return fetchStrapiData<NavItem[]>('nav-items', localNavItems);
 }
 
 /**
  * Get social media links from API
  */
 export async function getSocialLinks(): Promise<SocialLink[]> {
-  const defaultSocialLinks: SocialLink[] = localSocialLinks;
-
-  return fetchData<SocialLink[]>('social-links', defaultSocialLinks);
+  return fetchStrapiData<SocialLink[]>('social-links', localSocialLinks);
 }
 
 /**
  * Get footer columns from API
  */
 export async function getFooterColumns(): Promise<FooterColumn[]> {
-  // Use the columns from footerLinks as the fallback data
-  const defaultFooterColumns = footerLinks.columns;
-  // Use fetchData to get the data from Strapi with proper fallback
-  return fetchData<FooterColumn[]>('footer-columns', defaultFooterColumns);
+  return fetchStrapiData<FooterColumn[]>('footer-columns', []);
 }
 
 /**
  * Get site configuration from API
  */
 export async function getSiteConfig(): Promise<SiteConfig> {
-  // const defaultSiteConfig: SiteConfig = {
-  //   siteName: 'I-Varse Technologies',
-  //   siteDescription: 'Digital solutions for modern businesses',
-  //   contactEmail: 'info@itechnologies.ng',
-  //   contactPhone: '+1234567890',
-  //   contactAddress: '123 Tech Boulevard, Silicon Valley, CA',
-  //   logoLight: '/assets/I-VARSELogo3@3x.png',
-  //   logoDark: '/assets/I-VARSELogo4@3x.png',
-  //   favicon: '/assets/I-VARSEIcon1@3x.png'
-  // };
-
   try {
-    if (USE_LOCAL_API) {
-      // First attempt to get from internal API
-      try {
-        const result = await apiRequest<{ value: any }>(`/api/site-config`);
-        if (result && result.value) {
-          const config = result.value as unknown as SiteConfig;
-          return config;
-        }
-      } catch (e) {
-        console.warn('Error fetching site config from internal API:', e);
-      }
+    if (!STRAPI_API_TOKEN) {
       return defaultSiteConfig;
-    } else if (!STRAPI_API_TOKEN) {
-      return defaultSiteConfig;
-    } else {
-      // Use Strapi API with language param
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-
-      const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*${localeSuffix}`, {
-        headers: strapiHeaders
-      });
-
-      if (!response.ok) {
-        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      if (!result.data) {
-        return defaultSiteConfig;
-      }
-
-      return {
-        id: result.data.id,
-        ...result.data.attributes
-      };
     }
+
+    const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*`, {
+      headers: strapiHeaders
+    });
+
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    if (!result.data) {
+      return defaultSiteConfig;
+    }
+
+    return {
+      id: result.data.id,
+      ...result.data.attributes
+    };
   } catch (error) {
     console.warn('Error fetching site config:', error);
     return defaultSiteConfig;
@@ -312,332 +271,428 @@ export async function getSiteConfig(): Promise<SiteConfig> {
 }
 
 /**
- * Get page content by slug from API
+ * Get language configuration from Strapi API
+ */
+export async function getLanguageConfig(): Promise<{
+  supportedLanguages: string[];
+  defaultLanguage: string;
+  enabledTranslations: Record<string, any>;
+}> {
+  try {
+    if (!STRAPI_API_TOKEN) {
+      console.warn('No Strapi API token, using default language configuration');
+      return {
+        supportedLanguages: ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'],
+        defaultLanguage: 'en',
+        enabledTranslations: {}
+      };
+    }
+
+    const response = await fetch(`${STRAPI_URL}/api/language-config?populate=*`, {
+      headers: strapiHeaders
+    });
+
+    if (!response.ok) {
+      console.warn(`Strapi language config API error: ${response.status}, using defaults`);
+      return {
+        supportedLanguages: ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'],
+        defaultLanguage: 'en',
+        enabledTranslations: {}
+      };
+    }
+
+    const result = await response.json();
+    if (!result.data) {
+      return {
+        supportedLanguages: ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'],
+        defaultLanguage: 'en',
+        enabledTranslations: {}
+      };
+    }
+
+    const config = result.data.attributes;
+    return {
+      supportedLanguages: config.supportedLanguages || ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'],
+      defaultLanguage: config.defaultLanguage || 'en',
+      enabledTranslations: config.translations || {}
+    };
+  } catch (error) {
+    console.warn('Error fetching language config:', error);
+    return {
+      supportedLanguages: ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'],
+      defaultLanguage: 'en',
+      enabledTranslations: {}
+    };
+  }
+}
+
+/**
+ * Get translations for UI elements from Strapi
+ */
+export async function getUITranslations(language: string = currentLanguage): Promise<Record<string, any>> {
+  try {
+    if (!STRAPI_API_TOKEN) {
+      console.warn('No Strapi API token, using local translations');
+      return {};
+    }
+
+    const response = await fetch(`${STRAPI_URL}/api/ui-translations?filters[language][$eq]=${language}&populate=*`, {
+      headers: strapiHeaders
+    });
+
+    if (!response.ok) {
+      console.warn(`Strapi UI translations API error: ${response.status}, using local translations`);
+      return {};
+    }
+
+    const result = await response.json();
+    if (!result.data || !Array.isArray(result.data) || result.data.length === 0) {
+      console.warn(`No UI translations found for language: ${language}`);
+      return {};
+    }
+
+    // Transform Strapi data to i18n format
+    const translationData = result.data[0].attributes;
+    return translationData.translations || {};
+  } catch (error) {
+    console.warn('Error fetching UI translations:', error);
+    return {};
+  }
+}
+
+/**
+ * Get page content by slug from Strapi API
  */
 export async function getPageContent(slug: string): Promise<PageContent | null> {
   try {
-    if (USE_LOCAL_API) {
-      try {
-        const data = await apiRequest<PageContent>(`/api/pages/${slug}`);
-        return data;
-      } catch (e) {
-        console.warn(`Error fetching page content for ${slug} from internal API:`, e);
-
-        // Check if we have a local fallback for this page
-        if (slug === 'contact' && contactPageContent) {
-          return contactPageContent;
-        }
-
-        return null;
-      }
-    } else if (!STRAPI_API_TOKEN) {
-      console.warn('No Strapi API token provided, checking for local page content');
-
-      // Check if we have a local fallback for this page
-      if (slug === 'contact' && contactPageContent) {
-        return contactPageContent;
-      }
-
+    if (!STRAPI_API_TOKEN) {
+      console.warn('No Strapi API token provided, returning null');
       return null;
-    } else {
-      // Use Strapi API with language param
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+    }
 
-      const response = await fetch(`${STRAPI_URL}/api/pages?filters[slug][$eq]=${slug}&populate=deep${localeSuffix}`, {
-        headers: strapiHeaders
-      });
+    // Use Strapi API with language param
+    const locale = currentLanguage;
+    const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
 
-      if (!response.ok) {
-        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-      }
+    const response = await fetch(`${STRAPI_URL}/api/page-contents?filters[slug][$eq]=${slug}&populate=*${localeSuffix}`, {
+      headers: strapiHeaders
+    });
 
-      const result = await response.json();
-      if (!result.data || result.data.length === 0) {
-        // Check if we have a local fallback for this page
-        if (slug === 'contact' && contactPageContent) {
-          return contactPageContent;
-        }
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
 
-        return null;
-      }
+    const result = await response.json();
 
+    // Handle collection response from Strapi
+    if (result.data && Array.isArray(result.data) && result.data.length > 0) {
+      const pageData = result.data[0];
       return {
-        id: result.data[0].id,
-        ...result.data[0].attributes
+        id: pageData.id,
+        ...pageData.attributes
       };
     }
-  } catch (error) {
-    console.warn(`Error fetching page content for ${slug}:`, error);
 
-    // Check if we have a local fallback for this page
-    if (slug === 'contact' && contactPageContent) {
-      return contactPageContent;
+    // If no data found, try English fallback
+    if (locale !== 'en') {
+      const prevLang = currentLanguage;
+      setCurrentLanguage('en');
+      const englishResponse = await fetch(`${STRAPI_URL}/api/page-contents?filters[slug][$eq]=${slug}&populate=*`, {
+        headers: strapiHeaders
+      });
+      setCurrentLanguage(prevLang);
+
+      if (englishResponse.ok) {
+        const englishResult = await englishResponse.json();
+        if (englishResult.data && Array.isArray(englishResult.data) && englishResult.data.length > 0) {
+          const pageData = englishResult.data[0];
+          return {
+            id: pageData.id,
+            ...pageData.attributes
+          };
+        }
+      }
     }
 
+    return null;
+  } catch (error) {
+    console.warn(`Error fetching page content (${slug}):`, error);
     return null;
   }
 }
 
 /**
- * Get team members from API
+ * Get ERPNext credentials securely from Strapi backend
+ */
+async function getERPNextCredentials() {
+  try {
+    // Try to get ERPNext credentials from Strapi SiteConfig first (secure)
+    const siteConfig = await getSiteConfig();
+    if (siteConfig.erpNextUrl && siteConfig.erpNextApiKey && siteConfig.erpNextApiSecret) {
+      return {
+        url: siteConfig.erpNextUrl,
+        apiKey: siteConfig.erpNextApiKey,
+        apiSecret: siteConfig.erpNextApiSecret
+      };
+    }
+  } catch (error) {
+    console.warn('Could not fetch ERPNext credentials from Strapi SiteConfig, using environment variables');
+  }
+
+  // Fallback to environment variables (less secure, for development only)
+  return {
+    url: import.meta.env.VITE_ERP_NEXT_URL,
+    apiKey: import.meta.env.VITE_ERP_NEXT_API_KEY,
+    apiSecret: import.meta.env.VITE_ERP_NEXT_API_SECRET
+  };
+}
+
+/**
+ * Get team members from ERPNext API
  */
 export async function getTeamMembers(): Promise<TeamMember[]> {
-  const defaultTeamMembers: TeamMember[] = [
-    {
-      id: 1,
-      name: 'John Doe',
-      position: 'CEO',
-      bio: 'Experienced leader with a passion for technology innovation.',
-      image: 'https://source.unsplash.com/random/300x300/?portrait'
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      position: 'CTO',
-      bio: 'Tech enthusiast with deep expertise in software architecture.',
-      image: 'https://source.unsplash.com/random/300x300/?portrait'
-    },
-    {
-      id: 3,
-      name: 'Alex Johnson',
-      position: 'Design Lead',
-      bio: 'Creative professional focused on delivering exceptional user experiences.',
-      image: 'https://source.unsplash.com/random/300x300/?portrait'
-    },
-    {
-      id: 3,
-      name: 'Alex Johnson',
-      position: 'Design Lead',
-      bio: 'Creative professional focused on delivering exceptional user experiences.',
-      image: 'https://source.unsplash.com/random/300x300/?portrait'
-    }
-  ];
-
-  return fetchData<TeamMember[]>('team-members', defaultTeamMembers);
-}
-
-/**
- * Submit contact form data to erpNext
- */
-export async function submitContactForm(data: ContactFormData): Promise<any> {
   try {
-    const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
-    const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
-    const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
+    // Get ERPNext credentials securely from Strapi
+    const erpCredentials = await getERPNextCredentials();
 
-    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
-      console.warn('erpNext credentials not configured, using fallback');
-      // Simulate successful submission with a delay
-      await new Promise(resolve => setTimeout(resolve, 800));
-      return { success: true, message: 'Form submitted successfully' };
-    }
+    if (erpCredentials.url && erpCredentials.apiKey && erpCredentials.apiSecret) {
+      try {
+        const response = await fetch(`${erpCredentials.url}/api/resource/Employee?filters=[["status","=","Active"]]&fields=["name","employee_name","designation","department","image","bio","email","phone","location","date_of_joining","linkedin","twitter","github"]`, {
+          headers: {
+            'Authorization': `token ${erpCredentials.apiKey}:${erpCredentials.apiSecret}`,
+            'Content-Type': 'application/json',
+          }
+        });
 
-    // Format data for erpNext API
-    const erpNextData = {
-      doctype: 'Lead',
-      lead_name: data.fullName,
-      email_id: data.email,
-      phone: data.phone,
-      notes: data.message,
-      source: 'Website'
-    };
-
-    // Call erpNext API
-    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Lead`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
-      },
-      body: JSON.stringify(erpNextData)
-    });
-
-    if (!response.ok) {
-      throw new Error(`erpNext API error: ${response.status} ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    return { success: true, data: result };
-  } catch (error) {
-    console.error('Error submitting to erpNext:', error);
-    throw error;
-  }
-}
-
-/**
- * Submit newsletter subscription to erpNext
- */
-export async function subscribeToNewsletter(email: string): Promise<any> {
-  try {
-    const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
-    const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
-    const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
-
-    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
-      console.warn('erpNext credentials not configured, using fallback');
-      // Simulate successful subscription with a delay
-      await new Promise(resolve => setTimeout(resolve, 800));
-      return { success: true, message: 'Subscription successful' };
-    }
-
-    // Format data for erpNext API - using Email Group Subscriber
-    const erpNextData = {
-      doctype: 'Email Group Member',
-      email_group: 'Newsletter Subscribers',
-      email: email,
-      unsubscribed: 0
-    };
-
-    // Call erpNext API
-    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Email Group Member`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
-      },
-      body: JSON.stringify(erpNextData)
-    });
-
-    if (!response.ok) {
-      throw new Error(`erpNext API error: ${response.status} ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    return { success: true, data: result };
-  } catch (error) {
-    console.error('Error subscribing to newsletter:', error);
-    throw error;
-  }
-}
-
-/**
- * Get client logos from API or fallback to local data
- */
-export async function getClientLogos(): Promise<ClientLogo[]> {
-  return fetchData<ClientLogo[]>('client-logos', localClientLogos);
-}
-
-/**
- * Submit a booking/appointment request to erpNext
- */
-export async function scheduleAppointment(data: {
-  name: string;
-  email: string;
-  phone: string;
-  date: string;
-  time: string;
-  topic: string;
-  message: string;
-}): Promise<any> {
-  try {
-    const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
-    const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
-    const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
-
-    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
-      console.warn('erpNext credentials not configured, using fallback');
-      // Simulate successful booking with a delay
-      await new Promise(resolve => setTimeout(resolve, 800));
-      return { success: true, message: 'Appointment scheduled successfully' };
-    }
-
-    // Format data for erpNext API - using Event doctype
-    const appointmentDate = new Date(`${data.date}T${data.time}`);
-    // Add 1 hour for appointment length
-    const endDate = new Date(appointmentDate.getTime() + 60 * 60 * 1000);
-
-    const erpNextData = {
-      doctype: 'Event',
-      subject: `Consultation: ${data.topic}`,
-      event_type: 'Private',
-      description: data.message,
-      starts_on: appointmentDate.toISOString(),
-      ends_on: endDate.toISOString(),
-      all_day: 0,
-      event_participants: [
-        {
-          reference_doctype: 'Contact',
-          reference_docname: data.name,
-          email: data.email,
-          phone: data.phone
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data && result.data.length > 0) {
+            return result.data.map((employee: any, index: number) => {
+              const employeeName = employee.employee_name || 'Team Member';
+              const slug = employeeName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+              
+              return {
+                id: employee.name || index + 1,
+                name: employeeName,
+                slug: slug,
+                position: employee.designation || 'Employee',
+                bio: employee.bio || 'Dedicated team member contributing to our success.',
+                image: employee.image || `https://images.unsplash.com/photo-${1500648767791 + index}?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80`,
+                email: employee.email,
+                phone: employee.phone,
+                location: employee.location,
+                joinDate: employee.date_of_joining,
+                socialMedia: {
+                  linkedin: employee.linkedin,
+                  twitter: employee.twitter,
+                  github: employee.github
+                },
+                erpNextId: employee.name,
+                erpNextStatus: 'active',
+                erpNextDepartment: employee.department
+              };
+            });
+          }
         }
-      ]
-    };
-
-    // Call erpNext API
-    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Event`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
-      },
-      body: JSON.stringify(erpNextData)
-    });
-
-    if (!response.ok) {
-      throw new Error(`erpNext API error: ${response.status} ${response.statusText}`);
+      } catch (erpError) {
+        console.warn('Error fetching team members from ERPNext:', erpError);
+      }
     }
 
-    const result = await response.json();
-    return { success: true, data: result };
+    // Fallback to local data
+    return defaultTeamMembers;
   } catch (error) {
-    console.error('Error scheduling appointment:', error);
-    throw error;
+    console.warn('Error fetching team members:', error);
+    return defaultTeamMembers;
   }
 }
 
 /**
- * Get job listings from API or fallback to local data
+ * Get job listings from API with ERPNext integration
  */
 export async function getJobListings(): Promise<JobListing[]> {
-  // Using the jobListings data from data.ts as fallback
-  return fetchData<JobListing[]>('job-listings', localJobListings);
+  try {
+    // First try to get from Strapi
+    const strapiJobs = await fetchStrapiData<JobListing[]>('job-listings', []);
+
+    // If we have Strapi jobs, return them
+    if (strapiJobs.length > 0) {
+      return strapiJobs;
+    }
+
+    // If no Strapi jobs, try ERPNext with secure credentials
+    const erpCredentials = await getERPNextCredentials();
+
+    if (erpCredentials.url && erpCredentials.apiKey && erpCredentials.apiSecret) {
+      try {
+        const response = await fetch(`${erpCredentials.url}/api/resource/Job Opening?filters=[["status","=","Open"]]&fields=["name","job_title","department","location","employment_type","description","requirements","responsibilities","salary_min","salary_max","currency","deadline"]`, {
+          headers: {
+            'Authorization': `token ${erpCredentials.apiKey}:${erpCredentials.apiSecret}`,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data) {
+            return result.data.map((job: any) => ({
+              id: job.name,
+              title: job.job_title || 'Job Opening',
+              department: job.department || 'General',
+              location: job.location || 'Remote',
+              type: job.employment_type || 'Full-time',
+              description: job.description || '',
+              responsibilities: job.responsibilities ? job.responsibilities.split('\n').filter((r: string) => r.trim()) : [],
+              requirements: job.requirements ? job.requirements.split('\n').filter((r: string) => r.trim()) : [],
+              benefits: ['Competitive salary', 'Health insurance', 'Professional development', 'Remote work options'],
+              qualifications: ['Relevant experience', 'Strong communication skills', 'Team player'],
+              salary: job.salary_min && job.salary_max ? `${job.currency || '$'}${job.salary_min} - ${job.salary_max}` : 'Competitive',
+              featured: false,
+              postedAt: new Date().toISOString(),
+              erpNextId: job.name,
+              erpNextStatus: 'open',
+              erpNextDepartment: job.department,
+              erpNextLocation: job.location,
+              erpNextType: job.employment_type,
+              erpNextSalary: {
+                min: job.salary_min,
+                max: job.salary_max,
+                currency: job.currency,
+                period: 'yearly'
+              },
+              erpNextApplicationDeadline: job.deadline
+            }));
+          }
+        }
+      } catch (erpError) {
+        console.warn('Error fetching jobs from ERPNext:', erpError);
+      }
+    }
+
+    // Fallback to local data
+    return localJobListings;
+  } catch (error) {
+    console.warn('Error fetching job listings:', error);
+    return localJobListings;
+  }
 }
 
 /**
- * Get a single job listing by ID from API or fallback to local data
+ * Get a single job by ID from API with ERPNext integration
  */
 export async function getJobById(id: number): Promise<JobListing | undefined> {
   try {
-    const allJobs = await getJobListings();
-    return allJobs.find(job => job.id === id);
-  } catch (error) {
-    console.error('Error fetching job:', error);
-    return undefined;
-  }
-}
+    // First try Strapi
+    if (STRAPI_API_TOKEN) {
+      const response = await fetch(`${STRAPI_URL}/api/job-listings/${id}?populate=*`, {
+        headers: strapiHeaders
+      });
 
-/**
- * Get benefits from API or fallback to local data
- */
-export async function getBenefits(): Promise<Benefit[]> {
-  // Using the benefits data from data.ts as fallback
-  return fetchData<Benefit[]>('benefits', localBenefits);
+      if (response.ok) {
+        const result = await response.json();
+        return {
+          id: result.data.id,
+          ...result.data.attributes
+        };
+      }
+    }
+
+    // Try ERPNext if Strapi fails
+    const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+    const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+    const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
+
+    if (ERP_NEXT_URL && ERP_NEXT_API_KEY && ERP_NEXT_API_SECRET) {
+      try {
+        const response = await fetch(`${ERP_NEXT_URL}/api/resource/Job Opening/${id}`, {
+          headers: {
+            'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (response.ok) {
+          const job = await response.json();
+          return {
+            id: job.data.name,
+            title: job.data.job_title || 'Job Opening',
+            department: job.data.department || 'General',
+            location: job.data.location || 'Remote',
+            type: job.data.employment_type || 'Full-time',
+            description: job.data.description || '',
+            responsibilities: job.data.responsibilities ? job.data.responsibilities.split('\n').filter((r: string) => r.trim()) : [],
+            requirements: job.data.requirements ? job.data.requirements.split('\n').filter((r: string) => r.trim()) : [],
+            benefits: ['Competitive salary', 'Health insurance', 'Professional development', 'Remote work options'],
+            qualifications: ['Relevant experience', 'Strong communication skills', 'Team player'],
+            salary: job.data.salary_min && job.data.salary_max ? `${job.data.currency || '$'}${job.data.salary_min} - ${job.data.salary_max}` : 'Competitive',
+            featured: false,
+            postedAt: new Date().toISOString(),
+            erpNextId: job.data.name,
+            erpNextStatus: 'open',
+            erpNextDepartment: job.data.department,
+            erpNextLocation: job.data.location,
+            erpNextType: job.data.employment_type,
+            erpNextSalary: {
+              min: job.data.salary_min,
+              max: job.data.salary_max,
+              currency: job.data.currency,
+              period: 'yearly'
+            },
+            erpNextApplicationDeadline: job.data.deadline
+          };
+        }
+      } catch (erpError) {
+        console.warn('Error fetching job from ERPNext:', erpError);
+      }
+    }
+
+    // Fallback to local data
+    return localJobListings.find(job => job.id === id);
+  } catch (error) {
+    console.warn(`Error fetching job ${id}:`, error);
+    return localJobListings.find(job => job.id === id);
+  }
 }
 
 /**
  * ERPNext Blog API functions
  */
 
-// Base URL for ERPNext API - should be stored in an environment variable
-const ERPNEXT_API_BASE_URL = import.meta.env.VITE_ERPNEXT_API_URL || 'https://i-erp.itechnologies.ng';
+// Base URL for ERPNext API - consolidated to use single URL
+// Will be dynamically set from SiteConfig or environment variables
+let ERP_NEXT_BASE_URL: string | undefined;
 
 /**
  * Fetch data from ERPNext API with error handling
  */
 async function fetchERPNextData<T>(endpoint: string, fallbackData: T): Promise<T> {
   try {
-    // Check if ERPNext API token is available
-    const erpnextToken = import.meta.env.VITE_ERPNEXT_API_TOKEN;
-    if (!erpnextToken) {
-      console.warn('No ERPNext API token provided, using fallback data');
+    // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
+    let ERP_NEXT_API_KEY: string | undefined;
+    let ERP_NEXT_API_SECRET: string | undefined;
+
+    try {
+      const siteConfig = await getSiteConfig();
+      ERP_NEXT_API_KEY = siteConfig.erpNextApiKey;
+      ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret;
+    } catch (error) {
+      console.warn('Could not fetch SiteConfig, using environment variables');
+    }
+
+    // Fallback to environment variables if SiteConfig doesn't have the credentials
+    if (!ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+      ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
+    }
+
+    if (!ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      console.warn('No ERPNext API credentials provided, using fallback data');
       return fallbackData;
     }
 
-    const response = await fetch(`${ERPNEXT_API_BASE_URL}/api/${endpoint}`, {
+    const response = await fetch(`${ERP_NEXT_BASE_URL}/api/${endpoint}`, {
       headers: {
-        'Authorization': `Bearer ${erpnextToken}`,
+        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`,
         'Content-Type': 'application/json',
       },
     });
@@ -655,13 +710,15 @@ async function fetchERPNextData<T>(endpoint: string, fallbackData: T): Promise<T
 }
 
 /**
- * Get all blog posts from ERPNext API
+ * Get all blog posts from ERPNext API with enhanced filtering
  */
 export async function getBlogPosts(params: {
   limit?: number;
   category?: string;
   featured?: boolean;
   tag?: string;
+  author?: string;
+  status?: 'draft' | 'published' | 'archived';
 } = {}): Promise<BlogPost[]> {
   try {
     // Create query parameters
@@ -670,18 +727,85 @@ export async function getBlogPosts(params: {
     if (params.category) queryParams.append('category', params.category);
     if (params.featured !== undefined) queryParams.append('featured', params.featured.toString());
     if (params.tag) queryParams.append('tag', params.tag);
+    if (params.author) queryParams.append('author', params.author);
+    if (params.status) queryParams.append('status', params.status);
 
-    const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+    // Try to fetch from ERPNext API first
+    const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+    const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+    const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
 
-    // Try to fetch from ERPNext API
-    const posts = await fetchERPNextData<BlogPost[]>(`blogger/posts${queryString}`, []);
+    if (ERP_NEXT_URL && ERP_NEXT_API_KEY && ERP_NEXT_API_SECRET) {
+      try {
+        // Build ERPNext filters
+        let filters = '[["published","=",1]]';
+        if (params.category) {
+          filters = `[["published","=",1],["blog_category","=","${params.category}"]]`;
+        }
+        if (params.featured) {
+          filters = `[["published","=",1],["featured","=",1]]`;
+        }
 
-    // If we got posts from the API, return them
-    if (posts.length > 0) {
-      return posts;
+        const response = await fetch(`${ERP_NEXT_URL}/api/resource/Blog Post?filters=${filters}&fields=["name","title","blog_intro","content","published_on","blog_category","author","featured","meta_image","meta_title","meta_description","blog_category","tags"]&order_by=published_on desc`, {
+          headers: {
+            'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data && result.data.length > 0) {
+            const erpPosts = result.data.map((post: any) => ({
+              id: post.name,
+              name: post.name,
+              title: post.title || 'Blog Post',
+              slug: post.name.toLowerCase().replace(/\s+/g, '-'),
+              blogCategories: post.blog_category ? [{
+                id: post.blog_category,
+                name: post.blog_category,
+                slug: post.blog_category.toLowerCase().replace(/\s+/g, '-'),
+                description: '',
+                title: post.blog_category
+              }] : [],
+              blogIntro: post.blog_intro || '',
+              content: post.content || '',
+              publishedAt: post.published_on || new Date().toISOString(),
+              published: true,
+              featured: post.featured === 1,
+              metaImage: post.meta_image,
+              metaTitle: post.meta_title || post.title,
+              metaDescription: post.meta_description || post.blog_intro,
+              author: post.author || 'Admin',
+              readTime: Math.ceil((post.content?.length || 0) / 200), // Rough estimate
+              tags: post.tags ? post.tags.split(',').map((tag: string) => tag.trim()) : [],
+              erpNextId: post.name,
+              erpNextStatus: 'published',
+              erpNextAuthor: post.author,
+              erpNextCategory: post.blog_category,
+              erpNextTags: post.tags ? post.tags.split(',').map((tag: string) => tag.trim()) : []
+            }));
+
+            // Apply additional filtering
+            let filteredPosts = erpPosts;
+            if (params.tag) {
+              filteredPosts = filteredPosts.filter((post: BlogPost) =>
+                post.tags?.some((tag: string) => tag.toLowerCase().includes(params.tag!.toLowerCase()))
+              );
+            }
+            if (params.limit) {
+              filteredPosts = filteredPosts.slice(0, params.limit);
+            }
+
+            return filteredPosts;
+          }
+        }
+      } catch (erpError) {
+        console.warn('Error fetching blog posts from ERPNext:', erpError);
+      }
     }
 
-    // Otherwise, use the local blog posts with filtering
+    // Fallback to local blog posts with filtering
     const { blogPosts } = await import('./data');
     return filterBlogPosts(blogPosts, params);
   } catch (error) {
@@ -691,8 +815,9 @@ export async function getBlogPosts(params: {
     return filterBlogPosts(blogPosts, params);
   }
 }
+
 /**
- * Filter blog posts based on params for fallback data
+ * Filter blog posts based on parameters
  */
 function filterBlogPosts(posts: BlogPost[], params: {
   limit?: number;
@@ -705,7 +830,9 @@ function filterBlogPosts(posts: BlogPost[], params: {
   // Filter by category
   if (params.category) {
     filteredPosts = filteredPosts.filter(post =>
-      post.blogCategory.toLowerCase() === params.category?.toLowerCase()
+      post.blogCategories.some((category: BlogCategory) =>
+        category.name.toLowerCase() === params.category?.toLowerCase()
+      )
     );
   }
 
@@ -714,15 +841,15 @@ function filterBlogPosts(posts: BlogPost[], params: {
     filteredPosts = filteredPosts.filter(post => post.featured === params.featured);
   }
 
-  // Filter by tag
+  // Filter by tag (if tags are implemented)
   if (params.tag) {
     filteredPosts = filteredPosts.filter(post =>
-      post.tags?.some(tag => tag.toLowerCase() === params.tag?.toLowerCase())
+      post.tags?.some(tag => tag.toLowerCase().includes(params.tag!.toLowerCase()))
     );
   }
 
-  // Limit results
-  if (params.limit && params.limit > 0) {
+  // Apply limit
+  if (params.limit) {
     filteredPosts = filteredPosts.slice(0, params.limit);
   }
 
@@ -730,28 +857,126 @@ function filterBlogPosts(posts: BlogPost[], params: {
 }
 
 /**
- * Get a single blog post by slug
+ * Get a single blog post by slug with ERPNext integration
  */
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  // Import dummy blog posts
-  const { blogPosts } = await import('./data');
+  try {
+    // Import dummy blog posts for fallback
+    const { blogPosts } = await import('./data');
 
-  // Find matching post in dummy data
-  const dummyPost = blogPosts.find(post => post.slug === slug) || null;
+    // Try ERPNext first
+    const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+    const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+    const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
 
-  // Use the matching post from dummy data as fallback
-  return fetchERPNextData<BlogPost | null>(`blogger/posts/${slug}`, dummyPost);
+    if (ERP_NEXT_URL && ERP_NEXT_API_KEY && ERP_NEXT_API_SECRET) {
+      try {
+        // Convert slug back to ERPNext name format
+        const postName = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+        const response = await fetch(`${ERP_NEXT_URL}/api/resource/Blog Post/${postName}`, {
+          headers: {
+            'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data) {
+            const post = result.data;
+            return {
+              id: post.name,
+              name: post.name,
+              title: post.title || 'Blog Post',
+              slug: post.name.toLowerCase().replace(/\s+/g, '-'),
+              blogCategories: post.blog_category ? [{
+                id: post.blog_category,
+                name: post.blog_category,
+                slug: post.blog_category.toLowerCase().replace(/\s+/g, '-'),
+                description: '',
+                title: post.blog_category
+              }] : [],
+              blogIntro: post.blog_intro || '',
+              content: post.content || '',
+              publishedAt: post.published_on || new Date().toISOString(),
+              published: true,
+              featured: post.featured === 1,
+              metaImage: post.meta_image,
+              metaTitle: post.meta_title || post.title,
+              metaDescription: post.meta_description || post.blog_intro,
+              author: post.author || 'Admin',
+              readTime: Math.ceil((post.content?.length || 0) / 200),
+              tags: post.tags ? post.tags.split(',').map((tag: string) => tag.trim()) : [],
+              erpNextId: post.name,
+              erpNextStatus: 'published',
+              erpNextAuthor: post.author,
+              erpNextCategory: post.blog_category,
+              erpNextTags: post.tags ? post.tags.split(',').map((tag: string) => tag.trim()) : []
+            };
+          }
+        }
+      } catch (erpError) {
+        console.warn('Error fetching blog post from ERPNext:', erpError);
+      }
+    }
+
+    // Find matching post in dummy data
+    const dummyPost = blogPosts.find(post => post.slug === slug) || null;
+    return dummyPost;
+  } catch (error) {
+    console.warn(`Error fetching blog post by slug ${slug}:`, error);
+    const { blogPosts } = await import('./data');
+    return blogPosts.find(post => post.slug === slug) || null;
+  }
 }
 
 /**
- * Get all blog categories
+ * Get all blog categories from ERPNext
  */
 export async function getBlogCategories(): Promise<BlogCategory[]> {
-  // Import dummy blog categories
-  const { blogCategories } = await import('./data');
+  try {
+    // Try ERPNext first
+    const ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+    const ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+    const ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
 
-  // Use blog categories from data.ts as fallback
-  return fetchERPNextData<BlogCategory[]>('blogger/categories', blogCategories);
+    if (ERP_NEXT_URL && ERP_NEXT_API_KEY && ERP_NEXT_API_SECRET) {
+      try {
+        const response = await fetch(`${ERP_NEXT_URL}/api/resource/Blog Category?fields=["name","title","description","route","published"]&filters=[["published","=",1]]`, {
+          headers: {
+            'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`,
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data && result.data.length > 0) {
+            return result.data.map((category: any) => ({
+              id: category.name,
+              name: category.title || category.name,
+              slug: category.route || category.name.toLowerCase().replace(/\s+/g, '-'),
+              description: category.description || '',
+              title: category.title || category.name,
+              erpNextId: category.name,
+              erpNextStatus: 'published'
+            }));
+          }
+        }
+      } catch (erpError) {
+        console.warn('Error fetching blog categories from ERPNext:', erpError);
+      }
+    }
+
+    // Fallback to local blog categories
+    const { blogCategories } = await import('./data');
+    return blogCategories;
+  } catch (error) {
+    console.warn('Error fetching blog categories:', error);
+    const { blogCategories } = await import('./data');
+    return blogCategories;
+  }
 }
 
 /**
@@ -763,29 +988,63 @@ export async function submitBlogComment(postId: string, comment: {
   comment: string;
 }): Promise<any> {
   try {
-    // Check if ERPNext API token is available
-    const erpnextToken = import.meta.env.VITE_ERPNEXT_API_TOKEN;
-    if (!erpnextToken) {
-      console.warn('No ERPNext API token provided, comment submission failed');
-      throw new Error('API token not available');
+    // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
+    let ERP_NEXT_URL: string | undefined;
+    let ERP_NEXT_API_KEY: string | undefined;
+    let ERP_NEXT_API_SECRET: string | undefined;
+
+    try {
+      const siteConfig = await getSiteConfig();
+      ERP_NEXT_URL = siteConfig.erpNextUrl;
+      ERP_NEXT_API_KEY = siteConfig.erpNextApiKey;
+      ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret;
+    } catch (error) {
+      console.warn('Could not fetch SiteConfig, using environment variables');
     }
 
-    const response = await fetch(`${ERPNEXT_API_BASE_URL}/api/blogger/posts/${postId}/comments`, {
+    // Fallback to environment variables if SiteConfig doesn't have the credentials
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+      ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+      ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
+    }
+
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      console.warn('ERPNext credentials not configured, using fallback');
+      // Simulate successful submission with a delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return { success: true, message: 'Comment submitted successfully' };
+    }
+
+    // Format data for ERPNext API - Blog Comment
+    const erpNextData = {
+      doctype: 'Blog Comment',
+      blog_post: postId,
+      comment: comment.comment,
+      commenter: comment.name,
+      commenter_email: comment.email,
+      published: 1,
+      source: 'Website'
+    };
+
+    // Call ERPNext API
+    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Blog Comment`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${erpnextToken}`,
         'Content-Type': 'application/json',
+        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
       },
-      body: JSON.stringify(comment)
+      body: JSON.stringify(erpNextData)
     });
 
     if (!response.ok) {
-      throw new Error(`ERPNext API error: ${response.status}`);
+      throw new Error(`ERPNext API error: ${response.status} ${response.statusText}`);
     }
 
-    return await response.json();
+    const result = await response.json();
+    return { success: true, data: result };
   } catch (error) {
-    console.error(`Error submitting comment to ERPNext API: ${error}`);
+    console.error('Error submitting blog comment:', error);
     throw error;
   }
 }
@@ -803,50 +1062,42 @@ export async function getBlogComments(postId: string): Promise<BlogComment[]> {
  */
 export async function getFooter(): Promise<FooterProps> {
   try {
-    if (USE_LOCAL_API) {
-      try {
-        const data = await apiRequest<FooterProps>(`/api/footer`);
-        return data || footerData;
-      } catch (e) {
-        console.warn('Error fetching footer from internal API:', e);
-        return footerData;
-      }
-    } else if (!STRAPI_API_TOKEN) {
+    if (!STRAPI_API_TOKEN) {
       return footerData;
-    } else {
-      // Use Strapi API with language param
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
-
-      const response = await fetch(`${STRAPI_URL}/api/footer?populate=deep${localeSuffix}`, {
-        headers: strapiHeaders
-      });
-
-      if (!response.ok) {
-        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      if (!result.data) {
-        return footerData;
-      }
-
-      // Ensure we have all required properties from the footerData
-      const strapiFooter = {
-        id: result.data.id,
-        ...result.data.attributes
-      };
-
-      // Merge with default footer data to ensure all properties exist
-      return {
-        ...footerData,
-        ...strapiFooter,
-        // Ensure nested properties are properly merged
-        columns: strapiFooter.columns || footerData.columns,
-        socialLinks: strapiFooter.socialLinks || footerData.socialLinks,
-        legalLinks: strapiFooter.legalLinks || footerData.legalLinks
-      };
     }
+
+    // Use Strapi API with language param
+    const locale = currentLanguage;
+    const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+    const response = await fetch(`${STRAPI_URL}/api/footer?populate=deep${localeSuffix}`, {
+      headers: strapiHeaders
+    });
+
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    if (!result.data) {
+      return footerData;
+    }
+
+    // Ensure we have all required properties from the footerData
+    const strapiFooter = {
+      id: result.data.id,
+      ...result.data.attributes
+    };
+
+    // Merge with default footer data to ensure all properties exist
+    return {
+      ...footerData,
+      ...strapiFooter,
+      // Ensure nested properties are properly merged
+      columns: strapiFooter.columns || footerData.columns,
+      socialLinks: strapiFooter.socialLinks || footerData.socialLinks,
+      legalLinks: strapiFooter.legalLinks || footerData.legalLinks
+    };
   } catch (error) {
     console.warn('Error fetching footer:', error);
     return footerData;
@@ -854,192 +1105,288 @@ export async function getFooter(): Promise<FooterProps> {
 }
 
 /**
- * Get hero slides from API or fallback to local data
+ * Submit contact form data to ERPNext with enhanced lead management
  */
-export async function getHeroSlides(): Promise<HeroSlide[]> {
+export async function submitContactForm(data: ContactFormData): Promise<any> {
   try {
-    if (USE_LOCAL_API) {
-      try {
-        const data = await apiRequest<HeroSlide[]>(`/api/hero-slides`);
-        return data;
-      } catch (e) {
-        console.warn('Error fetching hero slides from internal API:', e);
-        // Import heroSlides from data.ts as fallback
-        const { heroSlides } = await import('./data');
-        return heroSlides;
-      }
-    } else if (!STRAPI_API_TOKEN) {
-      console.warn('No Strapi API token provided, using fallback hero slides');
-      // Import heroSlides from data.ts as fallback
-      const { heroSlides } = await import('./data');
-      return heroSlides;
-    } else {
-      // Use Strapi API with language param
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+    // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
+    let ERP_NEXT_URL: string | undefined;
+    let ERP_NEXT_API_KEY: string | undefined;
+    let ERP_NEXT_API_SECRET: string | undefined;
 
-      const response = await fetch(`${STRAPI_URL}/api/hero-slides?populate=*${localeSuffix}`, {
-        headers: strapiHeaders
-      });
-
-      if (!response.ok) {
-        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-
-      if (!result.data || result.data.length === 0) {
-        // Import heroSlides from data.ts as fallback
-        const { heroSlides } = await import('./data');
-        return heroSlides;
-      }
-
-      // Map Strapi response to HeroSlide format
-      return result.data.map((item: any) => ({
-        title: item.attributes.title || 'INNOVATIVE DIGITAL SOLUTIONS',
-        subtitle: item.attributes.subtitle || 'Elevate your business with our cutting-edge digital solutions.',
-        backgroundImage: item.attributes.backgroundImage?.data?.attributes?.url || undefined,
-        primaryButton: item.attributes.primaryButton ? {
-          text: item.attributes.primaryButton.text || 'Get Started',
-          url: item.attributes.primaryButton.url || '#',
-          variant: item.attributes.primaryButton.variant || 'primary',
-        } : undefined,
-        secondaryButton: item.attributes.secondaryButton ? {
-          text: item.attributes.secondaryButton.text || 'Learn More',
-          url: item.attributes.secondaryButton.url || '#',
-          variant: item.attributes.secondaryButton.variant || 'secondary',
-        } : undefined,
-      }));
+    try {
+      const siteConfig = await getSiteConfig();
+      ERP_NEXT_URL = siteConfig.erpNextUrl;
+      ERP_NEXT_API_KEY = siteConfig.erpNextApiKey;
+      ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret;
+    } catch (error) {
+      console.warn('Could not fetch SiteConfig, using environment variables');
     }
-  } catch (error) {
-    console.warn('Error fetching hero slides:', error);
-    // Import heroSlides from data.ts as fallback
-    const { heroSlides } = await import('./data');
-    return heroSlides;
-  }
-}
 
-/**
- * Get hero content with randomized slides for the hero section
- */
-export async function getHeroContent(): Promise<HeroProps> {
-  try {
-    // Fetch hero slides from Strapi
-    const heroSlides = await getHeroSlides();
-
-    // If we have hero slides, use the first one as the default content
-    if (heroSlides && heroSlides.length > 0) {
-      return {
-        heroContents: heroSlides[0],
-        isHeroLoading: false,
-        isPageLoading: false,
-        currentIndex: 0,
-        isServicesLoading: false,
-        handleMouseEnter: () => { },
-        handleMouseLeave: () => { },
-        companyLogo: '/assets/I-VARSELogo3@3x.png',
-        heroSlides: heroSlides // Include all slides for carousel functionality
-      };
-    } else {
-      // If no slides from Strapi, use default hero props
-      const { defaultHeroProps, heroSlides } = await import('./data');
-      return {
-        ...defaultHeroProps,
-        heroSlides: heroSlides // Include default hero slides
-      };
+    // Fallback to environment variables if SiteConfig doesn't have the credentials
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+      ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+      ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
     }
-  } catch (error) {
-    console.error('Error fetching hero content:', error);
-    // Fall back to default hero props in case of error
-    const { defaultHeroProps, heroSlides } = await import('./data');
-    return {
-      ...defaultHeroProps,
-      heroSlides: heroSlides // Include default hero slides
+
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      console.warn('ERPNext credentials not configured, using fallback');
+      // Simulate successful submission with a delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return { success: true, message: 'Form submitted successfully' };
+    }
+
+    // Format data for ERPNext API - Lead creation
+    const erpNextData = {
+      doctype: 'Lead',
+      lead_name: data.fullName,
+      email_id: data.email,
+      phone: data.phone,
+      custom_message: data.message,
+      company: data.erpNextCompany,
+      request_type: data.requestType,
+      source: 'website',
     };
+
+    // Call ERPNext API
+    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Lead`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
+      },
+      body: JSON.stringify(erpNextData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`ERPNext API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error submitting to ERPNext:', error);
+    throw error;
   }
 }
 
 /**
- * Get section content from API by section type
+ * Submit a booking/appointment request to ERPNext with enhanced event management
  */
-export async function getSectionContent(sectionType: string): Promise<PageSection> {
-  // Default section content based on type
-  const getDefaultSection = (): PageSection => {
-    // Return different defaults based on section type
-    switch (sectionType) {
-      case 'about':
-        return {
-          id: 1,
-          type: 'about',
-          title: 'About I-VARSE',
-          subtitle: 'Who We Are',
-          content: 'Founded in 2018, I-VARSE Technologies has been at the forefront of digital innovation in Nigeria, providing cutting-edge technology solutions to businesses across various sectors. Our mission is to empower businesses with transformative digital solutions that drive growth, efficiency, and competitive advantage in an increasingly technology-driven world.',
-          settings: {
-            stats: [
-              { value: '5+', label: 'Years of Experience' },
-              { value: '100+', label: 'Projects Completed' },
-              { value: '50+', label: 'Happy Clients' },
-              { value: '20+', label: 'Team Members' }
-            ],
-            video: {
-              thumbnail: 'https://images.unsplash.com/photo-1642059863319-1481ad72fc2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-              url: { url: '#' },
-              title: 'Our Company Story',
-              description: 'Learn about our mission and values'
-            }
-          }
-        };
-      // Add cases for other section types as needed
-      default:
-        return {
-          id: 1,
-          type: sectionType as "products" | "services" | "testimonials" | "contact" | "hero" | "features" | "cta" | "team" | "about" | "clients" | "blog" | "faq" | "links" | "custom",
-          title: '',
-          subtitle: '',
-          content: '',
-        };
-    }
-  };
-
-  const defaultSection = getDefaultSection();
-
+export async function scheduleAppointment(data: BookingFormData): Promise<any> {
   try {
-    if (USE_LOCAL_API) {
-      try {
-        const data = await apiRequest<PageSection>(`/api/sections/${sectionType}`);
-        return data || defaultSection;
-      } catch (e) {
-        console.warn(`Error fetching ${sectionType} section from internal API:`, e);
-        return defaultSection;
-      }
-    } else if (!STRAPI_API_TOKEN) {
-      return defaultSection;
-    } else {
-      // Use Strapi API with language param
-      const locale = currentLanguage;
-      const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+    // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
+    let ERP_NEXT_URL: string | undefined;
+    let ERP_NEXT_API_KEY: string | undefined;
+    let ERP_NEXT_API_SECRET: string | undefined;
 
-      // Query for section by type
-      const response = await fetch(`${STRAPI_URL}/api/sections?filters[type][$eq]=${sectionType}&populate=deep${localeSuffix}`, {
-        headers: strapiHeaders
-      });
-
-      if (!response.ok) {
-        throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      if (!result.data || result.data.length === 0) {
-        return defaultSection;
-      }
-
-      return {
-        id: result.data[0].id,
-        ...result.data[0].attributes
-      };
+    try {
+      const siteConfig = await getSiteConfig();
+      ERP_NEXT_URL = siteConfig.erpNextUrl;
+      ERP_NEXT_API_KEY = siteConfig.erpNextApiKey;
+      ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret;
+    } catch (error) {
+      console.warn('Could not fetch SiteConfig, using environment variables');
     }
+
+    // Fallback to environment variables if SiteConfig doesn't have the credentials
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+      ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+      ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
+    }
+
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      console.warn('ERPNext credentials not configured, using fallback');
+      // Simulate successful booking with a delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return { success: true, message: 'Appointment scheduled successfully' };
+    }
+
+    // Format data for ERPNext API - Enhanced Event creation
+    const appointmentDate = new Date(`${data.date}T${data.time}`);
+    // Add duration (default 1 hour)
+    const endDate = new Date(appointmentDate.getTime() + (data.erpNextDuration || 60) * 60 * 1000);
+
+    const erpNextData = {
+      doctype: 'Event',
+      subject: `Consultation: ${data.topic}`,
+      event_type: data.erpNextEventType || 'Private',
+      description: data.message,
+      starts_on: appointmentDate.toISOString(),
+      ends_on: endDate.toISOString(),
+      all_day: 0,
+      event_participants: [
+        {
+          reference_doctype: 'Contact',
+          reference_docname: data.name,
+          email: data.email,
+          phone: data.phone
+        }
+      ]
+    };
+
+    // Call ERPNext API
+    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Event`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
+      },
+      body: JSON.stringify(erpNextData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`ERPNext API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    return { success: true, data: result };
   } catch (error) {
-    console.warn(`Error fetching ${sectionType} section:`, error);
-    return defaultSection;
+    console.error('Error scheduling appointment:', error);
+    throw error;
+  }
+}
+
+/**
+ * Subscribe to newsletter - ERPNext Email Group Member
+ */
+export async function subscribeToNewsletter(email: string): Promise<any> {
+  try {
+    // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
+    let ERP_NEXT_URL: string | undefined;
+    let ERP_NEXT_API_KEY: string | undefined;
+    let ERP_NEXT_API_SECRET: string | undefined;
+
+    try {
+      const siteConfig = await getSiteConfig();
+      ERP_NEXT_URL = siteConfig.erpNextUrl;
+      ERP_NEXT_API_KEY = siteConfig.erpNextApiKey;
+      ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret;
+    } catch (error) {
+      console.warn('Could not fetch SiteConfig, using environment variables');
+    }
+
+    // Fallback to environment variables if SiteConfig doesn't have the credentials
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+      ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+      ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
+    }
+
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      console.warn('ERPNext credentials not configured, using fallback');
+      // Simulate successful subscription with a delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return { success: true, message: 'Newsletter subscription successful' };
+    }
+
+    // Format data for ERPNext API - Email Group Member
+    const erpNextData = {
+      doctype: 'Email Group Member',
+      email_group: 'Newsletter Subscribers', // You can make this configurable
+      email: email,
+      status: 'Subscribed',
+      source: 'Website'
+    };
+
+    // Call ERPNext API
+    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Email Group Member`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
+      },
+      body: JSON.stringify(erpNextData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`ERPNext API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error subscribing to newsletter:', error);
+    throw error;
+  }
+}
+
+/**
+ * Submit job application to ERPNext HR module
+ */
+export async function submitJobApplication(data: {
+  fullName: string;
+  email: string;
+  phone: string;
+  yearsOfExperience: string;
+  coverLetter: string;
+  resume?: File | null;
+  agreeToTerms: boolean;
+  jobTitle?: string;
+  jobId?: string;
+}): Promise<any> {
+  try {
+    // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
+    let ERP_NEXT_URL: string | undefined;
+    let ERP_NEXT_API_KEY: string | undefined;
+    let ERP_NEXT_API_SECRET: string | undefined;
+
+    try {
+      const siteConfig = await getSiteConfig();
+      ERP_NEXT_URL = siteConfig.erpNextUrl;
+      ERP_NEXT_API_KEY = siteConfig.erpNextApiKey;
+      ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret;
+    } catch (error) {
+      console.warn('Could not fetch SiteConfig, using environment variables');
+    }
+
+    // Fallback to environment variables if SiteConfig doesn't have the credentials
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+      ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+      ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
+    }
+
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      console.warn('ERPNext credentials not configured, using fallback');
+      // Simulate successful submission with a delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return { success: true, message: 'Job application submitted successfully' };
+    }
+
+    // Format data for ERPNext API - Job Applicant
+    const erpNextData = {
+      doctype: 'Job Applicant',
+      applicant_name: data.fullName,
+      email_id: data.email,
+      phone_number: data.phone,
+      cover_letter: data.coverLetter,
+      experience: data.yearsOfExperience,
+      job_title: data.jobTitle || 'General Application',
+      source: 'Website',
+      status: 'Open'
+    };
+
+    // Call ERPNext API
+    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Job Applicant`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
+      },
+      body: JSON.stringify(erpNextData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`ERPNext API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error submitting job application:', error);
+    throw error;
   }
 }

@@ -1,63 +1,106 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { useTranslation } from "react-i18next";
-import GradientButton from "@/components/ui/GradientButton";
-import { ServiceProps, HeroProps, PageSection } from "@/lib/types";
-import { fadeInUp, scaleUp } from "@/lib/animations";
-import { useLanguage } from "@/components/context/LanguageContext";
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/components/context/LanguageContext';
 import {
     ChevronRight,
-    Cpu,
-    CircuitBoard,
-    Code,
-    LayoutGrid,
     Sparkles,
-} from "lucide-react";
+    CircuitBoard,
+    Cpu,
+    Code,
+    Database,
+    Globe,
+    LineChart,
+    Smartphone,
+    Cloud,
+    ShieldCheck,
+    LayoutGrid,
+    Zap,
+    ChevronLeft,
+    Play,
+    Pause
+} from 'lucide-react';
 import {
-    useSiteConfig,
-    useServices,
-    useHeroContent,
-} from "@/hooks/useStrapiContent";
+    HeroProps,
+    ServiceProps,
+    HeroSlide,
+} from '@/lib/types/content';
+import { SocialLink } from '@/lib/types/layout';
+import { SiteConfig } from '@/lib/types/core';
+import { Button } from '@/components/ui/button';
+import GradientButton from '@/components/ui/GradientButton';
+import { services as localServices, heroSlides as localHeroSlides } from '@/lib/data/';
 import {
-    services as localServices,
-    heroSlides as localHeroSlides,
-} from "@/lib/data";
+    fadeInUp,
+    staggerChildren,
+    scaleUp,
+    slideIn
+} from '@/lib/animations';
+import IVarseLogo from '@/components/ui/IVarseLogo';
+import { useInView } from 'react-intersection-observer';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import AppLink from '@/components/ui/AppLink';
+import { cn } from '@/lib/utils';
 
-const OriginalHero: React.FC<Partial<HeroProps>> = ({
+// Helper function to get social icon paths
+const getSocialIconPath = (platform: string): string => {
+    const lowerPlatform = platform.toLowerCase();
+
+    switch (lowerPlatform) {
+        case 'facebook':
+            return "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z";
+        case 'twitter':
+            return "M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z";
+        case 'instagram':
+            return "M289.869652,7279.12273 C288.241769,7279.19618 286.830805,7279.5942 285.691486,7280.72871 C284.548187,7281.86918 284.155147,7283.28558 284.081514,7284.89653 C284.035742,7285.90201 283.768077,7293.49818 284.544207,7295.49028 C285.067597,7296.83422 286.098457,7297.86749 287.454694,7298.39256 C288.087538,7298.63872 288.809936,7298.80547 289.869652,7298.85411 C298.730467,7299.25511 302.015089,7299.03674 303.400182,7295.49028 C303.645956,7294.859 303.815113,7294.1374 303.86188,7293.08031 C304.26686,7284.19677 303.796207,7282.27117 302.251908,7280.72871 C301.027016,7279.50685 299.5862,7278.67508 289.869652,7279.12273 M289.951245,7297.06748 C288.981083,7297.0238 288.454707,7296.86201 288.103459,7296.72603 C287.219865,7296.3826 286.556174,7295.72155 286.214876,7294.84312 C285.623823,7293.32944 285.819846,7286.14023 285.872583,7284.97693 C285.924325,7283.83745 286.155174,7282.79624 286.959165,7281.99226 C287.954203,7280.99968 289.239792,7280.51332 297.993144,7280.90837 C299.135448,7280.95998 300.179243,7281.19026 300.985224,7281.99226 C301.980262,7282.98483 302.473801,7284.28014 302.071806,7292.99991 C302.028024,7293.96767 301.865833,7294.49274 301.729513,7294.84312 C300.829003,7297.15085 298.757333,7297.47145 289.951245,7297.06748 M298.089663,7283.68956 C298.089663,7284.34665 298.623998,7284.88065 299.283709,7284.88065 C299.943419,7284.88065 300.47875,7284.34665 300.47875,7283.68956 C300.47875,7283.03248 299.943419,7282.49847 299.283709,7282.49847 C298.623998,7282.49847 298.089663,7283.03248 298.089663,7283.68956 M288.862673,7288.98792 C288.862673,7291.80286 291.150266,7294.08479 293.972194,7294.08479 C296.794123,7294.08479 299.081716,7291.80286 299.081716,7288.98792 C299.081716,7286.17298 296.794123,7283.89205 293.972194,7283.89205 C291.150266,7283.89205 288.862673,7286.17298 288.862673,7288.98792 M290.655732,7288.98792 C290.655732,7287.16159 292.140329,7285.67967 293.972194,7285.67967 C295.80406,7285.67967 297.288657,7287.16159 297.288657,7288.98792 C297.288657,7290.81525 295.80406,7292.29716 293.972194,7292.29716 C292.140329,7292.29716 290.655732,7290.81525 290.655732,7288.98792";
+        case 'linkedin':
+            return "M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z M2 9h4v12H2z M4 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4z";
+        default:
+            return "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z";
+    }
+};
+
+interface OriginalHeroProps extends Partial<HeroProps> {
+    heroData?: any;
+    siteConfig?: SiteConfig;
+    services?: ServiceProps[];
+    socialLinks?: SocialLink[];
+    heroSlides?: HeroSlide[];
+}
+
+const OriginalHero: React.FC<OriginalHeroProps> = ({
     currentIndex = 0,
     isPageLoading = false,
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
     heroContents: propHeroContents,
+    heroData,
+    siteConfig,
+    services: propServices,
+    socialLinks: propSocialLinks,
+    heroSlides: propHeroSlides,
 }) => {
     const { t } = useTranslation();
     const { currentLanguage } = useLanguage();
 
     const [isPaused, setIsPaused] = useState(false);
 
-    // Update the hook to properly get hero content
-    const { data: heroData, isLoading: isHeroLoading } = useHeroContent();
+    // Use props instead of hooks
+    const isHeroLoading = false; // No longer loading from hook
+    const isSiteConfigLoading = false; // No longer loading from hook
+    const isServicesLoading = false; // No longer loading from hook
+    const isSocialLinksLoading = false; // No longer loading from hook
 
-    // Fetch site configuration for company logo
-    const { data: siteConfig, isLoading: isSiteConfigLoading } = useSiteConfig();
-
-    // Fetch services from Strapi
-    const { data: apiServices, isLoading: isServicesLoading } = useServices();
+    // Use props data with fallbacks
+    const apiServices = propServices;
+    const socialLinks = propSocialLinks;
+    const heroSlides = propHeroSlides || localHeroSlides;
 
     // Determine which services to display with fallback to local data
     const services = useMemo(() => {
         return apiServices && apiServices.length > 0 ? apiServices : localServices;
     }, [apiServices]);
-
-    // Determine which hero slides to use with fallback to local data
-    const heroSlides = useMemo(() => {
-        // First check if we got slides from the API
-        if (heroData?.heroSlides && heroData.heroSlides.length > 0) {
-            return heroData.heroSlides;
-        }
-        // Fall back to local data
-        return localHeroSlides;
-    }, [heroData]);
 
     // Determine which hero content to use with fallback to local data
     const heroContents = useMemo(() => {
@@ -72,6 +115,11 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
         // Fall back to local data
         return localHeroSlides[0];
     }, [heroData, propHeroContents]);
+
+    // Determine which social links to display
+    const displaySocialLinks = useMemo(() => {
+        return socialLinks && socialLinks.length > 0 ? socialLinks : [];
+    }, [socialLinks]);
 
     // Set up auto-rotation for hero slides
     const [currentSlideIndex, setCurrentSlideIndex] = useState(currentIndex);
@@ -169,34 +217,6 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                 transition: {
                                     repeat: Infinity,
                                     duration: 10,
-                                    ease: "easeInOut"
-                                }
-                            }}
-                        >
-                            <CircuitBoard className="h-64 w-64 text-blue-800" />
-                        </motion.div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20, rotate: 0 }}
-                        animate={{
-                            opacity: 0.3,
-                            y: 0,
-                            rotate: -12,
-                            transition: {
-                                duration: 0.8,
-                                delay: 0.5
-                            }
-                        }}
-                        className="absolute left-10 bottom-10"
-                    >
-                        <motion.div
-                            animate={{
-                                y: [0, 10, 0, -15, 0],
-                                rotate: [-12, -9, -14, -10, -12],
-                                transition: {
-                                    repeat: Infinity,
-                                    duration: 12,
                                     ease: "easeInOut"
                                 }
                             }}
@@ -513,7 +533,7 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                         ) : (
                             <>
                                 <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                    <Cpu className="h-4 w-4 mr-2" />
+                                    <span className="text-lg mr-2">💻</span>
                                     Digital Innovation
                                 </div>
                                 <h1
@@ -542,7 +562,7 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                 ) : (
                                     <>
                                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                            <Cpu className="h-4 w-4 mr-2" />
+                                            <span className="text-lg mr-2">💻</span>
                                             Digital Innovation
                                         </div>
                                         <h1
@@ -596,6 +616,42 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                 </GradientButton>
                             </div>
 
+                            {/* Desktop Social Media Links */}
+                            <div className="hidden md:flex items-center space-x-4 text-gray-500 dark:text-gray-400">
+                                {isSocialLinksLoading ? (
+                                    // Loading placeholders
+                                    Array(4).fill(0).map((_, i) => (
+                                        <div key={i} className="w-5 h-5 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                                    ))
+                                ) : (
+                                    displaySocialLinks.map((link) => (
+                                        <a
+                                            key={link.id}
+                                            href={link.href || link.href}
+                                            className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label={link.platform}
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="w-5 h-5"
+                                            >
+                                                <path d={getSocialIconPath(link.platform)}></path>
+                                            </svg>
+                                        </a>
+                                    ))
+                                )}
+                            </div>
+
                             {/* Mobile buttons */}
                             <div className="md:hidden py-6 flex flex-col gap-5 w-full">
                                 <GradientButton
@@ -620,6 +676,42 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                 >
                                     {secondaryBtnText}
                                 </GradientButton>
+
+                                {/* Mobile Social Media Links */}
+                                <div className="flex items-center justify-center space-x-2 text-gray-500 dark:text-gray-400">
+                                    {isSocialLinksLoading ? (
+                                        // Loading placeholders
+                                        Array(4).fill(0).map((_, i) => (
+                                            <div key={i} className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                                        ))
+                                    ) : (
+                                        displaySocialLinks.map((link) => (
+                                            <a
+                                                key={link.id}
+                                                href={link.href || link.href}
+                                                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                aria-label={link.platform}
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    className="w-6 h-6"
+                                                >
+                                                    <path d={getSocialIconPath(link.platform)}></path>
+                                                </svg>
+                                            </a>
+                                        ))
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -757,17 +849,17 @@ const OriginalHero: React.FC<Partial<HeroProps>> = ({
                                                                 alt={slide.title}
                                                                 className="w-full h-full object-cover opacity-40 dark:opacity-30"
                                                             />
-                                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
+                                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
                                                         </div>
                                                     ))}
                                                 </div>
 
                                                 {/* Company logo */}
-                                                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 opacity-10 dark:opacity-20">
-                                                    <img
-                                                        src={companyLogo}
-                                                        alt="I-VARSE Technologies"
-                                                        className="w-full h-full object-contain"
+                                                <div className="absolute bottom-1 left-2 w-16 h-16 opacity-30 dark:opacity-20 z-10 flex items-end">
+                                                    <IVarseLogo
+                                                        size={25} // smaller size for corner placement
+                                                        variant="auto" // automatically switches based on theme
+                                                        className="w-full h-full object-contain object-bottom drop-shadow-sm"
                                                     />
                                                 </div>
 

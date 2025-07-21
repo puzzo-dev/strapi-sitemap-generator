@@ -1,4 +1,5 @@
 import React from 'react';
+import { LoadingSkeletonProps } from '@/lib/types';
 
 /**
  * Loading skeleton component for content placeholders

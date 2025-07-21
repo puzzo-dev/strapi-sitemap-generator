@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/useToast';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -14,13 +14,13 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { subscribeToNewsletter } from '@/lib/strapi';
+import { NewsletterFormProps } from '@/lib/types';
 
 const newsletterSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
 });
 
 type NewsletterFormData = z.infer<typeof newsletterSchema>;
-
 
 const NewsletterForm: React.FC<NewsletterFormProps> = ({ className }) => {
   const { toast } = useToast();

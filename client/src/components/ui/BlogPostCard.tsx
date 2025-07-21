@@ -99,7 +99,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = (post) => {
                         )}
                         <Link href={`/blog/${post.slug}`}>
                             <div className="group/btn flex items-center text-primary font-medium text-xs hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
-                                {t('blog.readMore')}
+                                {t('ui.readMore')}
                                 <FiArrowRight className="ml-1 transform group-hover/btn:translate-x-1 transition-transform h-3 w-3" />
                             </div>
                         </Link>

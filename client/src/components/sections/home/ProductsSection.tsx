@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import GradientButton from '@/components/ui/GradientButton';
 import ProductCard from '@/components/ui/ProductCard';
-import { useProducts, useSectionContent } from '@/hooks/useStrapiContent';
-import { ProductProps, ProductCardProps } from '@/lib/types';
+import { ProductProps, ProductCardProps } from '@/lib/types/content';
+import { PageContent } from '@/lib/types/core';
 import {
   ArrowRight,
   Sparkles,
@@ -17,43 +17,46 @@ import {
   Cloud,
   Layers
 } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 // Loading placeholder for product cards
 const ProductCardSkeleton = () => (
-  <div className="card animate-pulse p-8">
-    <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/3"></div>
-    <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg mb-8"></div>
+  <Card className="animate-pulse">
+    <CardContent className="p-8">
+      <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/3"></div>
+      <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg mb-8"></div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
-        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/2"></div>
-        <div className="space-y-2">
-          {Array(4).fill(0).map((_, i) => (
-            <div key={i} className="flex items-start">
-              <div className="w-5 h-5 bg-gray-100 dark:bg-gray-600 rounded-full mt-1 mr-2"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
-            </div>
-          ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/2"></div>
+          <div className="space-y-2">
+            {Array(4).fill(0).map((_, i) => (
+              <div key={i} className="flex items-start">
+                <div className="w-5 h-5 bg-gray-100 dark:bg-gray-600 rounded-full mt-1 mr-2"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/2"></div>
+          <div className="space-y-2">
+            {Array(4).fill(0).map((_, i) => (
+              <div key={i} className="flex items-start">
+                <div className="w-5 h-5 bg-gray-100 dark:bg-gray-600 rounded-full mt-1 mr-2"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div>
-        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/2"></div>
-        <div className="space-y-2">
-          {Array(4).fill(0).map((_, i) => (
-            <div key={i} className="flex items-start">
-              <div className="w-5 h-5 bg-gray-100 dark:bg-gray-600 rounded-full mt-1 mr-2"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
-            </div>
-          ))}
-        </div>
+      <div className="mt-8">
+        <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-1/5"></div>
       </div>
-    </div>
-
-    <div className="mt-8">
-      <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-1/5"></div>
-    </div>
-  </div>
+    </CardContent>
+  </Card>
 );
 
 // Background decoration component
@@ -100,59 +103,36 @@ const BackgroundDecoration = () => (
   </div>
 );
 
-const ProductsSection: React.FC = () => {
+interface ProductsSectionProps {
+  homePageContent: PageContent;
+  products: ProductProps[];
+  isLoading: boolean;
+}
+
+const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, products, isLoading }) => {
   const { t } = useTranslation();
-  const { data: apiProducts, isLoading: isProductsLoading } = useProducts();
-  const { data: sectionContent, isLoading: isSectionLoading } = useSectionContent('products');
+  
+  // Get products section from homePageContent
+  const productsSection = homePageContent?.sections?.find(s => s.type === 'products');
 
-  // Combine section content with defaults
-  const {
-    title,
-    subtitle,
-    content,
-    settings
-  } = useMemo(() => {
-    const defaultContent = {
-      title: 'FEATURED PRODUCTS',
-      subtitle: 'Our Products',
-      content: 'Discover our range of innovative products designed to solve real business challenges and drive exceptional results for your organization.',
-      settings: {
-        maxDisplay: 2,
-        primaryButton: {
-          text: "View All Products",
-          url: "/products"
-        }
-      }
-    };
+  // Extract section content
+  const title = productsSection?.title;
+  const subtitle = productsSection?.subtitle;
+  const badge = productsSection?.badge;
 
-    if (!sectionContent) return defaultContent;
+  const settings = productsSection?.settings || {};
 
-    return {
-      title: sectionContent.title || defaultContent.title,
-      subtitle: sectionContent.subtitle || defaultContent.subtitle,
-      content: sectionContent.content || defaultContent.content,
-      settings: {
-        ...defaultContent.settings,
-        ...(sectionContent.settings || {})
-      }
-    };
-  }, [sectionContent]);
-
-  // Get products to display
+  // Safely extract products from the section
+  const productsData = productsSection?.settings?.featured || [];
   const productsToDisplay = useMemo(() => {
-    const maxDisplay = settings?.maxDisplay || 2;
-    const availableProducts = apiProducts || [];
-
-    // If we have featured products in section settings, use those
-    if (settings && 'featured' in settings && Array.isArray(settings.featured)) {
-      return settings.featured.slice(0, maxDisplay);
-    }
-
-    // Otherwise use all products up to maxDisplay
-    return availableProducts.slice(0, maxDisplay);
-  }, [apiProducts, settings]);
-
-  const isLoading = isProductsLoading || isSectionLoading;
+    if (!Array.isArray(productsData)) return [];
+    
+    return productsData
+      .filter((product): product is ProductProps => 
+        product && typeof product === 'object' && 'title' in product && 'description' in product
+      )
+      .slice(0, 4);
+  }, [productsData]);
 
   return (
     <section id="products" className="py-24 bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 dark:from-blue-950/20 dark:via-blue-950/30 dark:to-blue-950/40 relative overflow-hidden">
@@ -162,12 +142,11 @@ const ProductsSection: React.FC = () => {
         {/* Section Header */}
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">
-            <Package className="h-4 w-4 mr-2" />
-            {subtitle}
+            {badge}
           </div>
-          <h2 className="heading-md text-blue-600 dark:text-blue-400 mb-6">{title}</h2>
+          <h2 className="heading-md text-blue-900 dark:text-blue-200 mb-6">{title}</h2>
           <p className="text-gray-600 dark:text-gray-300">
-            {content}
+            {subtitle}
           </p>
         </div>
 
@@ -212,14 +191,14 @@ const ProductsSection: React.FC = () => {
         </div>
 
         {/* View All Button */}
-        {productsToDisplay && productsToDisplay.length > 0 && (
+        {productsToDisplay && productsToDisplay.length > 0 && settings?.primaryButton && typeof settings.primaryButton === 'object' && 'title' in settings.primaryButton && 'href' in settings.primaryButton && (
           <div className="text-center mt-12">
             <GradientButton
-              href={settings?.primaryButton && 'url' in settings.primaryButton ? settings.primaryButton.url : "/products"}
+              href={typeof settings.primaryButton.href === 'string' ? settings.primaryButton.href : undefined}
               className="px-5 w-56 mx-auto"
               endIcon={<ArrowRight />}
             >
-              {settings?.primaryButton && 'text' in settings.primaryButton ? settings.primaryButton.text : "View All Products"}
+              {settings.primaryButton.title}
             </GradientButton>
           </div>
         )}

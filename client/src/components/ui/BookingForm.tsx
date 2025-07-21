@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/useToast';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -16,7 +16,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { scheduleAppointment } from '@/lib/strapi';
+import { submitAppointmentBooking } from '@/lib/erpnext';
+import { useUIText } from '@/hooks/useContent';
 
 const bookingFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),

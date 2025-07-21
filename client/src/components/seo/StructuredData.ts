@@ -212,6 +212,60 @@ export const generateFAQSchema = (faqs: Array<{ question: string; answer: string
 };
 
 /**
+ * Generate Blog Schema for a collection of blog posts
+ * @param posts - Array of blog post data
+ * @returns Blog schema for blog listing pages
+ */
+export const generateBlogSchema = (posts: Array<{
+  id: number;
+  title: string;
+  blogIntro: string;
+  content: string;
+  image: string;
+  authorName: string;
+  publishDate: string;
+  modifiedDate?: string;
+  url: string;
+  category?: string;
+  tags?: string[];
+}>) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "I-VARSE Technologies Blog",
+    "description": "Latest insights, trends, and innovations in technology and digital transformation",
+    "url": "https://www.itechnologies.ng/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "I-VARSE Technologies",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.itechnologies.ng/logo.png"
+      }
+    },
+    "blogPost": posts.map(post => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.blogIntro,
+      "image": post.image,
+      "author": {
+        "@type": "Person",
+        "name": post.authorName
+      },
+      "datePublished": post.publishDate,
+      "dateModified": post.modifiedDate || post.publishDate,
+      "url": post.url,
+      ...(post.category ? { "articleSection": post.category } : {}),
+      ...(post.tags && post.tags.length > 0 ? { "keywords": post.tags.join(", ") } : {})
+    })),
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.itechnologies.ng/blog"
+    }
+  };
+};
+
+/**
  * Generate BreadcrumbList Schema
  * @param items - Breadcrumb items with name and url
  * @returns BreadcrumbList schema for navigation
