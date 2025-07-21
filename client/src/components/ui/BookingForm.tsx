@@ -50,7 +50,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
   });
 
   const bookingMutation = useMutation({
-    mutationFn: scheduleAppointment,
+    mutationFn: submitAppointmentBooking,
     onSuccess: () => {
       toast({
         title: UI_TEXT_FALLBACKS.forms.messages.success,

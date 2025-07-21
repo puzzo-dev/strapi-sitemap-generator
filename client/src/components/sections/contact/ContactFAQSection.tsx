@@ -24,7 +24,7 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
 
             <div className="container-custom relative z-10">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold mb-4 text-blue-900 dark:text-blue-200 !text-3xl md:!text-4xl lg:!text-5xl">
+                    <h2 className="text-3xl font-bold mb-4 text-blue-900 dark:text-blue-200 md:text-5xl">
                         Frequently Asked Questions
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300 !text-base md:!text-lg lg:!text-xl">
@@ -44,8 +44,8 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
                             </div>
                         ))
                     ) : (
-                        // Display FAQ items
-                        displayFAQItems.map((faq: any, index: number) => (
+                        // Display first 5 FAQ items
+                        displayFAQItems.slice(0, 5).map((faq: any, index: number) => (
                             <article
                                 key={faq.id || index}
                                 className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors"

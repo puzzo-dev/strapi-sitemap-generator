@@ -51,7 +51,7 @@ const ContactHeroSection: React.FC<ContactHeroSectionProps> = ({
             {/* Content */}
             <motion.div variants={fadeInUp()} className="container-custom relative z-10">
                 <div className="text-center max-w-4xl mx-auto">
-                        {isPageLoading ? (
+                    {isPageLoading ? (
                         <>
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-pulse w-36 h-8"></div>
                             <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-lg mb-6 w-3/4 mx-auto animate-pulse"></div>
@@ -59,14 +59,14 @@ const ContactHeroSection: React.FC<ContactHeroSectionProps> = ({
                             <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-5/6 mx-auto animate-pulse"></div>
                             <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-8 w-4/6 mx-auto animate-pulse"></div>
                         </>
-                        ) : (
-                            <>
-                                <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
+                    ) : (
+                        <>
+                            <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
                                 <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
                                 {heroSection?.settings?.badge}
-                                </div>
+                            </div>
 
-                                <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                            <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                                 {heroSection?.title ? (
                                     (() => {
                                         const words = heroSection.title.split(' ');
@@ -83,24 +83,24 @@ const ContactHeroSection: React.FC<ContactHeroSectionProps> = ({
                                         );
                                     })()
                                 ) : null}
-                                </h1>
+                            </h1>
 
                             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                                 {heroSection?.subtitle}
                             </p>
 
-                            <motion.div 
-                                className="animate-fade-in-up" 
+                            <motion.div
+                                className="flex items-center justify-center animate-fade-in-up"
                                 style={{ animationDelay: '0.6s' }}
                             >
                                 <a href="#contact-form">
                                     <GradientButton size="lg" endIcon={<ChevronRight />}>
-                                        {heroSection?.settings?.buttonText || 'Get Started'}
+                                        {heroSection?.settings?.buttonText}
                                     </GradientButton>
                                 </a>
                             </motion.div>
-                            </>
-                        )}
+                        </>
+                    )}
                 </div>
             </motion.div>
         </motion.section>
