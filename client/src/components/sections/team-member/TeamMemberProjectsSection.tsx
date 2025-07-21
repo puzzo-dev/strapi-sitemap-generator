@@ -49,7 +49,7 @@ const TeamMemberProjectsSection: React.FC<TeamMemberProjectsSectionProps> = ({
             <div className="space-y-6">
                 {projects.map((project, index) => (
                     <Card key={index} className="border-l-4 border-blue-500">
-                        <CardContent className="pl-6">
+                        <CardContent className="p-4">
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                                 {project.title}
                             </h3>
