@@ -86,9 +86,9 @@ const App: React.FC = () => {
             ogUrl={`https://www.itechnologies.ng${location}`}
           />
 
-          <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white overflow-x-hidden w-full">
+          <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white">
             <Navbar onMenuToggle={toggleMobileMenu} logo={""} navItems={displayNavItems} />
-            <main className="flex-grow pt-10 overflow-x-hidden w-full">
+            <main className="flex-grow pt-10">
               <AnimatePresence mode="wait">
                 <Switch>
                   <Route path="/" component={Home} />

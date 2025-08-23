@@ -65,43 +65,34 @@ const Contact: React.FC = () => {
         structuredData={structuredData}
       />
 
-      <main className="min-h-screen bg-white dark:bg-[#0a1929] overflow-x-hidden">
-        {/* Contact Hero Section */}
-        <div className="w-full">
-          <ContactHeroSection
-            section={heroSection}
-            isLoading={isPageLoading}
-          />
-        </div>
+      {/* Hero Section */}
+      <ContactHeroSection
+        heroSection={heroSection}
+        isPageLoading={isPageLoading}
+      />
 
-        {/* Contact Form Section */}
-        <div className="w-full">
-          <ContactFormSection
-            section={contactSection}
-            formType={formType}
-            onFormTypeChange={setFormType}
-            isLoading={isPageLoading}
-          />
-        </div>
+      {/* Contact Form Section */}
+      <ContactFormSection
+        formType={formType}
+        setFormType={setFormType}
+        siteConfig={defaultSiteConfig}
+        isLoading={isPageLoading}
+      />
 
-        {/* Contact Testimonials Section */}
-        <div className="w-full">
-          <ContactTestimonialsSection
-            section={testimonialsSection}
-            testimonials={displayTestimonials}
-            isLoading={isPageLoading || isTestimonialsLoading}
-          />
-        </div>
+      {/* Testimonials Section */}
+      <ContactTestimonialsSection
+        testimonialSection={testimonialsSection}
+        testimonials={displayTestimonials}
+        isLoading={isTestimonialsLoading}
+      />
 
-        {/* Contact FAQ Section */}
-        <div className="w-full">
-          <ContactFAQSection
-            section={faqSection}
-            faqItems={displayFAQItems}
-            isLoading={isPageLoading || isFAQLoading}
-          />
-        </div>
-      </main>
+      {/* FAQ Section */}
+      <ContactFAQSection
+        faqSection={faqSection}
+        faqItems={displayFAQItems}
+        isLoading={isFAQLoading}
+        isPageLoading={isPageLoading}
+      />
     </>
   );
 };

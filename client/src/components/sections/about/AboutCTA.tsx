@@ -50,7 +50,8 @@ const AboutCTA: React.FC<AboutCTAProps> = ({
                         variants={ANIMATION_PRESETS.ctaBadge}
                         className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in"
                     >
-                        🚀 {getUIText(undefined, 'getStarted', 'buttons')}
+                        <span className="text-lg mr-2">🚀</span>
+                        {getUIText(undefined, 'getStarted', 'buttons')}
                     </motion.div>
 
                     {/* Title */}

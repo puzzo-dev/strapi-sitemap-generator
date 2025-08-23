@@ -202,7 +202,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
             initial="initial"
             animate="animate"
             className={cn(
-                "h-fit md:h-[calc(100vh-2rem)] relative overflow-hidden py-25 md:pt-24 md:pb-16 hero-section w-full",
+                "h-fit md:h-[calc(100vh-2rem)] relative overflow-x-hidden overflow-y-hidden py-25 md:pt-24 md:pb-16 hero-section w-full",
                 getThemeColors('background', 'gradient'),
                 getThemeColors('border', 'muted')
             )}
@@ -214,7 +214,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                 imageRendering: 'crisp-edges'
             }}>
             {/* Tech-inspired background elements - Enhanced with overlay and blur */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" style={{ contain: 'layout style paint' }}>
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 {/* Moving hi-tech pattern background */}
                 <div className="absolute inset-0 z-5 overflow-hidden">
                     {/* Animated grid pattern */}
@@ -428,11 +428,11 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                 {/* Animated gradient orbs */}
                 <motion.div
                     variants={scaleUp(0.8, 1.5, 0.2)}
-                    className="absolute right-0 top-10 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl dark:bg-blue-900/20 pointer-events-none"
+                    className="absolute -right-16 md:-right-32 top-10 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl dark:bg-blue-900/20 pointer-events-none"
                 />
                 <motion.div
                     variants={scaleUp(0.8, 1.8, 0.5)}
-                    className="absolute left-0 bottom-10 h-72 w-72 rounded-full bg-purple-200/20 blur-3xl dark:bg-purple-900/20 pointer-events-none"
+                    className="absolute -left-16 md:-left-36 bottom-10 h-72 w-72 rounded-full bg-purple-200/20 blur-3xl dark:bg-purple-900/20 pointer-events-none"
                 />
                 <motion.div
                     variants={scaleUp(0.8, 2, 0.8)}
@@ -477,7 +477,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                 </motion.div>
             </div>
 
-            <div className="container-custom relative z-20 mx-auto h-full px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden w-full">
+            <div className="container-custom relative z-20 mx-auto h-full px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center relative w-full max-w-full overflow-x-hidden">
                     {/* Mobile Header (Shows above the slider on mobile) */}
                     <div className="block lg:hidden w-full mb-4 pt-10">
@@ -536,7 +536,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-4 mb-12"
+                            className="flex flex-col sm:flex-row justify-start items-start gap-4 mb-12"
                         >
                             <GradientButton
                                 href={primaryBtnUrl}
@@ -576,7 +576,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.8 }}
-                            className="flex flex-wrap gap-4 sm:gap-6 lg:grid lg:grid-cols-4 lg:gap-4 5xl:gap-4k-6"
+                            className="grid grid-cols-2 lg:grid-cols-4 gap-4 5xl:gap-4k-6"
                         >
                             <div className="flex items-center space-x-2 text-blue-300">
                                 <Brain className="h-5 w-5" />
@@ -630,7 +630,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 1 }}
-                            className="flex flex-wrap justify-center gap-6 sm:gap-8 lg:gap-12 pt-8 5xl:pt-4k-12 border-t border-gray-700"
+                            className="grid grid-cols-3 gap-8 5xl:gap-4k-12 pt-8 5xl:pt-4k-12 border-t border-gray-700"
                         >
                             <div className="text-center">
                                 <div className="text-3xl 5xl:text-4k-4xl font-bold text-white">500+</div>
@@ -649,7 +649,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
 
                     {/* Right Column - Image Slider */}
                     <div className="order-1 md:order-2">
-                        <div className="relative rounded-xl overflow-hidden aspect-video shadow-2xl shadow-blue-900/10 dark:shadow-blue-500/10 fade-in-slide w-full max-w-full mx-auto" style={{ contain: 'layout style paint' }}
+                        <div className="relative rounded-xl overflow-hidden aspect-video shadow-2xl shadow-blue-900/10 dark:shadow-blue-500/10 fade-in-slide w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl mx-auto"
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                         >

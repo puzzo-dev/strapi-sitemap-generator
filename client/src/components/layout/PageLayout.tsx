@@ -119,16 +119,16 @@ const PageLayout: React.FC<PageLayoutProps> = ({
 
       {/* Page Content */}
       <motion.main
-        className={`min-h-screen bg-white dark:bg-[#0a1929] overflow-x-hidden w-full ${className}`}
+        className={`min-h-screen bg-white dark:bg-[#0a1929] ${className}`}
         initial={currentAnimation.initial}
         animate={currentAnimation.animate}
         exit={currentAnimation.exit}
         transition={currentAnimation.transition}
       >
         {isLoading ? (
-          <div className={`container mx-auto px-3 xs:px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-8 xs:py-12 sm:py-16 md:py-20 lg:py-24 ${containerClassName}`}>
-            <LoadingSkeletons.Hero className="mb-8 xs:mb-12 sm:mb-16 lg:mb-20" />
-            <LoadingSkeletons.Grid items={6} className="mb-8 xs:mb-12 sm:mb-16 lg:mb-20" />
+          <div className={`container mx-auto px-4 py-16 ${containerClassName}`}>
+            <LoadingSkeletons.Hero className="mb-16" />
+            <LoadingSkeletons.Grid items={6} className="mb-16" />
             <LoadingSkeletons.Text lines={5} />
           </div>
         ) : (

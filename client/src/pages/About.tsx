@@ -59,59 +59,43 @@ const About: React.FC = () => {
         structuredData={structuredData}
       />
 
-      <main className="min-h-screen bg-white dark:bg-[#0a1929] overflow-x-hidden">
-        {/* About Hero Section */}
-        <div className="w-full">
-          <AboutHero
-            title={heroSection.title || "About I-VARSE Technologies"}
-            subtitle={heroSection.description || "Innovative digital solutions for modern businesses"}
-            settings={heroSection.settings}
-            isPageLoading={isPageLoading}
-          />
-        </div>
+      {/* Hero Section */}
+      <AboutHero
+        {...heroSection}
+        isPageLoading={isPageLoading}
+      />
 
-        {/* Mission & Vision Section */}
-        <div className="w-full">
-          <MissionVisionSection
-            section={missionSection}
-            isLoading={isPageLoading}
-          />
-        </div>
+      {/* Mission & Vision Section */}
+      <MissionVisionSection
+        {...missionSection}
+        isPageLoading={isPageLoading}
+      />
 
-        {/* Core Values Section */}
-        <div className="w-full">
-          <CoreValuesSection
-            section={featuresSection}
-            isLoading={isPageLoading}
-          />
-        </div>
+      {/* Core Values Section */}
+      <CoreValuesSection
+        {...featuresSection}
+        isPageLoading={isPageLoading}
+      />
 
-        {/* Team Section */}
-        <div className="w-full">
-          <TeamSection
-            section={teamSection}
-            teamMembers={teamMembers}
-            isLoading={isPageLoading || isTeamLoading}
-          />
-        </div>
+      {/* Team Section */}
+      <TeamSection
+        {...teamSection}
+        teamMembers={teamMembers}
+        isTeamLoading={isTeamLoading}
+      />
 
-        {/* Industries Section */}
-        <div className="w-full">
-          <IndustriesSection
-            section={industriesSection}
-            industries={industries}
-            isLoading={isPageLoading}
-          />
-        </div>
+      {/* Industries Section */}
+      <IndustriesSection
+        homePageContent={displayPageContent}
+        industries={industries}
+        isLoading={isPageLoading}
+      />
 
-        {/* About CTA Section */}
-        <div className="w-full">
-          <AboutCTA
-            section={ctaSection}
-            isLoading={isPageLoading}
-          />
-        </div>
-      </main>
+      {/* Call to Action Section */}
+      <AboutCTA
+        {...ctaSection}
+        isPageLoading={isPageLoading}
+      />
     </>
   );
 };

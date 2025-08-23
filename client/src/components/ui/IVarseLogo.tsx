@@ -20,24 +20,14 @@ const IVarseLogo: React.FC<IVarseLogoProps> = ({
           src={whiteLogo} 
           alt="I-VARSE" 
           className="w-full h-full object-contain"
-          style={{ 
-            filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
-            imageRendering: 'crisp-edges',
-            WebkitImageRendering: 'crisp-edges'
-          } as React.CSSProperties}
-          loading="eager"
+          style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }}
         />
       ) : variant === 'dark' ? (
         <img 
           src={darkLogo} 
           alt="I-VARSE" 
           className="w-full h-full object-contain"
-          style={{ 
-            filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
-            imageRendering: 'crisp-edges',
-            WebkitImageRendering: 'crisp-edges'
-          } as React.CSSProperties}
-          loading="eager"
+          style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }}
         />
       ) : (
         <>
@@ -45,23 +35,13 @@ const IVarseLogo: React.FC<IVarseLogoProps> = ({
             src={darkLogo} 
             alt="I-VARSE" 
             className="w-full h-full object-contain dark:hidden"
-            style={{ 
-              filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
-              imageRendering: 'crisp-edges',
-              WebkitImageRendering: 'crisp-edges'
-            } as React.CSSProperties}
-            loading="eager"
+            style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }}
           />
           <img 
             src={whiteLogo} 
             alt="I-VARSE" 
             className="w-full h-full object-contain hidden dark:block"
-            style={{ 
-              filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
-              imageRendering: 'crisp-edges',
-              WebkitImageRendering: 'crisp-edges'
-            } as React.CSSProperties}
-            loading="eager"
+            style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }}
           />
         </>
       )}

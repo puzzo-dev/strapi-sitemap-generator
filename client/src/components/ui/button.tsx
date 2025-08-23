@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { ButtonProps } from "@/lib/types"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-1 xs:gap-2 whitespace-nowrap rounded-sm xs:rounded-md text-xs xs:text-sm sm:text-base font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-3 xs:[&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -21,10 +21,10 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-8 xs:h-9 sm:h-10 md:h-11 px-2 xs:px-3 sm:px-4 md:px-5 py-1 xs:py-1.5 sm:py-2",
-        sm: "h-7 xs:h-8 sm:h-9 rounded-sm xs:rounded-md px-2 xs:px-3 sm:px-4",
-        lg: "h-10 xs:h-11 sm:h-12 md:h-13 lg:h-14 rounded-md px-4 xs:px-6 sm:px-8 md:px-10",
-        icon: "h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 md:h-11 md:w-11",
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {

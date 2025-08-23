@@ -45,6 +45,7 @@ const ServicesHeroSection: React.FC<ServicesHeroSectionProps> = ({
             variants={fadeInUpAnimation(20, 0.6)}
             className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4"
           >
+            <span className="text-lg mr-2">🔧</span>
             {heroSection?.badge}
           </motion.div>
           

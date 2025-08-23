@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ProductProps, GalleryItem } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
 import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
-import { DemoRequestModal } from '@/components/ui/DemoRequestModal';
 import { cn } from '@/lib/utils';
 import { getThemeColors } from '@/lib/utils/theme-helpers';
 
@@ -88,8 +87,6 @@ const ProductGallerySection: React.FC<ProductGallerySectionProps> = ({
   isLoading = false,
   pageContent
 }) => {
-  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
-  
   // Get gallery items from product data or use default data
   const galleryItems = product?.gallery || getDefaultGalleryItems(product.title);
 
@@ -220,21 +217,12 @@ const ProductGallerySection: React.FC<ProductGallerySectionProps> = ({
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setIsDemoModalOpen(true)}
             className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200"
           >
             Request Demo
           </motion.button>
         </motion.div>
       </div>
-
-      {/* Demo Request Modal */}
-      <DemoRequestModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-        productTitle={product.title}
-        productId={product.id}
-      />
     </section>
   );
 };

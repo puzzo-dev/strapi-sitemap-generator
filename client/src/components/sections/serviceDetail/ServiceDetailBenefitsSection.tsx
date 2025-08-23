@@ -18,7 +18,8 @@ const ServiceDetailBenefitsSection: React.FC<ServiceDetailBenefitsSectionProps> 
       <div className="container-custom">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            📊 Benefits
+            <span className="text-lg mr-2">📊</span>
+            Benefits
           </div>
           <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-4">How You'll Benefit</h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
