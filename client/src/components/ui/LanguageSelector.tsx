@@ -52,9 +52,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) 
             variant="ghost"
             size="sm"
             aria-label={t('language.select', 'Select language')}
-            className="relative px-2 py-1 h-8 min-w-8 rounded-full bg-gray-100/80 dark:bg-gray-800/80"
+            className="relative px-1.5 xs:px-2 py-0.5 xs:py-1 h-6 xs:h-7 sm:h-8 min-w-6 xs:min-w-7 sm:min-w-8 rounded-full bg-gray-100/80 dark:bg-gray-800/80 transition-all duration-200 hover:scale-105"
           >
-            <span className="text-xs font-medium">
+            <span className="text-xs xs:text-sm font-medium">
               {getFlag(currentLanguage)} {currentLanguage.toUpperCase()}
             </span>
           </Button>
@@ -63,27 +63,27 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) 
             variant="ghost"
             size="icon"
             aria-label={t('language.select', 'Select language')}
-            className="relative"
+            className="relative transition-all duration-200 hover:scale-105"
           >
-            <Globe className="h-5 w-5" />
-            <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-[8px] font-medium text-white">
+            <Globe className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5" />
+            <span className="absolute -bottom-0.5 xs:-bottom-1 -right-0.5 xs:-right-1 flex h-3 w-3 xs:h-4 xs:w-4 items-center justify-center rounded-full bg-blue-500 text-[6px] xs:text-[8px] font-medium text-white">
               {currentLanguage.toUpperCase()}
             </span>
           </Button>
         )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent align="end" className="w-40 xs:w-44 sm:w-48">
         {supportedLanguages.map((lang) => (
           <DropdownMenuItem
             key={lang}
             onClick={() => setLanguage(lang)}
-            className={`flex items-center gap-2 ${currentLanguage === lang ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''
+            className={`flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm ${currentLanguage === lang ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''
               }`}
           >
-            <span>{getFlag(lang)}</span>
-            <span>{getLanguageName(lang)}</span>
+            <span className="text-sm xs:text-base">{getFlag(lang)}</span>
+            <span className="text-xs xs:text-sm">{getLanguageName(lang)}</span>
             {currentLanguage === lang && (
-              <div className="ml-auto h-2 w-2 rounded-full bg-blue-500"></div>
+              <div className="ml-auto h-1.5 w-1.5 xs:h-2 xs:w-2 rounded-full bg-blue-500"></div>
             )}
           </DropdownMenuItem>
         ))}

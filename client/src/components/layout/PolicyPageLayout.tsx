@@ -37,7 +37,7 @@ const PolicyPageLayout: React.FC<PolicyPageLayoutProps> = ({
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40">
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* Animated gradient orbs */}
-          <div className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40 animate-pulse-slow" />
+          <div className="absolute -right-10 md:-right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40 animate-pulse-slow" style={{right: 'clamp(-160px, -10vw, -40px)'}} />
           <div className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30 animate-pulse-slower" />
           
           {/* Tech pattern elements */}

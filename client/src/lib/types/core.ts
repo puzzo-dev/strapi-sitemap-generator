@@ -16,6 +16,8 @@ export interface PageContent {
   metaTitle: string;
   metaDescription: string;
   sections: PageSection[];
+  // Visibility control
+  isVisible?: boolean;
   // Add ERPNext specific fields for blog and careers
   erpNextId?: string;
   erpNextType?: 'blog' | 'career' | 'contact' | 'lead';
@@ -43,6 +45,8 @@ export interface PageSection {
   items?: SectionItem[];
   settings?: SectionSettings;
   isLoading?: boolean;
+  // Visibility control
+  isVisible?: boolean;
 }
 
 export interface SectionItem {

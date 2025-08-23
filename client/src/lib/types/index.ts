@@ -7,4 +7,5 @@ export * from './forms';
 export * from './api';
 export * from './seo';
 export * from './toast';
-export * from './policy'; 
+export * from './policy';
+export * from './components'; 

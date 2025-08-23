@@ -3,12 +3,8 @@ import { motion } from 'framer-motion';
 import { Building2, Factory, ShoppingCart, Heart } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { IndustryProps } from '@/lib/types/content';
+import { IndustryDetailHeroSectionProps } from '@/lib/types/components';
 import { fadeInUp, staggerChildren, floatingShapeAnimation } from '@/lib/animations';
-
-interface IndustryDetailHeroSectionProps {
-  industry?: IndustryProps | null;
-  isLoading?: boolean;
-}
 
 const IndustryDetailHeroSection: React.FC<IndustryDetailHeroSectionProps> = ({ industry, isLoading }) => {
   const [heroRef, heroInView] = useInView({ triggerOnce: true });

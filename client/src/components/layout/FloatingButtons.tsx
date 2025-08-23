@@ -8,11 +8,11 @@ import ScrollToTopButton from '@/components/ui/ScrollToTopButton';
  */
 const FloatingButtons: React.FC = () => {
   return (
-    <div className="fixed bottom-8 z-50 w-full flex justify-between px-8 pointer-events-none">
-      <div className="pointer-events-auto">
+    <div className="fixed bottom-4 xs:bottom-6 sm:bottom-8 lg:bottom-10 z-50 w-full flex justify-between px-3 xs:px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pointer-events-none">
+      <div className="pointer-events-auto transform transition-transform hover:scale-105">
         <ThemeToggle />
       </div>
-      <div className="pointer-events-auto">
+      <div className="pointer-events-auto transform transition-transform hover:scale-105">
         <ScrollToTopButton 
           threshold={300}
           size="md"

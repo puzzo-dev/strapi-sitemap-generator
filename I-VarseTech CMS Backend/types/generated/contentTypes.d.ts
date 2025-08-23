@@ -373,6 +373,63 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAnalyticsConfigAnalyticsConfig
+  extends Struct.SingleTypeSchema {
+  collectionName: 'analytics_configs';
+  info: {
+    description: 'Global analytics configuration for Google Analytics, Facebook Pixel, and Matomo';
+    displayName: 'Analytics Configuration';
+    pluralName: 'analytics-configs';
+    singularName: 'analytics-config';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    anonymizeIP: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    cookieConsent: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dataRetentionDays: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 1095;
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<365>;
+    debugMode: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    enabled: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    facebookPixel: Schema.Attribute.Component<
+      'analytics.facebook-pixel',
+      false
+    >;
+    googleAnalytics: Schema.Attribute.Component<
+      'analytics.google-analytics',
+      false
+    >;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::analytics-config.analytics-config'
+    >;
+    matomo: Schema.Attribute.Component<'analytics.matomo', false>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -882,6 +939,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::analytics-config.analytics-config': ApiAnalyticsConfigAnalyticsConfig;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

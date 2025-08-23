@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/useToast';
+import { getUIText } from '@/lib/fallbacks';
 import {
   Send,
   Calendar,
@@ -56,14 +57,14 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
 
   // Define the application form schema with dynamic validation messages
   const applicationSchema = z.object({
-    fullName: z.string().min(2, applicationContent?.validation?.fullName || "Full name must be at least 2 characters"),
-    email: z.string().email(applicationContent?.validation?.email || "Please enter a valid email address"),
-    phone: z.string().min(10, applicationContent?.validation?.phone || "Please enter a valid phone number"),
-    yearsOfExperience: z.string().min(1, applicationContent?.validation?.yearsOfExperience || "Please select years of experience"),
-    coverLetter: z.string().min(50, applicationContent?.validation?.coverLetter || "Cover letter must be at least 50 characters"),
+    fullName: z.string().min(2, applicationContent?.validation?.fullName || getUIText(undefined, 'required', 'forms')),
+    email: z.string().email(applicationContent?.validation?.email || getUIText(undefined, 'emailInvalid', 'forms')),
+    phone: z.string().min(10, applicationContent?.validation?.phone || getUIText(undefined, 'phoneInvalid', 'forms')),
+    yearsOfExperience: z.string().min(1, applicationContent?.validation?.yearsOfExperience || getUIText(undefined, 'required', 'forms')),
+    coverLetter: z.string().min(50, applicationContent?.validation?.coverLetter || getUIText(undefined, 'minLength', 'forms').replace('{min}', '50')),
     resume: z.any().optional(),
     agreeToTerms: z.boolean().refine(val => val === true, {
-      message: applicationContent?.validation?.agreeToTerms || "You must agree to the terms"
+      message: applicationContent?.validation?.agreeToTerms || getUIText(undefined, 'required', 'forms')
     })
   });
 
@@ -141,8 +142,8 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
           <CardContent className="p-6 md:p-8">
             {!submitted ? (
               <>
-                <h2 className="text-xl font-bold mb-4">{applicationContent?.applyTitle || "Apply for the Job"}</h2>
-                <p className="text-muted-foreground mb-6">{applicationContent?.applyDescription?.replace('{job.title}', job.title) || "Please fill out the form below to apply for the job."}</p>
+                <h2 className="text-xl font-bold mb-4">{applicationContent?.applyTitle || getUIText(undefined, 'applyNow', 'buttons')}</h2>
+                <p className="text-muted-foreground mb-6">{applicationContent?.applyDescription?.replace('{job.title}', job.title) || `Please fill out the form below to apply for ${job.title}.`}</p>
 
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
@@ -153,7 +154,7 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                         <FormItem>
                           <FormLabel>Full Name*</FormLabel>
                           <FormControl>
-                            <Input placeholder={applicationContent?.placeholders?.fullName || "Full Name"} {...field} />
+                            <Input placeholder={applicationContent?.placeholders?.fullName || getUIText(undefined, 'fullName', 'forms')} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -167,7 +168,7 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                         <FormItem>
                           <FormLabel>Email*</FormLabel>
                           <FormControl>
-                            <Input placeholder={applicationContent?.placeholders?.email || "Email"} {...field} />
+                            <Input placeholder={applicationContent?.placeholders?.email || getUIText(undefined, 'email', 'forms')} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -181,7 +182,7 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                         <FormItem>
                           <FormLabel>Phone Number*</FormLabel>
                           <FormControl>
-                            <Input placeholder={applicationContent?.placeholders?.phone || "Phone Number"} {...field} />
+                            <Input placeholder={applicationContent?.placeholders?.phone || getUIText(undefined, 'phone', 'forms')} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -200,7 +201,7 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                               onValueChange={field.onChange}
                             >
                               <SelectTrigger className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                <SelectValue placeholder={applicationContent?.placeholders?.yearsOfExperience || "Select Years of Experience"} />
+                                <SelectValue placeholder={applicationContent?.placeholders?.yearsOfExperience || `Select ${getUIText(undefined, 'experience', 'forms')}`} />
                               </SelectTrigger>
                               <SelectContent>
                                 {applicationContent?.options?.map((option: string, index: number) => (
@@ -222,7 +223,7 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                           <FormLabel>Cover Letter*</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder={applicationContent?.placeholders?.coverLetter || "Cover Letter"}
+                              placeholder={applicationContent?.placeholders?.coverLetter || getUIText(undefined, 'message', 'forms')}
                               className="min-h-32"
                               {...field}
                             />
@@ -249,7 +250,7 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                             />
                           </FormControl>
                           <div className="text-xs text-muted-foreground">
-                            {applicationContent?.placeholders?.resume || "Resume/CV"}
+                            {applicationContent?.placeholders?.resume || 'Resume/CV (PDF, DOC, DOCX)'}
                           </div>
                           <FormMessage />
                         </FormItem>
@@ -269,7 +270,7 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                           </FormControl>
                           <div className="space-y-1 leading-none">
                             <FormLabel>
-                              {applicationContent?.agreeText || "I agree to the"} <Link href="/privacy"><span className="text-primary hover:underline">{applicationContent?.privacyPolicy || "privacy policy"}</span></Link> and <Link href="/terms"><span className="text-primary hover:underline">{applicationContent?.termsOfService || "terms of service"}</span></Link>.
+                              {applicationContent?.agreeText || 'I agree to the'} <Link href="/privacy"><span className="text-primary hover:underline">{applicationContent?.privacyPolicy || 'privacy policy'}</span></Link> and <Link href="/terms"><span className="text-primary hover:underline">{applicationContent?.termsOfService || 'terms of service'}</span></Link>.
                             </FormLabel>
                             <FormMessage />
                           </div>
@@ -288,12 +289,12 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
-                          Submitting...
+                          {getUIText(undefined, 'submitting', 'buttons')}
                         </span>
                       ) : (
                         <span className="flex items-center">
                           <Send className="mr-2 h-4 w-4" />
-                          {applicationContent?.submitText || "Submit Application"}
+                          {applicationContent?.submitText || getUIText(undefined, 'submit', 'buttons')}
                         </span>
                       )}
                     </Button>

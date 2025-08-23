@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { usePageContent, useTestimonials, useFAQItems } from '@/hooks/useStrapiContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
+import { usePageTracking } from '@/contexts/AnalyticsContext';
 import MetaTags from '@/components/seo/MetaTags';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { contactPageContent as localContactPageContent } from '@/lib/data/pages';
@@ -18,6 +19,12 @@ import {
 const Contact: React.FC = () => {
   const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
   const [formType, setFormType] = useState<'contact' | 'booking'>('contact');
+  
+  // Track page view for analytics
+  usePageTracking({
+    content_group1: 'contact',
+    content_group2: 'main-page'
+  });
 
   // Fetch page content from Strapi or use local data
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('contact');
@@ -58,34 +65,43 @@ const Contact: React.FC = () => {
         structuredData={structuredData}
       />
 
-      {/* Hero Section */}
-      <ContactHeroSection
-        heroSection={heroSection}
-        isPageLoading={isPageLoading}
-      />
+      <main className="min-h-screen bg-white dark:bg-[#0a1929] overflow-x-hidden">
+        {/* Contact Hero Section */}
+        <div className="w-full">
+          <ContactHeroSection
+            section={heroSection}
+            isLoading={isPageLoading}
+          />
+        </div>
 
-      {/* Contact Form Section */}
-      <ContactFormSection
-        formType={formType}
-        setFormType={setFormType}
-        siteConfig={defaultSiteConfig}
-        isLoading={isPageLoading}
-      />
+        {/* Contact Form Section */}
+        <div className="w-full">
+          <ContactFormSection
+            section={contactSection}
+            formType={formType}
+            onFormTypeChange={setFormType}
+            isLoading={isPageLoading}
+          />
+        </div>
 
-      {/* Testimonials Section */}
-      <ContactTestimonialsSection
-        testimonialSection={testimonialsSection}
-        testimonials={displayTestimonials}
-        isLoading={isTestimonialsLoading}
-      />
+        {/* Contact Testimonials Section */}
+        <div className="w-full">
+          <ContactTestimonialsSection
+            section={testimonialsSection}
+            testimonials={displayTestimonials}
+            isLoading={isPageLoading || isTestimonialsLoading}
+          />
+        </div>
 
-      {/* FAQ Section */}
-      <ContactFAQSection
-        faqSection={faqSection}
-        faqItems={displayFAQItems}
-        isLoading={isFAQLoading}
-        isPageLoading={isPageLoading}
-      />
+        {/* Contact FAQ Section */}
+        <div className="w-full">
+          <ContactFAQSection
+            section={faqSection}
+            faqItems={displayFAQItems}
+            isLoading={isPageLoading || isFAQLoading}
+          />
+        </div>
+      </main>
     </>
   );
 };

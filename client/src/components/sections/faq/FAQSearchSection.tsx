@@ -1,14 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { FAQItem } from '@/lib/types/content';
+import { FAQSearchSectionProps } from '@/lib/types/components';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-
-interface FAQSearchSectionProps {
-    faqItems: FAQItem[];
-    onSearchResults: (results: FAQItem[]) => void;
-    className?: string;
-}
 
 const FAQSearchSection: React.FC<FAQSearchSectionProps> = ({
     faqItems,

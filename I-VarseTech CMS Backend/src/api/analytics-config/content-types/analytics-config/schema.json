@@ -1,0 +1,58 @@
+{
+  "kind": "singleType",
+  "collectionName": "analytics_configs",
+  "info": {
+    "singularName": "analytics-config",
+    "pluralName": "analytics-configs",
+    "displayName": "Analytics Configuration",
+    "description": "Global analytics configuration for Google Analytics, Facebook Pixel, and Matomo"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "debugMode": {
+      "type": "boolean",
+      "default": false
+    },
+    "cookieConsent": {
+      "type": "boolean",
+      "default": true
+    },
+    "dataRetentionDays": {
+      "type": "integer",
+      "default": 365,
+      "min": 1,
+      "max": 1095
+    },
+    "anonymizeIP": {
+      "type": "boolean",
+      "default": true
+    },
+    "googleAnalytics": {
+      "type": "component",
+      "component": "analytics.google-analytics",
+      "required": false
+    },
+    "facebookPixel": {
+      "type": "component",
+      "component": "analytics.facebook-pixel",
+      "required": false
+    },
+    "matomo": {
+      "type": "component",
+      "component": "analytics.matomo",
+      "required": false
+    }
+  }
+}

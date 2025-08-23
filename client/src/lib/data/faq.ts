@@ -76,7 +76,7 @@ const genericFAQs: FAQItem[] = [
   {
     id: 203,
     question: "What services does I-Varse provide?",
-    answer: "I-Varse provides a comprehensive range of digital services including web development, mobile app development, cloud infrastructure management, API Engineering & integration, SEO optimization, ERP solutions, and content writing.",
+    answer: "I-Varse provides a comprehensive range of digital services including web development, mobile app development, cloud infrastructure management, API Engineering & Business Automation, SEO optimization, ERP solutions, and content writing.",
     categoryIds: [2],
     translationKey: "services-overview"
   },

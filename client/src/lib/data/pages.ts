@@ -43,9 +43,13 @@ export const homePageContent: PageContent = {
   description: "I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses forward.",
   metaTitle: "I-VARSE Technologies - Innovative Digital Solutions",
   metaDescription: "I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel real results.",
+  isVisible: true,
   sections: [
     // Hero section using prop drilling from hero.ts
-    extractHeroContent(),
+    {
+      ...extractHeroContent(),
+      isVisible: true
+    },
     {
       id: 2,
       type: "services",
@@ -54,6 +58,7 @@ export const homePageContent: PageContent = {
       content: "We provide a wide range of digital services to help your business grow and succeed in the digital economy.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       badge: "🛠️ Our Services",
+      isVisible: true,
       settings: {
         featured: services,
         layout: "grid",

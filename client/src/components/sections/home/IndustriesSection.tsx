@@ -6,12 +6,7 @@ import AppLink from '@/components/ui/AppLink';
 import { ArrowRight, Building2, Heart, ShoppingCart, Factory, GraduationCap, Home, Truck, Zap } from 'lucide-react';
 import { IndustryProps } from '@/lib/types/content';
 import { PageSection, PageContent } from '@/lib/types/core';
-
-interface IndustriesSectionProps {
-  industries: IndustryProps[];
-  homePageContent: PageContent;
-  isLoading?: boolean;
-}
+import { IndustriesSectionProps } from '@/lib/types/components';
 
 const IndustriesSection: React.FC<IndustriesSectionProps> = ({
   industries = [],

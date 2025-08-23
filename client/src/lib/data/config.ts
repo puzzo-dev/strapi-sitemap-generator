@@ -56,7 +56,8 @@ export const navItems: NavItem[] = [
     label: "Home",
     url: { url: "/" },
     order: 1,
-    isButton: false
+    isButton: false,
+    isVisible: true
   },
   {
     id: 2,
@@ -64,13 +65,15 @@ export const navItems: NavItem[] = [
     url: { url: "/about" },
     order: 2,
     isButton: false,
+    isVisible: true,
     children: [
       {
         id: 22,
         label: "Team",
         url: { url: "/team" },
         order: 1,
-        isButton: false
+        isButton: false,
+        isVisible: true
       }
     ]
   },
@@ -79,7 +82,8 @@ export const navItems: NavItem[] = [
     label: "Services",
     url: { url: "/services" },
     order: 3,
-    isButton: false
+    isButton: false,
+    isVisible: true
   },
   {
     id: 4,
@@ -87,20 +91,23 @@ export const navItems: NavItem[] = [
     url: { url: "/products" },
     order: 4,
     isButton: false,
+    isVisible: true,
     children: [
       {
         id: 42,
         label: "Industries",
         url: { url: "/industries" },
         order: 1,
-        isButton: false
+        isButton: false,
+        isVisible: true
       },
       {
         id: 43,
         label: "Case Studies",
         url: { url: "/case-studies" },
         order: 2,
-        isButton: false
+        isButton: false,
+        isVisible: true
       }
     ]
   },
@@ -109,21 +116,24 @@ export const navItems: NavItem[] = [
     label: "Tech Insights",
     url: { url: "/blog" },
     order: 5,
-    isButton: false
+    isButton: false,
+    isVisible: true
   },
   {
     id: 6,
     label: "Careers",
     url: { url: "/careers" },
     order: 6,
-    isButton: false
+    isButton: false,
+    isVisible: true
   },
   {
     id: 7,
     label: "Contact Us",
     url: { url: "/contact" },
     order: 7,
-    isButton: true
+    isButton: true,
+    isVisible: true
   }
 ];
 

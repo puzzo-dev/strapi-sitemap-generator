@@ -42,6 +42,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import AppLink from '@/components/ui/AppLink';
 import { cn } from '@/lib/utils';
+import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
+import BackgroundDecoration from '@/components/ui/BackgroundDecoration';
+import { getThemeColors, getSpacing, getAnimationVariants } from '@/lib/utils/theme-helpers';
+import { isString, isValidUrl } from '@/lib/utils/type-guards';
 
 // Helper function to get social icon paths
 const getSocialIconPath = (platform: string): string => {
@@ -178,7 +182,11 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
         <motion.section
             initial="initial"
             animate="animate"
-            className="h-fit md:h-[calc(100vh-2rem)] relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-25 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section">
+            className={cn(
+                "h-fit md:h-[calc(100vh-2rem)] relative overflow-hidden py-25 md:pt-24 md:pb-16 hero-section",
+                getThemeColors('background', 'gradient'),
+                getThemeColors('border', 'muted')
+            )}>
             {/* Tech-inspired background elements - Enhanced with more icons */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 {/* Animated gradient orbs */}
@@ -526,10 +534,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                     {/* Mobile Header (Shows above the slider on mobile) */}
                     <div className="block lg:hidden w-full mb-4 pt-10">
                         {showLoading ? (
-                            <div className="space-y-3">
-                                <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
-                                <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
-                            </div>
+                            <LoadingSkeletons.Text lines={2} className="space-y-3" />
                         ) : (
                             <>
                                 <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
@@ -555,10 +560,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                             {/* Desktop-only heading - hidden on mobile */}
                             <div className="hidden lg:block">
                                 {showLoading ? (
-                                    <div className="space-y-3">
-                                        <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
-                                        <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
-                                    </div>
+                                    <LoadingSkeletons.Text lines={2} className="space-y-3" />
                                 ) : (
                                     <>
                                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
@@ -580,10 +582,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
 
                             {/* Always visible subtitle */}
                             {showLoading ? (
-                                <div className="space-y-3">
-                                    <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
-                                    <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
-                                </div>
+                                <LoadingSkeletons.Text lines={2} className="space-y-3" />
                             ) : (
                                 <p
                                     className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
@@ -619,19 +618,24 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                             {/* Desktop Social Media Links */}
                             <div className="hidden md:flex items-center space-x-4 text-gray-500 dark:text-gray-400">
                                 {isSocialLinksLoading ? (
-                                    // Loading placeholders
-                                    Array(4).fill(0).map((_, i) => (
-                                        <div key={i} className="w-5 h-5 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-                                    ))
+                                    <div className="flex space-x-4">
+                                        {Array(4).fill(0).map((_, i) => (
+                                            <LoadingSkeletons.Base key={i} className="w-5 h-5 rounded-full" />
+                                        ))}
+                                    </div>
                                 ) : (
                                     displaySocialLinks.map((link) => (
                                         <a
                                             key={link.id}
-                                            href={link.href || link.href}
-                                            className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                                            href={isValidUrl(link.href) ? link.href : '#'}
+                                            className={cn(
+                                                "transition-colors cursor-pointer",
+                                                getThemeColors('text', 'muted'),
+                                                "hover:text-blue-600 dark:hover:text-blue-400"
+                                            )}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            aria-label={link.platform}
+                                            aria-label={isString(link.platform) ? link.platform : 'Social Link'}
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -680,19 +684,24 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                 {/* Mobile Social Media Links */}
                                 <div className="flex items-center justify-center space-x-2 text-gray-500 dark:text-gray-400">
                                     {isSocialLinksLoading ? (
-                                        // Loading placeholders
-                                        Array(4).fill(0).map((_, i) => (
-                                            <div key={i} className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-                                        ))
+                                        <div className="flex space-x-2">
+                                            {Array(4).fill(0).map((_, i) => (
+                                                <LoadingSkeletons.Base key={i} className="w-6 h-6 rounded-full" />
+                                            ))}
+                                        </div>
                                     ) : (
                                         displaySocialLinks.map((link) => (
                                             <a
                                                 key={link.id}
-                                                href={link.href || link.href}
-                                                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                                                href={isValidUrl(link.href) ? link.href : '#'}
+                                                className={cn(
+                                                    "transition-colors cursor-pointer",
+                                                    getThemeColors('text', 'muted'),
+                                                    "hover:text-blue-600 dark:hover:text-blue-400"
+                                                )}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                aria-label={link.platform}
+                                                aria-label={isString(link.platform) ? link.platform : 'Social Link'}
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -828,9 +837,8 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                     {/* Hero Slides Container - Original Design */}
                                     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                                         {isHeroLoading ? (
-                                            // Loading state
                                             <div className="flex items-center justify-center h-full">
-                                                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                                                <LoadingSkeletons.Base className="w-16 h-16 rounded-full" />
                                             </div>
                                         ) : (
                                             <div className="relative w-full h-full">
@@ -863,27 +871,6 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                                     />
                                                 </div>
 
-                                                {/* Current slide overlay content - super tiny in top right */}
-                                                <div className="absolute top-0 right-0 z-20 py-0.5 px-1 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
-                                                    {heroSlides.map((slide, index) => (
-                                                        <div
-                                                            key={slide.id || index}
-                                                            className={`transition-opacity duration-500 flex items-center ${index === currentSlideIndex
-                                                                ? "opacity-100"
-                                                                : "opacity-0 absolute inset-0"
-                                                                }`}
-                                                        >
-                                                            <div className="flex items-center">
-                                                                <span className="flex items-center justify-center mr-1.5">
-                                                                    <div className="h-4 w-4 bg-current rounded-full"></div>
-                                                                </span>
-                                                                <h3 className="text-[11px] font-medium text-white whitespace-nowrap">
-                                                                    {slide.title.split(' ').slice(0, 2).join(' ')}
-                                                                </h3>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
 
                                                 {/* Animated tech elements */}
                                                 <CircuitBoard className="absolute top-6 left-6 h-12 w-12 text-blue-300 dark:text-blue-700 opacity-30 animate-float" />

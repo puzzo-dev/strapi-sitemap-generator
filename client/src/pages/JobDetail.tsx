@@ -9,6 +9,7 @@ import MetaTags from '@/components/seo/MetaTags';
 import { jobDetailPageContent as localJobDetailPageContent } from '@/lib/data/pages';
 import { PageContent } from '@/lib/types/core';
 import { JobListing } from '@/lib/types/content';
+import type { ApplicationFormValues } from '@/lib/types';
 
 // Import section components
 import {
@@ -19,17 +20,6 @@ import {
   JobRelatedSection,
   JobStatsSection
 } from '@/components/sections/job';
-
-// Define the application form schema type
-interface ApplicationFormValues {
-  fullName: string;
-  email: string;
-  phone: string;
-  coverLetter: string;
-  resume?: File | null;
-  yearsOfExperience: string;
-  agreeToTerms: boolean;
-}
 
 const JobDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();

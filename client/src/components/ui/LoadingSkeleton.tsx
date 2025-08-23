@@ -9,6 +9,7 @@ import React from 'react';
 
 interface SkeletonProps {
   className?: string;
+  Image?: boolean;  
   width?: string | number;
   height?: string | number;
 }

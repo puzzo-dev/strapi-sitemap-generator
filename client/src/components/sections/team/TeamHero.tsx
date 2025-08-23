@@ -32,23 +32,11 @@ const TeamHero: React.FC<TeamHeroProps> = ({
             className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section"
         >
             {/* Background decoration */}
-            <div className="absolute inset-0 overflow-hidden">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <motion.div
-                    variants={floatingShapeAnimation()}
-                    className="absolute top-20 left-10 w-32 h-32 bg-blue-200/20 dark:bg-blue-800/20 rounded-full blur-3xl"
-                />
-                <motion.div
-                    variants={floatingShapeAnimation(2)}
-                    className="absolute bottom-20 right-10 w-40 h-40 bg-indigo-200/20 dark:bg-indigo-800/20 rounded-full blur-3xl"
-                />
-                <motion.div
-                    variants={floatingShapeAnimation(1.5)}
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-purple-200/20 dark:bg-purple-800/20 rounded-full blur-2xl"
-                />
-            </div>
-
-            <div className="container-custom relative z-10">
-                <div className="text-center max-w-4xl mx-auto">
+                    variants={staggerChildren(0.2)}
+                    className="text-center max-w-4xl mx-auto"
+                >
                     {/* Overline */}
                     {settings?.overline && (
                         <motion.div
@@ -64,66 +52,116 @@ const TeamHero: React.FC<TeamHeroProps> = ({
 
                     {/* Title */}
                     <motion.h1
-                        variants={fadeInUp()}
-                        className="heading-xl mb-6"
+                        variants={fadeInUp(0.3)}
+                        className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight"
+                        style={{
+                            textShadow: '0 4px 20px rgba(0,0,0,0.3)'
+                        }}
                     >
                         {title ? (
-                            (() => {
-                                const words = title.split(' ');
-                                const highlightedWords = words.length >= 2 ? words.slice(-2).join(' ') : '';
-                                const regularWords = words.length >= 2 ? words.slice(0, -2).join(' ') : title;
-
-                                return (
-                                    <>
-                                        {regularWords}{' '}
-                                        <span className="gradient-text">
-                                            {highlightedWords}
-                                        </span>
-                                    </>
-                                );
-                            })()
+                            <>
+                                {title.split(' ').slice(0, -1).join(' ')}{' '}
+                                <span className="gradient-text">
+                                    {title.split(' ').slice(-1).join(' ')}
+                                </span>
+                            </>
                         ) : (
                             <>
-                                Meet Our <span className="gradient-text">Expert Team</span>
+                                Meet Our Expert{' '}
+                                <span className="gradient-text">Team</span>
                             </>
                         )}
                     </motion.h1>
 
                     {/* Subtitle */}
-                    <motion.p
-                        variants={fadeInUp(0.2)}
-                        className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
-                    >
-                        {content}
-                    </motion.p>
-
-                    {/* Content */}
-                    {/* {content && (
+                    {subtitle && (
                         <motion.p
-                            variants={fadeInUp(0.3)}
-                            className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto"
+                            variants={fadeInUp(0.4)}
+                            className="text-xl text-blue-100 mb-8 leading-relaxed max-w-3xl mx-auto"
+                            style={{
+                                textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+                            }}
+                        >
+                            {subtitle}
+                        </motion.p>
+                    )}
+
+                    {/* Description */}
+                    {content && (
+                        <motion.div
+                            variants={fadeInUp(0.5)}
+                            className="text-lg text-blue-50 leading-relaxed max-w-2xl mx-auto"
+                            style={{
+                                textShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                            }}
                         >
                             {content}
-                        </motion.p>
-                    )} */}
+                        </motion.div>
+                    )}
+                    
+                    {/* Team Stats */}
+                    <motion.div
+                        variants={fadeInUp(0.6)}
+                        className="flex flex-wrap justify-center gap-8 mt-12"
+                    >
+                        <div className="text-center">
+                            <div className="text-3xl font-bold text-white mb-2">
+                                25+
+                            </div>
+                            <div className="text-blue-200 text-sm font-medium">
+                                Team Members
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-3xl font-bold text-white mb-2">
+                                10+
+                            </div>
+                            <div className="text-blue-200 text-sm font-medium">
+                                Years Experience
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-3xl font-bold text-white mb-2">
+                                100+
+                            </div>
+                            <div className="text-blue-200 text-sm font-medium">
+                                Projects Delivered
+                            </div>
+                        </div>
+                    </motion.div>
 
                     {/* CTA Buttons */}
-                    <motion.div
-                        variants={fadeInUp(0.4)}
-                        className="flex flex-wrap justify-center gap-4"
-                    >
-                        {settings?.primaryButton && (
-                            <GradientButton href={settings.primaryButton.href} size="lg" endIcon={<ArrowRight />}>
-                                {settings.primaryButton.children || settings.primaryButton.title}
-                            </GradientButton>
-                        )}
-                        {settings?.secondaryButton && (
-                            <GradientButton href={settings.secondaryButton.href} variant="outline" size="lg">
-                                {settings.secondaryButton.children || settings.secondaryButton.title}
-                            </GradientButton>
-                        )}
-                    </motion.div>
-                </div>
+                    {(settings?.primaryButton || settings?.secondaryButton) && (
+                        <motion.div
+                            variants={fadeInUp(0.7)}
+                            className="flex flex-wrap justify-center gap-4 mt-8"
+                        >
+                            {settings?.primaryButton && (
+                                <GradientButton href={settings.primaryButton.href} size="lg" endIcon={<ArrowRight />}>
+                                    {settings.primaryButton.children || settings.primaryButton.title}
+                                </GradientButton>
+                            )}
+                            {settings?.secondaryButton && (
+                                <GradientButton href={settings.secondaryButton.href} variant="outline" size="lg">
+                                    {settings.secondaryButton.children || settings.secondaryButton.title}
+                                </GradientButton>
+                            )}
+                        </motion.div>
+                    )}
+                </motion.div>
+            </div>
+
+            {/* Enhanced Background Elements */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+                
+                {/* Animated particles */}
+                <div className="absolute top-20 left-20 w-2 h-2 bg-white/20 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+                <div className="absolute top-40 right-32 w-1 h-1 bg-blue-300/30 rounded-full animate-bounce" style={{ animationDelay: '1s' }} />
+                <div className="absolute bottom-32 left-1/3 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-bounce" style={{ animationDelay: '2s' }} />
+                <div className="absolute bottom-20 right-20 w-2 h-2 bg-cyan-300/20 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }} />
             </div>
         </motion.section>
     );

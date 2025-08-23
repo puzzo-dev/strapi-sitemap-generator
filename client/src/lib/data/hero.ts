@@ -62,7 +62,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: 4,
-    title: "Enterprise Solutions",
+    title: "Enterprise Solutions and Industry 4.0",
     subtitle: "Streamline your business operations with our comprehensive ERP solutions",
     primaryButton: {
       title: "Discover Solutions",
@@ -80,11 +80,11 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: 5,
-    title: "Api Engineering & Integration",
+    title: "NeuralCore AI - Private Agentic AI",
     subtitle: "Connect your systems seamlessly with custom API development",
     primaryButton: {
       title: "Our Approach",
-      href: "/services/api-integration",
+      href: "/services/neuralcore-private-ai-cloud",
       variant: "default",
       startIcon: "code",
       children: "Our Approach"

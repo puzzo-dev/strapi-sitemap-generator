@@ -19,11 +19,7 @@ export interface ServiceProps {
   image?: string;
 }
 
-export interface ServiceCardProps {
-  service: ServiceProps;
-  compact?: boolean;
-  featured?: boolean;
-}
+// Use generic CardProps<ServiceProps> instead
 
 export interface PricingProps {
   id: number;
@@ -37,6 +33,15 @@ export interface PricingProps {
   translationKey?: string;
 }
 
+export interface GalleryItem {
+  id: number;
+  image: string;
+  title: string;
+  type: 'screenshot' | 'feature' | 'demo' | 'interface';
+  size?: 'large' | 'medium' | 'small' | 'tall';
+  description?: string;
+}
+
 export interface ProductProps {
   id: number;
   title: string;
@@ -44,6 +49,7 @@ export interface ProductProps {
   translationKey?: string;
   description: string;
   image?: string;
+  gallery?: GalleryItem[];
   keyFeatures: string[];
   benefits: PageSection;
   industries: PageSection;
@@ -58,10 +64,7 @@ export interface ProductProps {
   status: 'Active' | 'Beta' | 'Coming Soon' | 'Deprecated';
 }
 
-export interface ProductCardProps {
-  product?: ProductProps;
-  isReversed?: boolean;
-}
+// Use generic CardProps<ProductProps> instead
 
 export interface TestimonialProps {
   id: number;
@@ -75,9 +78,7 @@ export interface TestimonialProps {
   company?: string; // Company name
 }
 
-export interface TestimonialCardProps {
-  testimonial: TestimonialProps;
-}
+// Use generic CardProps<TestimonialProps> instead
 
 export interface BlogPost {
   id?: number;
@@ -115,9 +116,7 @@ export interface BlogPost {
   erpNextComments?: BlogComment[];
 }
 
-export interface BlogCardProps extends BlogPost {
-  url?: any; // UrlProps from core
-}
+// Use generic CardProps<BlogPost> instead
 
 export interface BlogCategory {
   id?: number;
@@ -170,20 +169,9 @@ export interface FAQPageContent {
   description: string;
   metaTitle: string;
   metaDescription: string;
-  categories: FAQCategory[];
-  items: FAQItem[];
-  content?: string;
 }
 
-export interface FAQCategoriesSectionProps {
-  categories: FAQCategory[];
-  faqItems: FAQItem[];
-  activeCategory: number;
-  setActiveCategory: (categoryId: number) => void;
-  expandedItems: number[];
-  toggleItem: (itemId: number) => void;
-  isLoading: boolean;
-}
+// Moved to components.ts
 
 export interface TeamMember {
   id: number;
@@ -275,11 +263,6 @@ export interface HeroSlide {
   backgroundImage?: string;
 }
 
-export interface IndustryCaseStudy {
-  id: number;
-  title: string;
-  description: string;
-}
 
 export interface IndustryProps {
   id: number;
@@ -291,7 +274,11 @@ export interface IndustryProps {
   image?: string;
   challenges?: string[];
   solutions?: string[];
-  caseStudies?: IndustryCaseStudy[];
+  caseStudies?: Array<{
+    id: number;
+    title: string;
+    description: string;
+  }>;
   technologies?: string[];
   featured?: boolean;
 }
@@ -319,3 +306,4 @@ export interface ExtendedTeamMember extends TeamMember {
   expertise?: string[];
   achievements?: string[];
 }
+

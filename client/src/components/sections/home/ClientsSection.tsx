@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ClientLogo } from '@/lib/types/layout';
 import { PageContent } from '@/lib/types/core';
+import { ClientsSectionProps } from '@/lib/types/components';
 import { Sparkles, CircuitBoard } from 'lucide-react';
 
 // Loading placeholder for client logos
@@ -11,12 +12,6 @@ const ClientLogoSkeleton = () => (
     <div className="w-24 h-8 bg-gray-300 dark:bg-gray-600 rounded"></div>
   </div>
 );
-
-interface ClientsSectionProps {
-  homePageContent: PageContent;
-  clientLogos: ClientLogo[];
-  isLoading: boolean;
-}
 
 const ClientsSection: React.FC<ClientsSectionProps> = ({ homePageContent, clientLogos, isLoading }) => {
   const { t } = useTranslation();

@@ -17,6 +17,8 @@ export interface NavItem {
   order: number;
   isButton: boolean;
   children?: NavItem[]; // Add this line for dropdown support
+  // Visibility control
+  isVisible?: boolean;
 }
 
 export interface MobileMenuProps {
@@ -59,6 +61,8 @@ export interface FooterColumn {
   title: string;
   translationKey?: string;
   links: AppLinkProps[];
+  // Visibility control
+  isVisible?: boolean;
 }
 
 export interface ClientLogo {

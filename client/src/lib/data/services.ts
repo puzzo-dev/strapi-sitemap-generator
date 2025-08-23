@@ -333,12 +333,12 @@ export const services: ServiceProps[] = [
   },
   {
     id: 3,
-    title: "API Engineering & Integration",
+    title: "API Engineering & Business Automation",
     slug: "api-engineering-integration",
     subtitle: "Seamless System Connectivity",
     description:
       "Connect your systems seamlessly with custom API development and integration services. We build robust APIs that enable efficient data exchange and system interoperability.",
-    fullDescription: "Our API Engineering & Integration service creates the digital bridges that connect your business systems and enable seamless data flow. We design and develop RESTful APIs, GraphQL endpoints, and microservices architectures that provide secure, scalable, and efficient communication between applications. Our integration expertise ensures your systems work together harmoniously, reducing manual processes and improving operational efficiency.",
+    fullDescription: "Our API Engineering & Business Automation service creates the digital bridges that connect your business systems and enable seamless data flow. We design and develop RESTful APIs, GraphQL endpoints, and microservices architectures that provide secure, scalable, and efficient communication between applications. Our integration expertise ensures your systems work together harmoniously, reducing manual processes and improving operational efficiency.",
     benefits: {
       id: 4,
       title: "API Development Benefits",

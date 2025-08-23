@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { LanguageProvider } from "@/components/context/LanguageContext";
+import { AnalyticsProvider } from "@/contexts/AnalyticsContext";
 import MetaTags from "@/components/seo/MetaTags";
 import { generateWebsiteSchema } from "@/components/seo/StructuredData";
 import { AnimatePresence } from "framer-motion";
@@ -72,7 +73,8 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <ThemeProvider defaultTheme="dark" storageKey="i-varse-theme">
+        <AnalyticsProvider>
+          <ThemeProvider defaultTheme="dark" storageKey="i-varse-theme">
           {/* Base SEO MetaTags that will be overridden by page-specific ones */}
           <MetaTags
             title="Innovative Technology Solutions"
@@ -84,9 +86,9 @@ const App: React.FC = () => {
             ogUrl={`https://www.itechnologies.ng${location}`}
           />
 
-          <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white">
+          <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white overflow-x-hidden w-full">
             <Navbar onMenuToggle={toggleMobileMenu} logo={""} navItems={displayNavItems} />
-            <main className="flex-grow pt-10">
+            <main className="flex-grow pt-10 overflow-x-hidden w-full">
               <AnimatePresence mode="wait">
                 <Switch>
                   <Route path="/" component={Home} />
@@ -125,7 +127,8 @@ const App: React.FC = () => {
             {/* Mobile Menu - positioned at root level */}
             <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} navItems={displayNavItems} />
           </div>
-        </ThemeProvider>
+          </ThemeProvider>
+        </AnalyticsProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );

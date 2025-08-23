@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/useToast';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -46,14 +47,21 @@ const ContactForm: React.FC<ContactFormProps> = ({
   errorMessage
 }) => {
   const { toast } = useToast();
-  const getUIText = useUIText();
+  const getUITextForms = useUIText('contactUs', 'forms');
+  const getUITextButtons = useUIText('submit', 'buttons');
+  const getUITextSubmitting = useUIText('submitting', 'buttons');
+  const getUITextSuccess = useUIText('success', 'forms');
+  const getUITextError = useUIText('error', 'forms');
+  const getUITextFullName = useUIText('fullName', 'forms');
+  const getUITextEmail = useUIText('email', 'forms');
+  const { trackFormSubmission, trackEvent } = useAnalytics();
   
   // Use dynamic content with fallbacks
-  const formTitle = title || getUIText('contactUs', 'forms');
-  const submitButtonText = submitText || getUIText('submit', 'buttons');
-  const submittingButtonText = submittingText || getUIText('submitting', 'buttons');
-  const successMsg = successMessage || getUIText('success', 'forms');
-  const errorMsg = errorMessage || getUIText('error', 'forms');
+  const formTitle = title || getUITextForms();
+  const submitButtonText = submitText || getUITextButtons();
+  const submittingButtonText = submittingText || getUITextSubmitting();
+  const successMsg = successMessage || getUITextSuccess();
+  const errorMsg = errorMessage || getUITextError();
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -67,7 +75,30 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
   const contactMutation = useMutation({
     mutationFn: submitContactForm,
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
+      // Track successful form submission
+      trackFormSubmission({
+        action: 'form_submit',
+        category: 'Contact',
+        label: 'Contact Form Success',
+        form_id: 'contact-form',
+        form_name: 'Contact Form',
+        form_destination: 'contact',
+        form_submit_text: submitButtonText
+      });
+
+      // Track lead generation event
+      trackEvent({
+        action: 'lead',
+        category: 'Conversion',
+        label: `Contact Form - ${variables.requestType}`,
+        customParameters: {
+          request_type: variables.requestType,
+          lead_source: 'contact_form',
+          form_type: 'contact'
+        }
+      });
+
       toast({
         title: "Success!",
         description: successMsg,
@@ -76,6 +107,17 @@ const ContactForm: React.FC<ContactFormProps> = ({
       form.reset();
     },
     onError: (error) => {
+      // Track form submission error
+      trackEvent({
+        action: 'form_error',
+        category: 'Form',
+        label: 'Contact Form Error',
+        customParameters: {
+          error_message: error instanceof Error ? error.message : 'Unknown error',
+          form_id: 'contact-form'
+        }
+      });
+
       toast({
         title: "Error!",
         description: error instanceof Error ? error.message : errorMsg,
@@ -85,6 +127,17 @@ const ContactForm: React.FC<ContactFormProps> = ({
   });
 
   function onSubmit(data: ContactFormData) {
+    // Track form start/attempt
+    trackEvent({
+      action: 'form_start',
+      category: 'Form',
+      label: 'Contact Form Started',
+      customParameters: {
+        form_id: 'contact-form',
+        request_type: data.requestType
+      }
+    });
+
     contactMutation.mutate(data);
   }
 
@@ -98,10 +151,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="fullName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{getUIText('fullName', 'forms')} *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{getUITextFullName()} *</FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder={getUIText('fullName', 'forms')} 
+                    placeholder={getUITextFullName()} 
                     {...field} 
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
@@ -116,10 +169,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{getUIText('email', 'forms')} *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{getUITextEmail()} *</FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder={getUIText('email', 'forms')} 
+                    placeholder={getUITextEmail()} 
                     type="email"
                     {...field} 
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

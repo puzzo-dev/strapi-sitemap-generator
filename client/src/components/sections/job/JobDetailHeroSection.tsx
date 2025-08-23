@@ -71,8 +71,7 @@ const JobDetailHeroSection: React.FC<JobDetailHeroSectionProps> = ({
 
           <motion.div variants={fadeInUp(20, 0.7)} className="flex items-center gap-2 mb-2">
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50/20 px-3 py-1 text-sm font-medium text-white border-white/20">
-              <span className="text-lg mr-2">💼</span>
-              {job.department}
+              💼 {job.department}
             </div>
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50/20 px-3 py-1 text-sm font-medium text-white border-white/20">
               <span className="text-lg mr-2">⏰</span>

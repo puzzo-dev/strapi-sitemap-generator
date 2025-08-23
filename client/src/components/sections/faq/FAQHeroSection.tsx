@@ -1,10 +1,5 @@
 import React from 'react';
-
-interface FAQHeroSectionProps {
-    title: string;
-    description: string;
-    isLoading: boolean;
-}
+import type { FAQHeroSectionProps } from '@/lib/types';
 
 const FAQHeroSection: React.FC<FAQHeroSectionProps> = ({
     title,

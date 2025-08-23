@@ -27,13 +27,13 @@ import {
 } from '@/components/sections/blogPost';
 
 // Comment form schema
+import type { CommentFormValues } from '@/lib/types';
+
 const commentSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
   email: z.string().email({ message: 'Please enter a valid email address' }),
   comment: z.string().min(5, { message: 'Comment must be at least 5 characters' })
 });
-
-type CommentFormValues = z.infer<typeof commentSchema>;
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();

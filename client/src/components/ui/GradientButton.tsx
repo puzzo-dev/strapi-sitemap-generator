@@ -37,14 +37,14 @@ const GradientButton: React.FC<GradientButtonProps> = ({
 }) => {
   // Style variants
   const getButtonClasses = () => {
-    let baseClasses = 'rounded-lg font-medium transition-all duration-300 ease-in-out flex items-center justify-center relative overflow-hidden';
+    let baseClasses = 'rounded-md xs:rounded-lg font-medium transition-all duration-300 ease-in-out flex items-center justify-center relative overflow-hidden';
     
     // Size variations with responsive adjustments
     const sizeClasses = {
-      sm: 'text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2',
-      default: 'text-sm sm:text-base px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3',
-      lg: 'text-base sm:text-lg px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4',
-      icon: 'p-1.5 sm:p-2'
+      sm: 'text-xs xs:text-sm sm:text-base px-2 xs:px-3 sm:px-4 md:px-5 py-1 xs:py-1.5 sm:py-2 md:py-2.5',
+      default: 'text-xs xs:text-sm sm:text-base md:text-lg px-3 xs:px-4 sm:px-5 md:px-6 lg:px-7 py-1.5 xs:py-2 sm:py-2.5 md:py-3 lg:py-3.5',
+      lg: 'text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl px-4 xs:px-5 sm:px-6 md:px-8 lg:px-10 py-2 xs:py-3 sm:py-3.5 md:py-4 lg:py-5',
+      icon: 'p-1 xs:p-1.5 sm:p-2 md:p-2.5 lg:p-3'
     };
     
     // Variant styles

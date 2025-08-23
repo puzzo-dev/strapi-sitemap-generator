@@ -33,25 +33,27 @@ const createFooterColumns = (): FooterColumn[] => [
     {
       id: 1,
       title: "Important Links",
-    translationKey: "footer-important-links",
+      translationKey: "footer-important-links",
+      isVisible: true,
       links: [
-      { title: "About Us", href: "/about", translationKey: "footer-about" },
-      { title: "Services", href: "/services", translationKey: "footer-services" },
-      { title: "Products", href: "/products", translationKey: "footer-products" },
-      { title: "Insights", href: "/blog", translationKey: "footer-insights" },
-      { title: "Careers", href: "/careers", translationKey: "footer-careers" },
-      { title: "Contact", href: "/contact", translationKey: "footer-contact" },
-      { title: "Our Team", href: "/team", translationKey: "footer-team" },
-      { title: "FAQ", href: "/faq", translationKey: "footer-faq" },
-      { title: "Insights Pages", href: "/blog", translationKey: "footer-insights-pages" },
+        { title: "About Us", href: "/about", translationKey: "footer-about" },
+        { title: "Services", href: "/services", translationKey: "footer-services" },
+        { title: "Products", href: "/products", translationKey: "footer-products" },
+        { title: "Insights", href: "/blog", translationKey: "footer-insights" },
+        { title: "Careers", href: "/careers", translationKey: "footer-careers" },
+        { title: "Contact", href: "/contact", translationKey: "footer-contact" },
+        { title: "Our Team", href: "/team", translationKey: "footer-team" },
+        { title: "FAQ", href: "/faq", translationKey: "footer-faq" },
+        { title: "Insights Pages", href: "/blog", translationKey: "footer-insights-pages" },
       ],
     },
     {
       id: 2,
       title: "Services",
-    translationKey: "footer-services-column",
-    links: extractServiceLinks(), // Use prop drilling from services
-  },
+      translationKey: "footer-services-column",
+      isVisible: true,
+      links: extractServiceLinks(), // Use prop drilling from services
+    },
 ];
 
 export const footerLinks: {

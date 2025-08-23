@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import ContactForm from '@/components/ui/ContactForm';
 import BookingForm from '@/components/ui/BookingForm';
 import { SiteConfig } from '@/lib/types/core';
+import { getThemeColors } from '@/lib/utils/theme-helpers';
+import { cn } from '@/lib/utils';
 
 interface ContactFormSectionProps {
     formType: 'contact' | 'booking';
@@ -18,7 +20,10 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
     isLoading,
 }) => {
     return (
-        <section id="contact-form" className="content-section bg-white dark:bg-[#132f4c] py-16">
+        <section id="contact-form" className={cn(
+            "content-section py-16",
+            getThemeColors('background', 'default')
+        )}>
             <div className="container-custom">
                 <div className="flex flex-col lg:flex-row gap-10">
                     {/* Form Section */}
@@ -71,9 +76,19 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                     {/* Contact Information Section */}
                     <div className="w-full lg:w-1/2">
                         <div className="grid grid-cols-1 md:grid-row-2 gap-6 mt-16">
-                            <article className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
-                                <h2 className="text-lg font-medium mb-4 text-blue-900 dark:text-blue-200">Address</h2>
-                                <address className="text-gray-700 dark:text-gray-300 not-italic">
+                            <article className={cn(
+                                "rounded-xl p-6",
+                                getThemeColors('background', 'muted'),
+                                getThemeColors('border', 'default')
+                            )}>
+                                <h2 className={cn(
+                                    "text-lg font-medium mb-4",
+                                    getThemeColors('text', 'accent')
+                                )}>Address</h2>
+                                <address className={cn(
+                                    "not-italic",
+                                    getThemeColors('text', 'muted')
+                                )}>
                                     {siteConfig?.contactAddress}
                                 </address>
                                 <div className="mt-4 h-32 bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden">
@@ -84,16 +99,26 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                                 </div>
                             </article>
 
-                            <article className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
-                                <h2 className="text-lg font-medium mb-4 text-blue-900 dark:text-blue-200">Contact Info</h2>
+                            <article className={cn(
+                                "rounded-xl p-6",
+                                getThemeColors('background', 'muted'),
+                                getThemeColors('border', 'default')
+                            )}>
+                                <h2 className={cn(
+                                    "text-lg font-medium mb-4",
+                                    getThemeColors('text', 'accent')
+                                )}>Contact Info</h2>
                                 <div className="space-y-4">
                                     <div className="flex items-start">
                                         <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4" aria-hidden="true">
                                             <span className="fas fa-phone-alt text-blue-600 dark:text-blue-400"></span>
                                         </div>
                                         <div>
-                                            <p className="text-gray-500 dark:text-gray-400 text-sm">Phone</p>
-                                            <a href={`tel:${siteConfig?.contactPhone}`} className="text-gray-900 dark:text-white">
+                                            <p className={cn(
+                                                "text-sm",
+                                                getThemeColors('text', 'muted')
+                                            )}>Phone</p>
+                                            <a href={`tel:${siteConfig?.contactPhone}`} className={getThemeColors('text', 'default')}>
                                                 {siteConfig?.contactPhone}
                                             </a>
                                         </div>
@@ -104,8 +129,11 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                                             <span className="fas fa-envelope text-blue-600 dark:text-blue-400"></span>
                                         </div>
                                         <div>
-                                            <p className="text-gray-500 dark:text-gray-400 text-sm">Email</p>
-                                            <a href={`mailto:${siteConfig?.contactEmail}`} className="text-gray-900 dark:text-white">
+                                            <p className={cn(
+                                                "text-sm",
+                                                getThemeColors('text', 'muted')
+                                            )}>Email</p>
+                                            <a href={`mailto:${siteConfig?.contactEmail}`} className={getThemeColors('text', 'default')}>
                                                 {siteConfig?.contactEmail}
                                             </a>
                                         </div>

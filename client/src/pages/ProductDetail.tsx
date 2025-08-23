@@ -13,6 +13,7 @@ import { PageContent } from '@/lib/types/core';
 import {
   ProductDetailHeroSection,
   ProductDetailDescriptionSection,
+  ProductGallerySection,
   ProductFeaturesSection,
   ProductPricingSection,
   ProductRelatedSection,
@@ -173,6 +174,13 @@ const ProductDetail: React.FC = () => {
 
         {/* Main Product Description */}
         <ProductDetailDescriptionSection
+          product={product}
+          isLoading={isLoading}
+          pageContent={displayPageContent}
+        />
+
+        {/* Gallery Section */}
+        <ProductGallerySection
           product={product}
           isLoading={isLoading}
           pageContent={displayPageContent}

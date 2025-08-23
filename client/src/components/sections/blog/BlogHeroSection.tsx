@@ -4,19 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { FiFileText, FiBookOpen } from 'react-icons/fi';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import type { PageSection } from '@/lib/types';
+import type { BlogHeroSectionProps } from '@/lib/types';
 import {
     fadeInUp,
     staggerChildren,
     scaleUp,
 } from '@/lib/animations';
-
-interface BlogHeroSectionProps {
-    heroSection?: PageSection;
-    pageContent?: any;
-    search: string;
-    setSearch: (value: string) => void;
-}
 
 const BlogHeroSection: React.FC<BlogHeroSectionProps> = ({
     heroSection,

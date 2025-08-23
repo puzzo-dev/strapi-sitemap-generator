@@ -1,12 +1,7 @@
 import React from 'react';
 import { FAQItem } from '@/lib/types/content';
 import { ArrowRight } from 'lucide-react';
-
-interface FAQPopularSectionProps {
-    faqItems: FAQItem[];
-    onQuestionClick: (itemId: number) => void;
-    className?: string;
-}
+import { FAQPopularSectionProps } from '@/lib/types/components';
 
 const FAQPopularSection: React.FC<FAQPopularSectionProps> = ({
     faqItems,
@@ -25,8 +20,7 @@ const FAQPopularSection: React.FC<FAQPopularSectionProps> = ({
             <div className="container-custom">
                 <div className="text-center mb-12">
                     <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                        <span className="text-lg mr-2">📈</span>
-                        Popular Questions
+                        📈 Popular Questions
                     </div>
                     <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-4">
                         Popular Questions

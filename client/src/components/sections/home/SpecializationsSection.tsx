@@ -6,12 +6,7 @@ import ServiceCard from '@/components/ui/ServiceCard';
 import { ArrowRight, Code, LayoutGrid, Cpu, CircuitBoard, Sparkles } from 'lucide-react';
 import { ServiceProps } from '@/lib/types/content';
 import { PageSection, AppLinkProps, PageContent } from '@/lib/types/core';
-
-interface SpecializationsSectionProps {
-    homePageContent: PageContent;
-    services: ServiceProps[];
-    isLoading: boolean;
-}
+import { SpecializationsSectionProps } from '@/lib/types/components';
 
 const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePageContent, services, isLoading }) => {
     // Get services section from homePageContent

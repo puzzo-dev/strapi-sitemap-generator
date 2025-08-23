@@ -1,5 +1,7 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/components/context/LanguageContext';
 import {
     ChevronRight,
     Sparkles,
@@ -14,19 +16,43 @@ import {
     ShieldCheck,
     LayoutGrid,
     Zap,
+    ChevronLeft,
+    Play,
+    Pause,
+    Brain,
+    Lock,
+    ArrowRight,
+    TrendingUp,
+    Users,
+    Building2,
 } from "lucide-react";
 import {
     HeroProps,
     ServiceProps,
     HeroSlide,
-    SocialLink,
-    SiteConfig,
-} from "@/lib/types";
+} from '@/lib/types/content';
+import { SocialLink } from '@/lib/types/layout';
+import { SiteConfig } from '@/lib/types/core';
+import { ModernHeroProps } from '@/lib/types/components';
 import { Button } from "@/components/ui/button";
 import GradientButton from "@/components/ui/GradientButton";
-import { services as localServices, socialLinks as localSocialLinks, defaultHeroProps, heroSlides as localHeroSlides } from "@/lib/data/";
-import { fadeInUp, scaleUp } from "@/lib/animations";
+import { services as localServices, socialLinks as localSocialLinks, heroSlides as localHeroSlides } from "@/lib/data/";
+import {
+    fadeInUp,
+    staggerChildren,
+    scaleUp,
+    slideIn
+} from '@/lib/animations';
 import IVarseLogo from "@/components/ui/IVarseLogo";
+import { useInView } from 'react-intersection-observer';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import AppLink from '@/components/ui/AppLink';
+import { cn } from '@/lib/utils';
+import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
+import BackgroundDecoration from '@/components/ui/BackgroundDecoration';
+import { getThemeColors, getSpacing, getAnimationVariants } from '@/lib/utils/theme-helpers';
+import { isString, isValidUrl } from '@/lib/utils/type-guards';
 
 // Helper function to get social icon paths
 const getSocialIconPath = (platform: string): string => {
@@ -66,645 +92,516 @@ const renderServiceIcon = (iconName: string) => {
     }
 };
 
-interface ModernHeroProps extends Partial<HeroProps> {
-    heroData?: any;
-    siteConfig?: SiteConfig;
-    services?: ServiceProps[];
-    socialLinks?: SocialLink[];
-    heroSlides?: HeroSlide[];
-}
 
 const ModernHero: React.FC<ModernHeroProps> = ({
-    currentIndex: initialIndex = 0,
-    handleMouseEnter: externalHandleMouseEnter = () => { },
-    handleMouseLeave: externalHandleMouseLeave = () => { },
+    currentIndex = 0,
+    isPageLoading = false,
+    handleMouseEnter = () => { },
+    handleMouseLeave = () => { },
+    heroContents: propHeroContents,
     heroData,
     siteConfig,
     services: propServices,
     socialLinks: propSocialLinks,
     heroSlides: propHeroSlides,
 }) => {
-    const [currentIndex, setCurrentIndex] = useState(initialIndex);
+    const { t } = useTranslation();
+    const { currentLanguage } = useLanguage();
+
+    const [isPaused, setIsPaused] = useState(false);
 
     // Use props instead of hooks
     const isHeroLoading = false; // No longer loading from hook
     const isSiteConfigLoading = false; // No longer loading from hook
+    const isServicesLoading = false; // No longer loading from hook
     const isSocialLinksLoading = false; // No longer loading from hook
 
     // Use props data with fallbacks
-    const services = propServices || localServices;
-    const socialLinks = propSocialLinks || localSocialLinks;
+    const apiServices = propServices;
+    const socialLinks = propSocialLinks;
     const heroSlides = propHeroSlides || localHeroSlides;
 
-    // Extract hero content with fallback values
-    const heroContent = useMemo(() => {
+    // Determine which services to display with fallback to local data
+    const services = useMemo(() => {
+        return apiServices && apiServices.length > 0 ? apiServices : localServices;
+    }, [apiServices]);
+
+    // Determine which hero content to use with fallback to local data
+    const heroContents = useMemo(() => {
+        // First check if heroContents were passed as props
+        if (propHeroContents) {
+            return propHeroContents;
+        }
+        // Then check if we got them from the API
         if (heroData?.heroContents) {
             return heroData.heroContents;
         }
-        return defaultHeroProps.heroContents;
-    }, [heroData]);
+        // Fall back to local data
+        return localHeroSlides[0];
+    }, [heroData, propHeroContents]);
 
+    // Determine which social links to display
     const displaySocialLinks = useMemo(() => {
         return socialLinks && socialLinks.length > 0 ? socialLinks : [];
     }, [socialLinks]);
 
-    // Handle mouse events for slide transitions
-    const handleMouseEnter = () => {
-        externalHandleMouseEnter();
-    };
+    // Set up auto-rotation for hero slides
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(currentIndex);
 
-    const handleMouseLeave = () => {
-        externalHandleMouseLeave();
-    };
-
-    // Auto-rotate slides
     useEffect(() => {
+        if (isPaused || !heroSlides || heroSlides.length <= 1) return;
+
         const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) =>
+            setCurrentSlideIndex((prevIndex) =>
                 prevIndex === (heroSlides.length - 1) ? 0 : prevIndex + 1
             );
         }, 5000); // Change slide every 5 seconds
 
         return () => clearInterval(interval);
-    }, [heroSlides.length]);
+    }, [isPaused, heroSlides]);
 
-    // Update the currentSlide logic:
+    // Get the current slide content
     const currentSlide = useMemo(() => {
-        // Use heroSlides if available, otherwise fallback to heroContent
-        if (heroSlides && heroSlides.length > 0) {
-            return heroSlides[currentIndex] || heroSlides[0];
-        }
+        return heroSlides && heroSlides.length > 0 ?
+            heroSlides[currentSlideIndex] : heroContents;
+    }, [heroSlides, currentSlideIndex, heroContents]);
 
-        // Fallback to heroContent or first item from localHeroSlides
-        return heroContent || localHeroSlides[0];
-    }, [heroSlides, currentIndex, heroContent]);
+    // Pause rotation on mouse enter
+    const handleHeroMouseEnter = () => {
+        setIsPaused(true);
+        handleMouseEnter();
+    };
 
-    const displayTitle = currentSlide.title;
-    const displaySubtitle = currentSlide.subtitle;
-    const primaryBtnText = currentSlide.primaryButton?.title || currentSlide.primaryButton?.title || "GET STARTED";
-    const primaryBtnUrl = currentSlide.primaryButton?.href || currentSlide.primaryButton?.href || "/services";
-    const secondaryBtnText = currentSlide.secondaryButton?.title || currentSlide.secondaryButton?.title || "LEARN MORE";
-    const secondaryBtnUrl = currentSlide.secondaryButton?.href || currentSlide.secondaryButton?.href || "/#about";
+    // Resume rotation on mouse leave
+    const handleHeroMouseLeave = () => {
+        setIsPaused(false);
+        handleMouseLeave();
+    };
 
-    // Use isLoading states to determine if we should show loading UI
-    const showLoading = isHeroLoading || isSiteConfigLoading;
+    // Use currentSlide for title and subtitle
+    const displayTitle =
+        currentSlide.title || "Transforming Digital Futures";
+    const displaySubtitle =
+        currentSlide.subtitle ||
+        "Empowering businesses with comprehensive digital transformation solutions that drive innovation, efficiency, and sustainable growth in the modern digital landscape.";
+
+    // Get button info from currentSlide
+    const primaryBtnText = currentSlide.primaryButton?.children || "GET STARTED";
+    const primaryBtnUrl = currentSlide.primaryButton?.href || "/services";
+    const secondaryBtnText = currentSlide.secondaryButton?.children || "LEARN MORE";
+    const secondaryBtnUrl = currentSlide.secondaryButton?.href || "/#about";
+
+    // Use isPageLoading or isHeroLoading as fallback for isLoading
+    const showLoading = isPageLoading || isHeroLoading || isSiteConfigLoading;
 
     // Get company logo from site config
     const companyLogo = siteConfig?.logoLight || "/assets/I-VARSELogo3@3x.png";
 
     return (
-        <>          {/* Tech-inspired background elements - Enhanced with more icons */}
-            <div className="absolute inset-0 top-0 z-0 overflow-hidden pointer-events-none">
+        <motion.section
+            initial="initial"
+            animate="animate"
+            className={cn(
+                "h-fit md:h-[calc(100vh-2rem)] relative overflow-hidden py-25 md:pt-24 md:pb-16 hero-section w-full",
+                getThemeColors('background', 'gradient'),
+                getThemeColors('border', 'muted')
+            )}
+            style={{
+                /* 4K optimization */
+                WebkitBackfaceVisibility: 'hidden',
+                backfaceVisibility: 'hidden',
+                transform: 'translateZ(0)',
+                imageRendering: 'crisp-edges'
+            }}>
+            {/* Tech-inspired background elements - Enhanced with overlay and blur */}
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" style={{ contain: 'layout style paint' }}>
+                {/* Moving hi-tech pattern background */}
+                <div className="absolute inset-0 z-5 overflow-hidden">
+                    {/* Animated grid pattern */}
+                    <div className="absolute inset-0 opacity-5 dark:opacity-10">
+                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <defs>
+                                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-blue-400/20 dark:text-blue-500/20"/>
+                                </pattern>
+                            </defs>
+                            <rect width="100%" height="100%" fill="url(#grid)" />
+                        </svg>
+                    </div>
+
+                    {/* Moving circuit lines */}
+                    <svg className="absolute inset-0 w-full h-full opacity-10 dark:opacity-15" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+                        {/* Horizontal moving lines */}
+                        <motion.line
+                            x1="0" y1="200" x2="1000" y2="200"
+                            stroke="url(#movingGradient1)"
+                            strokeWidth="1"
+                            strokeDasharray="20,10"
+                            animate={{
+                                strokeDashoffset: [0, -30],
+                            }}
+                            transition={{
+                                duration: 3,
+                                repeat: Infinity,
+                                ease: "linear"
+                            }}
+                        />
+                        <motion.line
+                            x1="0" y1="600" x2="1000" y2="600"
+                            stroke="url(#movingGradient2)"
+                            strokeWidth="1"
+                            strokeDasharray="15,20"
+                            animate={{
+                                strokeDashoffset: [0, 35],
+                            }}
+                            transition={{
+                                duration: 4,
+                                repeat: Infinity,
+                                ease: "linear"
+                            }}
+                        />
+                        
+                        {/* Vertical moving lines */}
+                        <motion.line
+                            x1="300" y1="0" x2="300" y2="1000"
+                            stroke="url(#movingGradient3)"
+                            strokeWidth="1"
+                            strokeDasharray="25,15"
+                            animate={{
+                                strokeDashoffset: [0, -40],
+                            }}
+                            transition={{
+                                duration: 5,
+                                repeat: Infinity,
+                                ease: "linear"
+                            }}
+                        />
+                        <motion.line
+                            x1="700" y1="0" x2="700" y2="1000"
+                            stroke="url(#movingGradient4)"
+                            strokeWidth="1"
+                            strokeDasharray="10,25"
+                            animate={{
+                                strokeDashoffset: [0, 35],
+                            }}
+                            transition={{
+                                duration: 3.5,
+                                repeat: Infinity,
+                                ease: "linear"
+                            }}
+                        />
+
+                        {/* Diagonal circuit paths */}
+                        <motion.path
+                            d="M0,0 L200,200 L400,150 L600,300 L800,250 L1000,400"
+                            fill="none"
+                            stroke="url(#movingGradient5)"
+                            strokeWidth="1"
+                            strokeDasharray="30,20"
+                            animate={{
+                                strokeDashoffset: [0, -50],
+                            }}
+                            transition={{
+                                duration: 6,
+                                repeat: Infinity,
+                                ease: "linear"
+                            }}
+                        />
+                        <motion.path
+                            d="M1000,0 L800,150 L600,100 L400,250 L200,200 L0,350"
+                            fill="none"
+                            stroke="url(#movingGradient6)"
+                            strokeWidth="1"
+                            strokeDasharray="20,30"
+                            animate={{
+                                strokeDashoffset: [0, 50],
+                            }}
+                            transition={{
+                                duration: 7,
+                                repeat: Infinity,
+                                ease: "linear"
+                            }}
+                        />
+
+                        <defs>
+                            <linearGradient id="movingGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="transparent" />
+                                <stop offset="50%" stopColor="#3B82F6" stopOpacity="0.3" />
+                                <stop offset="100%" stopColor="transparent" />
+                            </linearGradient>
+                            <linearGradient id="movingGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="transparent" />
+                                <stop offset="50%" stopColor="#06B6D4" stopOpacity="0.3" />
+                                <stop offset="100%" stopColor="transparent" />
+                            </linearGradient>
+                            <linearGradient id="movingGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stopColor="transparent" />
+                                <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.3" />
+                                <stop offset="100%" stopColor="transparent" />
+                            </linearGradient>
+                            <linearGradient id="movingGradient4" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stopColor="transparent" />
+                                <stop offset="50%" stopColor="#10B981" stopOpacity="0.3" />
+                                <stop offset="100%" stopColor="transparent" />
+                            </linearGradient>
+                            <linearGradient id="movingGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="transparent" />
+                                <stop offset="50%" stopColor="#F59E0B" stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="transparent" />
+                            </linearGradient>
+                            <linearGradient id="movingGradient6" x1="100%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stopColor="transparent" />
+                                <stop offset="50%" stopColor="#EF4444" stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="transparent" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+
+                    {/* Floating data particles */}
+                    <div className="absolute inset-0 overflow-hidden">
+                        {Array.from({ length: 12 }).map((_, i) => {
+                            const randomLeft = (i * 8.33) % 100;
+                            const randomDelay = (i % 4) * 2;
+                            const randomDuration = 8 + ((i % 3) * 2);
+
+                            return (
+                                <motion.div
+                                    key={`data-particle-${i}`}
+                                    className="absolute w-1 h-1 bg-blue-400/20 dark:bg-blue-500/20 rounded-full"
+                                    initial={{
+                                        y: '110%',
+                                        opacity: 0,
+                                    }}
+                                    animate={{
+                                        y: '-10%',
+                                        opacity: [0, 0.6, 0.3, 0],
+                                        transition: {
+                                            duration: randomDuration,
+                                            delay: randomDelay,
+                                            repeat: Infinity,
+                                            ease: "linear"
+                                        }
+                                    }}
+                                    style={{
+                                        left: `${randomLeft}%`,
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
+
+                    {/* Pulsing nodes */}
+                    <div className="absolute inset-0">
+                        {[
+                            { x: 20, y: 30 },
+                            { x: 80, y: 20 },
+                            { x: 15, y: 70 },
+                            { x: 85, y: 80 },
+                            { x: 50, y: 40 },
+                            { x: 30, y: 90 }
+                        ].map((node, i) => (
+                            <motion.div
+                                key={`node-${i}`}
+                                className="absolute w-2 h-2 bg-cyan-400/20 dark:bg-cyan-500/20 rounded-full"
+                                style={{
+                                    left: `${node.x}%`,
+                                    top: `${node.y}%`,
+                                }}
+                                animate={{
+                                    scale: [1, 1.5, 1],
+                                    opacity: [0.2, 0.6, 0.2],
+                                }}
+                                transition={{
+                                    duration: 3 + (i * 0.5),
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                    delay: i * 0.8,
+                                }}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Background overlay for better content readability */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-white/20 to-white/30 dark:from-gray-900/30 dark:via-gray-900/20 dark:to-gray-900/30 backdrop-blur-sm z-10"></div>
+                
                 {/* Animated gradient orbs */}
                 <motion.div
                     variants={scaleUp(0.8, 1.5, 0.2)}
-                    className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-blue-300/40 blur-3xl dark:bg-blue-900/40 pointer-events-none"
+                    className="absolute right-0 top-10 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl dark:bg-blue-900/20 pointer-events-none"
                 />
                 <motion.div
                     variants={scaleUp(0.8, 1.8, 0.5)}
-                    className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30 pointer-events-none"
+                    className="absolute left-0 bottom-10 h-72 w-72 rounded-full bg-purple-200/20 blur-3xl dark:bg-purple-900/20 pointer-events-none"
                 />
                 <motion.div
                     variants={scaleUp(0.8, 2, 0.8)}
-                    className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-900/30 pointer-events-none"
+                    className="absolute bottom-0 right-1/4 h-64 w-64 md:h-96 md:w-96 rounded-full bg-cyan-200/15 blur-3xl dark:bg-cyan-900/15 pointer-events-none"
                 />
 
-                {/* Enhanced tech pattern with more icons */}
-                <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20, rotate: 0 }}
-                        animate={{
-                            opacity: 0.3,
-                            y: 0,
-                            rotate: 12,
-                            transition: {
-                                duration: 0.8,
-                                delay: 0.3
-                            }
-                        }}
-                        className="absolute right-0 top-0"
-                    >
-                        <motion.div
-                            animate={{
-                                y: [0, -15, 0, 10, 0],
-                                rotate: [12, 15, 10, 13, 12],
-                                transition: {
-                                    repeat: Infinity,
-                                    duration: 10,
-                                    ease: "easeInOut"
-                                }
-                            }}
-                        >
-                            <CircuitBoard className="h-64 w-64 text-blue-800" />
-                        </motion.div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20, rotate: 0 }}
-                        animate={{
-                            opacity: 0.3,
-                            y: 0,
-                            rotate: -12,
-                            transition: {
-                                duration: 0.8,
-                                delay: 0.5
-                            }
-                        }}
-                        className="absolute left-10 bottom-10"
-                    >
-                        <motion.div
-                            animate={{
-                                y: [0, 10, 0, -15, 0],
-                                rotate: [-12, -9, -14, -10, -12],
-                                transition: {
-                                    repeat: Infinity,
-                                    duration: 12,
-                                    ease: "easeInOut"
-                                }
-                            }}
-                        >
-                            <Cpu className="h-48 w-48 text-indigo-700" />
-                        </motion.div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20, rotate: 0 }}
-                        animate={{
-                            opacity: 0.2,
-                            y: 0,
-                            rotate: 45,
-                            transition: {
-                                duration: 0.8,
-                                delay: 0.7
-                            }
-                        }}
-                        className="absolute right-1/4 bottom-1/4"
-                    >
-                        <motion.div
-                            animate={{
-                                y: [0, -10, 5, -5, 0],
-                                rotate: [45, 48, 43, 46, 45],
-                                transition: {
-                                    repeat: Infinity,
-                                    duration: 8,
-                                    ease: "easeInOut"
-                                }
-                            }}
-                        >
-                            <Code className="h-56 w-56 text-cyan-700" />
-                        </motion.div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20, rotate: 0 }}
-                        animate={{
-                            opacity: 0.25,
-                            y: 0,
-                            rotate: -6,
-                            transition: {
-                                duration: 0.8,
-                                delay: 0.9
-                            }
-                        }}
-                        className="absolute left-1/4 top-1/3"
-                    >
-                        <motion.div
-                            animate={{
-                                y: [0, 5, -5, 10, 0],
-                                rotate: [-6, -4, -8, -3, -6],
-                                transition: {
-                                    repeat: Infinity,
-                                    duration: 9,
-                                    ease: "easeInOut"
-                                }
-                            }}
-                        >
-                            <LayoutGrid className="h-40 w-40 text-blue-600" />
-                        </motion.div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{
-                            opacity: 0.2,
-                            scale: 1,
-                            transition: {
-                                duration: 1,
-                                delay: 1.1
-                            }
-                        }}
-                        className="absolute left-10 top-10"
-                    >
-                        <motion.div
-                            animate={{
-                                scale: [1, 1.05, 0.98, 1.02, 1],
-                                opacity: [0.2, 0.3, 0.2, 0.25, 0.2],
-                                transition: {
-                                    repeat: Infinity,
-                                    duration: 5,
-                                    ease: "easeInOut"
-                                }
-                            }}
-                        >
-                            <Sparkles className="h-32 w-32 text-purple-600" />
-                        </motion.div>
-                    </motion.div>
-                </div>
-
-                {/* Animated tech scan line */}
+                {/* Tech icons with proper z-index to show above overlay */}
                 <motion.div
-                    initial={{ opacity: 0, top: '100%' }}
-                    animate={{
-                        opacity: [0, 0.6, 0.1],
-                        top: ['100%', '0%', '0%'],
-                        transition: {
-                            duration: 3,
-                            repeat: Infinity,
-                            repeatDelay: 5
-                        }
-                    }}
-                    className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent"
-                />
-
-                {/* Snowfall particles */}
-                <div className="absolute inset-0 z-0 overflow-hidden">
-                    {Array.from({ length: 15 }).map((_, i) => {
-                        // Precalculate random values to avoid React errors
-                        const randomLeft = (i * 6.67) % 100; // Distribute evenly across width
-                        const randomScale = 0.5 + ((i % 5) * 0.1); // 0.5 to 0.9
-                        const randomDuration = 8 + ((i % 5) * 1); // 8 to 12 seconds
-                        const randomDelay = (i % 5) * 1; // 0 to 4 seconds
-
-                        return (
-                            <motion.div
-                                key={`snowfall-particle-${i}`}
-                                className="absolute h-1 w-1 rounded-full bg-blue-500/50 dark:bg-blue-400/50"
-                                initial={{
-                                    y: -20,
-                                    opacity: 0,
-                                    scale: randomScale
-                                }}
-                                animate={{
-                                    y: '120%',
-                                    opacity: [0, 0.8, 0.5, 0],
-                                    transition: {
-                                        duration: randomDuration,
-                                        delay: randomDelay,
-                                        repeat: Infinity,
-                                        ease: "linear"
-                                    }
-                                }}
-                                style={{
-                                    left: `${randomLeft}%`,
-                                }}
-                            />
-                        );
-                    })}
-                </div>
-
-                {/* Animated network connections */}
-                <svg className="absolute inset-0 w-full h-full z-0 opacity-10 dark:opacity-15" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <motion.circle
-                        cx="20" cy="20" r="2"
-                        className="text-blue-500 fill-current"
-                        initial={{ opacity: 0, r: 0 }}
-                        animate={{
-                            opacity: 1,
-                            r: [0, 2, 1.5, 2],
-                            transition: {
-                                duration: 3,
-                                delay: 0.2,
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                times: [0, 0.3, 0.8, 1]
-                            }
-                        }}
-                    />
-                    <motion.circle
-                        cx="80" cy="30" r="2"
-                        className="text-cyan-500 fill-current"
-                        initial={{ opacity: 0, r: 0 }}
-                        animate={{
-                            opacity: 1,
-                            r: [0, 2, 1.5, 2],
-                            transition: {
-                                duration: 3,
-                                delay: 0.7,
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                times: [0, 0.3, 0.8, 1]
-                            }
-                        }}
-                    />
-                    <motion.circle
-                        cx="50" cy="70" r="2"
-                        className="text-indigo-500 fill-current"
-                        initial={{ opacity: 0, r: 0 }}
-                        animate={{
-                            opacity: 1,
-                            r: [0, 2, 1.5, 2],
-                            transition: {
-                                duration: 3,
-                                delay: 1.2,
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                times: [0, 0.3, 0.8, 1]
-                            }
-                        }}
-                    />
-                    <motion.circle
-                        cx="30" cy="80" r="2"
-                        className="text-purple-500 fill-current"
-                        initial={{ opacity: 0, r: 0 }}
-                        animate={{
-                            opacity: 1,
-                            r: [0, 2, 1.5, 2],
-                            transition: {
-                                duration: 3,
-                                delay: 1.7,
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                times: [0, 0.3, 0.8, 1]
-                            }
-                        }}
-                    />
-                    <motion.circle
-                        cx="70" cy="60" r="2"
-                        className="text-blue-500 fill-current"
-                        initial={{ opacity: 0, r: 0 }}
-                        animate={{
-                            opacity: 1,
-                            r: [0, 2, 1.5, 2],
-                            transition: {
-                                duration: 3,
-                                delay: 2.2,
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                times: [0, 0.3, 0.8, 1]
-                            }
-                        }}
-                    />
-
-                    <motion.line
-                        x1="20" y1="20" x2="80" y2="30"
-                        className="text-blue-500 stroke-current"
-                        initial={{ opacity: 0, strokeWidth: 0 }}
-                        animate={{
-                            opacity: 0.5,
-                            strokeWidth: 0.2,
-                            pathLength: [0, 1],
-                            transition: {
-                                duration: 2,
-                                delay: 0.5,
-                                ease: "easeInOut"
-                            }
-                        }}
-                    />
-                    <motion.line
-                        x1="80" y1="30" x2="50" y2="70"
-                        className="text-cyan-500 stroke-current"
-                        initial={{ opacity: 0, strokeWidth: 0 }}
-                        animate={{
-                            opacity: 0.5,
-                            strokeWidth: 0.2,
-                            pathLength: [0, 1],
-                            transition: {
-                                duration: 2,
-                                delay: 1,
-                                ease: "easeInOut"
-                            }
-                        }}
-                    />
-                    <motion.line
-                        x1="50" y1="70" x2="30" y2="80"
-                        className="text-indigo-500 stroke-current"
-                        initial={{ opacity: 0, strokeWidth: 0 }}
-                        animate={{
-                            opacity: 0.5,
-                            strokeWidth: 0.2,
-                            pathLength: [0, 1],
-                            transition: {
-                                duration: 2,
-                                delay: 1.5,
-                                ease: "easeInOut"
-                            }
-                        }}
-                    />
-                    <motion.line
-                        x1="30" y1="80" x2="70" y2="60"
-                        className="text-purple-500 stroke-current"
-                        initial={{ opacity: 0, strokeWidth: 0 }}
-                        animate={{
-                            opacity: 0.5,
-                            strokeWidth: 0.2,
-                            pathLength: [0, 1],
-                            transition: {
-                                duration: 2,
-                                delay: 2,
-                                ease: "easeInOut"
-                            }
-                        }}
-                    />
-                    <motion.line
-                        x1="70" y1="60" x2="20" y2="20"
-                        className="text-blue-500 stroke-current"
-                        initial={{ opacity: 0, strokeWidth: 0 }}
-                        animate={{
-                            opacity: 0.5,
-                            strokeWidth: 0.2,
-                            pathLength: [0, 1],
-                            transition: {
-                                duration: 2,
-                                delay: 2.5,
-                                ease: "easeInOut"
-                            }
-                        }}
-                    />
-                </svg>
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 0.2, y: 0 }}
+                    transition={{ duration: 2, delay: 0.5 }}
+                    className="absolute top-20 left-2 sm:left-4 md:left-10 z-20"
+                >
+                    <Brain className="h-24 w-24 text-blue-400/70 dark:text-blue-400/50" />
+                </motion.div>
+                
+                <motion.div
+                    initial={{ opacity: 0, y: -100 }}
+                    animate={{ opacity: 0.2, y: 0 }}
+                    transition={{ duration: 2, delay: 1 }}
+                    className="absolute top-40 right-4 md:right-20 z-20"
+                >
+                    <Cloud className="h-20 w-20 text-cyan-400/70 dark:text-cyan-400/50" />
+                </motion.div>
+                
+                <motion.div
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 0.2, x: 0 }}
+                    transition={{ duration: 2, delay: 1.5 }}
+                    className="absolute bottom-40 left-4 md:left-20 z-20"
+                >
+                    <Smartphone className="h-18 w-18 text-purple-400/70 dark:text-purple-400/50" />
+                </motion.div>
+                
+                <motion.div
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 0.2, x: 0 }}
+                    transition={{ duration: 2, delay: 2 }}
+                    className="absolute bottom-20 right-4 md:right-10 z-20"
+                >
+                    <Lock className="h-16 w-16 text-green-400/70 dark:text-green-400/50" />
+                </motion.div>
             </div>
-            <section className="flex flex-col md:flex-row container-custom justify-center md:justify-self-end overflow-hidden bg-transparent relative mt-10">
-                {/* Left side */}
-                <div className="mb-10 h-full md:h-[80vh] flex flex-col justify-center px-10 py-12 sm:py-10 md:w-1/2 bg-white/30 dark:bg-gray-900/30 backdrop-blur-md backdrop-saturate-150 border-x border-b relative z-20 rounded-bl-[10%] md:rounded-bl-[15%] drop-shadow-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                    {/* Background elements */}
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-                        <div className="absolute -right-[10%] top-[10%] h-[30%] w-[30%] rounded-full bg-primary/40 blur-3xl dark:bg-primary/40"></div>
-                        <div className="absolute left-0 bottom-1/3 h-[35%] w-[35%] rounded-full bg-secondary/20 blur-3xl dark:bg-secondary/40"></div>
 
-                        {/* Tech pattern */}
-                        <div className="absolute inset-0 opacity-10">
-                            <svg
-                                className="absolute inset-0 w-full h-full"
-                                viewBox="0 0 100 100"
-                                preserveAspectRatio="none"
-                            >
-                                <circle
-                                    cx="20"
-                                    cy="20"
-                                    r="1"
-                                    className="text-primary fill-current animate-pulse-light"
-                                />
-                                <circle
-                                    cx="80"
-                                    cy="30"
-                                    r="1"
-                                    className="text-accent fill-current animate-pulse-light"
-                                    style={{ animationDelay: "0.5s" }}
-                                />
-                                <circle
-                                    cx="50"
-                                    cy="70"
-                                    r="1"
-                                    className="text-secondary fill-current animate-pulse-light"
-                                    style={{ animationDelay: "1s" }}
-                                />
-                                <circle
-                                    cx="30"
-                                    cy="80"
-                                    r="1"
-                                    className="text-muted-foreground fill-current animate-pulse-light"
-                                    style={{ animationDelay: "1.5s" }}
-                                />
-                                <circle
-                                    cx="70"
-                                    cy="60"
-                                    r="1"
-                                    className="text-primary fill-current animate-pulse-light"
-                                    style={{ animationDelay: "2s" }}
-                                />
-
-                                <line
-                                    x1="20"
-                                    y1="20"
-                                    x2="80"
-                                    y2="30"
-                                    className="text-primary stroke-current"
-                                    strokeWidth="0.2"
-                                />
-                                <line
-                                    x1="80"
-                                    y1="30"
-                                    x2="50"
-                                    y2="70"
-                                    className="text-accent stroke-current"
-                                    strokeWidth="0.2"
-                                />
-                                <line
-                                    x1="50"
-                                    y1="70"
-                                    x2="30"
-                                    y2="80"
-                                    className="text-secondary stroke-current"
-                                    strokeWidth="0.2"
-                                />
-                                <line
-                                    x1="30"
-                                    y1="80"
-                                    x2="70"
-                                    y2="60"
-                                    className="text-muted-foreground stroke-current"
-                                    strokeWidth="0.2"
-                                />
-                                <line
-                                    x1="70"
-                                    y1="60"
-                                    x2="20"
-                                    y2="20"
-                                    className="text-primary stroke-current"
-                                    strokeWidth="0.2"
-                                />
-                            </svg>
-                        </div>
-                    </div>
-
-                    {showLoading ? (
-                        // Loading placeholders
-                        <div className="space-y-3">
-                            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
-                            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse"></div>
-                            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full animate-pulse mt-4"></div>
-                            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-5/6 animate-pulse"></div>
-                        </div>
-                    ) : (
-                        // Your existing content here
-                        <motion.div
-                            initial={{ opacity: 0, x: -40 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="relative z-10"
-                        >
+            <div className="container-custom relative z-20 mx-auto h-full px-4 sm:px-6 lg:px-8 max-w-full overflow-x-hidden w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center relative w-full max-w-full overflow-x-hidden">
+                    {/* Mobile Header (Shows above the slider on mobile) */}
+                    <div className="block lg:hidden w-full mb-4 pt-10">
+                        {showLoading ? (
+                            <LoadingSkeletons.Text lines={2} className="space-y-3" />
+                        ) : !isPageLoading && (
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
                                 <span className="text-lg mr-2">💻</span>
                                 Digital Innovation
                             </div>
+                        )}
+                    </div>
+                    
+                    {/* Left Column - Hero Content */}
+                    <div className="order-2 lg:order-1 z-10 relative space-y-8">
+                        {/* Company Badge */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            className="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-sm"
+                        >
+                            <Sparkles className="h-4 w-4 text-blue-400 mr-2" />
+                            <span className="text-blue-300 font-medium">I-Varse Technologies</span>
+                        </motion.div>
 
-                            <h1
-                                className="text-4xl md:text-5xl font-black leading-tight tracking-tight py-6 mb-4 relative z-10 animate-fade-in-up"
-                                style={{ animationDelay: "0.2s" }}
-                            >
-                                <span className="gradient-text">
-                                    {displayTitle.split(" ").slice(0, 2).join(" ")}
-                                </span>{" "}
+                        {/* Main Headline */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="space-y-4"
+                        >
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl 4xl:text-7xl font-black leading-tight tracking-tight mb-4 relative z-10 fade-in-up"
+                                style={{
+                                    WebkitFontSmoothing: 'antialiased',
+                                    textRendering: 'geometricPrecision',
+                                    fontSynthesis: 'none'
+                                }}>
+                                <span className="gradient-text">{displayTitle.split(" ").slice(0, 2).join(" ")}</span>{" "}
                                 {displayTitle.split(" ").slice(2).join(" ")}
                             </h1>
-
-                            <p className="text-xl text-gray-600 dark:text-gray-300 lg:pr-10 mb-8 animate-fade-in-up leading-relaxed">
-                                {displaySubtitle}
+                            
+                            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mt-6 mb-10 leading-relaxed max-w-2xl animate-fade-in-up" 
+                               style={{ 
+                                   animationDelay: "0.2s",
+                                   WebkitFontSmoothing: 'antialiased',
+                                   lineHeight: '1.8'
+                               }}>
+                            {displaySubtitle}
                             </p>
+                        </motion.div>
 
-                            <div className="pt-4 flex flex-wrap gap-4">
+                        {/* CTA Buttons */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                            className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-4 mb-12"
+                        >
+                            <GradientButton
+                                href={primaryBtnUrl}
+                                size="lg"
+                                endIcon={<ChevronRight />}
+                                className="w-auto py-3 animate-snowfall z-10"
+                                style={{
+                                    WebkitBackfaceVisibility: 'hidden',
+                                    transform: 'translateZ(0)'
+                                }}
+                                target={currentSlide.primaryButton?.openInNewTab ? "_blank" : undefined}
+                                rel={currentSlide.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                            >
+                                {primaryBtnText}
+                            </GradientButton>
+                            
+                            {secondaryBtnText && secondaryBtnUrl && (
                                 <GradientButton
-                                    href={primaryBtnUrl}
+                                    href={secondaryBtnUrl}
+                                    variant="outline"
                                     size="lg"
-                                    endIcon={<ChevronRight />}
-                                    className="w-auto py-3 animate-snowfall z-10"
-                                    target={
-                                        currentSlide.primaryButton?.openInNewTab ? "_blank" : undefined
-                                    }
-                                    rel={
-                                        currentSlide.primaryButton?.isExternal
-                                            ? "noopener noreferrer"
-                                            : undefined
-                                    }
+                                    className="w-auto py-3 5xl:py-4k-4 5xl:px-4k-8 5xl:text-4k-lg z-10"
+                                    style={{
+                                        WebkitBackfaceVisibility: 'hidden',
+                                        transform: 'translateZ(0)'
+                                    }}
+                                    target={currentSlide.secondaryButton?.openInNewTab ? "_blank" : undefined}
+                                    rel={currentSlide.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
                                 >
-                                    {primaryBtnText}
+                                    {secondaryBtnText}
                                 </GradientButton>
+                            )}
+                        </motion.div>
 
-                                {secondaryBtnText && secondaryBtnUrl && (
-                                    <GradientButton
-                                        variant="outline"
-                                        size="lg"
-                                        href={secondaryBtnUrl}
-                                        className="w-auto py-3 z-10"
-                                        target={
-                                            currentSlide.secondaryButton?.openInNewTab
-                                                ? "_blank"
-                                                : undefined
-                                        }
-                                        rel={
-                                            currentSlide.secondaryButton?.isExternal
-                                                ? "noopener noreferrer"
-                                                : undefined
-                                        }
-                                    >
-                                        {secondaryBtnText}
-                                    </GradientButton>
-                                )}
+                        {/* Service Highlights */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                            className="flex flex-wrap gap-4 sm:gap-6 lg:grid lg:grid-cols-4 lg:gap-4 5xl:gap-4k-6"
+                        >
+                            <div className="flex items-center space-x-2 text-blue-300">
+                                <Brain className="h-5 w-5" />
+                                <span className="text-sm font-medium">AI Cloud</span>
+                            </div>
+                            <div className="flex items-center space-x-2 text-cyan-300">
+                                <Smartphone className="h-5 w-5" />
+                                <span className="text-sm font-medium">Mobile Apps</span>
+                            </div>
+                            <div className="flex items-center space-x-2 text-purple-300">
+                                <Building2 className="h-5 w-5" />
+                                <span className="text-sm font-medium">ERP Systems</span>
+                            </div>
+                            <div className="flex items-center space-x-2 text-green-300">
+                                <Lock className="h-5 w-5" />
+                                <span className="text-sm font-medium">Cybersecurity</span>
                             </div>
                         </motion.div>
-                    )}
 
-                    {/* Bottom icons */}
-                    <div className="mt-auto flex items-center space-x-2 py-4 sm:space-x-6 text-muted-foreground text-lg sm:text-xl">
-                        {isSocialLinksLoading ? (
-                            // Loading placeholders
-                            Array(4).fill(0).map((_, i) => (
-                                <div key={i} className="w-5 h-5 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-                            ))
-                        ) : (
-                            displaySocialLinks.map((link) => (
+                        {/* Social Links */}
+                        <div className="hidden md:flex items-center space-x-4 text-gray-500 dark:text-gray-400">
+                            {displaySocialLinks.map((link) => (
                                 <a
                                     key={link.id}
-                                    href={link.href || link.href}
+                                    href={link.href}
                                     className="hover:text-foreground transition-colors cursor-pointer"
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -725,115 +622,108 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                         <path d={getSocialIconPath(link.platform)}></path>
                                     </svg>
                                 </a>
-                            ))
-                        )}
-                    </div>
-                </div>
-                {/* Right side (Image) */}
-                <div className="md:w-1/2 w-full h-full md:h-[80vh] relative flex items-center justify-center bg-muted overflow-hidden border-x border-b z-20 rounded-br-[10%] md:rounded-br-[15%] drop-shadow-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                    {/* Background gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/40 to-card dark:from-sidebar dark:via-background dark:to-card opacity-50"></div>
+                            ))}
+                        </div>
 
-                    {/* Tech-inspired background elements */}
-                    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                        {/* Stats */}
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 0.2, scale: 1 }}
-                            transition={{ duration: 1, delay: 0.5 }}
-                            className="absolute right-1/4 top-1/4"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1 }}
+                            className="flex flex-wrap justify-center gap-6 sm:gap-8 lg:gap-12 pt-8 5xl:pt-4k-12 border-t border-gray-700"
                         >
-                            <motion.div
-                                animate={{
-                                    scale: [1, 1.05, 0.98, 1.02, 1],
-                                    opacity: [0.2, 0.3, 0.2, 0.25, 0.2],
-                                    transition: {
-                                        repeat: Infinity,
-                                        duration: 5,
-                                        ease: "easeInOut",
-                                    },
-                                }}
-                            >
-                                <Sparkles className="h-32 w-32 text-accent" />
-                            </motion.div>
+                            <div className="text-center">
+                                <div className="text-3xl 5xl:text-4k-4xl font-bold text-white">500+</div>
+                                <div className="text-sm 5xl:text-4k-base text-gray-400">Projects Delivered</div>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-3xl 5xl:text-4k-4xl font-bold text-white">10+</div>
+                                <div className="text-sm 5xl:text-4k-base text-gray-400">Industries Served</div>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-3xl 5xl:text-4k-4xl font-bold text-white">99.9%</div>
+                                <div className="text-sm 5xl:text-4k-base text-gray-400">Uptime SLA</div>
+                            </div>
                         </motion.div>
                     </div>
 
-                    {/* Hero Slides Container */}
-                    {isHeroLoading ? (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-full h-full bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
-                        </div>
-                    ) : heroSlides && heroSlides.length > 0 ? (
-                        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                            <div
-                                className="relative w-full h-full"
-                                onMouseEnter={handleMouseEnter}
-                                onMouseLeave={handleMouseLeave}
-                            >
-                                {/* Main image with gradient overlay */}
-                                <div className="absolute inset-0 z-10">
-                                    {heroSlides.map((slide, index) => (
-                                        <div
-                                            key={slide.id || index}
-                                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
-                                                }`}
-                                        >
-                                            <img
-                                                src={slide.backgroundImage || ""}
-                                                alt={slide.title}
-                                                className="w-full h-full object-cover opacity-40 dark:opacity-30"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-blue-900/20 dark:from-blue-900/50 dark:to-indigo-900/40"></div>
-                                        </div>
-                                    ))}
+                    {/* Right Column - Image Slider */}
+                    <div className="order-1 md:order-2">
+                        <div className="relative rounded-xl overflow-hidden aspect-video shadow-2xl shadow-blue-900/10 dark:shadow-blue-500/10 fade-in-slide w-full max-w-full mx-auto" style={{ contain: 'layout style paint' }}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <div className="w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 p-2 sm:p-3">
+                                <div className="relative h-full w-full bg-gradient-to-br from-blue-50 to-white dark:from-blue-950 dark:to-gray-900 rounded-lg overflow-hidden">
+                                    {/* Overlay for better image visibility */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-transparent to-white/60 dark:from-gray-900/80 dark:via-transparent dark:to-gray-900/60 z-10"></div>
+                                    
+                                    {/* Tech background icons with enhanced blur and opacity */}
+                                    <CircuitBoard className="absolute top-6 left-6 h-12 w-12 text-blue-300/10 dark:text-blue-700/10 animate-float blur-[1px]" />
+                                    <Cpu className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300/10 dark:text-indigo-700/10 animate-float blur-[1px]" style={{animationDelay:"1s"} as React.CSSProperties} />
+                                    
+                                    {/* Animated network dots with reduced opacity */}
+                                    <svg className="absolute inset-0 w-full h-full opacity-5" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <circle cx="20" cy="20" r="1" className="text-blue-400 fill-current animate-pulse-light" />
+                                        <circle cx="80" cy="30" r="1" className="text-cyan-400 fill-current animate-pulse-light" style={{animationDelay:"0.5s"}} />
+                                        <circle cx="50" cy="70" r="1" className="text-indigo-400 fill-current animate-pulse-light" style={{animationDelay:"1s"}} />
+                                        <circle cx="30" cy="80" r="1" className="text-purple-400 fill-current animate-pulse-light" style={{animationDelay:"1.5s"}} />
+                                        <circle cx="70" cy="60" r="1" className="text-blue-400 fill-current animate-pulse-light" style={{animationDelay:"2s"}} />
+                                    </svg>
+                                    
+                                    {/* Main slider content with 4K optimization */}
+                                    <div className="absolute inset-0 flex items-center justify-center overflow-hidden z-20">
+                                        {showLoading ? (
+                                            <LoadingSkeletons.Base className="w-full h-full" />
+                                        ) : (
+                                            <AnimatePresence mode="wait">
+                                                <motion.div
+                                                    key={currentSlideIndex}
+                                                    initial={{ opacity: 0, scale: 0.95 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    exit={{ opacity: 0, scale: 1.05 }}
+                                                    transition={{ duration: 0.5 }}
+                                                    className="relative w-full h-full flex items-center justify-center"
+                                                >
+                                                    {currentSlide.backgroundImage ? (
+                                                        <img
+                                                            src={currentSlide.backgroundImage}
+                                                            alt={currentSlide.title}
+                                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                            loading="lazy"
+                                                            style={{
+                                                                imageRendering: 'crisp-edges',
+                                                                WebkitImageRendering: 'crisp-edges',
+                                                                msImageRendering: 'crisp-edges',
+                                                                imageResolution: '300dpi'
+                                                            } as React.CSSProperties}
+                                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+                                                        />
+                                                    ) : (
+                                                        <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 to-purple-900 rounded-lg">
+                                                            <div className="text-center space-y-4">
+                                                                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 group-hover:scale-110 transition-transform duration-300">
+                                                                    <IVarseLogo className="w-8 h-8" />
+                                                                </div>
+                                                                <div className="text-xs text-gray-200 drop-shadow-lg">{currentSlide.subtitle}</div>
+                                                                <div className="text-sm font-medium text-gray-300">
+                                                                    {currentSlide.title}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </motion.div>
+                                            </AnimatePresence>
+                                        )}
+                                    </div>
                                 </div>
-
-                                {/* Company logo */}
-                                {companyLogo && (
-                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10 dark:opacity-20">
-                                        <IVarseLogo
-                                            size={150} // equivalent to w-72 h-64 (288px width, height auto-calculated)
-                                            variant="auto" // will automatically switch based on theme
-                                            className="filter grayscale opacity-50" // additional styling for background effect
-                                        />
-                                    </div>
-                                )}
-
-                                {/* Current slide indicator - tiny in top right */}
-                                {heroSlides && heroSlides.length > 0 && (
-                                    <div className="absolute top-0 right-0 z-20 py-0.5 px-1 bg-black/30 backdrop-blur-sm rounded-bl-md inline-flex items-center">
-                                        {heroSlides.map((slide, index) => (
-                                            <div
-                                                key={slide.id || index}
-                                                className={`transition-opacity duration-500 flex items-center ${index === currentIndex
-                                                    ? "opacity-100"
-                                                    : "opacity-0 absolute inset-0"
-                                                    }`}
-                                            >
-                                                <div className="flex items-center">
-                                                    <p className="text-xs font-medium text-white whitespace-nowrap">
-                                                        {slide.title.split(' ').slice(0, 2).join(' ')}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-
-                                {/* Animated tech elements */}
-                                <CircuitBoard className="absolute top-6 left-6 h-12 w-12 text-blue-300 dark:text-blue-700 opacity-30 animate-float" />
-                                <Cpu
-                                    className="absolute bottom-6 right-6 h-12 w-12 text-indigo-300 dark:text-indigo-700 opacity-30 animate-float"
-                                    style={{ animationDelay: "1s" }}
-                                />
                             </div>
                         </div>
-                    ) : null}
-                    {/* Overlay gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20 pointer-events-none"></div>
+                    </div>
                 </div>
-            </section>
-        </>
+            </div>
+        </motion.section>
     );
 };
+
 export default ModernHero;

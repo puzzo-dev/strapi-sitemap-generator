@@ -4,19 +4,130 @@
 @tailwind components;
 @tailwind utilities;
 
-/* // Add to your global CSS file */
+/* 4K Display Optimization */
 html {
   scroll-behavior: smooth;
+  /* Enable hardware acceleration for smoother rendering */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  /* Optimize text rendering for high-DPI displays */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Enable subpixel rendering for ultra-sharp text */
+  -webkit-text-stroke: 0.01em transparent;
+}
+
+/* 4K and Ultra-High Resolution Display Support */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
+  html {
+    /* Enhanced text rendering for high-DPI displays */
+    -webkit-font-smoothing: subpixel-antialiased;
+    text-rendering: geometricPrecision;
+  }
+}
+
+/* Prevent horizontal scroll and fix double scrollbar */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  overflow-y: auto;
+}
+
+#root {
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Mobile-specific overflow prevention */
+@media (max-width: 768px) {
+  * {
+    max-width: 100vw;
+  }
+  
+  .container {
+    overflow-x: hidden;
+  }
+  
+  section {
+    overflow-x: hidden;
+  }
+}
+
+/* 4K Display Specific Optimizations - Only for actual 4K screens */
+@media (min-width: 3840px) and (min-height: 2160px) {
+  html {
+    font-size: 18px; /* Slightly larger base font for true 4K displays */
+  }
+}
+
+/* 8K Display Support - Only for actual 8K screens */
+@media (min-width: 7680px) and (min-height: 4320px) {
+  html {
+    font-size: 20px;
+  }
 }
 
 @layer base {
   * {
     @apply border-border;
+    /* Enhanced box-sizing for precise layouts */
+    box-sizing: border-box;
+    /* Improve rendering performance */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Prevent horizontal overflow */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   body {
     @apply antialiased bg-background text-foreground dark:bg-[#0a1929] dark:text-white;
     font-family: 'Space Grotesk', sans-serif;
+    /* Ultra-sharp text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Prevent font scaling issues on high-DPI */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    /* Enhanced image rendering */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  /* 4K Image and SVG Optimization */
+  img, svg {
+    /* Ultra-sharp image rendering */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    /* Hardware acceleration */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* High-DPI SVG optimization */
+  svg {
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+    /* Prevent SVG scaling artifacts */
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* 4K-specific image handling */
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    img {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: optimize-contrast;
+    }
   }
 
   h1,
@@ -28,12 +139,39 @@ html {
     @apply font-extrabold;
     font-family: 'Chakra Petch', sans-serif;
     letter-spacing: -0.01em;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    /* Ultra-sharp text shadows for 4K */
+    text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.08);
+    /* Enhanced font rendering */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    /* Prevent font weight variations on high-DPI */
+    font-synthesis: none;
   }
 
-  /* Responsive typography */
+  /* 4K-Optimized Responsive Typography */
   html {
     font-size: 16px;
+  }
+
+  /* Ultra-wide 4K displays */
+  @media (min-width: 3840px) {
+    html {
+      font-size: 20px;
+    }
+  }
+
+  /* Standard 4K displays */
+  @media (min-width: 2560px) and (max-width: 3839px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
+  /* QHD displays */
+  @media (min-width: 1920px) and (max-width: 2559px) {
+    html {
+      font-size: 17px;
+    }
   }
 
   @media (max-width: 1536px) {
@@ -121,58 +259,92 @@ html {
     @apply bg-gradient-to-r from-blue-500 to-indigo-600;
   }
 
-  /* Typography */
+  /* 4K-Optimized Typography */
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    @apply text-3xl md:text-4xl lg:text-5xl 4xl:text-6xl 5xl:text-4k-6xl font-extrabold mb-8 5xl:mb-4k-12;
+    text-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.08);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    letter-spacing: -0.025em;
   }
 
   .section-subtitle {
-    @apply text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12;
+    @apply text-lg md:text-xl 4xl:text-2xl 5xl:text-4k-2xl text-gray-600 dark:text-gray-300 max-w-3xl 5xl:max-w-5xl mx-auto mb-12 5xl:mb-4k-16;
     font-weight: 500;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
 
 
   .heading-xl {
-    @apply text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-black;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    @apply text-5xl sm:text-5xl md:text-6xl lg:text-7xl 4xl:text-8xl 5xl:text-4k-8xl font-black;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    font-synthesis: none;
   }
 
   .heading-lg {
-    @apply text-3xl md:text-4xl lg:text-5xl font-extrabold;
-    line-height: 1.2;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    @apply text-3xl md:text-4xl lg:text-5xl 4xl:text-6xl 5xl:text-4k-6xl font-extrabold;
+    line-height: 1.15;
+    text-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.08);
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.025em;
   }
 
   .heading-md {
-    @apply text-2xl md:text-3xl font-extrabold;
-    line-height: 1.3;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    @apply text-2xl md:text-3xl 4xl:text-4xl 5xl:text-4k-4xl font-extrabold;
+    line-height: 1.25;
+    text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.06);
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.02em;
   }
 
-  /* Layout */
+  /* 4K-Optimized Layout */
   .container-custom {
-    @apply container mx-auto px-4 sm:px-6 lg:px-8 md:max-w-[95%] h-full;
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 4xl:px-12 5xl:px-4k-16 md:max-w-[95%] 5xl:max-w-[90%] h-full;
   }
 
   .content-section {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-16 md:py-24 lg:py-32 4xl:py-40 5xl:py-4k-24;
   }
 
-  /* Cards & UI Elements */
+  /* 4K-Optimized Cards & UI Elements */
   .card {
-    @apply bg-white dark:bg-[#132f4c] rounded-xl shadow-lg overflow-hidden border dark:border-[#1e4976] transition-all duration-300;
+    @apply bg-white dark:bg-[#132f4c] rounded-xl 5xl:rounded-4k shadow-lg 5xl:shadow-2xl overflow-hidden border dark:border-[#1e4976] transition-all duration-300;
+    /* Enhanced rendering for 4K */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    /* Crisp borders and shadows */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  /* Ultra-sharp icons and graphics */
+  .icon-4k {
+    /* Perfect pixel alignment */
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /* Crisp rendering */
+    image-rendering: -webkit-optimize-contrast;
+    shape-rendering: geometricPrecision;
   }
 
   .card-hover {
-    @apply hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300 hover:-translate-y-1;
+    @apply hover:shadow-xl 5xl:hover:shadow-3xl hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300 hover:-translate-y-1 5xl:hover:-translate-y-2;
+    /* Smooth hardware acceleration */
+    will-change: transform, box-shadow;
   }
 
   .button-primary {
-    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 text-base font-medium transition-all;
+    @apply inline-flex items-center justify-center rounded-lg 5xl:rounded-4k px-6 5xl:px-4k-8 py-3 5xl:py-4k-4 text-base 5xl:text-4k-lg font-medium transition-all;
+    /* Enhanced button rendering */
+    -webkit-font-smoothing: antialiased;
+    transform: translateZ(0);
   }
 
   /* Subtle animations */
@@ -234,7 +406,18 @@ html {
     @apply w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin;
   }
 
-  /* Mobile optimizations */
+  /* 4K Mobile and Tablet Optimizations */
+  @media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+    .heading-xl {
+      @apply text-5xl font-black;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+  }
+  
   @media (max-width: 768px) {
     .heading-xl {
       @apply text-5xl font-black;

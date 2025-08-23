@@ -6,12 +6,7 @@ import AppLink from '@/components/ui/AppLink';
 import { ArrowRight, TrendingUp, Users, Clock, CheckCircle } from 'lucide-react';
 import { CaseStudyProps } from '@/lib/types/content';
 import { PageSection, PageContent } from '@/lib/types/core';
-
-interface CaseStudiesSectionProps {
-  caseStudies: CaseStudyProps[];
-  homePageContent: PageContent;
-  isLoading?: boolean;
-}
+import { CaseStudiesSectionProps } from '@/lib/types/components';
 
 const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
   caseStudies = [],

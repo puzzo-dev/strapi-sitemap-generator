@@ -6,6 +6,7 @@ import { useFooter, useSiteConfig } from '@/hooks/useStrapiContent';
 import AppLink from '@/components/ui/AppLink';
 import { FooterProps } from '@/lib/types/';
 import { footerData } from '@/lib/data/';
+import { filterVisibleFooterColumns } from '@/lib/utils/visibility-helpers';
 
 // Import icons
 import { MapPin, Phone, Mail, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
@@ -16,6 +17,9 @@ const Footer: React.FC<FooterProps> = () => {
   const { data: siteConfig } = useSiteConfig();
 
   // Simplify the data merging logic - prioritize footer data, then fall back to siteConfig, then to static data
+  const rawColumns = footer?.columns || footerData.columns;
+  const visibleColumns = filterVisibleFooterColumns(rawColumns);
+  
   const displayData = {
     companyDescription: footer?.companyDescription || siteConfig?.siteDescription || footerData.companyDescription,
     contactAddress: footer?.contactAddress || siteConfig?.contactAddress || footerData.contactAddress,
@@ -23,7 +27,7 @@ const Footer: React.FC<FooterProps> = () => {
     contactEmail: footer?.contactEmail || siteConfig?.contactEmail || footerData.contactEmail,
     contactSectionTitle: footer?.contactSectionTitle || footerData.contactSectionTitle,
     socialLinks: footer?.socialLinks || footerData.socialLinks,
-    columns: footer?.columns || footerData.columns,
+    columns: visibleColumns,
     legalLinks: footer?.legalLinks || footerData.legalLinks,
     companyName: footer?.companyName || siteConfig?.siteName || footerData.companyName
   };
@@ -33,41 +37,41 @@ const Footer: React.FC<FooterProps> = () => {
     switch (platform.toLowerCase()) {
       case 'twitter':
       case 'x':
-        return <Twitter className="h-4 w-4 md:h-5 md:w-5" />;
+        return <Twitter className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />;
       case 'facebook':
-        return <Facebook className="h-4 w-4 md:h-5 md:w-5" />;
+        return <Facebook className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />;
       case 'instagram':
-        return <Instagram className="h-4 w-4 md:h-5 md:w-5" />;
+        return <Instagram className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />;
       case 'linkedin':
-        return <Linkedin className="h-4 w-4 md:h-5 md:w-5" />;
+        return <Linkedin className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />;
       default:
-        return <div className="h-4 w-4 md:h-5 md:w-5 bg-current rounded-full"></div>;
+        return <div className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 bg-current rounded-full"></div>;
     }
   };
 
   return (
-    <footer className="bg-gray-50 dark:bg-[#0a1929] pt-20 pb-8 border-t border-gray-200 dark:border-gray-800">
+    <footer className="bg-gray-50 dark:bg-[#0a1929] pt-12 xs:pt-16 sm:pt-20 lg:pt-24 xl:pt-28 pb-6 xs:pb-8 sm:pb-10 border-t border-gray-200 dark:border-gray-800">
       <div className="container-custom">
         {/* Footer top section with columns */}
-        <div className="mb-16 pb-16 border-b border-gray-200 dark:border-gray-800">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-12">
+        <div className="mb-8 xs:mb-12 sm:mb-16 lg:mb-20 pb-8 xs:pb-12 sm:pb-16 lg:pb-20 border-b border-gray-200 dark:border-gray-800">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-x-4 xs:gap-x-6 sm:gap-x-8 lg:gap-x-10 gap-y-8 xs:gap-y-10 sm:gap-y-12 lg:gap-y-16">
             {/* Company Info & Address - Takes 6 cols on medium screens */}
-            <div className="md:col-span-6 lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+            <div className="sm:col-span-2 md:col-span-6 lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-x-4 xs:gap-x-6 lg:gap-x-8 gap-y-6 xs:gap-y-8 lg:gap-y-10">
               {/* Logo and Description */}
-              <div className="space-y-4">
+              <div className="space-y-3 xs:space-y-4 lg:space-y-5">
                 <Link href="/">
                   <div className="inline-block">
-                    <IVarseLogo size={36} className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-auto lg:h-auto" />
+                    <IVarseLogo size={36} className="w-7 h-7 xs:w-8 xs:h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-11 lg:h-11 xl:w-auto xl:h-auto" />
                   </div>
                 </Link>
-                <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 max-w-md">
+                <p className="text-xs xs:text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-xs xs:max-w-sm sm:max-w-md lg:max-w-lg leading-relaxed">
                   {displayData.companyDescription}
                 </p>
 
                 {/* Newsletter subscription - Desktop only */}
-                <div className="pt-4 mt-4 space-y-3 border-t border-gray-100 dark:border-gray-700 hidden md:block">
-                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Subscribe to our newsletter</h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-300">
+                <div className="pt-3 xs:pt-4 lg:pt-5 mt-3 xs:mt-4 lg:mt-5 space-y-2 xs:space-y-3 lg:space-y-4 border-t border-gray-100 dark:border-gray-700 hidden md:block">
+                  <h4 className="text-sm md:text-base lg:text-lg font-semibold text-gray-900 dark:text-white">Subscribe to our newsletter</h4>
+                  <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300">
                     Stay updated with our latest news and offers
                   </p>
                   <NewsletterForm className="max-w-md" />
@@ -75,28 +79,28 @@ const Footer: React.FC<FooterProps> = () => {
               </div>
 
               {/* Contact Details */}
-              <div className="space-y-4">
-                <h4 className="text-sm md:text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+              <div className="space-y-3 xs:space-y-4 lg:space-y-5">
+                <h4 className="text-sm md:text-base lg:text-lg xl:text-xl font-bold text-gray-900 dark:text-white uppercase tracking-wider">
                   {displayData.contactSectionTitle}
                 </h4>
-                <ul className="space-y-3">
+                <ul className="space-y-2 xs:space-y-3 lg:space-y-4">
                   <li className="flex items-start">
-                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-2 sm:mr-3 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    <MapPin className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-blue-600 dark:text-blue-400 mt-0.5 mr-2 xs:mr-3 lg:mr-4 flex-shrink-0" />
+                    <span className="text-xs xs:text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                       {displayData.contactAddress}
                     </span>
                   </li>
                   <li className="flex items-center">
-                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 mr-2 sm:mr-3 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    <Phone className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-blue-600 dark:text-blue-400 mr-2 xs:mr-3 lg:mr-4 flex-shrink-0" />
+                    <span className="text-xs xs:text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                       {displayData.contactPhone}
                     </span>
                   </li>
                   <li className="flex items-center">
-                    <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400 mr-2 sm:mr-3 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    <Mail className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-blue-600 dark:text-blue-400 mr-2 xs:mr-3 lg:mr-4 flex-shrink-0" />
+                    <a href={`mailto:${displayData.contactEmail}`} className="text-xs xs:text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                       {displayData.contactEmail}
-                    </span>
+                    </a>
                   </li>
                 </ul>
 

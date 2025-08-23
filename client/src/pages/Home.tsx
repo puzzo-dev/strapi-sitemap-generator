@@ -5,6 +5,7 @@ import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/
 
 // Import section components
 import OriginalHero from '@/components/sections/home/OriginalHero';
+import ModernHero from '@/components/sections/home/ModernHero';
 import SpecializationsSection from '@/components/sections/home/SpecializationsSection';
 import AboutSection from '@/components/sections/home/AboutSection';
 import ProductsSection from '@/components/sections/home/ProductsSection';
@@ -147,9 +148,10 @@ const Home: React.FC = () => {
                 }}
             />
 
-            <main className="min-h-screen">
+            <main className="min-h-screen overflow-x-hidden">
                 {/* Hero Section */}
-                <OriginalHero />
+                {/* <OriginalHero /> */}
+                <ModernHero />
 
                 {/* Specializations Section (includes services) */}
                 <SpecializationsSection

@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import GradientButton from '@/components/ui/GradientButton';
 import ProductCard from '@/components/ui/ProductCard';
-import { ProductProps, ProductCardProps } from '@/lib/types/content';
+import { ProductProps } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
+import { ProductsSectionProps } from '@/lib/types/components';
 import {
   ArrowRight,
   Sparkles,
@@ -103,17 +104,12 @@ const BackgroundDecoration = () => (
   </div>
 );
 
-interface ProductsSectionProps {
-  homePageContent: PageContent;
-  products: ProductProps[];
-  isLoading: boolean;
-}
 
 const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, products, isLoading }) => {
   const { t } = useTranslation();
   
   // Get products section from homePageContent
-  const productsSection = homePageContent?.sections?.find(s => s.type === 'products');
+  const productsSection = homePageContent?.sections?.find((s: any) => s.type === 'products');
 
   // Extract section content
   const title = productsSection?.title;

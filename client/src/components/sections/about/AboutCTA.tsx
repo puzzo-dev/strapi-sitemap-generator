@@ -4,12 +4,11 @@ import { useInView } from 'react-intersection-observer';
 import GradientButton from '@/components/ui/GradientButton';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PageSection } from '@/lib/types/core';
-import { fadeInUp } from '@/lib/animations';
+import { ANIMATION_PRESETS } from '@/lib/animations';
 import { ArrowRight } from 'lucide-react';
+import { getUIText } from '@/lib/fallbacks';
 
-interface AboutCTAProps extends PageSection {
-    isPageLoading: boolean;
-}
+import type { AboutCTAProps } from '@/lib/types';
 
 const AboutCTA: React.FC<AboutCTAProps> = ({
     title,
@@ -48,24 +47,23 @@ const AboutCTA: React.FC<AboutCTAProps> = ({
                 <div className="text-center max-w-3xl mx-auto">
                     {/* Badge */}
                     <motion.div
-                        variants={fadeInUp(20, 0.7)}
+                        variants={ANIMATION_PRESETS.ctaBadge}
                         className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in"
                     >
-                        <span className="text-lg mr-2">🚀</span>
-                        Get Started
+                        🚀 {getUIText(undefined, 'getStarted', 'buttons')}
                     </motion.div>
 
                     {/* Title */}
                     <motion.h2
-                        variants={fadeInUp(20, 0.7, 0.1)}
+                        variants={ANIMATION_PRESETS.ctaTitle}
                         className="section-title text-blue-900 dark:text-blue-200"
                     >
-                        {title || "Ready to Get Started?"}
+                        {title || getUIText(undefined, 'getStarted', 'buttons') + '?'}
                     </motion.h2>
 
                     {/* Subtitle */}
                     <motion.p
-                        variants={fadeInUp(20, 0.7, 0.2)}
+                        variants={ANIMATION_PRESETS.ctaSubtitle}
                         className="section-subtitle mb-8"
                     >
                         {subtitle}
@@ -78,7 +76,7 @@ const AboutCTA: React.FC<AboutCTAProps> = ({
 
                     {/* CTA Buttons */}
                     <motion.div
-                        variants={fadeInUp(20, 0.7, 0.4)}
+                        variants={ANIMATION_PRESETS.ctaButtons}
                         className="flex flex-wrap justify-center gap-4"
                     >
                         {settings?.primaryButton ? (
@@ -87,13 +85,13 @@ const AboutCTA: React.FC<AboutCTAProps> = ({
                             </GradientButton>
                         ) : (
                             <GradientButton href="/contact" size="lg" endIcon={<ArrowRight />}>
-                                {settings?.primaryButton?.children || "Get Started Today"}
+                                {settings?.primaryButton?.children || getUIText(undefined, 'getStarted', 'buttons')}
                             </GradientButton>
                         )}
                         
                         {settings?.secondaryButton && (
                             <GradientButton href={settings.secondaryButton.href} variant="outline" size="lg">
-                                {settings.secondaryButton.children || settings.secondaryButton.title}
+                                {settings.secondaryButton.children || settings.secondaryButton.title || getUIText(undefined, 'learnMore', 'buttons')}
                             </GradientButton>
                         )}
                     </motion.div>

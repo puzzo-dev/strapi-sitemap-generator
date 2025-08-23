@@ -10,6 +10,50 @@ export const products: ProductProps[] = [
     translationKey: "entry-x-event-ticketing-saas",
     description: "A complete event ticketing solution for event organizers",
     image: "/src/assets/images/IMG_2247.JPG",
+    gallery: [
+      {
+        id: 1,
+        image: "/src/assets/images/IMG_2247.JPG",
+        title: "Entry-X Dashboard Overview",
+        type: "screenshot",
+        size: "large"
+      },
+      {
+        id: 2,
+        image: "/api/placeholder/400/300",
+        title: "Ticket Sales Analytics",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 3,
+        image: "/api/placeholder/400/300",
+        title: "Event Management Interface",
+        type: "interface",
+        size: "medium"
+      },
+      {
+        id: 4,
+        image: "/api/placeholder/600/400",
+        title: "Mobile Check-in App",
+        type: "demo",
+        size: "large"
+      },
+      {
+        id: 5,
+        image: "/api/placeholder/400/300",
+        title: "Payment Gateway Integration",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 6,
+        image: "/api/placeholder/400/300",
+        title: "Real-time Reporting",
+        type: "screenshot",
+        size: "medium"
+      }
+    ],
     keyFeatures: [
       "Ticket Sales Management",
       "Events Dashboard",
@@ -211,6 +255,50 @@ export const products: ProductProps[] = [
     translationKey: "opscloud-enterprise-erp-platform",
     description: "Comprehensive enterprise resource planning platform for modern businesses",
     image: "/src/assets/images/IMG_2248.JPG",
+    gallery: [
+      {
+        id: 1,
+        image: "/src/assets/images/IMG_2248.JPG",
+        title: "OpsCloud ERP Dashboard",
+        type: "screenshot",
+        size: "large"
+      },
+      {
+        id: 2,
+        image: "/api/placeholder/400/300",
+        title: "CRM Management Interface",
+        type: "interface",
+        size: "medium"
+      },
+      {
+        id: 3,
+        image: "/api/placeholder/400/300",
+        title: "Inventory Tracking System",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 4,
+        image: "/api/placeholder/600/400",
+        title: "Financial Reporting Suite",
+        type: "demo",
+        size: "large"
+      },
+      {
+        id: 5,
+        image: "/api/placeholder/400/300",
+        title: "Workflow Automation",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 6,
+        image: "/api/placeholder/400/300",
+        title: "Mobile Business App",
+        type: "screenshot",
+        size: "medium"
+      }
+    ],
     keyFeatures: [
       "Complete CRM for Business",
       "Inventory Management",
@@ -427,6 +515,50 @@ export const products: ProductProps[] = [
     translationKey: "securegate-cybersecurity-suite",
     description: "Comprehensive cybersecurity solution for enterprise protection",
     image: "/src/assets/images/IMG_2254.JPG",
+    gallery: [
+      {
+        id: 1,
+        image: "/src/assets/images/IMG_2254.JPG",
+        title: "SecureGate Security Dashboard",
+        type: "screenshot",
+        size: "large"
+      },
+      {
+        id: 2,
+        image: "/api/placeholder/400/300",
+        title: "Threat Detection Interface",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 3,
+        image: "/api/placeholder/400/300",
+        title: "Network Security Monitor",
+        type: "interface",
+        size: "medium"
+      },
+      {
+        id: 4,
+        image: "/api/placeholder/600/400",
+        title: "Incident Response Center",
+        type: "demo",
+        size: "large"
+      },
+      {
+        id: 5,
+        image: "/api/placeholder/400/300",
+        title: "Compliance Reporting",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 6,
+        image: "/api/placeholder/400/300",
+        title: "Endpoint Protection View",
+        type: "screenshot",
+        size: "medium"
+      }
+    ],
     keyFeatures: [
       "Endpoint Security",
       "Network Security",
@@ -639,6 +771,50 @@ export const products: ProductProps[] = [
     translationKey: "analyticspro-business-intelligence-platform",
     description: "Advanced business intelligence and analytics platform",
     image: "/src/assets/images/IMG_2255.JPG",
+    gallery: [
+      {
+        id: 1,
+        image: "/src/assets/images/IMG_2255.JPG",
+        title: "AnalyticsPro BI Dashboard",
+        type: "screenshot",
+        size: "large"
+      },
+      {
+        id: 2,
+        image: "/api/placeholder/400/300",
+        title: "Data Visualization Tools",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 3,
+        image: "/api/placeholder/400/300",
+        title: "Predictive Analytics Engine",
+        type: "interface",
+        size: "medium"
+      },
+      {
+        id: 4,
+        image: "/api/placeholder/600/400",
+        title: "Machine Learning Models",
+        type: "demo",
+        size: "large"
+      },
+      {
+        id: 5,
+        image: "/api/placeholder/400/300",
+        title: "Real-time Data Processing",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 6,
+        image: "/api/placeholder/400/300",
+        title: "Business Intelligence Reports",
+        type: "screenshot",
+        size: "medium"
+      }
+    ],
     keyFeatures: [
       "Business Intelligence",
       "Data Analysis",
@@ -851,6 +1027,50 @@ export const products: ProductProps[] = [
     translationKey: "mobileflow-mobile-app-development-suite",
     description: "Complete mobile application development and deployment platform",
     image: "/src/assets/images/IMG_2256.JPG",
+    gallery: [
+      {
+        id: 1,
+        image: "/src/assets/images/IMG_2256.JPG",
+        title: "MobileFlow Development Suite",
+        type: "screenshot",
+        size: "large"
+      },
+      {
+        id: 2,
+        image: "/api/placeholder/400/300",
+        title: "Cross-Platform Builder",
+        type: "interface",
+        size: "medium"
+      },
+      {
+        id: 3,
+        image: "/api/placeholder/400/300",
+        title: "App Performance Analytics",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 4,
+        image: "/api/placeholder/600/400",
+        title: "Live App Preview",
+        type: "demo",
+        size: "large"
+      },
+      {
+        id: 5,
+        image: "/api/placeholder/400/300",
+        title: "API Integration Hub",
+        type: "feature",
+        size: "medium"
+      },
+      {
+        id: 6,
+        image: "/api/placeholder/400/300",
+        title: "Deployment Dashboard",
+        type: "screenshot",
+        size: "medium"
+      }
+    ],
     keyFeatures: [
       "Mobile App Development",
       "Cross-platform Compatibility",

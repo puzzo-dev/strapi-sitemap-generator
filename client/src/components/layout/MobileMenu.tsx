@@ -69,36 +69,36 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navItems = def
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-4 sm:p-5 md:p-6 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex justify-between items-center p-3 xs:p-4 sm:p-5 md:p-6 border-b border-gray-100 dark:border-gray-800">
           <Link href="/" onClick={onClose}>
             <div className="cursor-pointer">
-              <IVarseLogo size={32} className="w-8 h-8 sm:w-9 sm:h-9" />
+              <IVarseLogo size={24} className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8" />
             </div>
           </Link>
           <Button
             variant="ghost"
             size="sm"
-            className="text-gray-700 dark:text-gray-200 p-1.5 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800/50"
+            className="p-1.5 xs:p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
             onClick={onClose}
             aria-label="Close mobile menu"
           >
-            <X className="h-5 w-5 sm:h-6 sm:w-6" />
+            <X className="h-5 w-5 xs:h-6 xs:w-6" />
           </Button>
         </div>
 
         {/* Menu Items - Organized into categories */}
-        <div className="py-3 sm:py-4 px-3 sm:px-4 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto px-3 xs:px-4 sm:px-5 md:px-6 py-3 xs:py-4 sm:py-5 md:py-6">
           {/* Main navigation */}
           <div className="mb-6">
-            <div className="text-xs uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wider mb-2 px-3">
+            <h3 className="text-xs xs:text-sm uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wider mb-2 xs:mb-3 px-2 xs:px-3">
               {t('nav.main', 'Main Navigation')}
-            </div>
+            </h3>
             {navLinks
               .filter((link: MobileNavLink) => link.category === 'main' && !link.isButton)
               .map((link: MobileNavLink) => (
                 <Link key={link.id} href={link.path}>
                   <div
-                    className={`block cursor-pointer text-base sm:text-lg font-semibold py-2.5 sm:py-3 px-3 sm:px-4 my-1 sm:my-1.5 rounded-lg transition-colors ${
+                    className={`block cursor-pointer text-sm xs:text-base sm:text-lg font-semibold py-2 xs:py-2.5 sm:py-3 px-2.5 xs:px-3 sm:px-4 my-1 xs:my-1.5 rounded-lg transition-all duration-200 ${
                       isActive(link.path)
                         ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
                         : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/30'
@@ -113,15 +113,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navItems = def
           
           {/* Resources section */}
           <div className="mb-6">
-            <div className="text-xs uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wider mb-2 px-3">
+            <h3 className="text-xs xs:text-sm uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wider mb-2 xs:mb-3 px-2 xs:px-3">
               {t('nav.resourcesSection', 'Resources & Information')}
-            </div>
+            </h3>
             {navLinks
               .filter((link: MobileNavLink) => link.category === 'resources' && !link.isButton)
               .map((link: MobileNavLink) => (
                 <Link key={link.id} href={link.path}>
                   <div
-                    className={`block cursor-pointer text-base sm:text-lg font-semibold py-2.5 sm:py-3 px-3 sm:px-4 my-1 sm:my-1.5 rounded-lg transition-colors ${
+                    className={`block cursor-pointer text-sm xs:text-base sm:text-lg font-semibold py-2 xs:py-2.5 sm:py-3 px-2.5 xs:px-3 sm:px-4 my-1 xs:my-1.5 rounded-lg transition-all duration-200 ${
                       isActive(link.path)
                         ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
                         : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/30'
@@ -136,15 +136,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navItems = def
           
           {/* Company section */}
           <div className="mb-6">
-            <div className="text-xs uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wider mb-2 px-3">
+            <h3 className="text-xs xs:text-sm uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wider mb-2 xs:mb-3 px-2 xs:px-3">
               {t('nav.companySection', 'Company')}
-            </div>
+            </h3>
             {navLinks
               .filter((link: MobileNavLink) => link.category === 'company' && !link.isButton)
               .map((link: MobileNavLink) => (
                 <Link key={link.id} href={link.path}>
                   <div
-                    className={`block cursor-pointer text-base sm:text-lg font-semibold py-2.5 sm:py-3 px-3 sm:px-4 my-1 sm:my-1.5 rounded-lg transition-colors ${
+                    className={`block cursor-pointer text-sm xs:text-base sm:text-lg font-semibold py-2 xs:py-2.5 sm:py-3 px-2.5 xs:px-3 sm:px-4 my-1 xs:my-1.5 rounded-lg transition-all duration-200 ${
                       isActive(link.path)
                         ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
                         : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/30'
@@ -157,18 +157,18 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navItems = def
               ))}
           </div>
 
-          {/* Contact Button */}
-          <div className="px-3 sm:px-4 pt-4 sm:pt-6 pb-3 sm:pb-4 border-t border-gray-100 dark:border-gray-800 mt-4">
+        </div>
+
+        {/* Footer with Contact Button */}
+        <div className="border-t border-gray-100 dark:border-gray-800 p-3 xs:p-4 sm:p-5 md:p-6 space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
             <GradientButton
               href="/contact"
-              className="w-full justify-center py-3 sm:py-4 text-sm sm:text-base animate-pulse-light"
+              className="w-full text-center py-2.5 xs:py-3 px-3 xs:px-4 text-sm xs:text-base font-medium"
               onClick={onClose}
             >
               {t('button.contactUs', 'Contact Us')}
             </GradientButton>
           </div>
-          
-
         </div>
 
         {/* Tech pattern background elements */}
@@ -185,7 +185,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navItems = def
           </svg>
         </div>
       </div>
-    </div>
+    
   );
 };
 

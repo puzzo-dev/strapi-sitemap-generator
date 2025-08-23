@@ -18,7 +18,7 @@ export const termsContent: PolicyPageLayoutProps = {
     <h2>2. Description of Services</h2>
     <p>
       I-Varse Technologies provides various digital services including but not limited to web development,
-      mobile application development, cloud infrastructure management, Api Engineering & integration,
+      mobile application development, cloud infrastructure management, API Engineering & Business Automation,
       SEO optimization, and content writing. The specific details, deliverables, and timelines of these
       services will be outlined in individual agreements or statements of work.
     </p>

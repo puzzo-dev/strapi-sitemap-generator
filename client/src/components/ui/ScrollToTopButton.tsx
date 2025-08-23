@@ -21,12 +21,12 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
   const getSizeClasses = () => {
     switch (size) {
       case 'sm':
-        return 'w-8 h-8';
+        return 'w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8';
       case 'lg':
-        return 'w-14 h-14';
+        return 'w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16';
       case 'md':
       default:
-        return 'w-10 h-10';
+        return 'w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 md:w-11 md:h-11';
     }
   };
 
@@ -34,10 +34,10 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
   const getPositionClasses = () => {
     switch (position) {
       case 'bottom-left':
-        return 'left-4 sm:left-6';
+        return 'left-3 xs:left-4 sm:left-6 md:left-8';
       case 'bottom-right':
       default:
-        return 'right-4 sm:right-6';
+        return 'right-3 xs:right-4 sm:right-6 md:right-8';
     }
   };
 
@@ -81,10 +81,10 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
             rounded-full bg-blue-600 dark:bg-blue-500 text-white shadow-lg 
             hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 
             focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900
-            flex items-center justify-center transition-transform
-            hover:scale-110 active:scale-95`}
+            flex items-center justify-center transition-all duration-300
+            hover:scale-110 active:scale-95 hover:shadow-xl`}
         >
-          <ArrowUp className="w-5 h-5" />
+          <ArrowUp className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
         </motion.button>
       )}
     </AnimatePresence>

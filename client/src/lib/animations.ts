@@ -261,3 +261,35 @@ export const shimmerEffect = {
     }
   }
 };
+
+// =============================================================================
+// ANIMATION PRESETS - Standardized configurations for common usage patterns
+// =============================================================================
+
+/**
+ * Standard animation presets to eliminate redundant fadeInUp usage
+ * These maintain exact same visual behavior while centralizing configuration
+ */
+export const ANIMATION_PRESETS = {
+  // Standard section animations
+  sectionFadeIn: fadeInUp(20, 0.7, 0),
+  sectionFadeInDelayed: fadeInUp(20, 0.7, 0.1),
+  sectionFadeInMore: fadeInUp(20, 0.7, 0.2),
+  sectionFadeInLast: fadeInUp(20, 0.7, 0.4),
+  
+  // Hero section animations
+  heroTitle: fadeInUp(30, 0.8, 0.1),
+  heroSubtitle: fadeInUp(20, 0.7, 0.2),
+  heroContent: fadeInUp(15, 0.6, 0.3),
+  heroButtons: fadeInUp(20, 0.7, 0.4),
+  
+  // Card and grid animations
+  cardFadeIn: fadeInUp(15, 0.6, 0),
+  gridItem: fadeInUp(20, 0.5, 0),
+  
+  // CTA section animations
+  ctaBadge: fadeInUp(20, 0.7, 0),
+  ctaTitle: fadeInUp(20, 0.7, 0.1),
+  ctaSubtitle: fadeInUp(20, 0.7, 0.2),
+  ctaButtons: fadeInUp(20, 0.7, 0.4)
+} as const;

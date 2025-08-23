@@ -7,6 +7,7 @@ import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { aboutPageContent as localAboutPageContent } from '@/lib/data/pages';
 import { industries } from '@/lib/data/industries';
 import { defaultTeamMembers } from '@/lib/data/team';
+import { findSection } from '@/lib/utils/section-helpers';
 
 // Import section components
 import {
@@ -36,13 +37,13 @@ const About: React.FC = () => {
   const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
   const structuredData = generateOrganizationSchema();
 
-  // Extract sections with fallback to local data
-  const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero') || { id: 0 };
+  // Extract sections using unified helper
+  const heroSection = findSection(displayPageContent, 'hero') || { id: 0 };
   const missionSection = displayPageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('Mission')) || { id: 0 };
-  const featuresSection = displayPageContent?.sections?.find(s => s.type === 'features') || { id: 0 };
-  const teamSection = displayPageContent?.sections?.find(s => s.type === 'team') || { id: 0 };
-  const industriesSection = displayPageContent?.sections?.find(s => s.type === 'industries') || { id: 0 };
-  const ctaSection = displayPageContent?.sections?.find(s => s.type === 'cta') || { id: 0 };
+  const featuresSection = findSection(displayPageContent, 'features') || { id: 0 };
+  const teamSection = findSection(displayPageContent, 'team') || { id: 0 };
+  const industriesSection = findSection(displayPageContent, 'industries') || { id: 0 };
+  const ctaSection = findSection(displayPageContent, 'cta') || { id: 0 };
 
   return (
     <>
@@ -58,43 +59,59 @@ const About: React.FC = () => {
         structuredData={structuredData}
       />
 
-      {/* Hero Section */}
-      <AboutHero
-        {...heroSection}
-        isPageLoading={isPageLoading}
-      />
+      <main className="min-h-screen bg-white dark:bg-[#0a1929] overflow-x-hidden">
+        {/* About Hero Section */}
+        <div className="w-full">
+          <AboutHero
+            title={heroSection.title || "About I-VARSE Technologies"}
+            subtitle={heroSection.description || "Innovative digital solutions for modern businesses"}
+            settings={heroSection.settings}
+            isPageLoading={isPageLoading}
+          />
+        </div>
 
-      {/* Mission & Vision Section */}
-      <MissionVisionSection
-        {...missionSection}
-        isPageLoading={isPageLoading}
-      />
+        {/* Mission & Vision Section */}
+        <div className="w-full">
+          <MissionVisionSection
+            section={missionSection}
+            isLoading={isPageLoading}
+          />
+        </div>
 
-      {/* Core Values Section */}
-      <CoreValuesSection
-        {...featuresSection}
-        isPageLoading={isPageLoading}
-      />
+        {/* Core Values Section */}
+        <div className="w-full">
+          <CoreValuesSection
+            section={featuresSection}
+            isLoading={isPageLoading}
+          />
+        </div>
 
-      {/* Team Section */}
-      <TeamSection
-        {...teamSection}
-        teamMembers={teamMembers}
-        isTeamLoading={isTeamLoading}
-      />
+        {/* Team Section */}
+        <div className="w-full">
+          <TeamSection
+            section={teamSection}
+            teamMembers={teamMembers}
+            isLoading={isPageLoading || isTeamLoading}
+          />
+        </div>
 
-      {/* Industries Section */}
-      <IndustriesSection
-        homePageContent={displayPageContent}
-        industries={industries}
-        isLoading={isPageLoading}
-      />
+        {/* Industries Section */}
+        <div className="w-full">
+          <IndustriesSection
+            section={industriesSection}
+            industries={industries}
+            isLoading={isPageLoading}
+          />
+        </div>
 
-      {/* Call to Action Section */}
-      <AboutCTA
-        {...ctaSection}
-        isPageLoading={isPageLoading}
-      />
+        {/* About CTA Section */}
+        <div className="w-full">
+          <AboutCTA
+            section={ctaSection}
+            isLoading={isPageLoading}
+          />
+        </div>
+      </main>
     </>
   );
 };

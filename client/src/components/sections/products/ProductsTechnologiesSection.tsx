@@ -40,8 +40,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
           className="container-custom text-center mb-5"
         >
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            <span className="text-lg mr-2">🔧</span>
-            Technologies
+            🔧 Technologies
           </div>
           <div className="text-center mb-16">
             <h2 className="text-2xl md:text-3xl font-bold text-blue-900 dark:text-blue-200 mb-2">{customSection?.title || "Powered by Advanced Technologies"}</h2>

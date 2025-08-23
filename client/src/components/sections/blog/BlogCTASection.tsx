@@ -1,10 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import type { PageContent } from '@/lib/types/core';
-
-interface BlogCTASectionProps {
-    pageContent: PageContent;
-}
+import type { BlogCTASectionProps } from '@/lib/types';
 
 const BlogCTASection: React.FC<BlogCTASectionProps> = ({ pageContent }) => {
     // Get CTA section from page content

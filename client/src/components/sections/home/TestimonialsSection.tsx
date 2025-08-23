@@ -7,14 +7,9 @@ import {
   CircuitBoard, 
   Code 
 } from 'lucide-react';
-import type { TestimonialProps } from '@/lib/types/content';
-import type { PageContent } from '@/lib/types/core';
-
-interface TestimonialsSectionProps {
-  homePageContent: PageContent;
-  testimonials: TestimonialProps[];
-  isLoading: boolean;
-}
+import { TestimonialProps } from '@/lib/types/content';
+import { PageContent } from '@/lib/types/core';
+import { TestimonialsSectionProps } from '@/lib/types/components';
 
 const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ homePageContent, testimonials, isLoading }) => {
   // Extract section content from homePageContent

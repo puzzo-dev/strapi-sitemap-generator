@@ -11,11 +11,7 @@ import {
 } from 'lucide-react';
 import { PageContent } from '@/lib/types/core';
 import { Button } from '@/components/ui/button';
-
-interface AboutSectionProps {
-    homePageContent: PageContent;
-    isLoading: boolean;
-}
+import { AboutSectionProps } from '@/lib/types/components';
 
 const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
 

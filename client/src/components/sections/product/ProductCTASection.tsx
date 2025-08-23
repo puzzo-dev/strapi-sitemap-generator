@@ -3,11 +3,7 @@ import { motion } from 'framer-motion';
 import GradientButton from '@/components/ui/GradientButton';
 import { PageContent, PageSection } from '@/lib/types/core';
 import { fadeInUp } from '@/lib/animations';
-
-interface ProductCTASectionProps {
-  isLoading: boolean;
-  pageContent?: PageContent;
-}
+import { ProductCTASectionProps } from '@/lib/types/components';
 
 const ProductCTASection: React.FC<ProductCTASectionProps> = ({
   isLoading,

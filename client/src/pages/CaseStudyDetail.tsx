@@ -88,8 +88,8 @@ const CaseStudyDetail: React.FC = () => {
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+          <div className="max-w-6xl mx-auto">
             {/* Back Button */}
             <AppLink 
               href="/case-studies" 
@@ -122,30 +122,30 @@ const CaseStudyDetail: React.FC = () => {
             </div>
 
             {/* Project Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <div className="bg-white dark:bg-blue-900/30 rounded-lg p-6 text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-300 mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12 md:mb-16">
+              <div className="bg-white dark:bg-blue-900/30 rounded-lg p-6 lg:p-8 text-center shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-2xl lg:text-3xl font-bold text-blue-600 dark:text-blue-300 mb-2">
                   {caseStudy.client}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Client</div>
+                <div className="text-sm lg:text-base text-gray-600 dark:text-gray-300 font-medium">Client</div>
               </div>
-              <div className="bg-white dark:bg-blue-900/30 rounded-lg p-6 text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-300 mb-2">
+              <div className="bg-white dark:bg-blue-900/30 rounded-lg p-6 lg:p-8 text-center shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-2xl lg:text-3xl font-bold text-blue-600 dark:text-blue-300 mb-2">
                   {caseStudy.industry}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Industry</div>
+                <div className="text-sm lg:text-base text-gray-600 dark:text-gray-300 font-medium">Industry</div>
               </div>
-              <div className="bg-white dark:bg-blue-900/30 rounded-lg p-6 text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-300 mb-2">
+              <div className="bg-white dark:bg-blue-900/30 rounded-lg p-6 lg:p-8 text-center shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-2xl lg:text-3xl font-bold text-blue-600 dark:text-blue-300 mb-2">
                   {caseStudy.duration}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Duration</div>
+                <div className="text-sm lg:text-base text-gray-600 dark:text-gray-300 font-medium">Duration</div>
               </div>
-              <div className="bg-white dark:bg-blue-900/30 rounded-lg p-6 text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-300 mb-2">
+              <div className="bg-white dark:bg-blue-900/30 rounded-lg p-6 lg:p-8 text-center shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-2xl lg:text-3xl font-bold text-blue-600 dark:text-blue-300 mb-2">
                   {caseStudy.teamSize}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Team Size</div>
+                <div className="text-sm lg:text-base text-gray-600 dark:text-gray-300 font-medium">Team Size</div>
               </div>
             </div>
           </div>
@@ -153,10 +153,10 @@ const CaseStudyDetail: React.FC = () => {
       </section>
 
       {/* Content Section */}
-      <section className="py-16 bg-white dark:bg-[#0a192f]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <section className="py-16 md:py-24 bg-white dark:bg-[#0a192f]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 xl:gap-16">
               {/* Main Content */}
               <div className="lg:col-span-2">
                 {/* Challenge */}
@@ -261,9 +261,9 @@ const CaseStudyDetail: React.FC = () => {
 
       {/* Testimonial Section */}
       {caseStudy.testimonial && (
-        <section className="py-16 bg-blue-50 dark:bg-blue-900/20">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
+        <section className="py-16 md:py-24 bg-blue-50 dark:bg-blue-900/20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+            <div className="max-w-5xl mx-auto text-center">
               <div className="bg-white dark:bg-blue-900/30 rounded-lg p-8 md:p-12">
                 <div className="text-4xl text-blue-300 dark:text-blue-400 mb-6">"</div>
                 <blockquote className="text-xl text-gray-700 dark:text-gray-200 mb-6 italic">
@@ -282,12 +282,12 @@ const CaseStudyDetail: React.FC = () => {
       )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-16 md:py-24 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 text-center">
           <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-6">
             Ready to Start Your Success Story?
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
             Let's discuss how we can help transform your business with innovative technology solutions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -5,7 +5,8 @@
  * that appears 100+ times across the codebase.
  */
 
-import { PageContent, SectionItem } from '@/lib/types';
+import { PageContent, PageSection } from '@/lib/types';
+import { isSectionVisible, filterVisibleSections } from './visibility-helpers';
 
 export type SectionType = 
   | 'hero'
@@ -32,8 +33,19 @@ export type SectionType =
 export function findSection(
   pageContent: PageContent | null | undefined,
   type: SectionType
-): SectionItem | undefined {
+): PageSection | undefined {
   return pageContent?.sections?.find(s => s.type === type);
+}
+
+/**
+ * Find a visible section by type
+ */
+export function findVisibleSection(
+  pageContent: PageContent | null | undefined,
+  type: SectionType
+): PageSection | undefined {
+  const section = findSection(pageContent, type);
+  return section && isSectionVisible(section) ? section : undefined;
 }
 
 /**
@@ -68,8 +80,20 @@ export function getSectionWithFallback<T>(
   pageContent: PageContent | null | undefined,
   type: SectionType,
   fallback?: T
-): SectionItem | T | undefined {
+): PageSection | T | undefined {
   const section = findSection(pageContent, type);
+  return section || fallback;
+}
+
+/**
+ * Get visible section with fallback
+ */
+export function getVisibleSectionWithFallback<T>(
+  pageContent: PageContent | null | undefined,
+  type: SectionType,
+  fallback?: T
+): PageSection | T | undefined {
+  const section = findVisibleSection(pageContent, type);
   return section || fallback;
 }
 
@@ -84,17 +108,53 @@ export function hasSection(
 }
 
 /**
+ * Check if a visible section exists
+ */
+export function hasVisibleSection(
+  pageContent: PageContent | null | undefined,
+  type: SectionType
+): boolean {
+  return !!findVisibleSection(pageContent, type);
+}
+
+/**
  * Get multiple sections at once
  */
 export function findSections(
   pageContent: PageContent | null | undefined,
   types: SectionType[]
-): Record<SectionType, SectionItem | undefined> {
-  const result: Partial<Record<SectionType, SectionItem | undefined>> = {};
+): Record<SectionType, PageSection | undefined> {
+  const result: Partial<Record<SectionType, PageSection | undefined>> = {};
   
   for (const type of types) {
     result[type] = findSection(pageContent, type);
   }
   
-  return result as Record<SectionType, SectionItem | undefined>;
+  return result as Record<SectionType, PageSection | undefined>;
+}
+
+/**
+ * Find multiple visible sections at once
+ */
+export function findVisibleSections(
+  pageContent: PageContent | null | undefined,
+  types: SectionType[]
+): Record<SectionType, PageSection | undefined> {
+  const result: Partial<Record<SectionType, PageSection | undefined>> = {};
+  
+  for (const type of types) {
+    result[type] = findVisibleSection(pageContent, type);
+  }
+  
+  return result as Record<SectionType, PageSection | undefined>;
+}
+
+/**
+ * Get all visible sections from page content
+ */
+export function getAllVisibleSections(
+  pageContent: PageContent | null | undefined
+): PageSection[] {
+  if (!pageContent?.sections) return [];
+  return filterVisibleSections(pageContent.sections);
 }

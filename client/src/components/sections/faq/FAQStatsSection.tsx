@@ -2,12 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { FAQItem, FAQCategory } from '@/lib/types/content';
 import { HelpCircle, Users, Clock, CheckCircle } from 'lucide-react';
-
-interface FAQStatsSectionProps {
-    categories: FAQCategory[];
-    faqItems: FAQItem[];
-    className?: string;
-}
+import { FAQStatsSectionProps } from '@/lib/types/components';
 
 const FAQStatsSection: React.FC<FAQStatsSectionProps> = ({
     categories,

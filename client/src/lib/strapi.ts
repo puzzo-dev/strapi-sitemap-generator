@@ -11,35 +11,21 @@ import {
   defaultSiteConfig,
 } from '@/lib/data/';
 import {
-  ProductProps,
-  ServiceProps,
-  TestimonialProps,
-  ContactFormData,
   NavItem,
   SocialLink,
-  FooterColumn,
   SiteConfig,
-  PageContent,
+  LanguageConfig,
   TeamMember,
   JobListing,
   BlogPost,
   BlogCategory,
-  BlogComment,
-  FooterProps,
+  ClientLogo,
+  PageContent,
+  ContactFormData,
+  FooterColumn,
   FAQItem,
   BookingFormData
-} from '@/lib/types';
-
-// Import fallback utilities
-import { 
-  withFallback, 
-  getUIText, 
-  getPageContent, 
-  getContentList,
-  UI_TEXT_FALLBACKS,
-  PAGE_FALLBACKS,
-  CONTENT_FALLBACKS 
-} from '@/lib/fallbacks';
+} from './types';
 
 // Constants for API integration
 const STRAPI_URL = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
@@ -361,9 +347,9 @@ export async function getUITranslations(language: string = currentLanguage): Pro
 }
 
 /**
- * Get page content by slug from Strapi API
+ * Get page content by slug from Strapi API (legacy function - use getPageContent with language awareness)
  */
-export async function getPageContent(slug: string): Promise<PageContent | null> {
+export async function getPageContentBySlug(slug: string): Promise<PageContent | null> {
   try {
     if (!STRAPI_API_TOKEN) {
       console.warn('No Strapi API token provided, returning null');
@@ -932,6 +918,170 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 }
 
 /**
+ * Get analytics configuration from Strapi CMS
+ */
+export async function getAnalyticsConfig(language?: string): Promise<any> {
+  try {
+    const STRAPI_API_URL = import.meta.env.VITE_STRAPI_API_URL;
+    const STRAPI_API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
+
+    if (STRAPI_API_URL && STRAPI_API_TOKEN) {
+      const lang = language || 'en';
+      const response = await fetch(`${STRAPI_API_URL}/api/analytics-config?locale=${lang}`, {
+        headers: {
+          'Authorization': `Bearer ${STRAPI_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.data?.attributes || null;
+      }
+    }
+
+    // Fallback configuration - minimal defaults when Strapi is unavailable
+    return {
+      enabled: false, // Disabled by default when no Strapi config
+      debugMode: false,
+      cookieConsent: true,
+      dataRetentionDays: 365,
+      anonymizeIP: true,
+      googleAnalytics: {
+        measurementId: '',
+        enabled: false,
+        enhancedEcommerce: false,
+        customDimensions: [],
+        customMetrics: []
+      },
+      facebookPixel: {
+        pixelId: '',
+        enabled: false,
+        advancedMatching: false,
+        automaticMatching: false,
+        customEvents: []
+      },
+      matomo: {
+        siteId: '1',
+        url: '',
+        enabled: false,
+        trackSubdomains: false,
+        cookieDomain: window.location.hostname,
+        domains: [window.location.hostname]
+      }
+    };
+  } catch (error) {
+    console.warn('Error fetching analytics config:', error);
+    return null;
+  }
+}
+
+/**
+ * Enhanced language-aware content fetching with improved fallback
+ */
+export async function getLanguageAwareContent<T>(
+  endpoint: string,
+  language: string,
+  fallbackLanguages: string[] = ['en'],
+  options: {
+    populate?: string;
+    filters?: Record<string, any>;
+    sort?: string;
+    pagination?: { page: number; pageSize: number };
+  } = {}
+): Promise<T | null> {
+  const STRAPI_API_URL = import.meta.env.VITE_STRAPI_API_URL;
+  const STRAPI_API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
+
+  if (!STRAPI_API_URL || !STRAPI_API_TOKEN) {
+    console.warn('Strapi configuration missing');
+    return null;
+  }
+
+  const languagesToTry = [language, ...fallbackLanguages].filter((lang, index, arr) => 
+    arr.indexOf(lang) === index
+  );
+
+  for (const lang of languagesToTry) {
+    try {
+      const params = new URLSearchParams({
+        locale: lang,
+        ...(options.populate && { populate: options.populate }),
+        ...(options.sort && { sort: options.sort }),
+        ...(options.pagination && {
+          'pagination[page]': options.pagination.page.toString(),
+          'pagination[pageSize]': options.pagination.pageSize.toString()
+        })
+      });
+
+      // Add filters
+      if (options.filters) {
+        Object.entries(options.filters).forEach(([key, value]) => {
+          params.append(`filters[${key}]`, value);
+        });
+      }
+
+      const response = await fetch(`${STRAPI_API_URL}/api/${endpoint}?${params}`, {
+        headers: {
+          'Authorization': `Bearer ${STRAPI_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.data && (Array.isArray(data.data) ? data.data.length > 0 : data.data)) {
+          return data.data;
+        }
+      }
+    } catch (error) {
+      console.warn(`Error fetching ${endpoint} for language ${lang}:`, error);
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Get page content with language awareness and section visibility
+ */
+export async function getPageContent(
+  pageSlug: string,
+  language: string = 'en',
+  includeHidden: boolean = false
+): Promise<any> {
+  try {
+    const content = await getLanguageAwareContent(
+      `pages/${pageSlug}`,
+      language,
+      ['en'],
+      {
+        populate: 'deep',
+        filters: includeHidden ? {} : { isVisible: true }
+      }
+    );
+
+    if (content) {
+      // Filter sections based on visibility if not including hidden
+      if (!includeHidden && content.attributes?.sections) {
+        content.attributes.sections = content.attributes.sections.filter(
+          (section: any) => section.isVisible !== false
+        );
+      }
+      return content;
+    }
+
+    // Fallback to local data
+    const { pages } = await import('./data');
+    return pages[pageSlug] || null;
+  } catch (error) {
+    console.warn(`Error fetching page content for ${pageSlug}:`, error);
+    const { pages } = await import('./data');
+    return pages[pageSlug] || null;
+  }
+}
+
+/**
  * Get all blog categories from ERPNext
  */
 export async function getBlogCategories(): Promise<BlogCategory[]> {
@@ -1174,6 +1324,75 @@ export async function submitContactForm(data: ContactFormData): Promise<any> {
 /**
  * Submit a booking/appointment request to ERPNext with enhanced event management
  */
+/**
+ * Submit a demo request to ERPNext CRM
+ */
+export async function submitDemoRequest(data: any): Promise<any> {
+  try {
+    // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
+    let ERP_NEXT_URL: string | undefined;
+    let ERP_NEXT_API_KEY: string | undefined;
+    let ERP_NEXT_API_SECRET: string | undefined;
+
+    try {
+      const siteConfig = await getSiteConfig();
+      ERP_NEXT_URL = siteConfig.erpNextUrl;
+      ERP_NEXT_API_KEY = siteConfig.erpNextApiKey;
+      ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret;
+    } catch (error) {
+      console.warn('Could not fetch SiteConfig, using environment variables');
+    }
+
+    // Fallback to environment variables if SiteConfig doesn't have the credentials
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      ERP_NEXT_URL = import.meta.env.VITE_ERP_NEXT_URL;
+      ERP_NEXT_API_KEY = import.meta.env.VITE_ERP_NEXT_API_KEY;
+      ERP_NEXT_API_SECRET = import.meta.env.VITE_ERP_NEXT_API_SECRET;
+    }
+
+    if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+      throw new Error('ERPNext credentials not configured');
+    }
+
+    // Prepare data for ERPNext Lead creation
+    const erpNextData = {
+      lead_name: `${data.firstName} ${data.lastName}`,
+      company_name: data.company,
+      email_id: data.email,
+      phone: data.phone,
+      designation: data.jobTitle,
+      source: data.source || 'Website Demo Request',
+      status: 'Lead',
+      lead_type: 'Client',
+      custom_company_size: data.companySize,
+      custom_product_interest: data.productInterest,
+      custom_preferred_demo_date: data.preferredDate,
+      custom_message: data.message,
+      custom_product_id: data.productId?.toString()
+    };
+
+    // Call ERPNext API
+    const response = await fetch(`${ERP_NEXT_URL}/api/resource/Lead`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `token ${ERP_NEXT_API_KEY}:${ERP_NEXT_API_SECRET}`
+      },
+      body: JSON.stringify(erpNextData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`ERPNext API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error submitting demo request to ERPNext:', error);
+    throw error;
+  }
+}
+
 export async function scheduleAppointment(data: BookingFormData): Promise<any> {
   try {
     // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
