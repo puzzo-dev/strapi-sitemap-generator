@@ -45,9 +45,9 @@ const TeamGrid: React.FC<TeamGridProps> = ({
             initial="initial"
             animate={teamInView ? "animate" : "initial"}
             variants={staggerChildren()}
-            className="py-16 md:py-24 bg-white dark:bg-[#132f4c] overflow-x-hidden"
+            className="py-16 md:py-24 bg-white dark:bg-[#132f4c] overflow-hidden"
         >
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-x-hidden">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-hidden">
                 <div className="max-w-7xl mx-auto text-center mb-16 px-4 sm:px-8">
                     {/* Section Label */}
                     {settings?.label && (
@@ -56,8 +56,7 @@ const TeamGrid: React.FC<TeamGridProps> = ({
                             className="mb-6"
                         >
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300">
-                                <span className="text-lg mr-2">👥</span>
-                                {settings.label}
+                                👥 {settings.label}
                             </div>
                         </motion.div>
                     )}
@@ -92,7 +91,7 @@ const TeamGrid: React.FC<TeamGridProps> = ({
                 {/* Team Grid - Enhanced responsive layout */}
                 <motion.div
                     variants={staggerChildren(0.1)}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-16 max-w-7xl mx-auto px-2 sm:px-4 overflow-x-hidden"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-16 max-w-7xl mx-auto px-2 sm:px-4 overflow-hidden"
                 >
                     {members.map((member, index) => (
                         <motion.div

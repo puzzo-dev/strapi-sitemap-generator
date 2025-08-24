@@ -43,7 +43,7 @@ const BenefitsSection: React.FC<BenefitsSectionProps> = ({
       <div className="container-custom">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+            {/* <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span> */}
             {benefitsSection.settings?.badge || "Benefits & Perks"}
           </div>
           <h2 className="section-title text-blue-900 dark:text-blue-200">{title}</h2>

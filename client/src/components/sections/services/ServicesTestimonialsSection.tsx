@@ -55,8 +55,7 @@ const ServicesTestimonialsSection: React.FC<ServicesTestimonialsSectionProps> = 
             <div className="container-custom">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                        <span className="text-lg mr-2">💬</span>
-                        {testimonialsSection?.badge || "Client Feedback"}
+                        {testimonialsSection?.badge || "💬 Client Feedback"}
                     </div>
                     <h2 className="section-title text-blue-900 dark:text-blue-200">
                         {testimonialsSection?.title || "What Our Clients Say"}

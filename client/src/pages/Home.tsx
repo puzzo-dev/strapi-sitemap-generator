@@ -29,8 +29,10 @@ import {
     caseStudies as fallbackCaseStudies,
     clients as fallbackClients,
     testimonials as fallbackTestimonials,
-    blogPosts as fallbackBlogPosts
+    blogPosts as fallbackBlogPosts,
+    socialLinks
 } from '@/lib/data';
+import { heroStats, heroFeatures } from '@/lib/data/hero';
 
 // Import types
 import { PageContent } from '@/lib/types/core';
@@ -151,7 +153,11 @@ const Home: React.FC = () => {
             <main className="min-h-screen">
                 {/* Hero Section */}
                 {/* <OriginalHero /> */}
-                <ModernHero />
+                <ModernHero 
+                    socialLinks={socialLinks}
+                    stats={heroStats}
+                    features={heroFeatures}
+                />
 
                 {/* Specializations Section (includes services) */}
                 <SpecializationsSection

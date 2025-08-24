@@ -40,7 +40,7 @@ const CareersCTASection: React.FC<CareersCTASectionProps> = ({
                     ) : (
                         <>
                             <div className="inline-flex items-center rounded-full border border-blue-200 bg-blue-100/20 px-3 py-1 text-sm font-medium text-blue-200 mb-4">
-                                <span className="flex h-2 w-2 rounded-full bg-blue-300 mr-2 animate-pulse"></span>
+                                {/* <span className="flex h-2 w-2 rounded-full bg-blue-300 mr-2 animate-pulse"></span> */}
                                 {ctaSection.settings?.badge || "Get Started"}
                             </div>
                             <h2 className="section-title text-white mb-6">

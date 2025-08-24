@@ -22,7 +22,7 @@ const ProductDetailHeroSection: React.FC<ProductDetailHeroSectionProps> = ({
   // Default content if not available in pageContent
   const defaultContent = {
     backButton: "Back to Products",
-    badge: "💻 Software Product",
+    badge: "Software Product",
     requestDemo: "Request Demo",
     liveDemo: "Live Demo"
   };

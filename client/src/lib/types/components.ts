@@ -5,9 +5,9 @@
  * Extracted from inline declarations to improve maintainability
  */
 
-import { PageSection, PageContent } from './core';
-import { BlogPost, BlogCategory, FAQItem, FAQCategory, TestimonialProps, IndustryProps, CaseStudyProps } from './content';
-
+import { PageSection, PageContent, SiteConfig } from './core';
+import { BlogPost, BlogCategory, FAQItem, FAQCategory, TestimonialProps, IndustryProps, CaseStudyProps, ServiceProps, HeroSlide } from './content';
+import { SocialLink } from './layout';
 // ============================================================================
 // SECTION COMPONENT PROPS
 // ============================================================================
@@ -317,6 +317,8 @@ export interface ModernHeroProps {
   services?: ServiceProps[];
   socialLinks?: SocialLink[];
   heroSlides?: HeroSlide[];
+  stats?: { value: string; label: string; }[];
+  features?: { icon: string; label: string; }[];
 }
 
 // ============================================================================

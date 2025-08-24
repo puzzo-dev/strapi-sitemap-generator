@@ -6,42 +6,41 @@ import { JobListing } from '@/lib/types/content';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface OpenPositionsSectionProps {
-    jobListings: JobListing[];
-    isLoading: boolean;
-    pageContent?: PageContent | null;
+  jobListings: JobListing[];
+  isLoading: boolean;
+  pageContent?: PageContent | null;
 }
 
-const OpenPositionsSection: React.FC<OpenPositionsSectionProps> = ({ 
-    jobListings: displayJobListings, 
-    isLoading: isJobsLoading,
-    pageContent
+const OpenPositionsSection: React.FC<OpenPositionsSectionProps> = ({
+  jobListings: displayJobListings,
+  isLoading: isJobsLoading,
+  pageContent
 }) => {
-    // Get open positions section from page content
-    const openPositionsSection = pageContent?.sections?.find(s => s.type === 'jobs');
-    
-    // If no page content or open positions section, don't render anything
-    if (!pageContent || !openPositionsSection) {
-        return null;
-    }
-    
-    const title = openPositionsSection.title;
-    const subtitle = openPositionsSection.subtitle;
-    const backgroundColor = openPositionsSection.backgroundColor;
+  // Get open positions section from page content
+  const openPositionsSection = pageContent?.sections?.find(s => s.type === 'jobs');
+
+  // If no page content or open positions section, don't render anything
+  if (!pageContent || !openPositionsSection) {
+    return null;
+  }
+
+  const title = openPositionsSection.title;
+  const subtitle = openPositionsSection.subtitle;
+  const backgroundColor = openPositionsSection.backgroundColor;
 
   return (
-        <section id="open-positions" className={`content-section ${backgroundColor || 'bg-white dark:bg-[#132f4c]'}`}>
+    <section id="open-positions" className={`content-section ${backgroundColor || 'bg-white dark:bg-[#132f4c]'}`}>
       <div className="container-custom">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            <span className="text-lg mr-2">💼</span>
             {openPositionsSection.settings?.badge || "Current Openings"}
           </div>
-                    <h2 className="section-title text-blue-900 dark:text-blue-200">{title}</h2>
+          <h2 className="section-title text-blue-900 dark:text-blue-200">{title}</h2>
           <p className="section-subtitle">
-                        {subtitle}
+            {subtitle}
           </p>
         </div>
-        
+
         {isJobsLoading ? (
           <div className="flex justify-center items-center py-12">
             <Loader className="h-8 w-8 text-blue-500 animate-spin" />
@@ -71,7 +70,7 @@ const OpenPositionsSection: React.FC<OpenPositionsSectionProps> = ({
                       <p className="text-gray-600 dark:text-gray-300 mb-4">
                         {job.description}
                       </p>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                         <div>
                           <h4 className="font-bold text-gray-800 dark:text-white mb-2">Responsibilities:</h4>
@@ -97,7 +96,7 @@ const OpenPositionsSection: React.FC<OpenPositionsSectionProps> = ({
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="md:ml-6 flex-shrink-0">
                       <GradientButton href={`/careers/${job.slug}`} endIcon={<ArrowRight />}>
                         {openPositionsSection.settings?.applyButton || "Apply Now"}

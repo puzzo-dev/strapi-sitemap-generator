@@ -45,7 +45,7 @@ const DynamicContent: React.FC<DynamicContentProps> = ({ content }) => {
                 );
               case 'code':
                 return (
-                  <pre key={index} className="bg-gray-100 dark:bg-gray-800 p-4 rounded mb-4 overflow-x-auto">
+                  <pre key={index} className="bg-gray-100 dark:bg-gray-800 p-4 rounded mb-4 overflow-auto">
                     <code>{block.code}</code>
                   </pre>
                 );

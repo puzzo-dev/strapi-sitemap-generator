@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { usePageContent } from '@/hooks/useStrapiContent';
 import DynamicContent from '../ui/DynamicContent';
-import LoadingSkeleton from '../ui/LoadingSkeleton';
+import { LoadingSkeletons } from '../ui/LoadingSkeleton';
 import { PolicyPageLayoutProps } from '@/lib/types';
 
 
@@ -70,7 +70,7 @@ const PolicyPageLayout: React.FC<PolicyPageLayoutProps> = ({
         <div className="container-custom">
           <div className="max-w-4xl mx-auto prose prose-blue dark:prose-invert">
             {isLoading ? (
-              <LoadingSkeleton lines={15} />
+              <LoadingSkeletons.Text lines={15} />
             ) : contentDetails?.content ? (
               <DynamicContent content={contentDetails.content} />
             ) : (

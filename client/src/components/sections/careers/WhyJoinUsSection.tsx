@@ -50,8 +50,7 @@ const WhyJoinUsSection: React.FC<WhyJoinUsSectionProps> = ({
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                            <span className="text-lg mr-2">👥</span>
-                            {whyJoinUsSection.settings?.badge}
+                            {whyJoinUsSection.settings?.badge || "Why Join Us"}
                         </div>
 
                         {isLoading ? (

@@ -43,7 +43,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) 
     <div className={`
       relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800
       bg-white dark:bg-gray-900 shadow-sm hover:shadow-md dark:hover:shadow-gray-800/30
-      transition-all duration-300 group h-full
+      transition-all duration-300 group min-h-[200px] h-auto
     `}>
       {/* Animated border effect on hover with rounded corners */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl opacity-0 group-hover:opacity-100">
@@ -64,7 +64,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) 
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-transparent dark:from-[#0a192f]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
       {/* Content */}
-      <div className="p-5 h-full flex flex-col relative z-10">
+      <div className="p-5 flex flex-col relative z-10">
         {/* Icon and title row */}
         <div className="flex flex-col items-start mb-3">
           <div className="w-10 h-10 mb-3 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 transform group-hover:scale-110 transition-transform duration-300 text-blue-500 dark:text-blue-400">

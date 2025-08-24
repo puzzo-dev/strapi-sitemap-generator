@@ -229,6 +229,7 @@ export const homePageContent: PageContent = {
     {
       id: 9,
       type: "cta",
+      badge: "🚀 Get Started",
       title: "Ready to Transform Your Business?",
       subtitle: "Let's discuss how we can help you achieve your digital goals",
       content: "Contact our team today to learn more about our services and how we can help your business succeed in the digital age.",
@@ -1019,6 +1020,7 @@ export const careersPageContent: PageContent = {
       content: "At I-VARSE, we're more than just a technology company – we're a community of passionate innovators dedicated to creating solutions that make a difference. We believe in fostering a culture of creativity, collaboration, and continuous learning.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
+        badge: "👥 Why Join Us",
         items: benefits.getJobBenefits().map(benefit => ({
           ...benefit,
           id: benefit.id || 0
@@ -1041,6 +1043,7 @@ export const careersPageContent: PageContent = {
       content: "Explore our current job openings and find the perfect role for your skills and career goals.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
+        badge: "💼 Current Openings",
         featured: jobListings,
         layout: "list",
         maxDisplay: 6,

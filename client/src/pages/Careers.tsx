@@ -62,7 +62,12 @@ const Careers: React.FC = () => {
 
             {/* Benefits Section */}
             <BenefitsSection
-                benefits={benefitsSection?.settings?.items || []}
+                benefits={(benefitsSection?.settings?.items || []).map(item => ({
+                    id: item.id,
+                    title: item.title,
+                    description: item.description,
+                    icon: item.icon || 'Award' // Provide default icon if missing
+                }))}
                 isLoading={isPageLoading}
                 pageContent={displayPageContent}
             />

@@ -104,6 +104,21 @@ const getDefaultHeroContent = (): HeroSlide => {
   return heroSlides[0]; // Use the first slide as default
 };
 
+// Hero stats configuration
+export const heroStats = [
+  { value: "500+", label: "Projects Delivered" },
+  { value: "10+", label: "Industries Served" },
+  { value: "99.9%", label: "Uptime SLA" }
+];
+
+// Hero features configuration
+export const heroFeatures = [
+  { icon: "Brain", label: "AI Cloud" },
+  { icon: "Smartphone", label: "Mobile Apps" },
+  { icon: "Building2", label: "ERP Systems" },
+  { icon: "Lock", label: "Cybersecurity" }
+];
+
 // Create comprehensive hero props using prop drilling
 export const defaultHeroProps: HeroProps = {
   // Use prop drilling to get hero content from heroSlides
@@ -130,7 +145,11 @@ export const defaultHeroProps: HeroProps = {
   companyLogo: "/src/assets/images/IMG_2247.JPG",
   
   // Optional properties
-  translationKey: "hero-default"
+  translationKey: "hero-default",
+  
+  // Dynamic content
+  stats: heroStats,
+  features: heroFeatures
 };
 
 // Helper functions for accessing hero data

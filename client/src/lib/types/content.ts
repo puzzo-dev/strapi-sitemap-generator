@@ -238,6 +238,17 @@ export interface JobListing {
 }
 
 
+// Hero stats and features types
+export interface HeroStat {
+  value: string;
+  label: string;
+}
+
+export interface HeroFeature {
+  icon: string;
+  label: string;
+}
+
 // Hero and Page-specific types
 export interface HeroProps {
   heroContents?: HeroSlide;
@@ -251,6 +262,8 @@ export interface HeroProps {
   handleMouseLeave: () => void;
   companyLogo: string;
   heroSlides?: HeroSlide[]; // Add this property to include all slides
+  stats?: HeroStat[];
+  features?: HeroFeature[];
 }
 
 export interface HeroSlide {

@@ -19,8 +19,7 @@ const IndustriesCTASection: React.FC<IndustriesCTASectionProps> = ({
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-pulse">
-              <span className="text-lg mr-2">✨</span>
-              Get Started
+              ✨ Get Started
             </div>
             <div className="h-8 bg-blue-100 dark:bg-blue-800/50 rounded mb-4 animate-pulse"></div>
             <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-8 animate-pulse"></div>
@@ -36,7 +35,6 @@ const IndustriesCTASection: React.FC<IndustriesCTASectionProps> = ({
       <div className="container-custom">
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-            <span className="text-lg mr-2">✨</span>
             {settings?.badge || 'Get Started'}
           </div>
           <h2 className="section-title text-blue-900 dark:text-blue-200">

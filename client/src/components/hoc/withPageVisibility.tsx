@@ -21,6 +21,7 @@ export function withPageVisibility<P extends WithPageVisibilityProps>(
     // If page content exists but is not visible, show 404
     if (pageContent && !isPageVisible(pageContent)) {
       return <NotFound />;
+      
     }
 
     // Otherwise render the original component

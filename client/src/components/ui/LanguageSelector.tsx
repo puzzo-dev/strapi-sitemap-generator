@@ -45,7 +45,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) 
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         {compact ? (
           <Button
@@ -72,12 +72,16 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ compact = false }) 
           </Button>
         )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent 
+        align="end" 
+        className="w-48 language-dropdown-content"
+        sideOffset={8}
+      >
         {supportedLanguages.map((lang) => (
           <DropdownMenuItem
             key={lang}
             onClick={() => setLanguage(lang)}
-            className={`flex items-center gap-2 ${currentLanguage === lang ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''
+            className={`flex items-center gap-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 ${currentLanguage === lang ? 'bg-blue-50 dark:bg-blue-900/20 font-semibold' : ''
               }`}
           >
             <span>{getFlag(lang)}</span>

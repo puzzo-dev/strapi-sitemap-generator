@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import IVarseLogo from '@/components/ui/IVarseLogo';
@@ -49,6 +49,20 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navItems = def
 
   const isActive = (path: string) => location === path;
 
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('menu-open');
+    };
+  }, [isOpen]);
+
   return (
     <div
       className={`fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm transition-all duration-300 ${
@@ -57,7 +71,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navItems = def
       onClick={onClose}
     >
       <div
-        className={`fixed top-0 right-0 w-4/5 max-w-md h-full bg-white dark:bg-[#0a1929] shadow-2xl overflow-y-auto transition-all duration-300 ease-out transform ${
+        className={`fixed top-0 right-0 w-[80vw] max-w-sm h-full bg-white dark:bg-[#0a1929] shadow-2xl overflow-y-auto transition-all duration-300 ease-out transform ${
           isOpen ? 'translate-x-0 visible' : 'translate-x-full'
         }`}
         style={{ 

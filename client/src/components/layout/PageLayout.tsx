@@ -126,8 +126,8 @@ const PageLayout: React.FC<PageLayoutProps> = ({
         transition={currentAnimation.transition}
       >
         {isLoading ? (
-          <div className={`container mx-auto px-4 py-16 ${containerClassName}`}>
-            <LoadingSkeletons.Hero className="mb-16" />
+          <div className="mx-auto px-4 py-16">
+            <LoadingSkeletons.Hero className="pb-16" />
             <LoadingSkeletons.Grid items={6} className="mb-16" />
             <LoadingSkeletons.Text lines={5} />
           </div>
