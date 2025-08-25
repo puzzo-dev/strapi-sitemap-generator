@@ -319,6 +319,7 @@ export interface ModernHeroProps {
   heroSlides?: HeroSlide[];
   stats?: { value: string; label: string; }[];
   features?: { icon: string; label: string; }[];
+  badge?: string;
 }
 
 // ============================================================================

@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useBlogPostBySlug, useBlogComments, useBlogPosts, useSiteConfig } from '@/hooks/useStrapiContent';
+import { useToast } from '@/hooks/useToast';
 import { submitBlogComment } from '@/lib/strapi';
 import { generateDummyBlogPost } from '@/lib/blogUtils';
 import { defaultSiteConfig, blogPosts as localBlogPosts } from '@/lib/data/';
@@ -14,6 +15,7 @@ import type { BlogPost } from '@/lib/types/content';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import MetaTags from '@/components/seo/MetaTags';
 import { generateArticleSchema } from '@/components/seo/StructuredData';
+import SocialShareButtons from '@/components/ui/SocialShareButtons';
 
 // Import section components
 import {
@@ -38,6 +40,7 @@ const commentSchema = z.object({
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t } = useTranslation();
+  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [commentTab, setCommentTab] = useState<string>('read'); // 'read' or 'write'
   const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
@@ -91,7 +94,7 @@ const BlogPostPage: React.FC = () => {
     return allPosts
       .filter(p =>
         p.name !== displayPost.name && (
-          p.blogCategories?.some(cat => 
+          p.blogCategories?.some(cat =>
             displayPost.blogCategories?.some(displayCat => displayCat.id === cat.id)
           ) ||
           (p.tags && displayPost.tags && p.tags.some(tag => displayPost.tags?.includes(tag)))
@@ -103,39 +106,6 @@ const BlogPostPage: React.FC = () => {
   // Handle comment form submission
   const onSubmitComment = (data: CommentFormValues) => {
     commentMutation.mutate(data);
-  };
-
-  // Handle share functionality
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: displayPost?.title,
-        text: displayPost?.blogIntro,
-        url: window.location.href
-      }).catch(err => console.error('Error sharing:', err));
-    } else {
-      // Fallback: copy to clipboard
-      handleCopyToClipboard();
-    }
-  };
-
-  const handleCopyToClipboard = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href)
-        .catch(err => console.error('Error copying to clipboard:', err));
-    } else {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = window.location.href;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
-      } catch (err) {
-        console.error('Error copying to clipboard:', err);
-      }
-      document.body.removeChild(textArea);
-    }
   };
 
   // Generate structured data
@@ -219,7 +189,7 @@ const BlogPostPage: React.FC = () => {
             {/* Main content */}
             <div className="lg:w-2/3">
               {/* Post Content */}
-              <BlogPostContentSection post={displayPost} onShare={handleShare} />
+              <BlogPostContentSection post={displayPost} />
 
               {/* Comments Section */}
               <BlogPostCommentsSection

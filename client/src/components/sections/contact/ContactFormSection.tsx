@@ -11,6 +11,7 @@ interface ContactFormSectionProps {
     setFormType: (type: 'contact' | 'booking') => void;
     siteConfig: SiteConfig;
     isLoading: boolean;
+    isDemoRequest?: boolean;
 }
 
 const ContactFormSection: React.FC<ContactFormSectionProps> = ({
@@ -18,6 +19,7 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
     setFormType,
     siteConfig,
     isLoading,
+    isDemoRequest,
 }) => {
     return (
         <section id="contact-form" className={cn(
@@ -28,7 +30,7 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                 <div className="flex flex-col lg:flex-row gap-10">
                     {/* Form Section */}
                     <div className="w-full lg:w-1/2">
-                        <div className="mb-6 flex space-x-4" role="tablist" aria-label="Contact form options">
+                        <div className="mb-6 flex flex-wrap gap-2" role="tablist" aria-label="Contact form options">
                             <Button
                                 variant={formType === 'contact' ? 'default' : 'outline'}
                                 className={formType === 'contact' ? 'gradient-bg' : ''}
@@ -60,7 +62,16 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                                 aria-labelledby="contact-tab"
                                 hidden={formType !== 'contact'}
                             >
-                                {formType === 'contact' && <ContactForm />}
+                                {formType === 'contact' && (
+                                    <ContactForm
+                                        title={isDemoRequest ? "Request Product Demo" : undefined}
+                                        submitText={isDemoRequest ? "Request Demo" : undefined}
+                                        submittingText={isDemoRequest ? "Requesting Demo..." : undefined}
+                                        successMessage={isDemoRequest ? "Demo request submitted successfully! We'll contact you soon." : undefined}
+                                        defaultRequestType={isDemoRequest ? "Product Enquiry" : undefined}
+                                        defaultMessage={isDemoRequest ? "I would like to request a personalized demo of your products and services. Please contact me to schedule a demonstration." : undefined}
+                                    />
+                                )}
                             </div>
                             <div
                                 role="tabpanel"

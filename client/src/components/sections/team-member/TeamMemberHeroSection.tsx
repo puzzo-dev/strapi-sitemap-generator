@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Link } from 'wouter';
-import { ArrowLeft, Briefcase, Mail, Phone, Linkedin, Twitter, Github } from 'lucide-react';
+import { ArrowLeft, Briefcase, Mail, Phone, Linkedin, Twitter, Github, Users, Star, Award, Code, Database, Cpu, Cloud, ShieldCheck, Target, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import AppLink from '@/components/ui/AppLink';
@@ -15,14 +15,14 @@ interface TeamMemberHeroSectionProps {
     pageContent?: PageContent;
 }
 
-const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({ 
-    member, 
-    isLoading = false, 
-    pageContent 
+const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
+    member,
+    isLoading = false,
+    pageContent
 }) => {
     // Get hero section using centralized utility
     const heroSection = findSection(pageContent, 'hero');
-    
+
     // Use the member prop directly - it's already resolved in the parent component
     const currentMember = member;
 
@@ -31,9 +31,9 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
             <section className={`relative overflow-hidden ${heroSection?.backgroundColor || 'bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]'} py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section`}>
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="max-w-6xl mx-auto">
-                        <SkeletonHero 
+                        <SkeletonHero
                             showBadge={true}
-                            titleLines={1} 
+                            titleLines={1}
                             descriptionLines={2}
                             showButtons={false}
                         />
@@ -42,13 +42,75 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
             </section>
         );
     }
-    
+
     return (
         <section className={`relative overflow-hidden ${heroSection?.backgroundColor || 'bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]'} py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section`}>
-            <div className="absolute inset-0 overflow-hidden">
+            {/* Enhanced background elements with tech icons */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {/* Original gradient blurred circles */}
                 <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/20 dark:bg-blue-800/20 rounded-full blur-3xl"></div>
                 <div className="absolute bottom-20 right-10 w-40 h-40 bg-indigo-200/20 dark:bg-indigo-800/20 rounded-full blur-3xl"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-purple-200/20 dark:bg-purple-800/20 rounded-full blur-2xl"></div>
+
+                {/* Professional background icons for team member */}
+                <div className="absolute inset-0 z-0 opacity-4 dark:opacity-8">
+                    {/* User/Team related icons with gentle animations */}
+                    <div className="absolute right-16 top-16">
+                        <Users className="h-24 w-24 text-blue-500/20 dark:text-blue-400/20 animate-pulse" style={{ animationDuration: '6s' } as React.CSSProperties} />
+                    </div>
+
+                    <div className="absolute left-20 top-1/4">
+                        <Target className="h-20 w-20 text-green-500/20 dark:text-green-400/20 animate-pulse" style={{ animationDuration: '4s', animationDelay: '1s' } as React.CSSProperties} />
+                    </div>
+
+                    <div className="absolute right-1/4 bottom-1/3">
+                        <Award className="h-22 w-22 text-yellow-500/20 dark:text-yellow-400/20 animate-pulse" style={{ animationDuration: '5s', animationDelay: '2s' } as React.CSSProperties} />
+                    </div>
+
+                    <div className="absolute left-10 bottom-24">
+                        <Code className="h-18 w-18 text-purple-500/20 dark:text-purple-400/20 animate-pulse" style={{ animationDuration: '4.5s', animationDelay: '0.5s' } as React.CSSProperties} />
+                    </div>
+
+                    <div className="absolute right-8 top-2/5">
+                        <Zap className="h-16 w-16 text-orange-500/20 dark:text-orange-400/20 animate-pulse" style={{ animationDuration: '3.5s', animationDelay: '1.5s' } as React.CSSProperties} />
+                    </div>
+
+                    <div className="absolute left-1/3 top-12">
+                        <Briefcase className="h-14 w-14 text-indigo-500/20 dark:text-indigo-400/20 animate-pulse" style={{ animationDuration: '5.5s', animationDelay: '2.5s' } as React.CSSProperties} />
+                    </div>
+
+                    <div className="absolute left-1/2 bottom-12">
+                        <Star className="h-16 w-16 text-cyan-500/20 dark:text-cyan-400/20 animate-pulse" style={{ animationDuration: '4s', animationDelay: '3s' } as React.CSSProperties} />
+                    </div>
+
+                    <div className="absolute right-1/3 bottom-20">
+                        <Database className="h-12 w-12 text-emerald-500/20 dark:text-emerald-400/20 animate-pulse" style={{ animationDuration: '6s', animationDelay: '1.2s' } as React.CSSProperties} />
+                    </div>
+                </div>
+
+                {/* Subtle floating particles */}
+                <div className="absolute inset-0 z-0 overflow-hidden">
+                    {Array.from({ length: 6 }).map((_, i) => {
+                        const randomLeft = (i * 16.67) % 100;
+                        const randomScale = 0.2 + ((i % 3) * 0.1);
+                        const randomDuration = 8 + ((i % 4) * 1);
+                        const randomDelay = (i % 4) * 1.2;
+
+                        return (
+                            <div
+                                key={`floating-particle-${i}`}
+                                className="absolute h-1 w-1 rounded-full bg-blue-400/20 dark:bg-blue-300/20 animate-pulse"
+                                style={{
+                                    left: `${randomLeft}%`,
+                                    top: `${25 + (i * 10) % 50}%`,
+                                    transform: `scale(${randomScale})`,
+                                    animationDuration: `${randomDuration}s`,
+                                    animationDelay: `${randomDelay}s`
+                                }}
+                            />
+                        );
+                    })}
+                </div>
             </div>
 
             <div className="container mx-auto px-4 relative z-10">
@@ -149,7 +211,7 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
                                             <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
                                                 Location
                                             </h3>
-                                            <p className="text-gray-900 dark:text-white">
+                                            <p className="text-gray-900 dark:text-blue-200">
                                                 {currentMember.location}
                                             </p>
                                         </div>
@@ -159,7 +221,7 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
                                             <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
                                                 Joined
                                             </h3>
-                                            <p className="text-gray-900 dark:text-white">
+                                            <p className="text-gray-900 dark:text-blue-200">
                                                 {currentMember.joinDate}
                                             </p>
                                         </div>

@@ -9,6 +9,7 @@ export { useSeoHelpers } from './useSeoHelpers';
 
 // Strapi content hooks
 export * from './useStrapiContent';
+export { useAds } from './useAds';
 
 // UI hooks
 export { useToast } from './useToast';

@@ -37,14 +37,18 @@ interface ContactFormProps {
   submittingText?: string;
   successMessage?: string;
   errorMessage?: string;
+  defaultRequestType?: string;
+  defaultMessage?: string;
 }
 
-const ContactForm: React.FC<ContactFormProps> = ({ 
+const ContactForm: React.FC<ContactFormProps> = ({
   title,
   submitText,
   submittingText,
   successMessage,
-  errorMessage
+  errorMessage,
+  defaultRequestType,
+  defaultMessage
 }) => {
   const { toast } = useToast();
   const getUITextForms = useUIText('contactUs', 'forms');
@@ -55,7 +59,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
   const getUITextFullName = useUIText('fullName', 'forms');
   const getUITextEmail = useUIText('email', 'forms');
   const { trackFormSubmission, trackEvent } = useAnalytics();
-  
+
   // Use dynamic content with fallbacks
   const formTitle = title || getUITextForms();
   const submitButtonText = submitText || getUITextButtons();
@@ -68,8 +72,8 @@ const ContactForm: React.FC<ContactFormProps> = ({
       fullName: '',
       email: '',
       phone: '',
-      requestType: 'Product Enquiry',
-      message: '',
+      requestType: (defaultRequestType as any) || 'Product Enquiry',
+      message: defaultMessage || '',
     },
   });
 
@@ -153,9 +157,9 @@ const ContactForm: React.FC<ContactFormProps> = ({
               <FormItem>
                 <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{getUITextFullName()} *</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder={getUITextFullName()} 
-                    {...field} 
+                  <Input
+                    placeholder={getUITextFullName()}
+                    {...field}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </FormControl>
@@ -163,7 +167,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="email"
@@ -171,10 +175,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
               <FormItem>
                 <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{getUITextEmail()} *</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder={getUITextEmail()} 
+                  <Input
+                    placeholder={getUITextEmail()}
                     type="email"
-                    {...field} 
+                    {...field}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </FormControl>
@@ -182,7 +186,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="phone"
@@ -190,10 +194,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
               <FormItem>
                 <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.phone} *</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder={UI_TEXT_FALLBACKS.forms.placeholders.phone} 
+                  <Input
+                    placeholder={UI_TEXT_FALLBACKS.forms.placeholders.phone}
                     type="tel"
-                    {...field} 
+                    {...field}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </FormControl>
@@ -201,7 +205,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="requestType"
@@ -224,7 +228,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="message"
@@ -232,10 +236,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
               <FormItem>
                 <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.message} *</FormLabel>
                 <FormControl>
-                  <Textarea 
-                    placeholder={UI_TEXT_FALLBACKS.forms.placeholders.message} 
+                  <Textarea
+                    placeholder={UI_TEXT_FALLBACKS.forms.placeholders.message}
                     rows={4}
-                    {...field} 
+                    {...field}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </FormControl>
@@ -243,7 +247,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
               </FormItem>
             )}
           />
-          
+
           <Button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg text-white font-medium hover:shadow-lg transition"

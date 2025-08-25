@@ -79,6 +79,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
     heroContents: propHeroContents,
+    badge,
     heroData,
     siteConfig,
     services: propServices,
@@ -538,7 +539,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                         ) : (
                             <>
                                 <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                    💻 Digital Innovation
+                                    {badge || "� Digital Innovation"}
                                 </div>
                                 <h1
                                     className="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 relative z-10 animate-fade-in-up"
@@ -547,7 +548,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                     <span className="gradient-text">
                                         {displayTitle.split(" ").slice(0, 2).join(" ")}
                                     </span>{" "}
-                                    {displayTitle.split(" ").slice(2).join(" ")}
+                                    <span className="text-blue-800 dark:text-blue-200">{displayTitle.split(" ").slice(2).join(" ")}</span>
                                 </h1>
                             </>
                         )}
@@ -563,7 +564,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                 ) : (
                                     <>
                                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                            💻 Digital Innovation
+                                            {badge || "� Digital Innovation"}
                                         </div>
                                         <h1
                                             className="heading-xl text-5xl md:text-6xl font-black mb-4 animate-fade-in-up"
@@ -572,7 +573,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                             <span className="gradient-text">
                                                 {displayTitle.split(" ").slice(0, 2).join(" ")}
                                             </span>{" "}
-                                            {displayTitle.split(" ").slice(2).join(" ")}
+                                            <span className="text-blue-800 dark:text-blue-200">{displayTitle.split(" ").slice(2).join(" ")}</span>
                                         </h1>
                                     </>
                                 )}
@@ -583,7 +584,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                 <LoadingSkeletons.Text lines={2} className="space-y-3" />
                             ) : (
                                 <p
-                                    className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up"
+                                    className="text-xl text-blue-700 dark:text-blue-200 mb-8 animate-fade-in-up"
                                     style={{ animationDelay: "0.4s" }}
                                 >
                                     {displaySubtitle}
@@ -614,7 +615,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                             </div>
 
                             {/* Desktop Social Media Links */}
-                            <div className="hidden md:flex items-center space-x-4 text-gray-500 dark:text-gray-400">
+                            <div className="hidden md:flex items-center space-x-4 text-blue-600 dark:text-gray-400">
                                 {isSocialLinksLoading ? (
                                     <div className="flex space-x-4">
                                         {Array(4).fill(0).map((_, i) => (
@@ -680,7 +681,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                                 </GradientButton>
 
                                 {/* Mobile Social Media Links */}
-                                <div className="flex items-center justify-center space-x-2 text-gray-500 dark:text-gray-400">
+                                <div className="flex items-center justify-center space-x-2 text-blue-600 dark:text-gray-400">
                                     {isSocialLinksLoading ? (
                                         <div className="flex space-x-2">
                                             {Array(4).fill(0).map((_, i) => (

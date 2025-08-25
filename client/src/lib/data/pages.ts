@@ -14,6 +14,7 @@ import { caseStudies } from './case-studies';
 
 // Extract hero content from heroSlides using prop drilling
 const extractHeroContent = () => {
+
   const defaultSlide = heroSlides[0]; // Use first slide as default
   return {
     id: 1,
@@ -155,7 +156,7 @@ export const homePageContent: PageContent = {
     {
       id: 6,
       type: "about",
-      title: "About I-VARSE Technologies",
+      title: "About I-Varse Technologies",
       subtitle: "Your trusted partner in digital transformation",
       content: "Founded in 2018, I-VARSE Technologies has been at the forefront of digital innovation in Nigeria, providing cutting-edge technology solutions to businesses across various sectors.\n\nOur mission is to empower businesses through innovative technology solutions that drive growth and efficiency. We strive to be the trusted partner that helps organizations navigate their digital transformation journey.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
@@ -364,14 +365,14 @@ export const aboutPageContent: PageContent = {
   id: 2,
   slug: "about",
   title: "About Us - I-VARSE Technologies",
-  description: "Learn about I-VARSE Technologies, our mission, vision, and the team behind our innovative digital solutions.",
+  description: "Learn about I-Varse Technologies, our mission, vision, and the team behind our innovative digital solutions.",
   metaTitle: "About Us - I-VARSE Technologies",
-  metaDescription: "Learn about I-VARSE Technologies, our mission, vision, and the team behind our innovative digital solutions.",
+  metaDescription: "Learn about I-Varse Technologies, our mission, vision, and the team behind our innovative digital solutions.",
   sections: [
     {
       id: 1,
       type: "hero",
-      title: "About I-VARSE Technologies",
+      title: "About I-Varse Technologies",
       subtitle: "Founded with a vision to revolutionize digital solutions, I-VARSE has been at the forefront of technology innovation since its inception. We combine technical expertise with creative thinking to deliver exceptional results.",
       content: "Founded with a vision to revolutionize digital solutions, I-VARSE has been at the forefront of technology innovation since its inception. We combine technical expertise with creative thinking to deliver exceptional results.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
@@ -392,10 +393,10 @@ export const aboutPageContent: PageContent = {
       content: "At I-VARSE, our mission is to empower businesses through innovative technology solutions that drive growth and efficiency. We strive to be the trusted partner that helps organizations navigate their digital transformation journey.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
-        missionLabel: "Our Mission",
+        missionLabel: "🚩 Our Mission",
         missionTitle: "Empowering Digital Transformation",
         missionText: "At I-VARSE, our mission is to empower businesses through innovative technology solutions that drive growth and efficiency. We strive to be the trusted partner that helps organizations navigate their digital transformation journey.",
-        visionLabel: "Our Vision",
+        visionLabel: "🌍 Our Vision",
         visionTitle: "Leading Digital Innovation",
         visionText: "To be the leading digital innovation partner for businesses across Africa, known for delivering cutting-edge solutions that drive real business value and sustainable growth.",
         image: "/src/assets/images/IMG_2255.JPG",
@@ -454,6 +455,7 @@ export const aboutPageContent: PageContent = {
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
         label: "Our Team",
+        badge: "👥 Our Team",
         teamMembers: defaultTeamMembers,
         layout: "grid",
         columns: 4,
@@ -536,7 +538,7 @@ export const servicesPageContent: PageContent = {
       id: 1,
       type: "hero",
       badge: "🛠️ Professional Services",
-      title: "Professional Services",
+      title: "Comprehensive Digital Solutions",
       subtitle: "Expert digital solutions tailored to your business needs",
       content: "We offer comprehensive digital services designed to help your business thrive in the modern marketplace. From web development to cloud infrastructure, we have the expertise to deliver results.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
@@ -942,6 +944,8 @@ export const teamPageContent: PageContent = {
       content: "Our team of experienced professionals brings together diverse expertise to deliver exceptional results for our clients.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
+        label: "Our Team",
+        badge: "👥 Our Team",
         teamMembers: defaultTeamMembers,
         layout: "grid",
         columns: 4,
@@ -1016,7 +1020,7 @@ export const careersPageContent: PageContent = {
       id: 2,
       type: "custom",
       title: "Why Join Us",
-      subtitle: "What makes working at I-VARSE special",
+      subtitle: "Be part of a dynamic and innovative team",
       content: "At I-VARSE, we're more than just a technology company – we're a community of passionate innovators dedicated to creating solutions that make a difference. We believe in fostering a culture of creativity, collaboration, and continuous learning.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
@@ -1193,7 +1197,7 @@ export const blogPageContent: PageContent = {
     {
       id: 1,
       type: "hero",
-      title: "Tech Insights",
+      title: "Latest Tech Insights",
       subtitle: "Latest insights and trends",
       content: "Stay updated with the latest insights, trends, and best practices in technology and digital transformation.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
@@ -1300,7 +1304,7 @@ export const serviceDetailPageContent: PageContent = {
     {
       id: 1,
       type: "hero",
-      title: "Service Details",
+      title: "Detailed Service Information",
       subtitle: "Comprehensive service information",
       content: "Learn more about our services and how we can help your business achieve its goals.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
@@ -1327,7 +1331,7 @@ export const productDetailPageContent: PageContent = {
     {
       id: 1,
       type: "hero",
-      title: "Product Details",
+      title: "Complete Product Details",
       subtitle: "Comprehensive product information",
       content: "Learn more about our products and how they can help your business.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
@@ -1354,7 +1358,7 @@ export const jobDetailPageContent: PageContent = {
     {
       id: 1,
       type: "hero",
-      title: "Job Details",
+      title: "Explore Job Details",
       subtitle: "Career opportunity information",
       content: "Learn more about this exciting career opportunity at I-VARSE Technologies.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",

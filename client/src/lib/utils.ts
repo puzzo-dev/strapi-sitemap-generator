@@ -8,15 +8,15 @@ export function cn(...inputs: ClassValue[]) {
 export function formatDate(dateString: string | undefined): string {
   // Return empty string if dateString is undefined or empty
   if (!dateString) return '';
-  
+
   try {
     const date = new Date(dateString);
-    
+
     // Check if date is valid
     if (isNaN(date.getTime())) {
       return '';
     }
-    
+
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
@@ -40,3 +40,18 @@ export type SupportedLanguage = string; // Now dynamic from Strapi
 export const getSupportedLanguages = (languageConfig?: { supportedLanguages: string[] }): string[] => {
   return languageConfig?.supportedLanguages || [...DEFAULT_SUPPORTED_LANGUAGES];
 };
+
+/**
+ * Extract URL path from UrlProps or string
+ */
+export function getUrlPath(url: any): string {
+  if (typeof url === 'string') return url;
+  return url?.url || '/';
+}
+
+/**
+ * Filter navigation items to show only visible ones
+ */
+export function filterVisibleNavItems(navItems: any[]): any[] {
+  return navItems.filter(item => item.isVisible !== false);
+}

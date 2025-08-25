@@ -50,9 +50,11 @@ const ProductCTASection: React.FC<ProductCTASectionProps> = ({
             <p className="text-white/90 mb-8">
               {subtitle}
             </p>
-            <GradientButton href={primaryButton?.href} size="lg" variant="light">
-              {primaryButton?.children || primaryButton?.title || 'Get Started'}
-            </GradientButton>
+            <div className="flex justify-center">
+              <GradientButton href={primaryButton?.href} size="lg" variant="light">
+                {primaryButton?.children || primaryButton?.title || 'Get Started'}
+              </GradientButton>
+            </div>
           </div>
         </motion.div>
       </div>

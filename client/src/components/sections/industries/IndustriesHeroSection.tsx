@@ -62,7 +62,7 @@ const IndustriesHeroSection: React.FC<IndustriesHeroSectionProps> = ({
                     ) : (
                         <>
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+
                                 {settings?.overline || 'Industry Solutions'}
                             </div>
 
@@ -75,17 +75,22 @@ const IndustriesHeroSection: React.FC<IndustriesHeroSectionProps> = ({
 
                                         return (
                                             <>
-                                                {regularWords}{' '}
+                                                <span className="text-blue-800 dark:text-blue-200">{regularWords}</span>{' '}
                                                 <span className="gradient-text">
                                                     {highlightedWords}
                                                 </span>
                                             </>
                                         );
                                     })()
-                                ) : null}
+                                ) : (
+                                    <>
+                                        <span className="text-blue-800 dark:text-blue-200">Industries We</span>{' '}
+                                        <span className="gradient-text">Serve</span>
+                                    </>
+                                )}
                             </h1>
 
-                            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                            <p className="text-xl text-blue-700 dark:text-blue-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                                 {subtitle ||
                                     'Explore how our technology expertise empowers organizations across diverse industries to achieve their goals.'}
                             </p>

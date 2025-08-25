@@ -1,10 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'wouter';
+import { ArrowRight } from 'lucide-react';
 import { ProductProps, GalleryItem } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
 import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
 import { cn } from '@/lib/utils';
 import { getThemeColors } from '@/lib/utils/theme-helpers';
+import GradientButton from '@/components/ui/GradientButton';
 
 interface ProductGallerySectionProps {
   product: ProductProps;
@@ -68,7 +71,7 @@ const getMosaicLayoutClass = (index: number, totalItems: number): string => {
     // Pattern for 9 items (3x3 grid)
     ['col-span-2 row-span-2', 'col-span-1 row-span-1', 'col-span-1 row-span-1', 'col-span-1 row-span-1', 'col-span-1 row-span-1', 'col-span-2 row-span-2', 'col-span-1 row-span-1', 'col-span-1 row-span-1', 'col-span-1 row-span-1']
   ];
-  
+
   // Select pattern based on total items
   let pattern: string[];
   if (totalItems <= 6) {
@@ -78,7 +81,7 @@ const getMosaicLayoutClass = (index: number, totalItems: number): string => {
   } else {
     pattern = patterns[2];
   }
-  
+
   return pattern[index % pattern.length] || 'col-span-1 row-span-1';
 };
 
@@ -214,13 +217,14 @@ const ProductGallerySection: React.FC<ProductGallerySectionProps> = ({
           <p className="text-gray-600 dark:text-gray-300 mb-6">
             Want to see more? Request a personalized demo
           </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200"
+          <GradientButton
+            href="/contact?demo=true"
+            size="lg"
+            endIcon={<ArrowRight />}
+            className="inline-flex items-center"
           >
             Request Demo
-          </motion.button>
+          </GradientButton>
         </motion.div>
       </div>
     </section>

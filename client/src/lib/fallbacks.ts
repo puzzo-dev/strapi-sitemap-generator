@@ -260,6 +260,7 @@ export function getPageContent(
       slug: pageSlug,
       metaTitle: 'Page Not Found',
       metaDescription: 'The requested page could not be found.',
+      description:'Page not found',
       sections: []
     };
   }

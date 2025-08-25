@@ -47,7 +47,7 @@ const JobBenefitsSection: React.FC<JobBenefitsSectionProps> = ({
                         variants={fadeInUp(0.2)}
                         className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
                     >
-                        {benefitsContent?.subtitle || "What makes working at I-VARSE special"}
+                        {benefitsContent?.subtitle}
                     </motion.p>
           </div>
 

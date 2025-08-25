@@ -70,13 +70,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) 
           <div className="w-10 h-10 mb-3 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 transform group-hover:scale-110 transition-transform duration-300 text-blue-500 dark:text-blue-400">
             {getIcon()}
           </div>
-          <h3 className="font-bold text-gray-900 dark:text-white text-xs leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+          <h3 className="font-bold text-gray-900 dark:text-white text-lg leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
             {title}
           </h3>
         </div>
 
         {/* Description */}
-        <p className="text-gray-600 dark:text-gray-300 mb-auto text-sm">
+        <p className="text-gray-600 dark:text-gray-300 mb-auto text-base">
           {description}
         </p>
 

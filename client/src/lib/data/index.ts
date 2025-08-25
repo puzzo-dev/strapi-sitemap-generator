@@ -1,6 +1,9 @@
 // Configuration and Navigation
 export * from './config';
 
+// Ads and Marketing
+export * from './ads';
+
 // Hero and UI Components
 export * from './hero';
 

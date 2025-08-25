@@ -48,6 +48,7 @@ export interface ProductProps {
   slug?: string;
   translationKey?: string;
   description: string;
+  shortDescription?: string;
   image?: string;
   gallery?: GalleryItem[];
   keyFeatures: string[];
@@ -169,6 +170,9 @@ export interface FAQPageContent {
   description: string;
   metaTitle: string;
   metaDescription: string;
+  content?: string;
+  categories: FAQCategory[];
+  items: FAQItem[];
 }
 
 // Moved to components.ts

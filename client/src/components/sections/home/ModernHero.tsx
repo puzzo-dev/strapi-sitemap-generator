@@ -13,7 +13,14 @@ import {
 } from "lucide-react";
 import { ModernHeroProps } from '@/lib/types/components';
 import GradientButton from "@/components/ui/GradientButton";
-import { services as localServices, heroSlides as localHeroSlides, heroStats, heroFeatures } from "@/lib/data/";
+import {
+    services as localServices,
+    heroSlides as localHeroSlides,
+    heroStats,
+    heroFeatures,
+    socialLinks,
+    // defaultSiteConfig
+} from "@/lib/data/";
 import {
     scaleUp,
 } from '@/lib/animations';
@@ -47,8 +54,9 @@ const ModernHero: React.FC<ModernHeroProps> = ({
     handleMouseEnter = () => { },
     handleMouseLeave = () => { },
     heroContents: propHeroContents,
-    heroData,
-    siteConfig,
+    badge,
+    // heroData,
+    // siteConfig,
     services: propServices,
     socialLinks: propSocialLinks,
     heroSlides: propHeroSlides,
@@ -61,36 +69,18 @@ const ModernHero: React.FC<ModernHeroProps> = ({
     const isHeroLoading = false; // No longer loading from hook
     const isSiteConfigLoading = false; // No longer loading from hook
 
-    // Use props data with fallbacks
+    // Use props data with fallbacks to local data
     const apiServices = propServices;
-    const socialLinks = propSocialLinks;
+    const displaySocialLinks = propSocialLinks || socialLinks;
     const heroSlides = propHeroSlides || localHeroSlides;
     const stats = propStats || heroStats;
     const features = propFeatures || heroFeatures;
+    // const siteConfiguration = siteConfig || defaultSiteConfig;
 
     // Determine which services to display with fallback to local data
-    const services = useMemo(() => {
-        return apiServices && apiServices.length > 0 ? apiServices : localServices;
-    }, [apiServices]);
-
-    // Determine which hero content to use with fallback to local data
-    const heroContents = useMemo(() => {
-        // First check if heroContents were passed as props
-        if (propHeroContents) {
-            return propHeroContents;
-        }
-        // Then check if we got them from the API
-        if (heroData?.heroContents) {
-            return heroData.heroContents;
-        }
-        // Fall back to local data
-        return localHeroSlides[0];
-    }, [heroData, propHeroContents]);
-
-    // Determine which social links to display
-    const displaySocialLinks = useMemo(() => {
-        return socialLinks && socialLinks.length > 0 ? socialLinks : [];
-    }, [socialLinks]);
+    // const services = useMemo(() => {
+    //     return apiServices && apiServices.length > 0 ? apiServices : localServices;
+    // }, [apiServices]);
 
     // Set up auto-rotation for hero slides
     const [currentSlideIndex, setCurrentSlideIndex] = useState(currentIndex);
@@ -110,44 +100,44 @@ const ModernHero: React.FC<ModernHeroProps> = ({
     // Get the current slide content
     const currentSlide = useMemo(() => {
         return heroSlides && heroSlides.length > 0 ?
-            heroSlides[currentSlideIndex] : heroContents;
-    }, [heroSlides, currentSlideIndex, heroContents]);
+            heroSlides[currentSlideIndex] : propHeroContents;
+    }, [heroSlides, currentSlideIndex, propHeroContents]);
 
-    // Pause rotation on mouse enter
-    const handleHeroMouseEnter = () => {
-        setIsPaused(true);
-        handleMouseEnter();
-    };
+    // // Pause rotation on mouse enter
+    // const handleHeroMouseEnter = () => {
+    //     setIsPaused(true);
+    //     handleMouseEnter();
+    // };
 
-    // Resume rotation on mouse leave
-    const handleHeroMouseLeave = () => {
-        setIsPaused(false);
-        handleMouseLeave();
-    };
+    // // Resume rotation on mouse leave
+    // const handleHeroMouseLeave = () => {
+    //     setIsPaused(false);
+    //     handleMouseLeave();
+    // };
 
     // Use currentSlide for title and subtitle
     const displayTitle =
-        currentSlide.title || "Transforming Digital Futures";
+        currentSlide?.title || "Transforming Digital Futures";
     const displaySubtitle =
-        currentSlide.subtitle ||
+        currentSlide?.subtitle ||
         "Empowering businesses with comprehensive digital transformation solutions that drive innovation, efficiency, and sustainable growth in the modern digital landscape.";
 
     // Get button info from currentSlide
-    const primaryBtnText = currentSlide.primaryButton?.children || "GET STARTED";
-    const primaryBtnUrl = currentSlide.primaryButton?.href || "/services";
-    const secondaryBtnText = currentSlide.secondaryButton?.children || "LEARN MORE";
-    const secondaryBtnUrl = currentSlide.secondaryButton?.href || "/#about";
+    const primaryBtnText = currentSlide?.primaryButton?.children || "GET STARTED";
+    const primaryBtnUrl = currentSlide?.primaryButton?.href || "/services";
+    const secondaryBtnText = currentSlide?.secondaryButton?.children || "LEARN MORE";
+    const secondaryBtnUrl = currentSlide?.secondaryButton?.href || "/#about";
 
     // Use isPageLoading or isHeroLoading as fallback for isLoading
     const showLoading = isPageLoading || isHeroLoading || isSiteConfigLoading;
 
     // Get company logo from site config
-    const companyLogo = siteConfig?.logoLight || "/assets/I-VARSELogo3@3x.png";
+    // const companyLogo = siteConfig?.logoLight || "/assets/I-VARSELogo3@3x.png";
 
     return (
         <section
             className={cn(
-                "h-fit md:h-[calc(100vh-2rem)] relative overflow-hidden py-25 md:pt-24 md:pb-16 hero-section w-full",
+                "h-fit md:h-full relative overflow-hidden py-25 md:pt-24 md:pb-16 hero-section w-full",
                 getThemeColors('background', 'gradient'),
                 getThemeColors('border', 'muted')
             )}
@@ -425,7 +415,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
             <div className="relative z-20 mx-auto h-full px-4 sm:px-6 lg:px-8 max-w-full overflow-hidden w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center relative w-full max-w-full overflow-hidden">
                     {/* Mobile Header (Shows above the slider on mobile) */}
-                    <div className="block lg:hidden w-full mb-4 pt-10">
+                    <div className="block lg:hidden w-full mb-4 pt-5">
                         {showLoading && (
                             <LoadingSkeletons.Text lines={2} className="space-y-3" />
                         )}
@@ -440,8 +430,8 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                             transition={{ duration: 0.6 }}
                             className="hidden md:inline-flex items-center px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-sm"
                         >
-                            <Sparkles className="h-4 w-4 text-blue-400 mr-2" />
-                            <span className="text-blue-300 font-medium">I-Varse Technologies</span>
+                            {/* <Sparkles className="h-4 w-4 text-blue-400 mr-2" /> */}
+                            <span className="text-blue-300 font-medium">{badge}</span>
                         </motion.div>
 
                         {/* Main Headline */}
@@ -458,10 +448,10 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                     fontSynthesis: 'none'
                                 }}>
                                 <span className="gradient-text">{displayTitle.split(" ").slice(0, 2).join(" ")}</span>{" "}
-                                {displayTitle.split(" ").slice(2).join(" ")}
+                                <span className="text-blue-800 dark:text-blue-200">{displayTitle.split(" ").slice(2).join(" ")}</span>
                             </h1>
 
-                            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mt-6 mb-10 leading-relaxed max-w-2xl animate-fade-in-up">
+                            <p className="text-lg md:text-lg text-blue-700 dark:text-blue-200 mt-6 mb-10 leading-relaxed max-w-2xl animate-fade-in-up">
                                 {displaySubtitle}
                             </p>
                         </motion.div>
@@ -471,19 +461,19 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="flex flex-row justify-start items-start sm:items-center gap-4 mb-12 py-4"
+                            className="flex flex-col sm:flex-row justify-start items-stretch sm:items-center gap-3 sm:gap-4 mb-12 py-4"
                         >
                             <GradientButton
                                 href={primaryBtnUrl}
                                 size="lg"
                                 endIcon={<ChevronRight />}
-                                className="w-auto py-3 animate-snowfall z-10"
+                                className="w-full sm:w-auto py-3 animate-snowfall text-sm sm:text-base whitespace-nowrap z-10"
                                 style={{
                                     WebkitBackfaceVisibility: 'hidden',
                                     transform: 'translateZ(0)'
                                 }}
-                                target={currentSlide.primaryButton?.openInNewTab ? "_blank" : undefined}
-                                rel={currentSlide.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                                target={currentSlide?.primaryButton?.openInNewTab ? "_blank" : undefined}
+                                rel={currentSlide?.primaryButton?.isExternal ? "noopener noreferrer" : undefined}
                             >
                                 {primaryBtnText}
                             </GradientButton>
@@ -493,13 +483,13 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                     href={secondaryBtnUrl}
                                     variant="outline"
                                     size="lg"
-                                    className="w-auto py-3 5xl:py-4k-4 5xl:px-4k-8 5xl:text-4k-lg z-10"
+                                    className="w-full sm:w-auto py-3 text-sm sm:text-base whitespace-nowrap z-10"
                                     style={{
                                         WebkitBackfaceVisibility: 'hidden',
                                         transform: 'translateZ(0)'
                                     }}
-                                    target={currentSlide.secondaryButton?.openInNewTab ? "_blank" : undefined}
-                                    rel={currentSlide.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
+                                    target={currentSlide?.secondaryButton?.openInNewTab ? "_blank" : undefined}
+                                    rel={currentSlide?.secondaryButton?.isExternal ? "noopener noreferrer" : undefined}
                                 >
                                     {secondaryBtnText}
                                 </GradientButton>
@@ -523,14 +513,14 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                     Cpu,
                                     CircuitBoard
                                 }[feature.icon] || Brain;
-                                
+
                                 const colors = [
                                     "text-blue-300",
-                                    "text-cyan-300", 
+                                    "text-cyan-300",
                                     "text-purple-300",
                                     "text-green-300"
                                 ];
-                                
+
                                 return (
                                     <div key={index} className={`flex items-center space-x-2 ${colors[index % colors.length]}`}>
                                         <IconComponent className="h-5 w-5" />
@@ -545,15 +535,15 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 1 }}
-                            className="flex md:justify-start gap-6 sm:gap-8 lg:gap-12 pt-8 5xl:pt-4k-12 border-t border-gray-700 py-8"
+                            transition={{ duration: 0.8, delay: 0.5 }}
+                            className="flex flex-wrap md:justify-start gap-4 sm:gap-6 lg:gap-8 border-t border-gray-200 dark:border-gray-700 py-6"
                         >
                             {stats.map((stat, index) => (
-                                <div key={index} className="text-center">
-                                    <div className="text-3xl 5xl:text-4k-4xl font-bold text-primary dark:text-white">
+                                <div key={index} className="text-center min-w-0 flex-shrink-0">
+                                    <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-600 dark:text-blue-400 mb-1">
                                         {stat.value}
                                     </div>
-                                    <div className="text-sm 5xl:text-4k-base dark:text-gray-200 text-gray-500">
+                                    <div className="text-xs md:text-sm text-blue-600 dark:text-gray-600 whitespace-nowrap">
                                         {stat.label}
                                     </div>
                                 </div>
@@ -563,20 +553,25 @@ const ModernHero: React.FC<ModernHeroProps> = ({
 
                     {/* Right Column - Image Slider */}
                     <div className="order-1 md:order-2">
-                        <div className="relative rounded-xl overflow-hidden aspect-video shadow-2xl shadow-blue-900/10 dark:shadow-blue-500/10 fade-in-slide w-full max-w-full mx-auto" onMouseEnter={handleMouseEnter}
+                        {/* Company Badge - Mobile only */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            className="md:hidden inline-flex items-center px-4 py-2 mb-4 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-sm"
+                        >
+                            {/* <Sparkles className="h-4 w-4 text-blue-400 mr-2" /> */}
+                            <span className="text-blue-300 font-medium">{badge}</span>
+                        </motion.div>
+
+                        <div
+                            className="relative rounded-xl overflow-hidden w-full mx-auto
+                                      h-64 sm:h-80 md:h-96 lg:aspect-video
+                                      shadow-2xl shadow-blue-900/10 dark:shadow-blue-500/10 fade-in-slide"
+                            onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                         >
-                            {/* Company Badge */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6 }}
-                                className="md:hidden inline-flex items-center px-4 py-2 my-6 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-sm"
-                            >
-                                <Sparkles className="h-4 w-4 text-blue-400 mr-2" />
-                                <span className="text-blue-300 font-medium">I-Varse Technologies</span>
-                            </motion.div>
-                            <div className="w-full h-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 p-2 sm:p-3">
+                            <div className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 p-2 sm:p-3">
                                 <div className="relative h-full w-full bg-gradient-to-br from-blue-50 to-white dark:from-blue-950 dark:to-gray-900 rounded-lg overflow-hidden">
                                     {/* Overlay for better image visibility */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-transparent to-white/60 dark:from-gray-900/80 dark:via-transparent dark:to-gray-900/60 z-10"></div>
@@ -604,21 +599,20 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                                 {heroSlides.map((slide, index) => (
                                                     <div
                                                         key={slide.id || index}
-                                                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                                                            index === currentSlideIndex ? "opacity-100" : "opacity-0"
-                                                        }`}
+                                                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlideIndex ? "opacity-100" : "opacity-0"
+                                                            }`}
                                                     >
                                                         {slide.backgroundImage ? (
                                                             <img
                                                                 src={slide.backgroundImage}
-                                                                alt={slide.title}
+                                                                alt={slide.title || 'Hero slide'}
                                                                 className="w-full h-full object-cover"
                                                                 loading="lazy"
-                                                                // style={{
-                                                                //     imageRendering: 'crisp-edges',
-                                                                //     WebkitImageRendering: 'crisp-edges',
-                                                                //     msImageRendering: 'crisp-edges'
-                                                                // } as React.CSSProperties}
+                                                            // style={{
+                                                            //     imageRendering: 'crisp-edges',
+                                                            //     WebkitImageRendering: 'crisp-edges',
+                                                            //     msImageRendering: 'crisp-edges'
+                                                            // } as React.CSSProperties}
                                                             />
                                                         ) : (
                                                             <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-lg">
@@ -641,9 +635,9 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                                 </div>
                             </div>
                         </div>
-                        
+
                         {/* Social Links under hero slider image */}
-                        <div className="flex justify-center md:justify-end items-center space-x-6 mt-6 text-gray-500 dark:text-gray-400">
+                        <div className="flex justify-center md:justify-end items-center space-x-6 mt-6 text-blue-600 dark:text-gray-400">
                             {displaySocialLinks.map((link) => (
                                 <a
                                     key={link.id}

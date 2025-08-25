@@ -5,12 +5,12 @@ import {
 export const services: ServiceProps[] = [
   {
     id: 5,
-    title: "CustomERP Solutions (OpsCloud)",
+    title: "CustomERP Solutions (OpsCloud™)",
     slug: "customerp-solutions-opscloud",
     subtitle: "Enterprise Resource Planning Made Simple",
     description:
       "Streamline your business operations with our comprehensive ERP solutions. We implement customized enterprise resource planning systems that integrate all aspects of your business for improved efficiency and productivity.",
-    fullDescription: "Our CustomERP Solutions, powered by OpsCloud, provide a complete enterprise resource planning platform that transforms how businesses manage their operations. From inventory and supply chain management to financial reporting and customer relationship management, our ERP solution integrates all critical business processes into a unified, cloud-based platform. With real-time analytics, automated workflows, and mobile accessibility, businesses can make data-driven decisions faster and more efficiently than ever before.",
+    fullDescription: "Our CustomERP Solutions, powered by OpsCloud™, provide a complete enterprise resource planning platform that transforms how businesses manage their operations. From inventory and supply chain management to financial reporting and customer relationship management, our ERP solution integrates all critical business processes into a unified, cloud-based platform. With real-time analytics, automated workflows, and mobile accessibility, businesses can make data-driven decisions faster and more efficiently than ever before.",
     benefits: {
       id: 1,
       title: "ERP Benefits",

@@ -6,7 +6,7 @@ import GradientButton from '@/components/ui/GradientButton';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import AppLink from '@/components/ui/AppLink';
 import { TeamSectionProps } from '@/lib/types/content';
-import { defaultTeamMembers } from '@/lib/data/';
+import { defaultTeamMembers, defaultHeroProps } from '@/lib/data/';
 import {
     fadeInUp,
     staggerChildren,
@@ -43,13 +43,13 @@ const TeamSection: React.FC<TeamSectionProps> = ({
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto text-center mb-16">
                     {/* Section Label */}
-                    {settings?.label && (
+                    {(settings?.label || settings?.badge) && (
                         <motion.div
                             variants={fadeInUp()}
                             className="mb-6"
                         >
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                                👥 Our Team
+                                {settings?.badge || settings?.label || "👥 Our Team"}
                             </div>
                         </motion.div>
                     )}

@@ -12,46 +12,46 @@ interface ProductsListSectionProps {
   isLoading?: boolean;
 }
 
-const ProductsListSection: React.FC<ProductsListSectionProps> = ({ 
-  pageContent, 
-  products, 
-  isLoading = false 
+const ProductsListSection: React.FC<ProductsListSectionProps> = ({
+  pageContent,
+  products,
+  isLoading = false
 }) => {
   // Get products section from page content
   const productsSection = pageContent?.sections?.find(s => s.type === 'products');
-  
+
   // Use products prop if provided, otherwise extract from page content
   let displayProducts: ProductProps[] = [];
-  
+
   if (products && products.length > 0) {
     // Use products prop directly (like Home page)
     displayProducts = products;
   } else if (productsSection?.settings?.featured) {
     // Fallback to extracting from page content
     const featured = productsSection.settings.featured;
-    
+
     if (Array.isArray(featured) && featured.length > 0) {
       displayProducts = featured as ProductProps[];
     } else if (typeof featured === 'object' && featured !== null && !Array.isArray(featured)) {
       displayProducts = [featured as ProductProps];
     }
   }
-  
+
   // Ensure we only show 4 products maximum
   if (displayProducts.length > 4) {
     displayProducts = displayProducts.slice(0, 4);
   }
 
   return (
-    <motion.section 
-      id="products" 
+    <motion.section
+      id="products"
       initial="initial"
       whileInView="animate"
       viewport={{ once: true, amount: 0.1 }}
       className="content-section bg-gray-50 dark:bg-[#0a1929]"
     >
       <div className="container-custom">
-        <motion.div 
+        <motion.div
           variants={fadeInUp(20, 0.6)}
           className="text-center mb-4"
         >
@@ -67,8 +67,8 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
             </p>
           </div>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           variants={staggerChildren(0.3)}
           className="space-y-16"
         >
@@ -79,7 +79,7 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
                 <CardContent className="p-8">
                   <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/3"></div>
                   <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg mb-8"></div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                       <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/2"></div>
@@ -92,7 +92,7 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
                         ))}
                       </div>
                     </div>
-                    
+
                     <div>
                       <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/2"></div>
                       <div className="space-y-2">
@@ -105,7 +105,7 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="mt-8">
                     <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-1/5"></div>
                   </div>
@@ -127,22 +127,22 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
             // Show products
             displayProducts.map((product, idx) => {
               // More lenient check - just ensure it's a valid object with required fields
-              const isValidProduct = product && 
-                typeof product === 'object' && 
-                product.title && 
+              const isValidProduct = product &&
+                typeof product === 'object' &&
+                product.title &&
                 product.description;
-              
+
               if (!isValidProduct) {
                 return null;
               }
-              
+
               return (
-                <motion.div 
+                <motion.div
                   key={product.id || idx}
-                  variants={fadeInUp(30, 0.7, idx * 0.1)} 
+                  variants={fadeInUp(30, 0.7, idx * 0.1)}
                   className={idx % 2 === 0 ? '' : 'bg-white dark:bg-[#132f4c] py-12 -mx-4 px-4 md:-mx-8 md:px-8 lg:-mx-16 lg:px-16'}
                 >
-                  <ProductCard product={product} isReversed={idx % 2 !== 0} />
+                  <ProductCard item={product} isReversed={idx % 2 !== 0} />
                 </motion.div>
               );
             })

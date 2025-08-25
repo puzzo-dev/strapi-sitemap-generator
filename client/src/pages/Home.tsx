@@ -32,7 +32,7 @@ import {
     blogPosts as fallbackBlogPosts,
     socialLinks
 } from '@/lib/data';
-import { heroStats, heroFeatures } from '@/lib/data/hero';
+import { heroStats, heroFeatures, defaultHeroProps } from '@/lib/data/hero';
 
 // Import types
 import { PageContent } from '@/lib/types/core';
@@ -45,76 +45,76 @@ const Home: React.FC = () => {
     // const pageContentSource = new StrapiPageContentSource(strapiService);
 
     // For now, use fallback page content directly until Strapi is configured
-    const pageContentQuery = { 
-        data: localHomePageContent, 
-        isLoading: false, 
-        error: null, 
-        isSuccess: true, 
-        isError: false 
+    const pageContentQuery = {
+        data: localHomePageContent,
+        isLoading: false,
+        error: null,
+        isSuccess: true,
+        isError: false
     };
 
     // For now, use fallback data directly until Strapi is fully configured
     // This ensures the homepage works while we set up the CMS
-    const servicesQuery = { 
-        data: fallbackServices, 
-        isLoading: false, 
-        error: null, 
-        isSuccess: true, 
+    const servicesQuery = {
+        data: fallbackServices,
+        isLoading: false,
+        error: null,
+        isSuccess: true,
         isError: false,
         isEmpty: false,
         hasData: true,
         count: fallbackServices.length
     };
 
-    const productsQuery = { 
-        data: fallbackProducts, 
-        isLoading: false, 
-        error: null, 
-        isSuccess: true, 
+    const productsQuery = {
+        data: fallbackProducts,
+        isLoading: false,
+        error: null,
+        isSuccess: true,
         isError: false,
         isEmpty: false,
         hasData: true,
         count: fallbackProducts.length
     };
 
-    const caseStudiesQuery = { 
-        data: fallbackCaseStudies, 
-        isLoading: false, 
-        error: null, 
-        isSuccess: true, 
+    const caseStudiesQuery = {
+        data: fallbackCaseStudies,
+        isLoading: false,
+        error: null,
+        isSuccess: true,
         isError: false,
         isEmpty: false,
         hasData: true,
         count: fallbackCaseStudies.length
     };
 
-    const testimonialsQuery = { 
-        data: fallbackTestimonials, 
-        isLoading: false, 
-        error: null, 
-        isSuccess: true, 
+    const testimonialsQuery = {
+        data: fallbackTestimonials,
+        isLoading: false,
+        error: null,
+        isSuccess: true,
         isError: false,
         isEmpty: false,
         hasData: true,
         count: fallbackTestimonials.length
     };
 
-    const clientsQuery = { 
-        data: fallbackClients, 
-        isLoading: false, 
-        error: null, 
-        isSuccess: true, 
+    const clientsQuery = {
+        data: fallbackClients,
+        isLoading: false,
+        error: null,
+        isSuccess: true,
         isError: false,
         isEmpty: false,
         hasData: true,
         count: fallbackClients.length
     };
 
-    const blogPostsQuery = { 
-        data: fallbackBlogPosts, 
-        isLoading: false, 
-        error: null, 
-        isSuccess: true, 
+    const blogPostsQuery = {
+        data: fallbackBlogPosts,
+        isLoading: false,
+        error: null,
+        isSuccess: true,
         isError: false,
         isEmpty: false,
         hasData: true,
@@ -153,7 +153,8 @@ const Home: React.FC = () => {
             <main className="min-h-screen">
                 {/* Hero Section */}
                 {/* <OriginalHero /> */}
-                <ModernHero 
+                <ModernHero
+                    badge={defaultHeroProps.badge}
                     socialLinks={socialLinks}
                     stats={heroStats}
                     features={heroFeatures}

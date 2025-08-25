@@ -91,8 +91,8 @@ const CaseStudyDetail: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <div className="max-w-6xl mx-auto">
             {/* Back Button */}
-            <AppLink 
-              href="/case-studies" 
+            <AppLink
+              href="/case-studies"
               className="inline-flex items-center text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-100 mb-8 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -104,8 +104,21 @@ const CaseStudyDetail: React.FC = () => {
               <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                 📊 Case Study
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-blue-900 dark:text-blue-200 mb-6">
-                {caseStudy.title}
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                {(() => {
+                  const words = caseStudy.title.split(' ');
+                  if (words.length >= 2) {
+                    const firstPart = words.slice(0, 2).join(' ');
+                    const secondPart = words.slice(2).join(' ');
+                    return (
+                      <>
+                        <span className="gradient-text">{firstPart}</span>{' '}
+                        <span className="text-blue-800 dark:text-blue-200">{secondPart}</span>
+                      </>
+                    );
+                  }
+                  return <span className="gradient-text">{caseStudy.title}</span>;
+                })()}
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
                 {caseStudy.description}
@@ -114,8 +127,8 @@ const CaseStudyDetail: React.FC = () => {
 
             {/* Case Study Image */}
             <div className="mb-12">
-              <img 
-                src={caseStudy.image} 
+              <img
+                src={caseStudy.image}
                 alt={caseStudy.title}
                 className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg"
               />
@@ -216,7 +229,7 @@ const CaseStudyDetail: React.FC = () => {
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {caseStudy.technologies.map((tech, index) => (
-                      <span 
+                      <span
                         key={index}
                         className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 text-sm px-3 py-1 rounded-full"
                       >
@@ -232,9 +245,8 @@ const CaseStudyDetail: React.FC = () => {
                     Project Status
                   </h3>
                   <div className="flex items-center">
-                    <div className={`w-3 h-3 rounded-full mr-3 ${
-                      caseStudy.status === 'Completed' ? 'bg-green-500' : 'bg-yellow-500'
-                    }`}></div>
+                    <div className={`w-3 h-3 rounded-full mr-3 ${caseStudy.status === 'Completed' ? 'bg-green-500' : 'bg-yellow-500'
+                      }`}></div>
                     <span className="text-gray-600 dark:text-gray-300">{caseStudy.status}</span>
                   </div>
                 </div>
@@ -291,14 +303,14 @@ const CaseStudyDetail: React.FC = () => {
             Let's discuss how we can help transform your business with innovative technology solutions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <AppLink 
-              href="/contact" 
+            <AppLink
+              href="/contact"
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors"
             >
               Get Started
             </AppLink>
-            <AppLink 
-              href="/case-studies" 
+            <AppLink
+              href="/case-studies"
               className="border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-lg font-medium transition-colors"
             >
               View More Case Studies

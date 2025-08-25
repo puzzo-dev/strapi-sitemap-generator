@@ -4,208 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 4K Display Optimization */
-html {
-  scroll-behavior: smooth;
-  /* Enable hardware acceleration for smoother rendering */
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  /* Optimize text rendering for high-DPI displays */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  /* Enable subpixel rendering for ultra-sharp text */
-  -webkit-text-stroke: 0.01em transparent;
-}
-
-/* 4K and Ultra-High Resolution Display Support */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
-  html {
-    /* Enhanced text rendering for high-DPI displays */
-    -webkit-font-smoothing: subpixel-antialiased;
-    text-rendering: geometricPrecision;
-  }
-}
-
-/* Prevent horizontal scroll and fix double scrollbar */
-html, body {
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-
-body {
-  overflow-y: auto;
-}
-
-#root {
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-/* Mobile-specific overflow prevention */
-@media (max-width: 768px) {
-  * {
-    box-sizing: border-box;
-  }
-  
-  body, html {
-    overflow-x: hidden;
-    max-width: 100vw;
-    overflow-x: hidden;
-  }
-  
-  /* Hero section specific - prevent large decorative elements from causing overflow */
-  .hero-section {
-    max-width: 100vw;
-    overflow-x: hidden;
-  }
-  
-  /* Large absolute positioned elements in hero */
-  .hero-section .absolute {
-    max-width: 100vw;
-  }
-  
-  /* Gradient orbs and tech icons - prevent mobile overflow */
-  .hero-section .absolute.w-96,
-  .hero-section .absolute.w-80,
-  .hero-section .absolute.w-72,
-  .hero-section .absolute.w-64 {
-    max-width: 80vw;
-  }
-  
-  /* Circuit pattern containers */
-  .hero-section .absolute.inset-0 {
-    max-width: 100vw;
-  }
-  
-  /* Tech icons grid - prevent overflow */
-  .hero-section .grid-cols-3 {
-    max-width: 100%;
-  }
-  
-  /* Floating particles container */
-  .hero-section .pointer-events-none {
-    max-width: 100vw;
-  }
-}
-
-/* Mobile menu overflow prevention */
-body.menu-open {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-}
-
-/* Ensure mobile menu doesn't cause horizontal scroll */
-.mobile-menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-}
-
-/* Language dropdown specific fixes for Microsoft Edge */
-.language-dropdown-content {
-  background-color: white !important;
-  border: 1px solid #e5e7eb !important;
-  color: #111827 !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-  position: fixed !important;
-  z-index: 50 !important;
-}
-
-.dark .language-dropdown-content {
-  background-color: #111827 !important;
-  border: 1px solid #374151 !important;
-  color: #f9fafb !important;
-}
-
-/* Microsoft Edge specific fixes */
-@supports (-ms-ime-align: auto) {
-  .language-dropdown-content {
-    background-color: white !important;
-    border: 1px solid #e5e7eb !important;
-  }
-  
-  .dark .language-dropdown-content {
-    background-color: #111827 !important;
-    border: 1px solid #374151 !important;
-  }
-}
-
-/* 4K Display Specific Optimizations - Only for actual 4K screens */
-@media (min-width: 3840px) and (min-height: 2160px) {
-  html {
-    font-size: 18px; /* Slightly larger base font for true 4K displays */
-  }
-}
-
-/* 8K Display Support - Only for actual 8K screens */
-@media (min-width: 7680px) and (min-height: 4320px) {
-  html {
-    font-size: 20px;
-  }
-}
-
 @layer base {
   * {
-    @apply border-border;
-    /* Enhanced box-sizing for precise layouts */
-    box-sizing: border-box;
-    /* Improve rendering performance */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    @apply border-border box-border;
   }
-  
-  /* Prevent horizontal overflow */
-  html, body {
-    overflow-x: hidden;
-    max-width: 100%;
+
+  html,
+  body {
+    @apply overflow-x-hidden;
+    scroll-behavior: smooth;
+    /* Prevent layout shift when dropdowns appear */
+    scrollbar-gutter: stable;
   }
 
   body {
-    @apply antialiased bg-background text-foreground dark:bg-[#0a1929] dark:text-white;
+    @apply antialiased bg-background text-foreground;
     font-family: 'Space Grotesk', sans-serif;
-    /* Ultra-sharp text rendering */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    /* Prevent font scaling issues on high-DPI */
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    /* Enhanced image rendering */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
-
-  /* 4K Image and SVG Optimization */
-  img, svg {
-    /* Ultra-sharp image rendering */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    image-rendering: pixelated;
-    /* Hardware acceleration */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-  }
-
-  /* High-DPI SVG optimization */
-  svg {
-    shape-rendering: geometricPrecision;
-    text-rendering: geometricPrecision;
-    /* Prevent SVG scaling artifacts */
-    vector-effect: non-scaling-stroke;
-  }
-
-  /* 4K-specific image handling */
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    img {
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: optimize-contrast;
-    }
+    /* Prevent layout shift from scrollbar changes */
+    overflow-x: hidden;
+    width: 100vw;
   }
 
   h1,
@@ -214,226 +31,93 @@ body.menu-open {
   h4,
   h5,
   h6 {
-    @apply font-extrabold;
     font-family: 'Chakra Petch', sans-serif;
-    letter-spacing: -0.01em;
-    /* Ultra-sharp text shadows for 4K */
-    text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.08);
-    /* Enhanced font rendering */
-    -webkit-font-smoothing: antialiased;
-    text-rendering: geometricPrecision;
-    /* Prevent font weight variations on high-DPI */
-    font-synthesis: none;
-  }
-
-  /* 4K-Optimized Responsive Typography */
-  html {
-    font-size: 16px;
-  }
-
-  /* Ultra-wide 4K displays */
-  @media (min-width: 3840px) {
-    html {
-      font-size: 20px;
-    }
-  }
-
-  /* Standard 4K displays */
-  @media (min-width: 2560px) and (max-width: 3839px) {
-    html {
-      font-size: 18px;
-    }
-  }
-
-  /* QHD displays */
-  @media (min-width: 1920px) and (max-width: 2559px) {
-    html {
-      font-size: 17px;
-    }
-  }
-
-  @media (max-width: 1536px) {
-    html {
-      font-size: 15px;
-    }
-  }
-
-  @media (max-width: 1280px) {
-    html {
-      font-size: 14px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    html {
-      font-size: 13px;
-    }
-  }
-
-  /* Dynamic heading sizes - excluding hero section */
-  h1:not(.hero-section h1) {
-    @apply text-4xl md:text-5xl lg:text-6xl;
-  }
-
-  h2:not(.hero-section h2) {
-    @apply text-3xl md:text-4xl lg:text-5xl;
-  }
-
-  h3:not(.hero-section h3) {
-    @apply text-2xl md:text-3xl lg:text-4xl;
-  }
-
-  h4:not(.hero-section h4) {
-    @apply text-xl md:text-2xl lg:text-3xl;
-  }
-
-  h5:not(.hero-section h5) {
-    @apply text-lg md:text-xl lg:text-2xl;
-  }
-
-  h6:not(.hero-section h6) {
-    @apply text-base md:text-lg lg:text-xl;
-  }
-
-  p:not(.hero-section p) {
-    @apply text-sm md:text-base lg:text-lg;
+    @apply font-extrabold;
   }
 }
 
 @layer components {
 
-  /* Hero Section with distinctive bottom-left border */
+  /* Prevent layout shift from dropdowns */
+  [data-radix-popper-content-wrapper] {
+    position: fixed !important;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Prevent scrollbar-induced layout shifts */
+  .dropdown-content,
+  .select-content {
+    position: fixed !important;
+    z-index: 9999;
+  }
+
+  /* Essential responsive overflow fixes */
   .hero-section {
-    position: relative;
+    @apply relative overflow-hidden w-full;
   }
 
-  /* .hero-section::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 40%;
-    height: 80px;
-    background-color: white;
-    border-top-right-radius: 100px;
-    z-index: 1;
-  } */
+  /* Mobile-specific fixes */
+  @media (max-width: 768px) {
+    .hero-section {
+      @apply max-w-full;
+    }
 
-  /* Dark mode version */
-  .dark .hero-section::after {
-    background-color: #132f4c;
+    .hero-section .absolute {
+      @apply max-w-full;
+      contain: layout style paint;
+    }
+
+    /* Scale down decorative elements on mobile */
+    .hero-section .absolute.w-32,
+    .hero-section .absolute.w-36,
+    .hero-section .absolute.h-32,
+    .hero-section .absolute.h-36 {
+      @apply scale-75;
+    }
+
+    .hero-section .absolute.w-16,
+    .hero-section .absolute.w-14,
+    .hero-section .absolute.w-12,
+    .hero-section .absolute.h-16,
+    .hero-section .absolute.h-14,
+    .hero-section .absolute.h-12 {
+      @apply scale-90;
+    }
   }
 
-  /* Gradients */
-  .gradient-text {
-    @apply bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] bg-clip-text text-transparent;
+  /* Container with proper responsive padding */
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 max-w-full overflow-hidden;
   }
 
-  .gradient-bg {
-    @apply bg-gradient-to-r from-[#2FB8FF] to-[#0047AB];
+  /* Content sections with proper spacing */
+  .content-section {
+    @apply py-16 sm:py-20 lg:py-24;
   }
 
-  .gradient-accent {
-    @apply bg-gradient-to-r from-blue-500 to-indigo-600;
-  }
-
-  /* 4K-Optimized Typography */
-  .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl 4xl:text-6xl 5xl:text-4k-6xl font-extrabold mb-8 5xl:mb-4k-12;
-    text-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.08);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: geometricPrecision;
-    letter-spacing: -0.025em;
-  }
-
-  .section-subtitle {
-    @apply text-lg md:text-xl 4xl:text-2xl 5xl:text-4k-2xl text-gray-600 dark:text-gray-300 max-w-3xl 5xl:max-w-5xl mx-auto mb-12 5xl:mb-4k-16;
-    font-weight: 500;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-
-
+  /* Heading classes for consistency */
   .heading-xl {
-    @apply text-5xl sm:text-5xl md:text-6xl lg:text-7xl 4xl:text-8xl 5xl:text-4k-8xl font-black;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: geometricPrecision;
-    font-synthesis: none;
+    @apply text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight;
   }
 
   .heading-lg {
-    @apply text-3xl md:text-4xl lg:text-5xl 4xl:text-6xl 5xl:text-4k-6xl font-extrabold;
-    line-height: 1.15;
-    text-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.08);
-    -webkit-font-smoothing: antialiased;
-    letter-spacing: -0.025em;
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight;
   }
 
   .heading-md {
-    @apply text-2xl md:text-3xl 4xl:text-4xl 5xl:text-4k-4xl font-extrabold;
-    line-height: 1.25;
-    text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.06);
-    -webkit-font-smoothing: antialiased;
-    letter-spacing: -0.02em;
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight;
   }
 
-  /* 4K-Optimized Layout */
-  .container-custom {
-    @apply container mx-auto px-4 sm:px-6 lg:px-8 4xl:px-12 5xl:px-4k-16 md:max-w-[95%] 5xl:max-w-[90%] h-full;
-    width: 100%;
-    max-width: 100vw;
-    box-sizing: border-box;
+  .section-title {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight;
   }
 
-  .content-section {
-    @apply py-16 md:py-24 lg:py-32 4xl:py-40 5xl:py-4k-24;
+  .section-subtitle {
+    @apply text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto;
   }
 
-  /* 4K-Optimized Cards & UI Elements */
-  .card {
-    @apply bg-white dark:bg-[#132f4c] rounded-xl 5xl:rounded-4k shadow-lg 5xl:shadow-2xl overflow-hidden border dark:border-[#1e4976] transition-all duration-300;
-    /* Enhanced rendering for 4K */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    /* Crisp borders and shadows */
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  }
-
-  /* Ultra-sharp icons and graphics */
-  .icon-4k {
-    /* Perfect pixel alignment */
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    /* Crisp rendering */
-    image-rendering: -webkit-optimize-contrast;
-    shape-rendering: geometricPrecision;
-  }
-
-  .card-hover {
-    @apply hover:shadow-xl 5xl:hover:shadow-3xl hover:border-blue-300 dark:hover:border-blue-500 transition-all duration-300 hover:-translate-y-1 5xl:hover:-translate-y-2;
-    /* Smooth hardware acceleration */
-    will-change: transform, box-shadow;
-  }
-
-  .button-primary {
-    @apply inline-flex items-center justify-center rounded-lg 5xl:rounded-4k px-6 5xl:px-4k-8 py-3 5xl:py-4k-4 text-base 5xl:text-4k-lg font-medium transition-all;
-    /* Enhanced button rendering */
-    -webkit-font-smoothing: antialiased;
-    transform: translateZ(0);
-  }
-
-  /* Subtle animations */
-  .hover-lift {
-    @apply transition-transform duration-300 hover:-translate-y-1;
-  }
-
-  /* Tech-inspired animations */
+  /* Common animation utilities */
   .animate-float {
     animation: float 8s ease-in-out infinite;
   }
@@ -441,187 +125,31 @@ body.menu-open {
   .animate-pulse-slow {
     animation: pulse-slow 9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
+}
 
-  .animate-pulse-slower {
-    animation: pulse-slow 15s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@layer utilities {
+
+  /* Custom gradients */
+  .gradient-text {
+    @apply bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] bg-clip-text text-transparent;
   }
 
-  .animate-pulse-light {
-    animation: pulse-light 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-bounce-subtle {
-    animation: bounce-subtle 20s ease-in-out infinite;
-  }
-
-  .animate-fade-in {
-    animation: fade-in 1.2s ease-out forwards;
-  }
-
-  .animate-fade-in-up {
-    animation: fade-in-up 1.2s ease-out forwards;
-  }
-
-  .animate-slide-in-right {
-    animation: slide-in-right 1.2s ease-out forwards;
-  }
-
-  .animate-slide-in-left {
-    animation: slide-in-left 1.2s ease-out forwards;
-  }
-
-  .animate-glow {
-    animation: glow 4s ease-in-out infinite alternate;
-  }
-
-  .animate-spin-slow {
-    animation: spin 18s linear infinite;
-  }
-
-  .animate-slideshow {
-    animation: slideshow 24s ease-in-out infinite;
-  }
-
-  /* Loading spinner */
-  .loading-spinner {
-    @apply w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin;
-  }
-
-  /* 4K Mobile and Tablet Optimizations */
-  @media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
-    .heading-xl {
-      @apply text-5xl font-black;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: geometricPrecision;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .heading-xl {
-      @apply text-5xl font-black;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    }
-
-    .heading-lg {
-      @apply text-3xl font-bold;
-      line-height: 1.2;
-    }
-
-    .section-title {
-      @apply text-3xl font-bold mb-6;
-      line-height: 1.2;
-    }
-
-    .section-subtitle {
-      @apply text-base mb-8;
-    }
-
-    .content-section {
-      @apply py-16 space-y-10;
-    }
-
-    /* Improve card spacing on mobile */
-    .card {
-      @apply mb-6;
-    }
-
-    /* Enhance spacing for mobile elements */
-    .mobile-space-y {
-      @apply space-y-8;
-    }
-
-    /* Off-screen mobile menu styling */
-    .mobile-menu {
-      @apply fixed top-0 right-0 w-3/4 h-full bg-white dark:bg-[#0a1929] z-50 shadow-xl transform transition-transform duration-300 ease-in-out overflow-y-auto;
-      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
-    }
-
-    .mobile-menu-open {
-      transform: translateX(0);
-    }
-
-    .mobile-menu-closed {
-      transform: translateX(100%);
-    }
-
-    /* Improved spacing for list items in mobile menu */
-    .mobile-menu-items {
-      @apply py-4 px-6 space-y-6;
-    }
-
-    .mobile-menu-item {
-      @apply block py-3 px-4 text-lg font-medium text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800;
-    }
-  }
-
-  /* Card hover effects for specialization section */
-  .spec-card {
-    @apply border border-gray-100 dark:border-gray-800 p-4 rounded-lg transition-all duration-300 hover:border-blue-200 dark:hover:border-blue-700 hover:shadow-lg hover:shadow-blue-100 dark:hover:shadow-blue-900/20 hover:-translate-y-1;
-  }
-
-  .button-spec {
-    @apply inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 relative overflow-hidden py-1;
-  }
-
-  .button-spec::after {
-    content: '';
-    @apply absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 dark:bg-blue-400 transform scale-x-0 origin-left transition-transform duration-300;
-  }
-
-  .button-spec:hover::after {
-    @apply scale-x-100;
+  .gradient-bg {
+    @apply bg-gradient-to-r from-[#2FB8FF] to-[#0047AB];
   }
 }
 
+/* Essential keyframes */
 @keyframes float {
-  0% {
-    transform: translatey(0px);
+
+  0%,
+  100% {
+    transform: translateY(0px);
   }
 
   50% {
-    transform: translatey(-8px);
+    transform: translateY(-8px);
   }
-
-  100% {
-    transform: translatey(0px);
-  }
-}
-
-/* Slow snowfall-like effect for buttons */
-@keyframes snowfall {
-  0% {
-    transform: translateY(0) translateX(0);
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  25% {
-    transform: translateY(-3px) translateX(1px);
-    box-shadow: 0 5px 15px rgba(45, 129, 255, 0.15);
-  }
-
-  50% {
-    transform: translateY(-6px) translateX(0);
-    box-shadow: 0 8px 20px rgba(45, 129, 255, 0.2);
-  }
-
-  75% {
-    transform: translateY(-3px) translateX(-1px);
-    box-shadow: 0 5px 15px rgba(45, 129, 255, 0.15);
-  }
-
-  100% {
-    transform: translateY(0) translateX(0);
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.animate-snowfall {
-  animation: snowfall 5s ease-in-out infinite;
 }
 
 @keyframes pulse-slow {
@@ -636,270 +164,11 @@ body.menu-open {
   }
 }
 
-@keyframes pulse-light {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.85;
-  }
-}
-
-@keyframes bounce-subtle {
-
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-
-  40% {
-    transform: translateY(-6px);
-  }
-
-  60% {
-    transform: translateY(-3px);
-  }
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.staggered-fade-in>* {
-  opacity: 0;
-  transform: translateY(15px);
-  animation: fade-in-up 0.9s ease-out forwards;
-}
-
-.staggered-fade-in>*:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.staggered-fade-in>*:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.staggered-fade-in>*:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-.staggered-fade-in>*:nth-child(4) {
-  animation-delay: 0.4s;
-}
-
-.staggered-fade-in>*:nth-child(5) {
-  animation-delay: 0.5s;
-}
-
-.staggered-fade-in>*:nth-child(6) {
-  animation-delay: 0.6s;
-}
-
-.staggered-fade-in>*:nth-child(7) {
-  animation-delay: 0.7s;
-}
-
-.staggered-fade-in>*:nth-child(8) {
-  animation-delay: 0.8s;
-}
-
-@keyframes slide-in-right {
-  0% {
-    opacity: 0;
-    transform: translateX(-15px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-in-left {
-  0% {
-    opacity: 0;
-    transform: translateX(15px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 5px rgba(45, 129, 255, 0.2);
-  }
-
-  50% {
-    box-shadow: 0 0 15px rgba(45, 129, 255, 0.4);
-  }
-
-  100% {
-    box-shadow: 0 0 20px rgba(45, 129, 255, 0.6);
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Mobile menu slide in animation */
-@keyframes slide-in-right-menu {
-  0% {
-    transform: translateX(100%);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.mobile-menu-open {
-  transform: translateX(0);
-  animation: slide-in-right-menu 0.3s ease-out forwards;
-}
-
-.mobile-menu-closed {
-  transform: translateX(100%);
-}
-
-/* Slideshow animation for hero image - slower and more mellow transitions */
-@keyframes slideshow {
-
-  0%,
-  25% {
-    opacity: 1;
-    transform: scale(1);
-    z-index: 5;
-  }
-
-  30%,
-  35% {
-    opacity: 0;
-    transform: scale(0.99);
-    z-index: 0;
-  }
-
-  90%,
-  95% {
-    opacity: 0;
-    transform: scale(0.99);
-    z-index: 0;
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    z-index: 5;
-  }
-}
-
-/* Fade in with slide */
-.fade-in-slide {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fade-in-slide 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-}
-
-@keyframes fade-in-slide {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Tech scan effect animation */
-.tech-scan-line {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, transparent, rgba(45, 129, 255, 0.7), transparent);
-  animation: tech-scan 6s linear infinite;
-  opacity: 0.3;
-}
-
-@keyframes tech-scan {
-  0% {
-    top: 0;
-    opacity: 0;
-  }
-
-  5% {
-    opacity: 0.5;
-  }
-
-  95% {
-    opacity: 0.5;
-  }
-
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
-}
-
-/* Loading animation */
-@keyframes loading-pulse {
-
-  0%,
-  100% {
-    opacity: 0.6;
-  }
-
-  50% {
-    opacity: 0.2;
-  }
-}
-
-.loading-skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading-skeleton 1.5s ease-in-out infinite;
-}
-
-@keyframes loading-skeleton {
-  0% {
-    background-position: 200% 0;
-  }
-
-  100% {
-    background-position: -200% 0;
-  }
+/* Line clamp utilities */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

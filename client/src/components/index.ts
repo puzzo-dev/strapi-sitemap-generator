@@ -17,6 +17,7 @@ export { default as IVarseLogo } from './ui/IVarseLogo';
 export { default as LanguageSelector } from './ui/LanguageSelector';
 export { default as LanguageButton } from './ui/LanguageButton';
 export { default as NewsletterForm } from './ui/NewsletterForm';
+export { default as SocialShareButtons } from './ui/SocialShareButtons';
 export { default as ContactForm } from './ui/ContactForm';
 export { default as BookingForm } from './ui/BookingForm';
 export { default as LoadingSkeleton } from './ui/LoadingSkeleton';

@@ -51,9 +51,18 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
   pageContent,
 }) => {
   const { toast } = useToast();
-  
+
   // Get application content from page content settings
   const applicationContent = pageContent?.sections?.find(s => s.type === 'custom')?.settings?.jobContent?.application;
+
+  // Experience options for the dropdown
+  const experienceOptions = [
+    'Fresh Graduate/Entry Level',
+    '1-2 years',
+    '3-5 years',
+    '6-10 years',
+    '10+ years'
+  ];
 
   // Define the application form schema with dynamic validation messages
   const applicationSchema = z.object({
@@ -204,7 +213,7 @@ const JobApplicationSidebar: React.FC<JobApplicationSidebarProps> = ({
                                 <SelectValue placeholder={applicationContent?.placeholders?.yearsOfExperience || `Select ${getUIText(undefined, 'experience', 'forms')}`} />
                               </SelectTrigger>
                               <SelectContent>
-                                {applicationContent?.options?.map((option: string, index: number) => (
+                                {experienceOptions.map((option: string, index: number) => (
                                   <SelectItem key={index} value={option}>{option}</SelectItem>
                                 ))}
                               </SelectContent>

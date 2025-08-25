@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'wouter';
 import { useTranslation } from 'react-i18next';
-import { FiArrowLeft, FiCalendar, FiClock, FiUser, FiTag, FiShare2, FiMessageSquare } from 'react-icons/fi';
+import { FiArrowLeft, FiCalendar, FiClock, FiUser, FiTag, FiMessageSquare } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/useToast';
+import SocialShareButtons from '@/components/ui/SocialShareButtons';
 import type { BlogPost } from '@/lib/types/content';
 import { formatDate } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -17,45 +19,13 @@ interface BlogPostDummySectionProps {
   tags?: string[];
 }
 
-const BlogPostDummySection: React.FC<BlogPostDummySectionProps> = ({ 
-  post, 
+const BlogPostDummySection: React.FC<BlogPostDummySectionProps> = ({
+  post,
   categories = ['Technology', 'Innovation', 'Digital Transformation', 'Business Strategy'],
   tags = ['innovation', 'artificial intelligence', 'machine learning', 'digital transformation', 'cloud computing', 'cybersecurity', 'blockchain', 'IoT']
 }) => {
   const { t } = useTranslation();
   const [commentTab, setCommentTab] = useState<'read' | 'write'>('read');
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: post.title,
-        text: post.description,
-        url: window.location.href,
-      }).catch(err => console.error('Error sharing:', err));
-    } else {
-      // Fallback: copy to clipboard
-      handleCopyToClipboard();
-    }
-  };
-
-  const handleCopyToClipboard = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href)
-        .catch(err => console.error('Error copying to clipboard:', err));
-    } else {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = window.location.href;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
-      } catch (err) {
-        console.error('Error copying to clipboard:', err);
-      }
-      document.body.removeChild(textArea);
-    }
-  };
 
   // Render post content with proper formatting
   const renderPostContent = (content: string) => {
@@ -156,7 +126,7 @@ const BlogPostDummySection: React.FC<BlogPostDummySectionProps> = ({
                   <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
                     {post.blogIntro}
                   </p>
-                  
+
                   <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
                       <FiUser className="mr-2" />
@@ -204,9 +174,13 @@ const BlogPostDummySection: React.FC<BlogPostDummySectionProps> = ({
                 )}
 
                 <div className="mt-10 pt-6 border-t">
-                  <Button variant="outline" onClick={handleShare} className="flex items-center">
-                    <FiShare2 className="mr-2" /> {t('ui.sharePost')}
-                  </Button>
+                  <SocialShareButtons
+                    url={window.location.href}
+                    title={post.title}
+                    description={post.description || post.blogIntro || ''}
+                    variant="compact"
+                    className=""
+                  />
                 </div>
               </motion.div>
 

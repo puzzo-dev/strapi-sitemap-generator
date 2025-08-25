@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'wouter';
 import { ArrowRight, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { ProductCardProps } from '@/lib/types';
+import { SectionItem, ProductCardProps } from '@/lib/types';
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = false }) => {
   // Extract benefits array from PageSection structure
   const benefits = product?.benefits?.items || [];
-  
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 md:gap-8 items-center">
       {/* Image column */}
@@ -63,7 +63,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          {product?.description}
+          {product?.shortDescription || product?.description}
         </motion.p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-5 sm:mb-6 md:mb-8">
@@ -77,7 +77,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
               Key Features
             </h4>
             <ul className="space-y-1.5 sm:space-y-2">
-              {product?.keyFeatures?.map((feature, index) => (
+              {product?.keyFeatures?.map((feature: string, index: number) => (
                 <motion.li
                   key={index}
                   className="flex items-start"
@@ -108,7 +108,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isReversed = false }
               Benefits
             </h4>
             <ul className="space-y-1.5 sm:space-y-2">
-              {benefits.map((benefit, index) => (
+              {benefits.map((benefit: SectionItem, index: number) => (
                 <motion.li
                   key={benefit.id || index}
                   className="flex items-start"

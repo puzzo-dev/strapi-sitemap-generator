@@ -22,11 +22,10 @@ const ServiceDetailDescriptionSection: React.FC<ServiceDetailDescriptionSectionP
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8">
             <div className="prose prose-lg dark:prose-invert max-w-none prose-p:text-gray-600 dark:prose-p:text-gray-300">
-              {service.fullDescription}
-              {service.fullDescription?.split('\n\n').map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              )) || (
-                <p>{service.description}</p>
+              {service.fullDescription && (
+                service.fullDescription.split('\n\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))
               )}
             </div>
           </div>

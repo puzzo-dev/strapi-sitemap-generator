@@ -12,19 +12,20 @@ import { findSection } from '@/lib/utils/section-helpers';
 import { getThemeColors } from '@/lib/utils/theme-helpers';
 import { cn } from '@/lib/utils';
 import BackgroundDecoration from '@/components/ui/BackgroundDecoration';
+import { defaultHeroProps } from '@/lib/data/hero';
 
 interface ServicesHeroSectionProps {
   pageContent?: PageContent | null;
   isLoading?: boolean;
 }
 
-const ServicesHeroSection: React.FC<ServicesHeroSectionProps> = ({ 
-  pageContent}) => {
+const ServicesHeroSection: React.FC<ServicesHeroSectionProps> = ({
+  pageContent }) => {
   // Get hero section from page content using unified helper
   const heroSection = findSection(pageContent, 'hero');
 
   return (
-    <motion.section 
+    <motion.section
       initial="initial"
       animate="animate"
       className={cn(
@@ -37,18 +38,18 @@ const ServicesHeroSection: React.FC<ServicesHeroSectionProps> = ({
       <BackgroundDecoration variant="default" />
 
       <div className="container-custom relative z-10">
-        <motion.div 
+        <motion.div
           variants={staggerChildrenAnimation(0.1)}
           className="text-center max-w-4xl mx-auto"
         >
-          <motion.div 
+          <motion.div
             variants={fadeInUpAnimation(20, 0.6)}
             className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4"
           >
-            {heroSection?.badge}
+            {heroSection?.badge || heroSection?.settings?.overline || defaultHeroProps.badge}
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             variants={fadeInUpAnimation(20, 0.7)}
             className="heading-xl mb-6"
           >
@@ -60,7 +61,7 @@ const ServicesHeroSection: React.FC<ServicesHeroSectionProps> = ({
 
                 return (
                   <>
-                    {regularWords}{' '}
+                    <span className="text-blue-800 dark:text-blue-200">{regularWords}</span>{' '}
                     <span className="gradient-text">
                       {highlightedWords}
                     </span>
@@ -69,12 +70,13 @@ const ServicesHeroSection: React.FC<ServicesHeroSectionProps> = ({
               })()
             ) : (
               <>
-                <span className="gradient-text">Professional Services</span> for<br />Your Business Growth
+                <span className="text-blue-800 dark:text-blue-200">Professional Services for</span><br />
+                <span className="text-blue-800 dark:text-blue-200">Your </span><span className="gradient-text">Business Growth</span>
               </>
             )}
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             variants={fadeInUpAnimation(20, 0.7, 0.3)}
             className={cn(
               "text-xl mb-8",
@@ -83,21 +85,21 @@ const ServicesHeroSection: React.FC<ServicesHeroSectionProps> = ({
           >
             {heroSection?.subtitle || "Transform your business with our comprehensive suite of professional services designed to drive innovation, efficiency, and growth."}
           </motion.p>
-          
-          <motion.div 
+
+          <motion.div
             variants={fadeInUpAnimation(20, 0.7, 0.5)}
             className="flex flex-wrap justify-center gap-4"
           >
-            <GradientButton 
-              href={heroSection?.settings?.primaryButton?.href || "#services"} 
-              size="lg" 
+            <GradientButton
+              href={heroSection?.settings?.primaryButton?.href || "#services"}
+              size="lg"
               endIcon={<ArrowRight />}
             >
               {heroSection?.settings?.primaryButton?.children || "Explore Services"}
             </GradientButton>
-            <GradientButton 
-              href={heroSection?.settings?.secondaryButton?.href || "/contact"} 
-              variant="outline" 
+            <GradientButton
+              href={heroSection?.settings?.secondaryButton?.href || "/contact"}
+              variant="outline"
               size="lg"
             >
               {heroSection?.settings?.secondaryButton?.children || "Get Started"}

@@ -8,4 +8,5 @@ export * from './api';
 export * from './seo';
 export * from './toast';
 export * from './policy';
-export * from './components'; 
+export * from './components';
+export * from './ads'; 

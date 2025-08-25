@@ -24,7 +24,12 @@ import {
   ContactFormData,
   FooterColumn,
   FAQItem,
-  BookingFormData
+  BookingFormData,
+  ProductProps,
+  ServiceProps,
+  TestimonialProps,
+  FooterProps,
+  BlogComment
 } from './types';
 
 // Constants for API integration
@@ -456,7 +461,7 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
             return result.data.map((employee: any, index: number) => {
               const employeeName = employee.employee_name || 'Team Member';
               const slug = employeeName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-              
+
               return {
                 id: employee.name || index + 1,
                 name: employeeName,
@@ -998,7 +1003,7 @@ export async function getLanguageAwareContent<T>(
     return null;
   }
 
-  const languagesToTry = [language, ...fallbackLanguages].filter((lang, index, arr) => 
+  const languagesToTry = [language, ...fallbackLanguages].filter((lang, index, arr) =>
     arr.indexOf(lang) === index
   );
 
@@ -1051,7 +1056,7 @@ export async function getPageContent(
   includeHidden: boolean = false
 ): Promise<any> {
   try {
-    const content = await getLanguageAwareContent(
+    const content = await getLanguageAwareContent<any>(
       `pages/${pageSlug}`,
       language,
       ['en'],
@@ -1061,23 +1066,28 @@ export async function getPageContent(
       }
     );
 
-    if (content) {
+    if (content && typeof content === 'object') {
       // Filter sections based on visibility if not including hidden
-      if (!includeHidden && content.attributes?.sections) {
-        content.attributes.sections = content.attributes.sections.filter(
-          (section: any) => section.isVisible !== false
-        );
+      if (!includeHidden && content.attributes && typeof content.attributes === 'object' && 'sections' in content.attributes) {
+        const attributes = content.attributes as any;
+        if (Array.isArray(attributes.sections)) {
+          attributes.sections = attributes.sections.filter(
+            (section: any) => section.isVisible !== false
+          );
+        }
       }
       return content;
     }
 
     // Fallback to local data
-    const { pages } = await import('./data');
-    return pages[pageSlug] || null;
+    const pagesModule = await import('./data/pages');
+    const pageKey = `${pageSlug}PageContent`;
+    return (pagesModule as any)[pageKey] || null;
   } catch (error) {
     console.warn(`Error fetching page content for ${pageSlug}:`, error);
-    const { pages } = await import('./data');
-    return pages[pageSlug] || null;
+    const pagesModule = await import('./data/pages');
+    const pageKey = `${pageSlug}PageContent`;
+    return (pagesModule as any)[pageKey] || null;
   }
 }
 
@@ -1538,5 +1548,122 @@ export async function submitJobApplication(data: {
   } catch (error) {
     console.error('Error submitting job application:', error);
     throw error;
+  }
+}
+
+/**
+ * Fetch dynamic ads from Strapi
+ */
+export async function getAdsFromStrapi(filters?: {
+  position?: string;
+  targetAudience?: string[];
+  maxAds?: number;
+}): Promise<any[]> {
+  try {
+    // Build query parameters
+    const params = new URLSearchParams();
+    params.append('populate', '*');
+    params.append('locale', currentLanguage);
+
+    // Add active status filter
+    params.append('filters[isActive][$eq]', 'true');
+
+    // Add date filters for active campaigns
+    const now = new Date().toISOString();
+    params.append('filters[$or][0][startDate][$null]', 'true');
+    params.append('filters[$or][1][startDate][$lte]', now);
+    params.append('filters[$and][0][$or][0][endDate][$null]', 'true');
+    params.append('filters[$and][0][$or][1][endDate][$gte]', now);
+
+    // Add position filter if specified
+    if (filters?.position) {
+      params.append('filters[position][$eq]', filters.position);
+    }
+
+    // Add pagination
+    if (filters?.maxAds) {
+      params.append('pagination[limit]', filters.maxAds.toString());
+    }
+
+    // Sort by priority
+    params.append('sort[0]', 'priority:desc');
+    params.append('sort[1]', 'createdAt:desc');
+
+    const response = await fetch(
+      `${STRAPI_URL}/api/ad-slides?${params.toString()}`,
+      { headers: strapiHeaders }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Strapi ads fetch failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return transformStrapiAds(data.data || []);
+  } catch (error) {
+    console.error('Error fetching ads from Strapi:', error);
+    throw error;
+  }
+}
+
+/**
+ * Transform Strapi ads data to match local AdSlide interface
+ */
+function transformStrapiAds(strapiAds: any[]): any[] {
+  return strapiAds.map(item => {
+    const attributes = item.attributes;
+    return {
+      id: item.id,
+      title: attributes.title,
+      subtitle: attributes.subtitle,
+      description: attributes.description,
+      bgColor: attributes.bgColor || 'from-blue-600 to-blue-800',
+      icon: attributes.icon || 'Star',
+      cta: attributes.cta || 'Learn More',
+      ctaUrl: attributes.ctaUrl,
+      image: attributes.image?.data?.attributes?.url ?
+        `${STRAPI_URL}${attributes.image.data.attributes.url}` : undefined,
+      priority: attributes.priority || 999,
+      startDate: attributes.startDate ? new Date(attributes.startDate) : undefined,
+      endDate: attributes.endDate ? new Date(attributes.endDate) : undefined,
+      targetAudience: attributes.targetAudience?.map((ta: any) => ta.audience) || [],
+      clickTrackingId: attributes.clickTrackingId || `strapi-ad-${item.id}`,
+      isActive: attributes.isActive,
+      adType: attributes.adType,
+      position: attributes.position
+    };
+  });
+}
+
+/**
+ * Track ad analytics to Strapi
+ */
+export async function trackAdAnalytics(data: {
+  adId: string;
+  action: 'view' | 'click';
+  timestamp?: Date;
+  userAgent?: string;
+  referrer?: string;
+}): Promise<void> {
+  try {
+    const analyticsData = {
+      data: {
+        adId: data.adId,
+        action: data.action,
+        timestamp: data.timestamp || new Date(),
+        userAgent: data.userAgent || navigator.userAgent,
+        referrer: data.referrer || document.referrer,
+        sessionId: sessionStorage.getItem('session-id') || 'anonymous'
+      }
+    };
+
+    await fetch(`${STRAPI_URL}/api/ad-analytics`, {
+      method: 'POST',
+      headers: strapiHeaders,
+      body: JSON.stringify(analyticsData)
+    });
+  } catch (error) {
+    console.warn('Failed to track ad analytics:', error);
+    // Don't throw error for analytics tracking failures
   }
 }

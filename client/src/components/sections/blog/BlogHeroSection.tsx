@@ -10,6 +10,7 @@ import {
     staggerChildren,
     scaleUp,
 } from '@/lib/animations';
+import { defaultHeroProps } from '@/lib/data/hero';
 
 const BlogHeroSection: React.FC<BlogHeroSectionProps> = ({
     heroSection,
@@ -123,22 +124,37 @@ const BlogHeroSection: React.FC<BlogHeroSectionProps> = ({
             <div className="container-custom mx-auto px-4 relative z-10">
                 <motion.div
                     variants={staggerChildren(0.1)}
-                    className="flex flex-col md:flex-row items-center justify-between gap-8"
+                    className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8"
                 >
                     <motion.div
                         variants={fadeInUp(20, 0.7)}
                         className="w-full md:w-2/3 text-center md:text-left"
                     >
                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                            📝 Insights
+                            {heroSection?.settings?.badge || heroSection?.settings?.overline || defaultHeroProps.badge}
                         </div>
                         <motion.h1
                             variants={fadeInUp(20, 0.7)}
-                            className="text-3xl md:text-4xl font-bold mb-6 text-blue-900 dark:text-blue-200"
+                            className="text-4xl md:text-5xl lg:text-6xl 4xl:text-7xl font-black leading-tight tracking-tight mb-6 relative z-10"
+                            style={{
+                                WebkitFontSmoothing: 'antialiased',
+                                textRendering: 'geometricPrecision',
+                                fontSynthesis: 'none'
+                            }}
                         >
-                            <span className="gradient-text">
-                                {heroSection?.title || pageContent?.title}
-                            </span>
+                            {(() => {
+                                const fullTitle = heroSection?.title || pageContent?.title || "Latest Tech Insights";
+                                const words = fullTitle.split(" ");
+                                const firstPart = words.slice(0, -2).join(" ");
+                                const lastTwoWords = words.slice(-2).join(" ");
+
+                                return (
+                                    <>
+                                        {firstPart && `${firstPart} `}
+                                        <span className="gradient-text">{lastTwoWords}</span>
+                                    </>
+                                );
+                            })()}
                         </motion.h1>
                         <motion.p
                             variants={fadeInUp(20, 0.7, 0.3)}

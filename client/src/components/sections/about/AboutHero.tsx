@@ -12,6 +12,7 @@ import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
 import BackgroundDecoration from '@/components/ui/BackgroundDecoration';
 import { getThemeColors } from '@/lib/utils/theme-helpers';
 import { cn } from '@/lib/utils';
+import { defaultHeroProps } from '@/lib/data/hero';
 
 const AboutHero: React.FC<AboutHeroProps> = ({
     title,
@@ -48,8 +49,8 @@ const AboutHero: React.FC<AboutHeroProps> = ({
                     ) : (
                         <>
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
-                                {settings?.overline || 'About I-VARSE'}
+                                {/*  */}
+                                {settings?.badge || settings?.overline || defaultHeroProps.badge}
                             </div>
 
                             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
@@ -61,7 +62,7 @@ const AboutHero: React.FC<AboutHeroProps> = ({
 
                                         return (
                                             <>
-                                                {regularWords}{' '}
+                                                <span className="text-blue-800 dark:text-blue-200">{regularWords}</span>{' '}
                                                 <span className="gradient-text">
                                                     {highlightedWords}
                                                 </span>

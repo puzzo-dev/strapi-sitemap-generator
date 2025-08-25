@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePageContent, useTestimonials, useFAQItems } from '@/hooks/useStrapiContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { usePageTracking } from '@/contexts/AnalyticsContext';
@@ -19,7 +19,15 @@ import {
 const Contact: React.FC = () => {
   const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
   const [formType, setFormType] = useState<'contact' | 'booking'>('contact');
-  
+  const [isDemoRequest, setIsDemoRequest] = useState(false);
+
+  // Check URL parameters for demo request
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const demoParam = urlParams.get('demo') === 'true';
+    setIsDemoRequest(demoParam);
+  }, []);
+
   // Track page view for analytics
   usePageTracking({
     content_group1: 'contact',
@@ -77,6 +85,7 @@ const Contact: React.FC = () => {
         setFormType={setFormType}
         siteConfig={defaultSiteConfig}
         isLoading={isPageLoading}
+        isDemoRequest={isDemoRequest}
       />
 
       {/* Testimonials Section */}

@@ -15,20 +15,20 @@ interface CareersHeroSectionProps {
     isLoading?: boolean;
 }
 
-const CareersHeroSection: React.FC<CareersHeroSectionProps> = ({ 
-    pageContent, 
-    isLoading = false 
+const CareersHeroSection: React.FC<CareersHeroSectionProps> = ({
+    pageContent,
+    isLoading = false
 }) => {
     const [heroRef, heroInView] = useInView({ triggerOnce: true });
 
     // Get hero section from page content
     const heroSection = pageContent?.sections?.find(s => s.type === 'hero');
-    
+
     // If no page content or hero section, don't render anything
     if (!pageContent || !heroSection) {
         return null;
     }
-    
+
     const title = heroSection.title;
     const subtitle = heroSection.subtitle;
     const primaryButton = heroSection.settings?.primaryButton;
@@ -75,13 +75,13 @@ const CareersHeroSection: React.FC<CareersHeroSectionProps> = ({
                         </>
                     ) : (
                         <>
-                    <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                        {/* <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span> */}
-                        {heroSection.settings?.badge || "Join Our Team"}
-                    </div>
+                            <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
+                                {/*  */}
+                                {heroSection.settings?.badge || "Join Our Team"}
+                            </div>
 
-                    <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                                {title ? (
+                            <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                                {title && (
                                     (() => {
                                         const words = title.split(' ');
                                         const highlightedWords = words.length >= 2 ? words.slice(-2).join(' ') : '';
@@ -89,45 +89,41 @@ const CareersHeroSection: React.FC<CareersHeroSectionProps> = ({
 
                                         return (
                                             <>
-                                                {regularWords}{' '}
+                                                <span className="text-blue-800 dark:text-blue-200">{regularWords}</span>{' '}
                                                 <span className="gradient-text">
                                                     {highlightedWords}
                                                 </span>
                                             </>
                                         );
                                     })()
-                                ) : (
-                                    <>
-                        Join Our <span className="gradient-text">Innovative Team</span>
-                                    </>
                                 )}
-                    </h1>
+                            </h1>
 
-                    <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                            <p className="text-xl text-blue-700 dark:text-blue-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                                 {subtitle || heroSection.settings?.defaultSubtitle}
-                    </p>
+                            </p>
 
-                            <motion.div 
-                                className="flex flex-wrap justify-center gap-4 animate-fade-in-up" 
+                            <motion.div
+                                className="flex flex-wrap justify-center gap-4 animate-fade-in-up"
                                 style={{ animationDelay: '0.6s' }}
                             >
                                 {primaryButton && (
-                                    <GradientButton 
-                                        href={primaryButton.href} 
+                                    <GradientButton
+                                        href={primaryButton.href}
                                         variant={primaryButton.variant as any}
                                         endIcon={primaryButton.endIcon === 'ChevronRight' ? <ChevronRight /> : undefined}
                                     >
                                         {primaryButton.children || primaryButton.title}
-                        </GradientButton>
+                                    </GradientButton>
                                 )}
-                                
+
                                 {secondaryButton && (
-                                    <GradientButton 
-                                        href={secondaryButton.href} 
+                                    <GradientButton
+                                        href={secondaryButton.href}
                                         variant={secondaryButton.variant as any}
                                     >
                                         {secondaryButton.children || secondaryButton.title}
-                        </GradientButton>
+                                    </GradientButton>
                                 )}
                             </motion.div>
                         </>

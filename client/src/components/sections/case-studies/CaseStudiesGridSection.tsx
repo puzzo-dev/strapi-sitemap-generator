@@ -78,10 +78,10 @@ const CaseStudiesGridSection: React.FC<CaseStudiesGridSectionProps> = ({
             {caseStudies.map(cs => (
               <Card key={cs.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg hover:-translate-y-2 bg-white dark:bg-blue-900/20 overflow-hidden">
                 <div className="relative overflow-hidden">
-                  <img 
-                    src={cs.image} 
-                    alt={cs.title} 
-                    className="w-full h-48 md:h-56 object-cover transition-transform duration-300 group-hover:scale-105" 
+                  <img
+                    src={cs.image}
+                    alt={cs.title}
+                    className="w-full h-48 md:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
@@ -99,11 +99,10 @@ const CaseStudiesGridSection: React.FC<CaseStudiesGridSectionProps> = ({
                   </p>
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-blue-800/30">
                     <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                      <span className="mr-4">📅 {cs.duration}</span>
-                      <span>👥 {cs.teamSize}</span>
+                      <span>📅 {cs.duration}</span>
                     </div>
-                    <AppLink 
-                      href={`/case-studies/${cs.slug}`} 
+                    <AppLink
+                      href={`/case-studies/${cs.slug}`}
                       className="inline-flex items-center text-blue-600 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-200 font-semibold transition-colors group/link"
                     >
                       View Details

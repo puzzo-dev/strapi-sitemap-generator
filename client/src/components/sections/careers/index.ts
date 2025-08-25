@@ -3,3 +3,4 @@ export { default as WhyJoinUsSection } from './WhyJoinUsSection';
 export { default as BenefitsSection } from './BenefitsSection';
 export { default as OpenPositionsSection } from './OpenPositionsSection';
 export { default as CareersCTASection } from './CareersCTASection';
+export { default as ExpressionOfInterestForm } from './ExpressionOfInterestForm';

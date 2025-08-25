@@ -8,6 +8,7 @@ export const products: ProductProps[] = [
     title: "Entry-X: Event Ticketing SaaS",
     slug: "entry-x-event-ticketing-saas",
     translationKey: "entry-x-event-ticketing-saas",
+    shortDescription: "A complete event ticketing solution for event organizers",
     description: "A complete event ticketing solution for event organizers",
     image: "/src/assets/images/IMG_2247.JPG",
     gallery: [
@@ -250,10 +251,11 @@ export const products: ProductProps[] = [
   },
   {
     id: 2,
-    title: "OpsCloud: Enterprise ERP Platform",
+    title: "OpsCloud™: Enterprise ERP Platform",
     slug: "opscloud-enterprise-erp-platform",
     translationKey: "opscloud-enterprise-erp-platform",
-    description: "Comprehensive enterprise resource planning platform for modern businesses",
+    description: "OpsCloud™ is a comprehensive, cloud-based Enterprise Resource Planning (ERP) platform specifically engineered for small and medium enterprises across Africa. Built on a modern technology stack with modular architecture, OpsCloud™ provides businesses with a complete suite of integrated management tools including advanced accounting and financial management, sophisticated inventory and warehouse operations, manufacturing and production planning, customer relationship management (CRM), and robust e-commerce capabilities.\n\nDesigned with African businesses in mind, OpsCloud™ features seamless integration with popular local payment gateways including Opay, MoniePoint, and PayStack, ensuring smooth transaction processing for your customers. The platform's API-first architecture enables effortless integration with existing websites, mobile applications, and third-party business tools, making it the perfect solution for businesses looking to modernize their operations without disrupting their current workflows.\n\nWhat sets OpsCloud™ apart is its intelligent modular design that allows businesses to start with essential features and gradually expand their capabilities as they grow. Whether you're managing a fashion e-commerce store, running a manufacturing operation, operating an educational institution, or providing professional services, OpsCloud™ adapts to your specific industry requirements. The platform includes powerful business intelligence tools powered by Frappe Insights, providing real-time analytics, automated reporting, and AI-driven insights for data-driven decision making.\n\nBuilt on dedicated server infrastructure with a 99.9% uptime SLA, OpsCloud™ ensures your business operations never skip a beat. The platform supports multi-location management, multi-currency operations, and provides comprehensive workflow automation to streamline your business processes. With 24/7 support, comprehensive training programs, and a commitment to helping African SMEs compete on a global scale, OpsCloud™ is more than just software – it's your partner in business growth and digital transformation.",
+    shortDescription: "Cloud-based, modular ERP platform designed for African SMEs with comprehensive accounting, inventory, CRM, and e-commerce capabilities. Features API integrations, local payment gateways, and AI-driven analytics.",
     image: "/src/assets/images/IMG_2248.JPG",
     gallery: [
       {
@@ -300,149 +302,178 @@ export const products: ProductProps[] = [
       }
     ],
     keyFeatures: [
-      "Complete CRM for Business",
-      "Inventory Management",
-      "Financial Reporting",
-      "Customer Support and Communication",
-      "Sales Pipeline Management",
-      "Automated Workflows",
-      "Multi-location Support",
-      "Advanced Analytics Dashboard",
-      "Document Management",
-      "Team Collaboration Tools",
-      "Mobile Access",
-      "Third-party Integrations"
+      "Complete Accounting & Financial Management",
+      "Advanced Inventory & Warehouse Management",
+      "Manufacturing & Production Planning",
+      "Customer Relationship Management (CRM)",
+      "Built-in E-commerce Capabilities",
+      "Business Intelligence & Analytics (Frappe Insights)",
+      "Modular Design for Cost-Effective Implementation",
+      "API Integrations for Website & App Connectivity",
+      "Payment Gateway Integration (Opay, MoniePoint, PayStack)",
+      "Multi-location & Multi-currency Support",
+      "Automated Workflows & Process Management",
+      "Real-time Reporting & Dashboard Analytics",
+      "Mobile Access & Cloud-based Infrastructure",
+      "Headless E-commerce Support",
+      "AI-driven Pricing & Growth Analytics",
+      "Dedicated Server Infrastructure with SaaS Dashboard"
     ],
     benefits: {
       id: 5,
       title: "Business Benefits",
-      content: "Comprehensive benefits for small and medium businesses",
+      content: "Comprehensive benefits tailored for African SMEs and growing businesses",
       items: [
         {
           id: 9,
-          title: "Centralized Business Operations",
-          description: "Manage all aspects of your business from a single, integrated platform"
+          title: "Affordable & Scalable Solutions",
+          description: "Cost-effective modular design allows businesses to select only needed features and scale as they grow"
         },
         {
           id: 10,
-          title: "Enhanced Productivity",
-          description: "Streamline workflows and automate repetitive tasks to boost team efficiency"
+          title: "Enhanced Operational Efficiency",
+          description: "Streamline complex business processes with automation and real-time data integration"
         },
         {
           id: 11,
-          title: "Reduced Operational Costs",
-          description: "Eliminate the need for multiple software solutions and reduce IT overhead"
+          title: "African Market Optimization",
+          description: "Built specifically for African SMEs with local payment gateways, regulations, and business practices"
         },
         {
           id: 12,
-          title: "Tailored Solutions for SMEs",
-          description: "Built specifically for small and medium businesses with scalable features"
+          title: "Multi-channel Business Management",
+          description: "Seamlessly manage online stores, physical locations, and mobile operations from one platform"
         },
         {
           id: 13,
-          title: "Improved Customer Satisfaction",
-          description: "Better customer relationship management leads to higher satisfaction rates"
+          title: "Data-Driven Decision Making",
+          description: "AI-powered analytics and business intelligence for pricing strategies and growth optimization"
         },
         {
           id: 14,
-          title: "Better Decision Making",
-          description: "Access to real-time analytics and insights for informed business decisions"
+          title: "99.9% Uptime SLA",
+          description: "Robust infrastructure with dedicated servers ensuring reliable business operations"
         },
         {
           id: 15,
-          title: "Scalable Growth Support",
-          description: "Grow your business with confidence knowing your systems can scale with you"
+          title: "Rapid Implementation",
+          description: "Quick deployment with comprehensive training and ongoing support for immediate productivity"
         },
         {
           id: 16,
-          title: "Streamlined Communication",
-          description: "Improve team collaboration and customer communication with integrated tools"
+          title: "Future-Ready Technology",
+          description: "Built on modern tech stack with API-first architecture for seamless integrations and growth"
         }
       ]
     },
     industries: {
       id: 6,
       title: "Target Industries",
-      content: "Serving diverse industries with comprehensive business management needs",
+      content: "Tailored solutions for diverse African SME industries with specific business requirements",
       items: [
         {
           id: 7,
-          title: "Retail",
-          description: "Brick-and-mortar stores, e-commerce, and retail chains"
+          title: "E-commerce (Fashion & Food)",
+          description: "Online stores with integrated inventory, payment processing, and API-driven website connectivity"
         },
         {
           id: 8,
-          title: "Manufacturing",
-          description: "Production companies, factories, and manufacturing facilities"
+          title: "Manufacturing & Couture",
+          description: "Production planning, BOM management, custom orders, and shop floor management systems"
         },
         {
           id: 9,
-          title: "Professional Services",
-          description: "Consulting firms, agencies, and service-based businesses"
+          title: "Education & Online Learning",
+          description: "Course management, student tracking, billing, and enrollment analytics for educational institutions"
         },
         {
           id: 10,
-          title: "Healthcare",
-          description: "Medical practices, clinics, and healthcare facilities"
+          title: "Automotive Repair Services",
+          description: "Service orders, parts inventory tracking, customer appointments, and integrated invoicing"
         },
         {
           id: 11,
-          title: "Distribution",
-          description: "Logistics companies, warehouses, and distribution centers"
+          title: "Real Estate Agencies",
+          description: "Property listings management, client interactions, and comprehensive financial reporting"
         },
         {
           id: 12,
-          title: "E-commerce",
-          description: "Online stores, marketplaces, and digital commerce platforms"
+          title: "Spa, Barbers & Salons",
+          description: "Appointment scheduling, product inventory, customer loyalty programs, and service management"
+        },
+        {
+          id: 13,
+          title: "Wholesale & Retail Vendors",
+          description: "Supply chain optimization, bulk order processing, multi-location management, and sales analytics"
+        },
+        {
+          id: 14,
+          title: "Food Processing & Distribution",
+          description: "Production workflows, quality control, inventory tracking, and distribution management"
         }
       ]
     },
     casestudies: {
       id: 7,
       title: "Success Stories",
-      content: "Real-world implementations and measurable business improvements",
+      content: "Real-world implementations across African SMEs with measurable business improvements",
       items: [
         {
           id: 3,
-          title: "Retail Chain Transformation",
-          description: "Helped a 50-store retail chain increase efficiency by 40% and reduce costs by 25%"
+          title: "Fashion E-commerce Transformation",
+          description: "Helped a Nigerian fashion brand integrate online and offline operations, increasing sales by 45% with seamless inventory management"
         },
         {
           id: 4,
-          title: "Manufacturing Optimization",
-          description: "Streamlined operations for a manufacturing company, improving production by 30%"
+          title: "Manufacturing Optimization in Ghana",
+          description: "Streamlined production workflows for a food processing company, improving efficiency by 35% and reducing waste by 20%"
         },
         {
           id: 5,
-          title: "Healthcare Practice Management",
-          description: "Modernized patient management for a healthcare network serving 10,000+ patients"
+          title: "Educational Institution Digitization",
+          description: "Modernized student management for a Kenya-based online learning platform serving 5,000+ students with automated billing"
+        },
+        {
+          id: 6,
+          title: "Multi-location Retail Success",
+          description: "Unified operations for a South African salon chain across 12 locations, improving customer experience and reducing costs by 30%"
         }
       ]
     },
     faqs: {
       id: 8,
       title: "Frequently Asked Questions",
-      content: "Common questions about our business management platform",
+      content: "Common questions about OpsCloud™ ERP platform and implementation",
       items: [
         {
           id: 4,
           title: "How long does implementation take?",
-          description: "Implementation typically takes 4-8 weeks depending on business complexity and customization needs."
+          description: "Implementation typically takes 2-6 weeks depending on business complexity, modules selected, and customization needs. We provide dedicated support throughout."
         },
         {
           id: 5,
-          title: "Can I migrate from my existing system?",
-          description: "Yes, we provide data migration services from most popular business software platforms."
+          title: "Can I start with specific modules and add more later?",
+          description: "Yes! OpsCloud™'s modular design allows you to start with essential features and seamlessly add modules as your business grows."
         },
         {
           id: 6,
-          title: "Is training included?",
-          description: "Yes, we provide comprehensive training for your team and ongoing support."
+          title: "What payment gateways are supported for African markets?",
+          description: "We support major African payment processors including Opay, MoniePoint, PayStack, and other local gateways for seamless transactions."
         },
         {
           id: 7,
-          title: "What about data security?",
-          description: "We use enterprise-grade security with SOC 2 compliance and regular security audits."
+          title: "Is my data secure and backed up?",
+          description: "Yes, we use enterprise-grade security with dedicated servers, 99.9% uptime SLA, regular backups, and compliance with international data protection standards."
+        },
+        {
+          id: 8,
+          title: "Can OpsCloud™ integrate with my existing website or app?",
+          description: "Absolutely! Our API-first architecture enables seamless integration with existing websites, mobile apps, and third-party business tools."
+        },
+        {
+          id: 9,
+          title: "Do you provide training and ongoing support?",
+          description: "Yes, we provide comprehensive training, 24/7 support, and dedicated account management to ensure your team maximizes OpsCloud™'s potential."
         }
       ]
     },
@@ -450,53 +481,57 @@ export const products: ProductProps[] = [
       {
         id: 4,
         name: "Starter",
-        description: "Perfect for small businesses getting started",
-        price: 49,
+        description: "Perfect for small businesses and startups",
+        price: 29,
         period: "month",
         currency: "USD",
         features: [
-          "Up to 5 users",
-          "Basic CRM",
+          "Up to 3 users",
+          "Basic Accounting Module",
           "Inventory Management",
           "Email Support",
           "Mobile Access",
-          "Basic Reporting"
+          "Basic Reporting",
+          "1 Location Support"
         ],
         isRecommended: false
       },
       {
         id: 5,
         name: "Professional",
-        description: "Ideal for growing businesses",
-        price: 99,
+        description: "Ideal for growing SMEs with multiple operations",
+        price: 79,
         period: "month",
         currency: "USD",
         features: [
-          "Up to 20 users",
-          "Advanced CRM",
-          "Full Analytics",
+          "Up to 15 users",
+          "Full ERP Modules (CRM, Manufacturing, E-commerce)",
+          "Advanced Analytics & BI",
           "24/7 Support",
-          "API Access",
-          "Advanced Workflows",
-          "Multi-location Support"
+          "API Access & Integrations",
+          "Multi-location Support",
+          "Payment Gateway Integration",
+          "Custom Workflows"
         ],
         isRecommended: true
       },
       {
         id: 6,
         name: "Enterprise",
-        description: "For large organizations with complex needs",
-        price: 249,
+        description: "For large organizations with complex requirements",
+        price: 199,
         period: "month",
         currency: "USD",
         features: [
           "Unlimited users",
-          "Custom Solutions",
-          "Dedicated Support",
+          "All Modules + AI Analytics",
+          "Dedicated Server Instance",
+          "Custom Development",
           "White Label Options",
-          "Advanced Security",
+          "Advanced Security & Compliance",
           "Custom Integrations",
-          "SLA Guarantee"
+          "99.9% SLA Guarantee",
+          "Dedicated Account Manager"
         ],
         isRecommended: false
       }
@@ -513,6 +548,7 @@ export const products: ProductProps[] = [
     title: "SecureGate: Cybersecurity Suite",
     slug: "securegate-cybersecurity-suite",
     translationKey: "securegate-cybersecurity-suite",
+    shortDescription: "Comprehensive cybersecurity solution for enterprise protection",
     description: "Comprehensive cybersecurity solution for enterprise protection",
     image: "/src/assets/images/IMG_2254.JPG",
     gallery: [

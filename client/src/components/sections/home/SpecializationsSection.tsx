@@ -24,13 +24,13 @@ const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePag
 
     // Only allow ServiceProps in displayServices
     const filterServiceProps = (arr: any[]): ServiceProps[] =>
-      Array.isArray(arr) ? arr.filter((s): s is ServiceProps => s && typeof s === 'object' && 'icon' in s && 'title' in s && 'description' in s) : [];
+        Array.isArray(arr) ? arr.filter((s): s is ServiceProps => s && typeof s === 'object' && 'icon' in s && 'title' in s && 'description' in s) : [];
 
     // Get featured services from section settings or use all services
     const displayServices: ServiceProps[] =
-      Array.isArray(featuredServices) && featuredServices.length > 0
-        ? filterServiceProps(featuredServices)
-        : filterServiceProps(allServices);
+        Array.isArray(featuredServices) && featuredServices.length > 0
+            ? filterServiceProps(featuredServices)
+            : filterServiceProps(allServices);
 
     // Organize services into a layout with 7 positions
     const serviceLayout = useMemo(() => {
@@ -53,11 +53,11 @@ const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePag
 
     // Type guard for ServiceProps
     function isServiceProps(obj: any): obj is ServiceProps {
-      return obj && typeof obj === 'object' && 'icon' in obj && 'title' in obj && 'description' in obj;
+        return obj && typeof obj === 'object' && 'icon' in obj && 'title' in obj && 'description' in obj;
     }
     // Type guard for featured ServiceProps
     function hasFeatured(obj: any): obj is ServiceProps & { featured: boolean } {
-      return isServiceProps(obj) && 'featured' in obj && typeof obj.featured === 'boolean';
+        return isServiceProps(obj) && 'featured' in obj && typeof obj.featured === 'boolean';
     }
 
     return (
@@ -72,7 +72,7 @@ const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePag
                         transition={{ duration: 0.5 }}
                         className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4"
                     >
-                        <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+                        {/*  */}
                         {title}
                     </motion.div>
                     <motion.h2
@@ -139,10 +139,10 @@ const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePag
                                     <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
                                 ) : (
                                     isServiceProps(serviceLayout.middleRow[idx])
-                                      ? hasFeatured(serviceLayout.middleRow[idx])
-                                        ? <ServiceCard service={serviceLayout.middleRow[idx]} featured={serviceLayout.middleRow[idx].featured} />
-                                        : <ServiceCard service={serviceLayout.middleRow[idx]} />
-                                      : null
+                                        ? hasFeatured(serviceLayout.middleRow[idx])
+                                            ? <ServiceCard service={serviceLayout.middleRow[idx]} featured={serviceLayout.middleRow[idx].featured} />
+                                            : <ServiceCard service={serviceLayout.middleRow[idx]} />
+                                        : null
                                 )}
                             </motion.div>
                         ))}

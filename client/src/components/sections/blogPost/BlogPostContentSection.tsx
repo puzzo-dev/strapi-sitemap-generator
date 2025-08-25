@@ -1,19 +1,18 @@
 import React from 'react';
 import { Link } from 'wouter';
 import { useTranslation } from 'react-i18next';
-import { FiTag, FiShare2 } from 'react-icons/fi';
-import { Button } from '@/components/ui/button';
+import { FiTag } from 'react-icons/fi';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import SocialShareButtons from '@/components/ui/SocialShareButtons';
 import type { BlogPost } from '@/lib/types/content';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface BlogPostContentSectionProps {
     post: BlogPost;
-    onShare: () => void;
 }
 
-const BlogPostContentSection: React.FC<BlogPostContentSectionProps> = ({ post, onShare }) => {
+const BlogPostContentSection: React.FC<BlogPostContentSectionProps> = ({ post }) => {
     const { t } = useTranslation();
 
     // Render post content with proper formatting
@@ -73,11 +72,15 @@ const BlogPostContentSection: React.FC<BlogPostContentSectionProps> = ({ post, o
                     </div>
                 )}
 
-                {/* Share button */}
-                <div className="mt-10 pt-6 border-t">
-                    <Button variant="outline" onClick={onShare} className="flex items-center">
-                        <FiShare2 className="mr-2" /> {t('ui.sharePost')}
-                    </Button>
+                {/* Social Share Buttons */}
+                <div className="mt-8 pt-4 border-t">
+                    <SocialShareButtons
+                        url={window.location.href}
+                        title={post.title}
+                        description={post.blogIntro}
+                        variant="compact"
+                        className=""
+                    />
                 </div>
             </CardContent>
         </Card>

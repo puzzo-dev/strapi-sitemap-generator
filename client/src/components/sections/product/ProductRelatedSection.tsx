@@ -76,7 +76,7 @@ const ProductRelatedSection: React.FC<ProductRelatedSectionProps> = ({
             <Card key={product.id} className="hover-lift">
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{product.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">{product.description}</p>
+                <p className="text-gray-600 dark:text-gray-300 mb-6">{product.shortDescription || product.description}</p>
                 <Link href={`/products/${product.slug}`}>
                   <a className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center">
                     <span>{relatedContent?.learnMore || "Learn More"}</span>

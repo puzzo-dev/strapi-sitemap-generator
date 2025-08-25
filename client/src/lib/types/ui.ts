@@ -106,4 +106,8 @@ export interface CardProps<T> {
   featured?: boolean;
   isReversed?: boolean;
   className?: string;
-} 
+}
+
+// Specific card type aliases for consistency
+export type ProductCardProps = CardProps<import('./content').ProductProps>;
+export type ServiceCardProps = CardProps<import('./content').ServiceProps>; 

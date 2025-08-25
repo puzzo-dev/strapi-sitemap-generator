@@ -107,7 +107,7 @@ const BackgroundDecoration = () => (
 
 const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, products, isLoading }) => {
   const { t } = useTranslation();
-  
+
   // Get products section from homePageContent
   const productsSection = homePageContent?.sections?.find((s: any) => s.type === 'products');
 
@@ -122,9 +122,9 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, prod
   const productsData = productsSection?.settings?.featured || [];
   const productsToDisplay = useMemo(() => {
     if (!Array.isArray(productsData)) return [];
-    
+
     return productsData
-      .filter((product): product is ProductProps => 
+      .filter((product): product is ProductProps =>
         product && typeof product === 'object' && 'title' in product && 'description' in product
       )
       .slice(0, 4);
@@ -167,7 +167,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, prod
                 }
               >
                 <ProductCard
-                  product={product as ProductProps}
+                  item={product as ProductProps}
                   isReversed={index % 2 !== 0}
                 />
               </motion.div>

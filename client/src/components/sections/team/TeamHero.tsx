@@ -59,14 +59,14 @@ const TeamHero: React.FC<TeamHeroProps> = ({
                     >
                         {title ? (
                             <>
-                                {title.split(' ').slice(0, -1).join(' ')}{' '}
+                                <span className="text-blue-800 dark:text-blue-200">{title.split(' ').slice(0, -1).join(' ')}</span>{' '}
                                 <span className="gradient-text">
                                     {title.split(' ').slice(-1).join(' ')}
                                 </span>
                             </>
                         ) : (
                             <>
-                                Meet Our Expert{' '}
+                                <span className="text-blue-800 dark:text-blue-200">Meet Our Expert</span>{' '}
                                 <span className="gradient-text">Team</span>
                             </>
                         )}
@@ -76,10 +76,7 @@ const TeamHero: React.FC<TeamHeroProps> = ({
                     {subtitle && (
                         <motion.p
                             variants={fadeInUp(0.4)}
-                            className="text-xl text-blue-100 mb-8 leading-relaxed max-w-3xl mx-auto"
-                            style={{
-                                textShadow: '0 2px 10px rgba(0,0,0,0.2)'
-                            }}
+                            className="text-xl text-gray-600 dark:text-blue-100 mb-8 leading-relaxed max-w-3xl mx-auto"
                         >
                             {subtitle}
                         </motion.p>
@@ -89,41 +86,38 @@ const TeamHero: React.FC<TeamHeroProps> = ({
                     {content && (
                         <motion.div
                             variants={fadeInUp(0.5)}
-                            className="text-lg text-blue-50 leading-relaxed max-w-2xl mx-auto"
-                            style={{
-                                textShadow: '0 2px 8px rgba(0,0,0,0.15)'
-                            }}
+                            className="text-lg text-gray-700 dark:text-blue-50 leading-relaxed max-w-2xl mx-auto"
                         >
                             {content}
                         </motion.div>
                     )}
-                    
+
                     {/* Team Stats */}
                     <motion.div
                         variants={fadeInUp(0.6)}
                         className="flex flex-wrap justify-center gap-8 mt-12"
                     >
                         <div className="text-center">
-                            <div className="text-3xl font-bold text-white mb-2">
+                            <div className="text-3xl font-bold text-gray-900 dark:text-blue-200 mb-2">
                                 25+
                             </div>
-                            <div className="text-blue-200 text-sm font-medium">
+                            <div className="text-gray-600 dark:text-blue-200 text-sm font-medium">
                                 Team Members
                             </div>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl font-bold text-white mb-2">
+                            <div className="text-3xl font-bold text-gray-900 dark:text-blue-200 mb-2">
                                 10+
                             </div>
-                            <div className="text-blue-200 text-sm font-medium">
+                            <div className="text-gray-600 dark:text-blue-200 text-sm font-medium">
                                 Years Experience
                             </div>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl font-bold text-white mb-2">
+                            <div className="text-3xl font-bold text-gray-900 dark:text-blue-200 mb-2">
                                 100+
                             </div>
-                            <div className="text-blue-200 text-sm font-medium">
+                            <div className="text-gray-600 dark:text-blue-200 text-sm font-medium">
                                 Projects Delivered
                             </div>
                         </div>
@@ -155,7 +149,7 @@ const TeamHero: React.FC<TeamHeroProps> = ({
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
                 <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
-                
+
                 {/* Animated particles */}
                 <div className="absolute top-20 left-20 w-2 h-2 bg-white/20 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
                 <div className="absolute top-40 right-32 w-1 h-1 bg-blue-300/30 rounded-full animate-bounce" style={{ animationDelay: '1s' }} />

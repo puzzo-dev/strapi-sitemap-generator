@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import TestimonialCard from '@/components/ui/TestimonialCard';
-import { 
-  Sparkles, 
-  CircuitBoard, 
-  Code 
+import {
+  Sparkles,
+  CircuitBoard,
+  Code
 } from 'lucide-react';
 import { TestimonialProps } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
@@ -62,7 +62,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ homePageConte
         {/* Section Header */}
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">
-            <span className="flex h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400 mr-2 animate-pulse"></span>
+
             {badge}
           </div>
           <h2 className="heading-md text-blue-900 dark:text-blue-200 mb-4">{title}</h2>
@@ -92,7 +92,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ homePageConte
             ))
           ) : (
             testimonials.slice(0, 3).map((testimonial: TestimonialProps, index: number) => (
-              <motion.div 
+              <motion.div
                 key={testimonial.id || index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
