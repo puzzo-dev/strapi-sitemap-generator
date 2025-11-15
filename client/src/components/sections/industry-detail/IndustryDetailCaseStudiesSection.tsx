@@ -1,15 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { IndustryProps } from '@/lib/types/content';
 import { fadeInUp, staggerChildren } from '@/lib/animations';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import { caseStudies } from '@/lib/data/case-studies';
-
-interface IndustryDetailCaseStudiesSectionProps {
-  industry?: IndustryProps | null;
-  isLoading?: boolean;
-}
+import { IndustryDetailCaseStudiesSectionProps } from '@/lib/types/components';
 
 const IndustryDetailCaseStudiesSection: React.FC<IndustryDetailCaseStudiesSectionProps> = ({ industry, isLoading }) => {
   if (isLoading) {

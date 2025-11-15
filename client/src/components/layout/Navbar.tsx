@@ -5,7 +5,7 @@ import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 import ThemeSelector from '@/components/ui/ThemeSelector';
-import { useNavigation } from '@/hooks/useStrapiContent';
+import { useNavigation } from '@/hooks/useContent';
 import { NavbarProps, NavItem } from '@/lib/types';
 import { navItems as defaultNavItems } from '@/lib/data/';
 import { useTheme } from '@/components/ui/theme-provider';

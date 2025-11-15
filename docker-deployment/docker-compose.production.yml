@@ -1,0 +1,161 @@
+version: '3.8'
+
+services:
+  email-marketing-app:
+    image: ${IMAGE_NAME:-ghcr.io/${GITHUB_USERNAME}/email-marketing-saas:latest}
+    container_name: email-marketing-v1
+    restart: unless-stopped
+    build:
+      context: ../
+      dockerfile: docker-deployment/Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+        - VITE_APP_NAME=${VITE_APP_NAME}
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL}
+    environment:
+      # Flask Configuration
+      - FLASK_APP=run.py
+      - FLASK_ENV=production
+      - FLASK_DEBUG=False
+      - SECRET_KEY=${SECRET_KEY}
+      
+      # JWT Configuration
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_COOKIE_SECURE=true
+      - JWT_COOKIE_CSRF_PROTECT=false
+      - JWT_COOKIE_SAMESITE=Lax
+      
+      # Database Configuration - Connect to existing MariaDB with root access
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST:-mariadb-database}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_NAME=${DB_NAME:-emailsaas}
+      - DATABASE_URL=mysql+pymysql://${DB_USER:-root}:${DB_PASSWORD}@${DB_HOST:-mariadb-database}:${DB_PORT:-3306}/${DB_NAME:-emailsaas}?charset=utf8mb4
+      
+      # Redis Configuration (use existing Redis server)
+      - REDIS_URL=redis://${REDIS_HOST:-crypto-indices-redis}:${REDIS_PORT:-6379}/0
+      - REDIS_HOST=${REDIS_HOST:-crypto-indices-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      
+      # Frontend URL
+      - FRONTEND_URL=https://mailcast.ink
+      
+      # Email Configuration (for system emails)
+      - MAIL_SERVER=${MAIL_SERVER}
+      - MAIL_PORT=${MAIL_PORT:-587}
+      - MAIL_USE_TLS=${MAIL_USE_TLS:-True}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      
+      
+      # BTCPay Server Configuration
+      - BTCPAY_SERVER_URL=${BTCPAY_SERVER_URL}
+      - BTCPAY_API_KEY=${BTCPAY_API_KEY}
+      - BTCPAY_STORE_ID=${BTCPAY_STORE_ID}
+      - BTCPAY_WEBHOOK_SECRET=${BTCPAY_WEBHOOK_SECRET}
+      
+      # External Backend Authentication
+      - EXTERNAL_API_KEY=${EXTERNAL_API_KEY}
+      - CAMPAIGN_ENCRYPTION_KEY=${CAMPAIGN_ENCRYPTION_KEY}
+      
+      # Admin User
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@emailsaas.com}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      
+      # Application Settings
+      - MAX_EMAILS_PER_BATCH=${MAX_EMAILS_PER_BATCH:-500}
+      - DEFAULT_RATE_LIMIT=${DEFAULT_RATE_LIMIT:-100/hour}
+      
+      # CORS Settings
+      - CORS_ORIGINS=https://mailcast.ink,https://backend.mailcast.ink
+      
+      # File Upload Settings (fixed paths for multi-stage build)
+      - MAX_CONTENT_LENGTH=${MAX_CONTENT_LENGTH:-16777216}
+      - UPLOAD_FOLDER=/app/uploads
+    
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      
+      # Define https-redirect middleware
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
+      
+      # Define email-headers middleware (configurable real IP header)
+      - "traefik.http.middlewares.email-headers.headers.customrequestheaders.X-Real-IP=%{http:CF-Connecting-IP}"
+      - "traefik.http.middlewares.email-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      
+      # Define API path middleware to strip /api prefix for backend routes
+      - "traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=/api"
+      
+      # === FRONTEND ROUTES (mailcast.ink) ===
+      # Frontend HTTP Router (redirect to HTTPS)
+      - "traefik.http.routers.email-frontend-http.rule=Host(`mailcast.ink`)"
+      - "traefik.http.routers.email-frontend-http.entrypoints=http"
+      - "traefik.http.routers.email-frontend-http.middlewares=https-redirect"
+      - "traefik.http.routers.email-frontend-http.service=email-marketing-app"
+      
+      # Frontend HTTPS Router
+      - "traefik.http.routers.email-frontend-https.rule=Host(`mailcast.ink`)"
+      - "traefik.http.routers.email-frontend-https.entrypoints=https"
+      - "traefik.http.routers.email-frontend-https.tls=true"
+      - "traefik.http.routers.email-frontend-https.tls.certresolver=le"
+      - "traefik.http.routers.email-frontend-https.service=email-marketing-app"
+      - "traefik.http.routers.email-frontend-https.middlewares=email-headers"
+      
+      # === BACKEND/API ROUTES (backend.mailcast.ink) ===
+      # Backend HTTP Router (redirect to HTTPS)
+      - "traefik.http.routers.email-backend-http.rule=Host(`backend.mailcast.ink`)"
+      - "traefik.http.routers.email-backend-http.entrypoints=http"
+      - "traefik.http.routers.email-backend-http.middlewares=https-redirect"
+      - "traefik.http.routers.email-backend-http.service=email-marketing-app"
+      
+      # Backend HTTPS Router
+      - "traefik.http.routers.email-backend-https.rule=Host(`backend.mailcast.ink`)"
+      - "traefik.http.routers.email-backend-https.entrypoints=https"
+      - "traefik.http.routers.email-backend-https.tls=true"
+      - "traefik.http.routers.email-backend-https.tls.certresolver=le"
+      - "traefik.http.routers.email-backend-https.service=email-marketing-app"
+      - "traefik.http.routers.email-backend-https.middlewares=email-headers"
+      
+      # Service (Flask runs on port 5000)
+      - "traefik.http.services.email-marketing-app.loadbalancer.server.port=5000"
+    
+    networks:
+      - traefik-public
+      - mariadb-network  # Connect to existing MariaDB network
+      - app-network
+    
+    volumes:
+      - email-uploads:/app/uploads
+      - email-logs:/app/logs
+      - email-instance:/app/instance
+      - email-geoip:/app/geoip_databases
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/settings/info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  traefik-public:
+    external: true
+  mariadb-network:
+    external: true  # Connect to existing MariaDB network
+  app-network:
+    name: email-marketing-network
+    driver: bridge
+
+volumes:
+  email-uploads:
+    name: email-marketing-uploads
+  email-logs:
+    name: email-marketing-logs
+  email-instance:
+    name: email-marketing-instance
+  email-geoip:
+    name: email-marketing-geoip

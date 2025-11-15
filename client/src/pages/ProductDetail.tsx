@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useParams } from 'wouter';
 import { Shield, Zap, HeartPulse, BarChart } from 'lucide-react';
-import { useProductById, usePageContent } from '@/hooks/useStrapiContent';
+import { useProductById, usePageContent } from '@/hooks/useContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import MetaTags from '@/components/seo/MetaTags';
 import { productDetailPageContent as localProductDetailPageContent } from '@/lib/data/pages';

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useBlogPostBySlug, useBlogComments, useBlogPosts, useSiteConfig } from '@/hooks/useStrapiContent';
+import { useBlogPostBySlug, useBlogComments, useBlogPosts, useSiteConfig } from '@/hooks/useContent';
 import { useToast } from '@/hooks/useToast';
 import { submitBlogComment } from '@/lib/strapi';
 import { generateDummyBlogPost } from '@/lib/blogUtils';

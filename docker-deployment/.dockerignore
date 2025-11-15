@@ -1,0 +1,88 @@
+# Ignore version control
+.git
+.gitignore
+.gitattributes
+
+# Ignore documentation
+*.md
+README*
+LICENSE
+CHANGELOG*
+docs/
+DeploymentDockerExample/
+
+# Ignore CI/CD
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+.travis.yml
+
+# Ignore development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore test files
+tests/
+test/
+__tests__/
+*.test.js
+*.spec.js
+
+# Node modules (will be installed fresh)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Build outputs (except what we need)
+frontend-clean/dist/
+frontend-clean/node_modules/
+
+# Backend specific
+backend/instance/
+backend/logs/*.log
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/pids/
+backend/.pytest_cache/
+backend/htmlcov/
+
+# Database files (development)
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files (will be mounted)
+.env
+.env.*
+!.env.production.example
+
+# IDE and OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Docker files (handled separately)
+docker-compose.yml
+docker-compose.*.yml
+!docker-compose.production.yml
+Dockerfile
+!docker-deployment/Dockerfile

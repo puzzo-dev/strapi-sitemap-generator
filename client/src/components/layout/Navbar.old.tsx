@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
 import LanguageSelector from '@/components/ui/LanguageSelector';
-import { useNavigation, useSiteConfig } from '@/hooks/useStrapiContent';
+import { useNavigation, useSiteConfig } from '@/hooks/useContent';
 import { NavbarProps, NavItem } from '@/lib/types';
 import { navItems as defaultNavItems } from '@/lib/data/';
 import { useTheme } from '@/components/ui/theme-provider';

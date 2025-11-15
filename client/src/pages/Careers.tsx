@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useContent';
 import { useCareersPageState } from '@/hooks/useCareersPageState';
 // import { useERPNextJobListings } from '@/hooks/useERPNextContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';

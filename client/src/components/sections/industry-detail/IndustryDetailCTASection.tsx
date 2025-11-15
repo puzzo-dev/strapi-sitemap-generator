@@ -1,13 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import GradientButton from '@/components/ui/GradientButton';
-import { IndustryProps } from '@/lib/types/content';
 import { fadeInUp } from '@/lib/animations';
-
-interface IndustryDetailCTASectionProps {
-  industry?: IndustryProps | null;
-  isLoading?: boolean;
-}
+import { IndustryDetailCTASectionProps } from '@/lib/types/components';
 
 const IndustryDetailCTASection: React.FC<IndustryDetailCTASectionProps> = ({ industry, isLoading }) => {
   if (isLoading) {

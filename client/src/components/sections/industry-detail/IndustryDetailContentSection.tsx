@@ -1,12 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { IndustryProps } from '@/lib/types/content';
 import { fadeInUp } from '@/lib/animations';
-
-interface IndustryDetailContentSectionProps {
-  industry?: IndustryProps | null;
-  isLoading?: boolean;
-}
+import { IndustryDetailContentSectionProps } from '@/lib/types/components';
 
 const IndustryDetailContentSection: React.FC<IndustryDetailContentSectionProps> = ({ industry, isLoading }) => {
   if (isLoading || !industry?.content) {

@@ -1,0 +1,52 @@
+# Cloudflare Worker Configuration
+# This file configures the Cloudflare Worker for secure token management
+
+name = "ivarse-secure-config-api"
+main = "cloudflare-worker-example.js"
+compatibility_date = "2024-01-01"
+
+# Environment variables (non-secret)
+[env.production.vars]
+ENVIRONMENT = "production"
+ALLOWED_ORIGIN = "https://yourdomain.com"
+STRAPI_URL = "https://cms.yourdomain.com"
+ENABLE_ERPNEXT = "true"
+ENABLE_STRAPI = "true"
+ENABLE_FALLBACKS = "true"
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+ALLOWED_ORIGIN = "https://staging.yourdomain.com"
+STRAPI_URL = "https://cms-staging.yourdomain.com"
+ENABLE_ERPNEXT = "true"
+ENABLE_STRAPI = "true"
+ENABLE_FALLBACKS = "true"
+
+[env.development.vars]
+ENVIRONMENT = "development"
+ALLOWED_ORIGIN = "http://localhost:5173"
+STRAPI_URL = "http://localhost:1337"
+ENABLE_ERPNEXT = "false"
+ENABLE_STRAPI = "true"
+ENABLE_FALLBACKS = "true"
+
+# Secrets (set using: wrangler secret put SECRET_NAME)
+# - STRAPI_API_TOKEN
+# - VALID_USER_TOKENS (comma-separated list)
+# - JWT_SECRET (if using JWT validation)
+
+# Routes (optional - for custom domains)
+# [[routes]]
+# pattern = "config.yourdomain.com/*"
+# zone_name = "yourdomain.com"
+
+# KV Namespaces (optional - for rate limiting, caching)
+# [[kv_namespaces]]
+# binding = "CONFIG_CACHE"
+# id = "your-kv-namespace-id"
+
+# Durable Objects (optional - for advanced rate limiting)
+# [[durable_objects.bindings]]
+# name = "RATE_LIMITER"
+# class_name = "RateLimiter"
+# script_name = "rate-limiter-worker"

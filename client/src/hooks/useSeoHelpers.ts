@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useLanguage } from '@/components/context/LanguageContext';
-import { useSiteConfig } from './useStrapiContent';
+import { useSiteConfig } from '@/hooks/useContent';
 import { defaultSiteConfig } from '@/lib/data/';
 
 /**

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useContent';
 import PolicyPageLayout from '@/components/layout/PolicyPageLayout';
 import { termsContent } from '@/lib/data/';
 

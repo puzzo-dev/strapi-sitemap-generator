@@ -6,7 +6,7 @@
  */
 
 import { PageSection, PageContent, SiteConfig } from './core';
-import { BlogPost, BlogCategory, FAQItem, FAQCategory, TestimonialProps, IndustryProps, CaseStudyProps, ServiceProps, HeroSlide } from './content';
+import { BlogPost, BlogCategory, FAQItem, FAQCategory, TestimonialProps, IndustryProps, CaseStudyProps, ServiceProps, HeroSlide, ProductProps } from './content';
 import { SocialLink } from './layout';
 // ============================================================================
 // SECTION COMPONENT PROPS
@@ -58,6 +58,7 @@ export interface IndustriesCTASectionProps extends PageSection {
 }
 
 export interface ProductCTASectionProps {
+  product?: ProductProps | null;
   isLoading: boolean;
   pageContent?: PageContent;
 }
@@ -74,6 +75,7 @@ export interface CaseStudiesContentSectionProps {
 
 export interface IndustryDetailContentSectionProps {
   industry?: IndustryProps | null;
+  pageContent?: PageContent;
   isLoading?: boolean;
 }
 
@@ -143,15 +145,6 @@ export interface FAQStatsSectionProps {
   className?: string;
 }
 
-export interface FAQCategoriesSectionProps {
-  categories: FAQCategory[];
-  faqItems: FAQItem[];
-  activeCategory: number;
-  setActiveCategory: (categoryId: number) => void;
-  onQuestionClick: (itemId: number) => void;
-  isLoading: boolean;
-}
-
 export interface FAQPopularSectionProps {
   faqItems: FAQItem[];
   onQuestionClick: (itemId: number) => void;
@@ -176,11 +169,13 @@ export interface CoreValuesSectionProps extends PageSection {
 // Industry Detail Section Props
 export interface IndustryDetailSolutionsSectionProps {
   industry?: IndustryProps | null;
+  pageContent?: PageContent;
   isLoading?: boolean;
 }
 
 export interface IndustryDetailTechnologiesSectionProps {
   industry?: IndustryProps | null;
+  pageContent?: PageContent;
   isLoading?: boolean;
 }
 
@@ -245,21 +240,25 @@ export interface ServiceDetailDescriptionSectionProps {
 // Industry Detail Section Props (additional)
 export interface IndustryDetailHeroSectionProps {
   industry?: IndustryProps | null;
+  pageContent?: PageContent;
   isLoading?: boolean;
 }
 
 export interface IndustryDetailChallengesSectionProps {
   industry?: IndustryProps | null;
+  pageContent?: PageContent;
   isLoading?: boolean;
 }
 
 export interface IndustryDetailCaseStudiesSectionProps {
   industry?: IndustryProps | null;
+  pageContent?: PageContent;
   isLoading?: boolean;
 }
 
 export interface IndustryDetailCTASectionProps {
   industry?: IndustryProps | null;
+  pageContent?: PageContent;
   isLoading?: boolean;
 }
 

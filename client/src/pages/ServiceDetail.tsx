@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useParams } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import { useServiceById, useSiteConfig, usePageContent } from '@/hooks/useStrapiContent';
+import { useServiceById, useSiteConfig, usePageContent } from '@/hooks/useContent';
 import MetaTags from '@/components/seo/MetaTags';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { serviceDetailPageContent as localServiceDetailPageContent } from '@/lib/data/pages';

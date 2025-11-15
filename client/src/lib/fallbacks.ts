@@ -117,55 +117,17 @@ export const UI_TEXT_FALLBACKS = {
 // =============================================================================
 
 export const PAGE_FALLBACKS: Record<string, Partial<PageContent>> = {
-  home: {
-    id: 1,
-    title: 'I-Varse Technologies',
-    slug: 'home',
-    metaTitle: 'I-Varse Technologies - Digital Transformation Solutions',
-    metaDescription: 'Leading provider of digital transformation solutions, custom software development, and enterprise technology services.',
-    sections: [
-      {
-        id: 1,
-        type: 'hero',
-        title: 'Digital Transformation Solutions',
-        subtitle: 'Empowering businesses with cutting-edge technology',
-        content: 'We help organizations accelerate their digital journey with innovative solutions.',
-        settings: { theme: 'modern' }
-      }
-    ]
-  },
-  about: {
-    id: 2,
-    title: 'About Us',
-    slug: 'about',
-    metaTitle: 'About I-Varse Technologies',
-    metaDescription: 'Learn about our mission, vision, and commitment to delivering exceptional technology solutions.',
-    sections: []
-  },
-  contact: {
-    id: 3,
-    title: 'Contact Us',
-    slug: 'contact',
-    metaTitle: 'Contact I-Varse Technologies',
-    metaDescription: 'Get in touch with our team to discuss your technology needs and project requirements.',
-    sections: []
-  },
-  products: {
-    id: 4,
-    title: 'Products',
-    slug: 'products',
-    metaTitle: 'Our Products - I-Varse Technologies',
-    metaDescription: 'Explore our comprehensive suite of software products and digital solutions.',
-    sections: []
-  },
-  services: {
-    id: 5,
-    title: 'Services',
-    slug: 'services',
-    metaTitle: 'Our Services - I-Varse Technologies',
-    metaDescription: 'Professional technology services including custom development, consulting, and support.',
-    sections: []
-  }
+  home: homePageContent,
+  about: aboutPageContent,
+  contact: contactPageContent,
+  products: productsPageContent,
+  services: servicesPageContent,
+  blog: blogPageContent,
+  industries: industriesPageContent,
+  careers: careersPageContent,
+  team: teamPageContent,
+  faq: faqPageContent,
+  'case-studies': caseStudiesPageContent
 };
 
 // =============================================================================
@@ -184,6 +146,21 @@ import {
   clientLogos as originalClients,
   faqItems as originalFaqs
 } from '@/lib/data';
+
+// Import page content fallbacks
+import {
+  blogPageContent,
+  industriesPageContent,
+  careersPageContent,
+  teamPageContent,
+  faqPageContent,
+  caseStudiesPageContent,
+  contactPageContent,
+  homePageContent,
+  aboutPageContent,
+  servicesPageContent,
+  productsPageContent
+} from '@/lib/data/pages';
 
 export const CONTENT_FALLBACKS = {
   products: originalProducts,

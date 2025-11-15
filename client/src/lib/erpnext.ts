@@ -1,15 +1,16 @@
 /**
  * ERPNext Integration
  * 
- * This file handles all ERPNext API calls for:
- * - Blog management
- * - Contact form submissions
- * - Appointment bookings
- * - Lead management
+ * This file handles ERPNext-specific API calls for:
+ * - HR/Recruitment (Job Applications, Employee data)
+ * - CRM (Leads, Events, Contacts)
+ * - Email Groups (Newsletter subscriptions)
+ * 
+ * NOTE: Blog management has been consolidated in strapi.ts
+ * NOTE: Form submissions (contact, appointment, newsletter) are in strapi.ts
  */
 
-import { BlogPost, BlogCategory, ContactFormData, BookingFormData } from '@/lib/types';
-import { withFallback, getContentList } from '@/lib/fallbacks';
+import { ContactFormData, BookingFormData } from '@/lib/types';
 
 // =============================================================================
 // ERPNEXT CONFIGURATION
@@ -89,147 +90,27 @@ async function makeERPNextRequest(
 }
 
 // =============================================================================
-// BLOG MANAGEMENT (ERPNext)
-// =============================================================================
-
-export interface ERPNextBlogPost {
-  name: string;
-  title: string;
-  slug: string;
-  content_html: string;
-  meta_description: string;
-  meta_image: string;
-  published: number;
-  featured: number;
-  blog_category: string;
-  blogger: string;
-  published_on: string;
-  tags: string;
-  blog_intro: string;
-  meta_title: string;
-  route: string;
-}
-
-export interface ERPNextBlogCategory {
-  name: string;
-  title: string;
-  description: string;
-  route: string;
-}
-
-/**
- * Fetch all blog posts from ERPNext
- */
-export async function getBlogPosts(): Promise<BlogPost[]> {
-  try {
-    const response = await makeERPNextRequest('Blog Post', {
-      method: 'GET'
-    });
-
-    const posts = response.data.map(transformERPNextBlogPost);
-    return getContentList(posts, 'blogs');
-  } catch (error) {
-    console.error('Failed to fetch blog posts from ERPNext:', error);
-    return getContentList(null, 'blogs');
-  }
-}
-
-/**
- * Fetch a single blog post by slug from ERPNext
- */
-export async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  try {
-    const response = await makeERPNextRequest(`Blog Post?filters=[["route","=","/${slug}"]]`, {
-      method: 'GET'
-    });
-
-    if (response.data && response.data.length > 0) {
-      return transformERPNextBlogPost(response.data[0]);
-    }
-
-    return null;
-  } catch (error) {
-    console.error(`Failed to fetch blog post ${slug} from ERPNext:`, error);
-    return null;
-  }
-}
-
-/**
- * Fetch blog categories from ERPNext
- */
-export async function getBlogCategories(): Promise<BlogCategory[]> {
-  try {
-    const response = await makeERPNextRequest('Blog Category', {
-      method: 'GET'
-    });
-
-    return response.data.map((category: ERPNextBlogCategory) => ({
-      id: category.name,
-      name: category.name,
-      title: category.title,
-      slug: category.route?.replace('/', '') || category.name.toLowerCase(),
-      description: category.description || ''
-    }));
-  } catch (error) {
-    console.error('Failed to fetch blog categories from ERPNext:', error);
-    return [];
-  }
-}
-
-/**
- * Transform ERPNext blog post to our BlogPost interface
- */
-function transformERPNextBlogPost(post: ERPNextBlogPost): BlogPost {
-  return {
-    id: post.name,
-    name: post.slug || post.name.toLowerCase().replace(/\s+/g, '-'),
-    title: post.title,
-    slug: post.slug || post.name.toLowerCase().replace(/\s+/g, '-'),
-    blogCategories: [{
-      id: post.blog_category || 'general',
-      name: post.blog_category || 'General',
-      slug: post.blog_category?.toLowerCase() || 'general',
-      description: '',
-      title: post.blog_category || 'General'
-    }],
-    blogIntro: post.blog_intro || '',
-    content: post.content_html || '',
-    publishedAt: post.published_on || new Date().toISOString(),
-    published: post.published === 1,
-    featured: post.featured === 1,
-    metaImage: post.meta_image,
-    metaTitle: post.meta_title || post.title,
-    metaDescription: post.meta_description || '',
-    readTime: Math.ceil((post.content_html?.split(' ').length || 0) / 200), // Estimate reading time
-    tags: post.tags ? post.tags.split(',').map(tag => tag.trim()) : [],
-    authorDetails: {
-      fullName: post.blogger || 'I-Varse Team',
-      userImage: '/assets/team/default-avatar.jpg',
-      bio: 'Content creator at I-Varse Technologies'
-    },
-    author: post.blogger || 'admin'
-  };
-}
-
-// =============================================================================
-// FORM SUBMISSIONS (ERPNext)
+// FORM SUBMISSIONS (ERPNext) - Delegated to Strapi
 // =============================================================================
 
 /**
- * Submit contact form to ERPNext as a Lead
+ * @deprecated Use submitContactForm from strapi.ts instead
+ * This function is kept for backward compatibility
  */
 export async function submitContactForm(formData: ContactFormData): Promise<boolean> {
+  console.warn('ERPNext submitContactForm is deprecated. Use strapi.submitContactForm instead');
+  // Delegate to makeERPNextRequest for actual implementation
   try {
     const leadData = {
       lead_name: formData.fullName,
       email_id: formData.email,
       phone: formData.phone,
-      company_name: formData.company || 'Not Provided',
+      company_name: formData.erpNextCompany || 'Not Provided',
       source: 'Website Contact Form',
       status: 'Lead',
       request_type: formData.requestType || 'General Inquiry',
       notes: formData.message,
-      lead_owner: 'Administrator' // Default lead owner
+      lead_owner: 'Administrator'
     };
 
     await makeERPNextRequest('Lead', {
@@ -245,13 +126,14 @@ export async function submitContactForm(formData: ContactFormData): Promise<bool
 }
 
 /**
- * Submit appointment booking to ERPNext as an Event
+ * @deprecated Use scheduleAppointment from strapi.ts instead
+ * This function is kept for backward compatibility
  */
 export async function submitAppointmentBooking(formData: BookingFormData): Promise<boolean> {
+  console.warn('ERPNext submitAppointmentBooking is deprecated. Use strapi.scheduleAppointment instead');
   try {
-    // Create Lead first
     const leadData = {
-      lead_name: formData.fullName,
+      lead_name: formData.name,
       email_id: formData.email,
       phone: formData.phone,
       source: 'Website Appointment Booking',
@@ -264,12 +146,14 @@ export async function submitAppointmentBooking(formData: BookingFormData): Promi
       body: JSON.stringify(leadData)
     });
 
-    // Create Event/Appointment
+    const appointmentDate = new Date(`${formData.date}T${formData.time}`);
+    const endDate = new Date(appointmentDate.getTime() + 60 * 60 * 1000); // 1 hour default
+
     const eventData = {
       subject: `Appointment: ${formData.topic}`,
       event_type: 'Public',
-      starts_on: `${formData.date} ${formData.time}:00`,
-      ends_on: `${formData.date} ${formData.time}:00`, // Will be adjusted manually
+      starts_on: appointmentDate.toISOString(),
+      ends_on: endDate.toISOString(),
       description: formData.message,
       event_participants: [
         {
@@ -293,9 +177,11 @@ export async function submitAppointmentBooking(formData: BookingFormData): Promi
 }
 
 /**
- * Submit newsletter subscription to ERPNext
+ * @deprecated Use subscribeToNewsletter from strapi.ts instead
+ * This function is kept for backward compatibility
  */
 export async function submitNewsletterSubscription(email: string): Promise<boolean> {
+  console.warn('ERPNext submitNewsletterSubscription is deprecated. Use strapi.subscribeToNewsletter instead');
   try {
     const subscriptionData = {
       email: email,
@@ -315,16 +201,19 @@ export async function submitNewsletterSubscription(email: string): Promise<boole
 }
 
 /**
- * Submit job application to ERPNext
+ * @deprecated Use submitJobApplication from strapi.ts instead
+ * This function is kept for backward compatibility
  */
 export async function submitJobApplication(formData: any): Promise<boolean> {
+  console.warn('ERPNext submitJobApplication is deprecated. Use strapi.submitJobApplication instead');
   try {
     const applicationData = {
       applicant_name: formData.fullName,
       email_id: formData.email,
       phone_number: formData.phone,
-      job_title: formData.position,
+      job_title: formData.jobTitle || formData.position,
       notes: formData.coverLetter,
+      experience: formData.yearsOfExperience,
       status: 'Open',
       source: 'Website'
     };
@@ -365,12 +254,10 @@ export async function checkERPNextHealth(): Promise<boolean> {
 }
 
 // =============================================================================
-// HOOKS FOR REACT QUERY INTEGRATION
+// UTILITY EXPORTS
 // =============================================================================
 
-export const erpNextQueryKeys = {
-  blogPosts: ['erpnext', 'blog-posts'] as const,
-  blogPost: (slug: string) => ['erpnext', 'blog-post', slug] as const,
-  blogCategories: ['erpnext', 'blog-categories'] as const,
-  health: ['erpnext', 'health'] as const
-};
+/**
+ * Export ERPNext request utility for other modules
+ */
+export { makeERPNextRequest, getERPNextConfig };

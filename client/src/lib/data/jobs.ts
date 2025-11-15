@@ -116,7 +116,7 @@ export const jobListings: JobListing[] = [
   },
   {
     id: 4,
-    title: "Digital Marketing Specialist",
+    title: "Data Scientist",
     slug: "digital-marketing-specialist",
     department: "Marketing",
     location: "Remote",
@@ -153,7 +153,7 @@ export const jobListings: JobListing[] = [
   },
   {
     id: 5,
-    title: "Product Manager",
+    title: "Mobile App Developer",
     slug: "product-manager",
     department: "Product",
     location: "Lagos, Nigeria",

@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { usePageContent } from "@/hooks/useStrapiContent";
+import { usePageContent } from "@/hooks/useContent";
 import LoadingSkeleton from "@/components/ui/LoadingSkeleton";
 import { sitemapContent } from "@/lib/data/";
 import { SitemapLink, PageSection } from '@/lib/types/';
@@ -141,7 +141,7 @@ const Sitemap: React.FC = () => {
                 {[1, 2, 3, 4].map((i) => (
                   <Card key={i} className="border border-gray-200 dark:border-gray-700">
                     <CardContent className="p-6">
-                      <LoadingSkeleton variant="text" lines={6} />
+                      <LoadingSkeleton.Text lines={6} />
                     </CardContent>
                   </Card>
                 ))}

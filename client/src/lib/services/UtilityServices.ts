@@ -107,7 +107,9 @@ export class MemoryCacheService implements ICacheService {
     // Remove oldest items if cache is full
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
     }
 
     this.cache.set(key, {
@@ -416,27 +418,28 @@ export class ServiceFactory {
     if (!this.analyticsService) {
       this.analyticsService = new AnalyticsService();
       
+      // TODO: Add provider support to IAnalyticsService interface
       // Add Google Analytics if available
-      if (window.gtag) {
-        this.analyticsService.addProvider({
-          name: 'Google Analytics',
-          track: (event: string, properties?: any) => {
-            window.gtag('event', event, properties);
-          },
-          page: (name: string, properties?: any) => {
-            window.gtag('config', 'GA_MEASUREMENT_ID', {
-              page_title: name,
-              ...properties
-            });
-          },
-          identify: (userId: string, traits?: any) => {
-            window.gtag('config', 'GA_MEASUREMENT_ID', {
-              user_id: userId,
-              custom_map: traits
-            });
-          }
-        });
-      }
+      // if (window.gtag) {
+      //   this.analyticsService.addProvider({
+      //     name: 'Google Analytics',
+      //     track: (event: string, properties?: any) => {
+      //       window.gtag('event', event, properties);
+      //     },
+      //     page: (name: string, properties?: any) => {
+      //       window.gtag('config', 'GA_MEASUREMENT_ID', {
+      //         page_title: name,
+      //         ...properties
+      //       });
+      //     },
+      //     identify: (userId: string, traits?: any) => {
+      //       window.gtag('config', 'GA_MEASUREMENT_ID', {
+      //         user_id: userId,
+      //         custom_map: traits
+      //       });
+      //     }
+      //   });
+      // }
     }
     return this.analyticsService;
   }

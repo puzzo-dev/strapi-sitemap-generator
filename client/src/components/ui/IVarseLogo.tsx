@@ -1,6 +1,6 @@
 import React from 'react';
-import whiteLogo from '../../assets/V2.png'; // White logo for dark theme
-import darkLogo from '../../assets/V1.png'; 
+import whiteLogo from '@/assets/V2.png'; // White logo for dark theme
+import darkLogo from '@/assets/V1.png'; 
 // Blue/dark logo for light theme
 import { IVarseLogoProps } from '@/lib/types';
 

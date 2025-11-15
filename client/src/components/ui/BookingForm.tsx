@@ -163,11 +163,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.date} *</FormLabel>
                   <FormControl>
-                    <Input
-                      type="date"
-                      {...field}
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
-                    />
+                    <div className="relative">
+                      <Input
+                        type="date"
+                        {...field}
+                        className="w-full px-4 py-3 pr-12 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-3 [&::-webkit-calendar-picker-indicator]:top-1/2 [&::-webkit-calendar-picker-indicator]:-translate-y-1/2 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -181,11 +183,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.time} *</FormLabel>
                   <FormControl>
-                    <Input
-                      type="time"
-                      {...field}
-                      className="w-full px-4 py-3 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
-                    />
+                    <div className="relative">
+                      <Input
+                        type="time"
+                        {...field}
+                        className="w-full px-4 py-3 pr-12 rounded-lg bg-secondary border border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-3 [&::-webkit-calendar-picker-indicator]:top-1/2 [&::-webkit-calendar-picker-indicator]:-translate-y-1/2 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

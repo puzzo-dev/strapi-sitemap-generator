@@ -3,7 +3,7 @@ import { useRoute } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/components/context/LanguageContext';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import { usePageContent, useSiteConfig } from '@/hooks/useStrapiContent';
+import { usePageContent, useSiteConfig } from '@/hooks/useContent';
 import MetaTags from '@/components/seo/MetaTags';
 import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { industriesPageContent as localIndustriesPageContent } from '@/lib/data/pages';

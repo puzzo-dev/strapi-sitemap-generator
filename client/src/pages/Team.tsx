@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useContent';
 // import { useERPNextTeamMembers } from '@/hooks/useERPNextContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { defaultTeamMembers } from '@/lib/data/team';

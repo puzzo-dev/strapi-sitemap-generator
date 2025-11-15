@@ -66,7 +66,7 @@ export interface FooterColumn {
 }
 
 export interface ClientLogo {
-  id?: number;
+  id: number | string;
   name: string;
   translationKey?: string;
   image: string;

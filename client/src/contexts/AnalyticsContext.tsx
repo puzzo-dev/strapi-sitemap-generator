@@ -291,7 +291,9 @@ export function usePageTracking(additionalData?: Partial<PageViewEvent>) {
 
   useEffect(() => {
     // Track page view with additional data
-    trackPageView(additionalData);
+    if (additionalData) {
+      trackPageView(additionalData);
+    }
 
     // Track page load performance
     if (window.performance && window.performance.timing) {
@@ -369,7 +371,7 @@ export function useInteractionTracking() {
       element_type: elementType,
       element_id: elementId,
       element_text: elementText,
-      page_section: element.closest('[data-section]')?.getAttribute('data-section'),
+      page_section: element.closest('[data-section]')?.getAttribute('data-section') || undefined,
       ...additionalData
     });
   }, [trackUserInteraction]);

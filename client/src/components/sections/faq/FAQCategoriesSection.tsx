@@ -127,14 +127,14 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
                                                     <Button
                                                         variant="ghost"
                                                     onClick={() => toggleItem(item.id)}
-                                                    aria-expanded={expandedItems.includes(item.id)}
+                                                    aria-expanded={expandedItems.has(item.id)}
                                                     aria-controls={`faq-content-${item.id}`}
                                                         className="w-full flex justify-between items-center p-4 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                                                 >
                                                     <h3 className="text-base font-medium text-gray-900 dark:text-white">
                                                         {item.question}
                                                     </h3>
-                                                    {expandedItems.includes(item.id) ? (
+                                                    {expandedItems.has(item.id) ? (
                                                         <ChevronUp className="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
                                                     ) : (
                                                         <ChevronDown className="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
@@ -144,7 +144,7 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
                                                 <div
                                                     id={`faq-content-${item.id}`}
                                                     className={`transition-all duration-200 overflow-hidden ${
-                                                        expandedItems.includes(item.id) ? 'max-h-96' : 'max-h-0'
+                                                        expandedItems.has(item.id) ? 'max-h-96' : 'max-h-0'
                                                     }`}
                                                 >
                                                         <div className="p-4 text-gray-700 dark:text-gray-300">

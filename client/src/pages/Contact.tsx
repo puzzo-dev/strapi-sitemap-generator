@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { usePageContent, useTestimonials, useFAQItems } from '@/hooks/useStrapiContent';
+import { usePageContent, useTestimonials, useFAQItems } from '@/hooks/useContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { usePageTracking } from '@/contexts/AnalyticsContext';
 import MetaTags from '@/components/seo/MetaTags';
@@ -50,10 +50,10 @@ const Contact: React.FC = () => {
   const structuredData = generateOrganizationSchema();
 
   // Extract sections with fallback to local data
-  const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero') || { id: 0 };
-  const contactSection = displayPageContent?.sections?.find(s => s.type === 'contact') || { id: 0 };
-  const testimonialsSection = displayPageContent?.sections?.find(s => s.type === 'testimonials') || { id: 0 };
-  const faqSection = displayPageContent?.sections?.find(s => s.type === 'faq') || { id: 0 };
+  const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero');
+  const contactSection = displayPageContent?.sections?.find(s => s.type === 'contact');
+  const testimonialsSection = displayPageContent?.sections?.find(s => s.type === 'testimonials');
+  const faqSection = displayPageContent?.sections?.find(s => s.type === 'faq');
 
   // Use API data if available, otherwise fall back to section data from local content
   const displayTestimonials = apiTestimonials || (testimonialsSection?.settings?.featured as any[]) || [];

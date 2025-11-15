@@ -240,6 +240,8 @@ export class StrapiCaseStudiesSource extends BaseDataSource<CaseStudyProps> {
       image: attrs.image?.data?.attributes?.url,
       client: attrs.client || '',
       industry: attrs.industry || '',
+      duration: attrs.duration || '3 months',
+      status: attrs.status || 'completed',
       challenge: attrs.challenge || '',
       solution: attrs.solution || '',
       results: attrs.results || [],
@@ -250,7 +252,7 @@ export class StrapiCaseStudiesSource extends BaseDataSource<CaseStudyProps> {
       gallery: attrs.gallery || [],
       tags: attrs.tags || [],
       featured: attrs.featured || false,
-      publishedAt: attrs.publishedAt || new Date().toISOString()
+      publishedDate: attrs.publishedAt || new Date().toISOString()
     };
   }
 }
@@ -267,6 +269,7 @@ export class StrapiIndustriesSource extends BaseDataSource<IndustryProps> {
     const attrs = item.attributes || {};
     return {
       id: item.id,
+      name: attrs.name || attrs.title || '',
       title: attrs.title || '',
       slug: attrs.slug || '',
       translationKey: attrs.translationKey,
@@ -307,6 +310,7 @@ export class StrapiJobsSource extends BaseDataSource<JobListing> {
       requirements: attrs.requirements || [],
       responsibilities: attrs.responsibilities || [],
       benefits: attrs.benefits || [],
+      qualifications: attrs.qualifications || [],
       skills: attrs.skills || [],
       applicationDeadline: attrs.applicationDeadline,
       isActive: attrs.isActive !== false,
@@ -331,7 +335,7 @@ export class StrapiClientLogosSource extends BaseDataSource<ClientLogo> {
       name: attrs.name || '',
       translationKey: attrs.translationKey,
       image: attrs.image?.data?.attributes?.url || '',
-      url: attrs.url ? { href: attrs.url, external: true } : undefined
+      url: attrs.url ? { url: attrs.url, isExternal: true } : undefined
     };
   }
 }

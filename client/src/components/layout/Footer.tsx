@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'wouter';
 import IVarseLogo from '@/components/ui/IVarseLogo';
 import NewsletterForm from '@/components/ui/NewsletterForm';
-import { useFooter, useSiteConfig } from '@/hooks/useStrapiContent';
+import { useFooter, useSiteConfig } from '@/hooks/useContent';
 import AppLink from '@/components/ui/AppLink';
 import { FooterProps } from '@/lib/types/';
 import { footerData } from '@/lib/data/';

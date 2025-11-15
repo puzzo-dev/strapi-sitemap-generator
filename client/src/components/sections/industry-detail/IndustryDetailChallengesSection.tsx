@@ -1,13 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle } from 'lucide-react';
-import { IndustryProps } from '@/lib/types/content';
+import { AlertCircle, AlertTriangle } from 'lucide-react';
 import { fadeInUp, staggerChildren } from '@/lib/animations';
-
-interface IndustryDetailChallengesSectionProps {
-  industry?: IndustryProps | null;
-  isLoading?: boolean;
-}
+import { IndustryDetailChallengesSectionProps } from '@/lib/types/components';
 
 const IndustryDetailChallengesSection: React.FC<IndustryDetailChallengesSectionProps> = ({ industry, isLoading }) => {
   if (isLoading) {

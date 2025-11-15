@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useJobListings } from '@/hooks/useStrapiContent';
+import { useJobListings } from '@/hooks/useContent';
 import { jobListings as fallbackJobListings } from '@/lib/data/';
 
 export interface CareersFormState {

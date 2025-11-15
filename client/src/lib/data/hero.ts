@@ -128,6 +128,9 @@ export const defaultHeroProps: HeroProps = {
   heroSlides: heroSlides,
 
   badge: "🚀 Digital Innovation",
+  title: "Transform Your Digital Presence",
+  subtitle: "We build innovative web and mobile solutions that drive business growth",
+  buttonText: "Get Started",
   
   // Required boolean properties
   isHeroLoading: false,

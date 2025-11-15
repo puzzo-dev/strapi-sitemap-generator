@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { PageContent } from '@/lib/types/core';
 
 interface RelatedJob {
-    id: number;
+    id: number | string;
     title: string;
     slug?: string;
     department: string;

@@ -121,8 +121,8 @@ const BlogPostsSection: React.FC<BlogPostsSectionProps> = ({ homePageContent, bl
                 transition={{ duration: 0.7, delay: index * 0.1 }}
               >
                 <BlogCard
-                  {...post}
-                  url={{ url: `/blog/${post.slug}` }}
+                  item={post}
+                  isReversed={index % 2 !== 0}
                 />
               </motion.div>
             ))

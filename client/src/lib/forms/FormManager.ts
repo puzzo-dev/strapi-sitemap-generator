@@ -33,7 +33,7 @@ export class FormValidationBuilder {
   private schema: Record<string, z.ZodType<any>> = {};
 
   public addField(name: string, rules: IValidationRule[]): this {
-    let fieldSchema: z.ZodType<any> = z.string();
+    let fieldSchema: z.ZodString = z.string();
 
     rules.forEach(rule => {
       switch (rule.type) {

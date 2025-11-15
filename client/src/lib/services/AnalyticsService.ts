@@ -597,13 +597,16 @@ export class AnalyticsService {
 
   private executeOnProviders<T extends keyof AnalyticsProvider>(
     method: T,
-    ...args: Parameters<AnalyticsProvider[T]>
+    ...args: Parameters<AnalyticsProvider[T] extends (...args: any) => any ? AnalyticsProvider[T] : never>
   ): void {
     if (!this.isInitialized) return;
 
     this.providers.forEach(provider => {
       try {
-        (provider[method] as any)(...args);
+        const fn = provider[method];
+        if (typeof fn === 'function') {
+          (fn as any)(...args);
+        }
       } catch (error) {
         console.error(`Error in ${provider.name} ${method}:`, error);
       }

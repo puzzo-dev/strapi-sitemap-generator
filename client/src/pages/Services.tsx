@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { servicesPageContent as localServicesPageContent } from '@/lib/data/pages';
 import { services as fallbackServices } from '@/lib/data';

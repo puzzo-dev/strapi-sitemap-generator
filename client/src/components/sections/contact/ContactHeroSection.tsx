@@ -9,7 +9,6 @@ import {
     staggerChildren,
     floatingShapeAnimation
 } from '@/lib/animations';
-import { defaultHeroProps } from '@/lib/data/hero';
 
 interface ContactHeroSectionProps {
     heroSection: PageSection | undefined;
@@ -63,27 +62,26 @@ const ContactHeroSection: React.FC<ContactHeroSectionProps> = ({
                     ) : (
                         <>
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                {/*  */}
-                                {heroSection?.settings?.badge || heroSection?.settings?.overline || defaultHeroProps.badge}
+                                {heroSection?.settings?.badge || heroSection?.badge}
                             </div>
 
                             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                                {heroSection?.title ? (
-                                    (() => {
-                                        const words = heroSection.title.split(' ');
-                                        const highlightedWords = words.length >= 2 ? words.slice(-2).join(' ') : '';
-                                        const regularWords = words.length >= 2 ? words.slice(0, -2).join(' ') : heroSection.title;
+                                {(() => {
+                                    const title = heroSection?.title;
+                                    if (!title) return null;
+                                    const words = title.split(' ');
+                                    const highlightedWords = words.length >= 2 ? words.slice(-2).join(' ') : '';
+                                    const regularWords = words.length >= 2 ? words.slice(0, -2).join(' ') : title;
 
-                                        return (
-                                            <>
-                                                <span className="text-blue-800 dark:text-blue-200">{regularWords}</span>{' '}
-                                                <span className="gradient-text">
-                                                    {highlightedWords}
-                                                </span>
-                                            </>
-                                        );
-                                    })()
-                                ) : null}
+                                    return (
+                                        <>
+                                            <span className="text-blue-800 dark:text-blue-200">{regularWords}</span>{' '}
+                                            <span className="gradient-text">
+                                                {highlightedWords}
+                                            </span>
+                                        </>
+                                    );
+                                })()}
                             </h1>
 
                             <p className="text-xl text-blue-700 dark:text-blue-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { industriesPageContent as localIndustriesPageContent } from '@/lib/data/pages';
 import { IndustryProps, TestimonialProps } from '@/lib/types/content';

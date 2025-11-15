@@ -62,8 +62,7 @@ const IndustriesHeroSection: React.FC<IndustriesHeroSectionProps> = ({
                     ) : (
                         <>
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-
-                                {settings?.overline || 'Industry Solutions'}
+                                {settings?.badge || settings?.overline || 'Industry Solutions'}
                             </div>
 
                             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>

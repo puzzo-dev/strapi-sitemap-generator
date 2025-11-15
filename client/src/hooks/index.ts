@@ -8,7 +8,7 @@ export { useCareersPageState } from './useCareersPageState';
 export { useSeoHelpers } from './useSeoHelpers';
 
 // Strapi content hooks
-export * from './useStrapiContent';
+// useStrapiContent has been merged into useContent.ts
 export { useAds } from './useAds';
 
 // UI hooks

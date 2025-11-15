@@ -41,7 +41,7 @@ interface SectionLayoutProps {
 
   // Loading State
   isLoading?: boolean;
-  loadingType?: 'section';
+  loadingType?: 'section' | 'hero' | 'grid' | 'form';
 
   // Animation
   animateOnScroll?: boolean;

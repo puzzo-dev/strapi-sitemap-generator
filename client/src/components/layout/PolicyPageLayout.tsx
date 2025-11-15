@@ -1,8 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { usePageContent } from '@/hooks/useStrapiContent';
-import DynamicContent from '../ui/DynamicContent';
-import { LoadingSkeletons } from '../ui/LoadingSkeleton';
+import { usePageContent } from '@/hooks/useContent';
+import DynamicContent from '@/components/ui/DynamicContent';
+import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
 import { PolicyPageLayoutProps } from '@/lib/types';
 
 

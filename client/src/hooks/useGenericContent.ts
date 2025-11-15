@@ -123,7 +123,7 @@ export function useGenericList<T>(
     ...mergedOptions
   });
 
-  const data = query.data || [];
+  const data = (query.data || []) as T[];
 
   return {
     data,
@@ -254,7 +254,7 @@ export function createMutationConfig<TData, TVariables>(
  * DRY principle: Centralized status checking
  */
 export function useContentStatusAggregator(
-  queries: Array<{ key: string; query: UseQueryResult<any> }>
+  queries: Array<{ key: string; query: UseQueryResult<any> | IListQueryResult<any> | IQueryResult<any> }>
 ): IContentStatus {
   const isUsingFallbacks: Record<string, boolean> = {};
   const systemHealth: Record<string, boolean> = {};

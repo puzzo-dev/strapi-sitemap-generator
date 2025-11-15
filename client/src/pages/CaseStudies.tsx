@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import { caseStudiesPageContent as localCaseStudiesPageContent } from '@/lib/data/case-studies-page';
+import { caseStudiesPageContent as localCaseStudiesPageContent } from '@/lib/data/pages';
 import { caseStudies } from '@/lib/data/case-studies';
 import { CaseStudiesContentSection } from '@/components/sections/case-studies';
 import { TestimonialProps } from '@/lib/types/content';

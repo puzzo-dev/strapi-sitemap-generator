@@ -5,7 +5,7 @@
  * Follows DRY principles and provides robust fallback mechanisms
  */
 
-import { useGenericList, useGenericItem } from './useGenericContent';
+import { useGenericList, useGenericItem } from '@/hooks/useGenericContent';
 import { createERPNextServices } from '@/lib/services/ERPNextService';
 import { TeamMember, JobListing } from '@/lib/types';
 import { IListQueryResult, IQueryResult } from '@/lib/abstractions';
@@ -66,9 +66,18 @@ export function useERPNextJobListing(slug: string): IQueryResult<JobListing | nu
 export function useERPNextHealth(): IQueryResult<boolean> {
   const erpNextServices = createERPNextServices();
   
-  return useGenericItem(
+  const result = useGenericItem(
     ['erpnext', 'health'],
     () => erpNextServices.service.isHealthy(),
     false
   );
+  
+  // Transform IQueryResult<boolean | null> to IQueryResult<boolean>
+  return {
+    data: result.data ?? false,
+    isLoading: result.isLoading,
+    error: result.error,
+    isSuccess: result.isSuccess,
+    isError: result.isError
+  };
 }

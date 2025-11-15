@@ -151,9 +151,12 @@ export interface BlogComment {
 export interface FAQItem {
   id: number;
   question: string;
-  translationKey?: string;
   answer: string;
-  categoryIds: number[];
+  category?: string;
+  translationKey?: string;
+  categoryIds?: number[];
+  order?: number;
+  featured?: boolean;
 }
 
 export interface FAQCategory {
@@ -173,6 +176,27 @@ export interface FAQPageContent {
   content?: string;
   categories: FAQCategory[];
   items: FAQItem[];
+}
+
+export interface FAQCategoriesSectionProps {
+  categories: FAQCategory[];
+  faqItems: FAQItem[];
+  activeCategory: number;
+  setActiveCategory: (category: number) => void;
+  expandedItems: Set<number>;
+  toggleItem: (id: number) => void;
+  isLoading?: boolean;
+}
+
+export interface BlogCardProps {
+  item: BlogPost;
+  isReversed?: boolean;
+  className?: string;
+}
+
+export interface TestimonialCardProps {
+  testimonial: TestimonialProps;
+  className?: string;
 }
 
 // Moved to components.ts
@@ -209,10 +233,11 @@ export interface TeamSectionProps extends PageSection {
 }
 
 export interface JobListing {
-  id: number;
+  id: number | string;
   title: string;
   slug?: string;
   translationKey?: string;
+  experience?: string;
   department: string;
   location: string;
   type: string;
@@ -239,8 +264,16 @@ export interface JobListing {
     period?: string;
   };
   erpNextApplicationDeadline?: string;
+  applicationDeadline?: string;
+  isActive?: boolean;
+  // Extended job information
+  teamDetails?: {
+    teamMembers?: number;
+    teamLead?: string;
+    reportsTo?: string;
+  };
+  skills?: string[];
 }
-
 
 // Hero stats and features types
 export interface HeroStat {
@@ -257,6 +290,9 @@ export interface HeroFeature {
 export interface HeroProps {
   heroContents?: HeroSlide;
   badge?: string;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
   isHeroLoading: boolean;
   isPageLoading: boolean;
   currentIndex: number;
@@ -283,8 +319,10 @@ export interface HeroSlide {
 
 export interface IndustryProps {
   id: number;
+  title?: string;
   name: string;
   slug: string;
+  translationKey?: string;
   description: string;
   content?: string;
   icon?: string;
@@ -297,6 +335,11 @@ export interface IndustryProps {
     description: string;
   }>;
   technologies?: string[];
+  benefits?: string[];
+  stats?: Array<{
+    label: string;
+    value: string;
+  }>;
   featured?: boolean;
 }
 
@@ -312,6 +355,11 @@ export interface AboutHeroProps extends PageSection {
 export interface ExtendedJobListing extends JobListing {
   additionalInfo?: string;
   internalNotes?: string;
+  teamDetails?: {
+    teamMembers?: number;
+    teamLead?: string;
+    department?: string;
+  };
 }
 
 export interface ExtendedTeamMember extends TeamMember {

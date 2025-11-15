@@ -258,7 +258,7 @@ export const faqHelpers = {
   
   // Get FAQs by category
   getByCategory: (categoryId: number): FAQItem[] => {
-    return faqContent.items.filter(faq => faq.categoryIds.includes(categoryId));
+    return faqContent.items.filter(faq => faq.categoryIds?.includes(categoryId));
   },
   
   // Get FAQs by category name

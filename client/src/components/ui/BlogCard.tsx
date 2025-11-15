@@ -5,45 +5,12 @@ import { BlogCardProps } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
 
 const BlogCard: React.FC<BlogCardProps> = ({
-    id,
-    name,
-    title,
-    slug,
-    blogCategories,
-    blogIntro,
-    publishedDate,
-    publishedAt,
-    featured,
-    metaImage,
-    author,
-    authorDetails,
-    readTime,
-    tags,
-    url,
-    ...rest
+    item,
+    isReversed = false,
+    className = ''
 }) => {
-    // Use the passed props directly as the post data
-    const post = {
-        id,
-        name,
-        title,
-        slug,
-        blogCategories,
-        blogIntro,
-        publishedDate,
-        publishedAt,
-        featured,
-        metaImage,
-        author,
-        authorDetails,
-        readTime,
-        tags,
-        url,
-        ...rest
-    };
-    
-    // Handle the case where url is passed separately (as seen in BlogPostsSection)
-    const postUrl = url?.url || `/blog/${post.slug || ''}`;
+    const post = item;
+    const postUrl = `/blog/${post.slug || ''}`;
     
     // Safely get image URL with fallback
     const imageUrl = post.metaImage || 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&auto=format&fit=crop';

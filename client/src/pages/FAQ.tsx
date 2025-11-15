@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { usePageContent, useFAQItems } from '@/hooks/useStrapiContent';
+import { usePageContent, useFAQItems } from '@/hooks/useContent';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import MetaTags from '@/components/seo/MetaTags';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
@@ -17,7 +17,7 @@ const FAQ: React.FC = () => {
 
     // State for FAQ categories section
     const [activeCategory, setActiveCategory] = useState<number>(1);
-    const [expandedItems, setExpandedItems] = useState<number[]>([]);
+      const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set<number>());
 
     // Fetch page content from Strapi or use local data
     const { data: pageContent, isLoading: isPageLoading } = usePageContent('faq');
@@ -43,15 +43,15 @@ const FAQ: React.FC = () => {
     const contactSection = displayPageContent?.sections?.find(s => s.type === 'contact') || { id: 0 };
 
     // Handle FAQ item expansion
-    const toggleItem = (itemId: number) => {
-        setExpandedItems(prev => 
-            prev.includes(itemId)
-                ? prev.filter(id => id !== itemId)
-                : [...prev, itemId]
-        );
-    };
-
-    return (
+    const toggleItem = (id: number) => {
+        const newSet = new Set(expandedItems);
+        if (newSet.has(id)) {
+            newSet.delete(id);
+        } else {
+            newSet.add(id);
+        }
+        setExpandedItems(newSet);
+    };    return (
         <>
             {/* SEO Metadata */}
             <MetaTags

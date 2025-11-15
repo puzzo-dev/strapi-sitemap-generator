@@ -7,6 +7,7 @@ import AppLink from '@/components/ui/AppLink';
 import { fadeInUp, staggerChildren } from '@/lib/animations';
 import { TeamMember } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
+import { defaultTeamMembers } from '@/lib/data/team';
 
 interface TeamMemberRelatedSectionProps {
     isLoading?: boolean;
@@ -25,21 +26,27 @@ const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({
         return pageContent?.sections?.[0]?.settings?.teamMembers || [];
     }, [pageContent]);
 
-    // Get related members from page content settings
+    // Get related members from page content settings or fallback
     const relatedMembers = useMemo(() => {
         // Get related members from the related section settings
         const relatedTeamMembers = relatedSection?.settings?.teamMembers || [];
         const maxDisplay = relatedSection?.settings?.maxDisplay || 3;
         
-        // If no specific related members defined, get first few team members as fallback
-        if (relatedTeamMembers.length === 0) {
+        // If no specific related members defined, try team members from page content
+        if (relatedTeamMembers.length === 0 && teamMembers.length > 0) {
             return teamMembers.slice(0, maxDisplay);
+        }
+        
+        // Final fallback to default team members if no data available
+        if (relatedTeamMembers.length === 0 && teamMembers.length === 0) {
+            return defaultTeamMembers.slice(0, maxDisplay);
         }
         
         return relatedTeamMembers.slice(0, maxDisplay);
     }, [relatedSection, teamMembers]);
 
-    if (isLoading || !relatedMembers || relatedMembers.length === 0) {
+    // Only show loading if actually loading, not when there's no data
+    if (isLoading) {
         return (
             <section className="py-16 bg-gray-50 dark:bg-[#0a1929]">
                 <div className="container mx-auto px-4">
@@ -83,7 +90,7 @@ const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({
                     variants={staggerChildren(0.1)}
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
                 >
-                    {relatedMembers.map((member, index) => (
+                    {relatedMembers.map((member: TeamMember, index: number) => (
                         <motion.div key={member.id || index} variants={fadeInUp(20, 0.6)}>
                             <Card className="h-full border-blue-100 dark:border-blue-900/40 hover:shadow-lg transition-shadow duration-300">
                                 <CardContent className="p-6">

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
@@ -13,7 +13,7 @@ import BlogSidebarSection from '@/components/sections/blog/BlogSidebarSection';
 import BlogCTASection from '@/components/sections/blog/BlogCTASection';
 
 // Import hooks and data
-import { usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useContent';
 import { blogPageContent as localBlogPageContent } from '@/lib/data/pages';
 
 const BlogPage: React.FC = () => {
@@ -47,9 +47,15 @@ const BlogPage: React.FC = () => {
     const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
     const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
 
-    // Get sections with fallbacks
-    const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero');
-    const blogSection = displayPageContent?.sections?.find(s => s.type === 'blog');
+    // Get sections with fallbacks (memoized to prevent re-computation)
+    const heroSection = useMemo(() => 
+        displayPageContent?.sections?.find(s => s.type === 'hero'),
+        [displayPageContent]
+    );
+    const blogSection = useMemo(() => 
+        displayPageContent?.sections?.find(s => s.type === 'blog'),
+        [displayPageContent]
+    );
 
     // Get unique tags with counts
     const allTags = useMemo(() => {
@@ -77,12 +83,12 @@ const BlogPage: React.FC = () => {
         return counts;
     }, [blogPosts]);
 
-    // Clear all filters
-    const handleClearFilters = () => {
+    // Clear all filters (memoized to prevent function recreation)
+    const handleClearFilters = useCallback(() => {
         setSearch('');
         setCategory('all');
         setTag('all');
-    };
+    }, []);
 
     return (
         <>

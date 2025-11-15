@@ -377,6 +377,7 @@ export const aboutPageContent: PageContent = {
       content: "Founded with a vision to revolutionize digital solutions, I-VARSE has been at the forefront of technology innovation since its inception. We combine technical expertise with creative thinking to deliver exceptional results.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
+        badge: "ℹ️ About Us",
         overline: "About I-VARSE",
         animation: {
           type: "fade" as const,
@@ -1009,6 +1010,7 @@ export const careersPageContent: PageContent = {
       content: "At I-VARSE, we're more than just a technology company – we're a community of passionate innovators dedicated to creating solutions that make a difference.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
+        badge: "💼 Careers",
         animation: {
           type: "fade" as const,
           duration: 0.5,
@@ -1712,8 +1714,8 @@ export const industriesPageContent: PageContent = {
       subtitle: "Explore how our technology expertise empowers organizations across diverse industries to achieve their goals.",
       content: "We deliver innovative technology solutions across diverse industries, helping businesses transform and grow.",
       backgroundColor: "bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
-      badge: "🏭 Industries",
       settings: {
+        badge: "🏭 Industries",
         animation: {
           type: "fade" as const,
           duration: 0.5,

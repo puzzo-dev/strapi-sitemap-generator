@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useRoute } from 'wouter';
 import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import { usePageContent } from '@/hooks/useStrapiContent';
+import { usePageContent } from '@/hooks/useContent';
 // import { useERPNextTeamMember } from '@/hooks/useERPNextContent';
 import { teamMemberDetailPageContent as localTeamMemberDetailPageContent } from '@/lib/data/pages';
 import { defaultTeamMembers } from '@/lib/data/team';

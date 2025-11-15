@@ -1,14 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
-import { IndustryProps } from '@/lib/types/content';
 import { fadeInUp, staggerChildren } from '@/lib/animations';
 import { Card, CardContent } from '@/components/ui/card';
-
-interface IndustryDetailSolutionsSectionProps {
-  industry?: IndustryProps | null;
-  isLoading?: boolean;
-}
+import { IndustryDetailSolutionsSectionProps } from '@/lib/types/components';
 
 const IndustryDetailSolutionsSection: React.FC<IndustryDetailSolutionsSectionProps> = ({ industry, isLoading }) => {
   if (isLoading) {
