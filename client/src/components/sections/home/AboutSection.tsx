@@ -188,10 +188,10 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                         </motion.div>
                     </div>
 
-                    {/* Stats - Full Width with Counter Animation */}
+                    {/* Stats - Tech-Inspired Design */}
                     {stats.length > 0 && (
-                        <motion.div variants={fadeInUp(20, 0.6, 0.3)}>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+                        <motion.div variants={fadeInUp(20, 0.6, 0.3)} className="mt-16">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                                 {stats.map((stat: any, index: number) => {
                                     const numericValue = parseInt(stat.value.replace(/[^0-9]/g, '')) || 0;
                                     const count = useCountUp(numericValue, 2500, isVisible);
@@ -201,30 +201,45 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                                         <motion.div
                                             key={index}
                                             variants={fadeInUp(10, 0.5, index * 0.1)}
-                                            className="relative group"
+                                            className="relative group text-center"
                                         >
-                                            <div className="relative overflow-hidden rounded-2xl border border-blue-200 dark:border-blue-800/50 bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/20 dark:to-[#0a192f] p-8 text-center transition-all duration-300 hover:shadow-xl hover:scale-105">
-                                                {/* Icon */}
-                                                <div className="absolute top-4 right-4 text-blue-400 dark:text-blue-500 opacity-20 group-hover:opacity-40 transition-opacity">
-                                                    {getStatIcon(index)}
-                                                </div>
-
-                                                {/* Animated background gradient */}
-                                                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/0 via-blue-400/5 to-purple-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                                                {/* Value */}
-                                                <div className="relative z-10">
-                                                    <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-3">
-                                                        {count}{suffix}
-                                                    </div>
-                                                    <div className="text-base md:text-lg font-medium text-gray-700 dark:text-gray-300">
-                                                        {stat.label}
-                                                    </div>
-                                                </div>
-
-                                                {/* Decorative corner */}
-                                                <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-blue-500/10 to-transparent rounded-tl-full"></div>
+                                            {/* Tech border frame */}
+                                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                                {/* Corner brackets */}
+                                                <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-blue-500 dark:border-blue-400"></div>
+                                                <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-blue-500 dark:border-blue-400"></div>
+                                                <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-blue-500 dark:border-blue-400"></div>
+                                                <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-blue-500 dark:border-blue-400"></div>
                                             </div>
+
+                                            {/* Icon with glow effect */}
+                                            <div className="mb-4 flex justify-center">
+                                                <div className="relative">
+                                                    <div className="absolute inset-0 bg-blue-500/20 dark:bg-blue-400/20 blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                                                    <div className="relative text-blue-600 dark:text-blue-400 group-hover:text-blue-500 dark:group-hover:text-blue-300 transition-colors duration-300">
+                                                        {getStatIcon(index)}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Animated scanning line */}
+                                            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 duration-[5000ms] animate-scan-line"></div>
+
+                                            {/* Value with gradient */}
+                                            <div className="relative z-10 py-4">
+                                                <div className="text-5xl md:text-6xl font-extrabold mb-2 bg-gradient-to-r from-[#2FB8FF] via-blue-600 to-[#0047AB] dark:from-[#2FB8FF] dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
+                                                    {count}{suffix}
+                                                </div>
+                                                <div className="text-sm md:text-base font-medium text-blue-900 dark:text-blue-200 uppercase tracking-wider" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                                                    {stat.label}
+                                                </div>
+                                            </div>
+
+                                            {/* Bottom indicator line */}
+                                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-transparent via-blue-500 dark:via-blue-400 to-transparent group-hover:w-full transition-all duration-500"></div>
+
+                                            {/* Pulse effect on hover */}
+                                            <div className="absolute inset-0 bg-blue-500/5 dark:bg-blue-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                                         </motion.div>
                                     );
                                 })}

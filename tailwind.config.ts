@@ -180,6 +180,7 @@ export default {
         "ultra-sharp-fade": "ultra-sharp-fade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
         "crisp-scale": "crisp-scale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
         "sharp-glow": "sharp-glow 2s ease-in-out infinite",
+        "scan-line": "scan-line 6s linear infinite",
       },
     },
   },
