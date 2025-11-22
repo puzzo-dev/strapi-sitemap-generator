@@ -8,6 +8,7 @@ import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
 import { cn } from '@/lib/utils';
 import { getThemeColors } from '@/lib/utils/theme-helpers';
 import GradientButton from '@/components/ui/GradientButton';
+import { useTranslation } from 'react-i18next';
 
 interface ProductGallerySectionProps {
   product: ProductProps;

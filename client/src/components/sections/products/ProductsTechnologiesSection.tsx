@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ProductsTechnologiesSectionProps {
   pageContent?: PageContent | null;
@@ -26,6 +28,8 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
   pageContent, 
   isLoading = false 
 }) => {
+  const { t } = useTranslation();
+  
   // Get custom section from page content
   const customSection = pageContent?.sections?.find(s => s.type === 'custom');
 
@@ -43,9 +47,9 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
             🔧 Technologies
           </div>
           <div className="text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold text-blue-900 dark:text-blue-200 mb-2">{customSection?.title || "Powered by Advanced Technologies"}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-blue-900 dark:text-blue-200 mb-2">{customSection?.title || t('products.technologiesTitle') || uiLabels.products.technologiesTitle}</h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              {customSection?.subtitle || "Our products are built using cutting-edge technologies to deliver powerful, scalable, and secure solutions."}
+              {customSection?.subtitle || t('products.technologiesSubtitle') || uiLabels.products.technologiesSubtitle}
           </p>
           </div>
         </motion.div>
@@ -134,7 +138,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
 
                   <div className="mt-6">
                     <GradientButton href="/products/1" size="sm">
-                      Learn More
+                      {t('ui.learnMore') || uiLabels.learnMore}
                     </GradientButton>
                   </div>
                 </div>
@@ -216,7 +220,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
 
                   <div className="mt-6">
                     <GradientButton href="/products/2" size="sm">
-                      Learn More
+                      {t('ui.learnMore') || 'Learn More'}
                     </GradientButton>
                   </div>
                 </div>

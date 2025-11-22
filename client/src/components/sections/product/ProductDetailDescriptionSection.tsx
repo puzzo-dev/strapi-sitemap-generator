@@ -2,6 +2,8 @@ import React from 'react';
 import { Check } from 'lucide-react';
 import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ProductDetailDescriptionSectionProps {
   product: any;
@@ -14,17 +16,16 @@ const ProductDetailDescriptionSection: React.FC<ProductDetailDescriptionSectionP
   isLoading,
   pageContent
 }) => {
+  const { t } = useTranslation();
+  
   // Get description section content from pageContent
   const descriptionSection = pageContent?.sections?.find(s => s.type === 'custom');
   const descriptionContent = descriptionSection?.settings?.productContent?.description;
 
-  // Default content if not available in pageContent
-  const defaultContent = {
-    keyFeatures: "Key Features",
-    benefits: "Benefits"
+  const content = {
+    keyFeatures: product?.keyFeaturesLabel || t('ui.keyFeatures') || uiLabels.keyFeatures,
+    benefits: product?.benefitsLabel || t('ui.benefits') || uiLabels.benefits
   };
-
-  const content = descriptionContent || defaultContent;
 
   if (isLoading) {
     return (

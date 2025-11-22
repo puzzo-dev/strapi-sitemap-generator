@@ -28,6 +28,8 @@ import IVarseLogo from "@/components/ui/IVarseLogo";
 import { cn } from '@/lib/utils';
 import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
 import { getThemeColors } from '@/lib/utils/theme-helpers';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 // Helper function to get social icon paths
 const getSocialIconPath = (platform: string): string => {
     const lowerPlatform = platform.toLowerCase();
@@ -63,6 +65,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
     stats: propStats,
     features: propFeatures,
 }) => {
+    const { t } = useTranslation();
     const [isPaused, setIsPaused] = useState(false);
 
     // Use props instead of hooks
@@ -123,9 +126,9 @@ const ModernHero: React.FC<ModernHeroProps> = ({
         "Empowering businesses with comprehensive digital transformation solutions that drive innovation, efficiency, and sustainable growth in the modern digital landscape.";
 
     // Get button info from currentSlide
-    const primaryBtnText = currentSlide?.primaryButton?.children || "GET STARTED";
+    const primaryBtnText = currentSlide?.primaryButton?.children || t('ui.getStarted') || uiLabels.getStarted;
     const primaryBtnUrl = currentSlide?.primaryButton?.href || "/services";
-    const secondaryBtnText = currentSlide?.secondaryButton?.children || "LEARN MORE";
+    const secondaryBtnText = currentSlide?.secondaryButton?.children || t('ui.learnMore') || uiLabels.learnMore;
     const secondaryBtnUrl = currentSlide?.secondaryButton?.href || "/#about";
 
     // Use isPageLoading or isHeroLoading as fallback for isLoading

@@ -5,6 +5,8 @@ import GradientButton from '@/components/ui/GradientButton';
 import { fadeInUp, staggerChildren, scaleUp } from '@/lib/animations';
 import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ProductsCTASectionProps {
   pageContent?: PageContent | null;
@@ -15,6 +17,8 @@ const ProductsCTASection: React.FC<ProductsCTASectionProps> = ({
   pageContent, 
   isLoading = false 
 }) => {
+  const { t } = useTranslation();
+  
   // Get CTA section from page content
   const ctaSection = pageContent?.sections?.find(s => s.type === 'cta');
 
@@ -59,13 +63,13 @@ const ProductsCTASection: React.FC<ProductsCTASectionProps> = ({
                   variants={fadeInUp(20, 0.7)}
                   className="heading-lg text-blue-900 dark:text-blue-200 mb-6"
                 >
-                  {ctaSection?.title || "Ready to Transform Your Business?"}
+                  {ctaSection?.title || t('products.ctaTitle') || uiLabels.products.ctaTitle}
                 </motion.h2>
                 <motion.p 
                   variants={fadeInUp(20, 0.7, 0.1)}
                   className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8"
                 >
-                  {ctaSection?.subtitle || "Our products are designed to help you achieve your business goals. Contact us today to learn how we can customize our products to meet your specific needs."}
+                  {ctaSection?.subtitle || t('products.ctaSubtitle') || uiLabels.products.ctaSubtitle}
                 </motion.p>
                 <motion.div 
                   variants={staggerChildren(0.1, 0.2)}
@@ -77,7 +81,7 @@ const ProductsCTASection: React.FC<ProductsCTASectionProps> = ({
                       size="lg" 
                       endIcon={<ArrowRight />}
                     >
-                      {ctaSection?.settings?.primaryButton?.children || "Request a Demo"}
+                      {ctaSection?.settings?.primaryButton?.children || t('ui.requestDemo') || uiLabels.requestDemo}
                     </GradientButton>
                   </motion.div>
                   <motion.div variants={fadeInUp(10, 0.5, 0.1)}>
@@ -86,7 +90,7 @@ const ProductsCTASection: React.FC<ProductsCTASectionProps> = ({
                       variant="outline" 
                       size="lg"
                     >
-                      {ctaSection?.settings?.secondaryButton?.children || "Read Success Stories"}
+                      {ctaSection?.settings?.secondaryButton?.children || t('ui.readSuccessStories') || uiLabels.readSuccessStories}
                     </GradientButton>
                   </motion.div>
                 </motion.div>

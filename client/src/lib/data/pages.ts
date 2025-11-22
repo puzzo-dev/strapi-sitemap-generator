@@ -81,11 +81,11 @@ export const homePageContent: PageContent = {
     {
       id: 3,
       type: "products",
-      title: "Our Products",
+      title: "Our Projects",
       subtitle: "Innovative digital solutions for modern businesses",
-      content: "Discover our cutting-edge digital products designed to transform your business operations and drive growth.",
+      content: "Discover our cutting-edge digital projects designed to transform your business operations and drive growth.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
-      badge: "🚀 Our Products",
+      badge: "🚀 Our Projects",
       settings: {
         featured: products,
         layout: "grid",
@@ -476,7 +476,7 @@ export const aboutPageContent: PageContent = {
       id: 5,
       type: "industries",
       title: "Industries We Serve",
-      subtitle: "Comprehensive solutions across diverse sectors",
+      subtitle: "Comprehensive Solutions across Diverse Sectors",
       content: "Our expertise spans across multiple industries, enabling us to provide tailored solutions that address industry-specific challenges and drive digital transformation. We understand the unique needs of each sector and deliver innovative technology solutions that help businesses thrive in the digital economy.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       badge: "🏭 Our Industries",
@@ -689,16 +689,16 @@ export const servicesPageContent: PageContent = {
 export const productsPageContent: PageContent = {
   id: 4,
   slug: "products",
-  title: "Our Products - I-VARSE Technologies",
-  description: "Innovative digital products designed to transform your business operations and drive growth.",
-  metaTitle: "Digital Products | Innovative Solutions",
-  metaDescription: "Innovative digital products designed to transform your business operations and drive growth.",
+  title: "Our Projects - I-VARSE Technologies",
+  description: "Innovative digital projects designed to transform your business operations and drive growth.",
+  metaTitle: "Digital Projects | Innovative Solutions",
+  metaDescription: "Innovative digital projects designed to transform your business operations and drive growth.",
   sections: [
     {
       id: 1,
       type: "hero",
-      badge: "🚀 Our Products",
-      title: "Innovative Digital Products",
+      badge: "🚀 Our Projects",
+      title: "Innovative Digital Projects",
       subtitle: "Transform your business with our cutting-edge solutions",
       content: "We develop innovative digital products that help businesses streamline operations, improve efficiency, and drive growth.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
@@ -746,10 +746,10 @@ export const productsPageContent: PageContent = {
     {
       id: 3,
       type: "custom",
-      title: "Why Choose Our Products",
+      title: "Why Choose Our Projects",
       badge: "✨ Benefits",
       subtitle: "Key advantages of our digital solutions",
-      content: "Our products are designed with modern businesses in mind, offering scalability, security, and ease of use.",
+      content: "Our projects are designed with modern businesses in mind, offering scalability, security, and ease of use.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
         items: [

@@ -4,6 +4,8 @@ import { ArrowRight } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { fadeInUp, staggerChildren, scaleUp } from '@/lib/animations';
 import { PageContent } from '@/lib/types/core';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ProductsHeroSectionProps {
   pageContent?: PageContent | null;
@@ -14,6 +16,8 @@ const ProductsHeroSection: React.FC<ProductsHeroSectionProps> = ({
   pageContent,
   isLoading = false
 }) => {
+  const { t } = useTranslation();
+  
   // Get hero section from page content
   const heroSection = pageContent?.sections?.find(s => s.type === 'hero');
 
@@ -135,7 +139,7 @@ const ProductsHeroSection: React.FC<ProductsHeroSectionProps> = ({
             variants={fadeInUp(20, 0.7, 0.3)}
             className="text-xl text-blue-700 dark:text-blue-200 mb-8"
           >
-            {heroSection?.subtitle || "Unlock your business potential with our suite of powerful, innovative software solutions designed to streamline operations and drive growth."}
+            {heroSection?.subtitle || t('products.heroSubtitle') || uiLabels.products.heroSubtitle}
           </motion.p>
 
           <motion.div
@@ -147,14 +151,14 @@ const ProductsHeroSection: React.FC<ProductsHeroSectionProps> = ({
               size="lg"
               endIcon={<ArrowRight />}
             >
-              {heroSection?.settings?.primaryButton?.children || "Explore Products"}
+              {heroSection?.settings?.primaryButton?.children || t('ui.exploreProducts') || uiLabels.exploreProducts}
             </GradientButton>
             <GradientButton
               href={heroSection?.settings?.secondaryButton?.href || "/contact"}
               variant="outline"
               size="lg"
             >
-              {heroSection?.settings?.secondaryButton?.children || "Request Demo"}
+              {heroSection?.settings?.secondaryButton?.children || t('ui.requestDemo') || uiLabels.requestDemo}
             </GradientButton>
           </motion.div>
         </motion.div>

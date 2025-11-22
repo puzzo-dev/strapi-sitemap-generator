@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Server, Code, Globe, Smartphone, Search, PenTool, Cloud, Database, BarChart, Cpu } from 'lucide-react';
 import { ServiceProps } from '@/lib/types';
 import { Link } from 'wouter';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ServiceCardProps {
   service: ServiceProps;
@@ -10,7 +12,8 @@ interface ServiceCardProps {
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) => {
-  const { id, title, description, icon, slug } = service;
+  const { t } = useTranslation();
+  const { id, title, description, icon, slug, learnMoreText, readMoreText } = service;
 
   // Map FontAwesome icon names to Lucide React icons
   const getIcon = () => {
@@ -70,7 +73,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) 
           <div className="w-10 h-10 mb-3 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 transform group-hover:scale-110 transition-transform duration-300 text-blue-500 dark:text-blue-400">
             {getIcon()}
           </div>
-          <h3 className="font-bold text-gray-900 dark:text-white text-lg leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+          <h3 className="font-bold text-blue-900 dark:text-blue-200 text-lg leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
             {title}
           </h3>
         </div>
@@ -87,12 +90,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) 
               href={`/services/${slug}`}
               className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium text-sm group/link"
             >
-              Learn more
+              {learnMoreText || readMoreText || t('ui.learnMore') || uiLabels.learnMore}
               <ArrowRight className="ml-1 transform group-hover/link:translate-x-1.5 transition-transform h-4 w-4" />
             </Link>
           ) : (
             <span className="inline-flex items-center text-gray-400 dark:text-gray-500 font-medium text-sm">
-              Learn more
+              {learnMoreText || readMoreText || t('ui.learnMore') || uiLabels.learnMore}
               <ArrowRight className="ml-1 h-4 w-4" />
             </span>
           )}

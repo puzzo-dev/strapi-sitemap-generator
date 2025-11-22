@@ -4,12 +4,16 @@ import { ArrowRight, Calendar } from 'lucide-react';
 import GradientButton from '@/components/ui/GradientButton';
 import { ServiceProps } from '@/lib/types/content';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ServiceDetailOtherServicesSectionProps {
   otherServices: ServiceProps[];
 }
 
 const ServiceDetailOtherServicesSection: React.FC<ServiceDetailOtherServicesSectionProps> = ({ otherServices }) => {
+  const { t } = useTranslation();
+  
   return (
     <section className="content-section bg-gray-50 dark:bg-[#0a1929]">
       <div className="container-custom">
@@ -38,7 +42,7 @@ const ServiceDetailOtherServicesSection: React.FC<ServiceDetailOtherServicesSect
                 </p>
                 <Link href={`/services/${otherService.id}`}>
                   <a className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group">
-                    <span>Learn More</span>
+                    <span>{otherService.learnMoreText || otherService.readMoreText || t('ui.learnMore') || uiLabels.learnMore}</span>
                     <ArrowRight className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" />
                   </a>
                 </Link>

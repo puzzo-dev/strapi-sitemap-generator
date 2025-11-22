@@ -3,8 +3,11 @@ import { Link } from 'wouter';
 import { ArrowRight, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { SectionItem, ProductCardProps } from '@/lib/types';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = false }) => {
+  const { t } = useTranslation();
   // Extract benefits array from PageSection structure
   const benefits = product?.benefits?.items || [];
 
@@ -47,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = f
       {/* Content column */}
       <div className="lg:col-span-7 mt-5 lg:mt-0">
         <motion.h3
-          className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2 sm:mb-3 md:mb-4"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-900 dark:text-blue-200 mb-2 sm:mb-3 md:mb-4"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -74,7 +77,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = f
             transition={{ duration: 0.4, delay: 0.2 }}
           >
             <h4 className="text-sm sm:text-base font-bold text-gray-700 dark:text-gray-200 mb-2 sm:mb-3">
-              Key Features
+              {product?.keyFeaturesLabel || t('ui.keyFeatures') || uiLabels.keyFeatures}
             </h4>
             <ul className="space-y-1.5 sm:space-y-2">
               {product?.keyFeatures?.map((feature: string, index: number) => (
@@ -105,7 +108,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = f
             transition={{ duration: 0.4, delay: 0.3 }}
           >
             <h4 className="text-sm sm:text-base font-bold text-gray-700 dark:text-gray-200 mb-2 sm:mb-3">
-              Benefits
+              {product?.benefitsLabel || t('ui.benefits') || uiLabels.benefits}
             </h4>
             <ul className="space-y-1.5 sm:space-y-2">
               {benefits.map((benefit: SectionItem, index: number) => (
@@ -143,7 +146,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = f
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <span>
-                Learn More
+                {product?.learnMoreText || t('ui.learnMore') || uiLabels.learnMore}
               </span>
               <motion.span
                 className="ml-1 inline-flex"

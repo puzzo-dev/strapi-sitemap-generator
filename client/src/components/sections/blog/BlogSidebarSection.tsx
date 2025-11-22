@@ -187,7 +187,7 @@ const BlogSidebarSection: React.FC<BlogSidebarSectionProps> = ({
                                     className="mt-2 text-blue-600 border-blue-600 hover:bg-blue-50"
                                     onClick={() => window.open('/services/erp-solutions', '_blank')}
                                 >
-                                    Learn More <ArrowRight className="h-3 w-3 ml-1" />
+                                    {t('ui.learnMore') || 'Learn More'} <ArrowRight className="h-3 w-3 ml-1" />
                                 </Button>
                             </div>
                         </div>

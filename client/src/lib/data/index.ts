@@ -1,6 +1,9 @@
 // Configuration and Navigation
 export * from './config';
 
+// UI Labels and Text
+export * from './ui-labels';
+
 // Ads and Marketing
 export * from './ads';
 

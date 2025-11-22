@@ -3,6 +3,8 @@ import { Link } from 'wouter';
 import { ArrowRight } from 'lucide-react';
 import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ProductRelatedSectionProps {
   currentProductSlug: string;
@@ -17,6 +19,8 @@ const ProductRelatedSection: React.FC<ProductRelatedSectionProps> = ({
   isLoading,
   pageContent,
 }) => {
+  const { t } = useTranslation();
+  
   // Get related products content from page content settings
   const relatedSection = pageContent?.sections?.find(s => s.type === 'products');
   const relatedContent = relatedSection?.settings?.productContent?.related;
@@ -61,13 +65,13 @@ const ProductRelatedSection: React.FC<ProductRelatedSectionProps> = ({
       <div className="container-custom">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            Related Products
+            {t('products.relatedBadge') || uiLabels.products.relatedBadge}
           </div>
           <h2 className="section-title text-blue-900 dark:text-blue-200">
-            {relatedContent?.title || "Related Products"}
+            {relatedContent?.title || t('products.relatedTitle') || uiLabels.products.relatedTitle}
           </h2>
           <p className="section-subtitle">
-            {relatedContent?.subtitle || "Explore our other products that might be a better fit for your needs."}
+            {relatedContent?.subtitle || t('products.relatedSubtitle') || uiLabels.products.relatedSubtitle}
           </p>
         </div>
 
@@ -79,7 +83,7 @@ const ProductRelatedSection: React.FC<ProductRelatedSectionProps> = ({
                 <p className="text-gray-600 dark:text-gray-300 mb-6">{product.shortDescription || product.description}</p>
                 <Link href={`/products/${product.slug}`}>
                   <a className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center">
-                    <span>{relatedContent?.learnMore || "Learn More"}</span>
+                    <span>{product.learnMoreText || relatedContent?.learnMore || t('ui.learnMore') || uiLabels.learnMore}</span>
                     <ArrowRight className="h-4 w-4 ml-1" />
                   </a>
                 </Link>

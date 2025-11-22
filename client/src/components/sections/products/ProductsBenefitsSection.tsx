@@ -4,6 +4,8 @@ import { fadeInUp, staggerChildren, scaleUp } from '@/lib/animations';
 import { ShieldCheck, Cpu, PieChart } from 'lucide-react';
 import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ProductsBenefitsSectionProps {
   pageContent?: PageContent | null;
@@ -14,6 +16,8 @@ const ProductsBenefitsSection: React.FC<ProductsBenefitsSectionProps> = ({
   pageContent, 
   isLoading = false 
 }) => {
+  const { t } = useTranslation();
+  
   // Get features section from page content
   const featuresSection = pageContent?.sections?.find(s => s.type === 'features');
 
@@ -27,11 +31,11 @@ const ProductsBenefitsSection: React.FC<ProductsBenefitsSectionProps> = ({
       <div className="container-custom">
         <motion.div variants={fadeInUp()} className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            {featuresSection?.badge || "Why Choose Us"}
+            {featuresSection?.badge || t('ui.whyChooseUs') || uiLabels.whyChooseUs}
           </div>
-          <h2 className="section-title text-blue-900 dark:text-blue-200">{featuresSection?.title || "Transformative Solutions for Modern Businesses"}</h2>
+          <h2 className="section-title text-blue-900 dark:text-blue-200">{featuresSection?.title || t('products.benefitsTitle') || uiLabels.products.benefitsTitle}</h2>
           <p className="section-subtitle">
-            {featuresSection?.subtitle || "Our products are designed with your success in mind, combining powerful features with intuitive interfaces."}
+            {featuresSection?.subtitle || t('products.benefitsSubtitle') || uiLabels.products.benefitsSubtitle}
           </p>
         </motion.div>
         

@@ -17,6 +17,9 @@ export interface ServiceProps {
   faqs?: PageSection;
   icon: string;
   image?: string;
+  // Dynamic UI labels (from Strapi)
+  learnMoreText?: string;
+  readMoreText?: string;
 }
 
 // Use generic CardProps<ServiceProps> instead
@@ -63,6 +66,13 @@ export interface ProductProps {
   category: string[];
   tags: string[];
   status: 'Active' | 'Beta' | 'Coming Soon' | 'Deprecated';
+  // Dynamic UI labels (from Strapi)
+  learnMoreText?: string;
+  keyFeaturesLabel?: string;
+  benefitsLabel?: string;
+  industriesLabel?: string;
+  caseStudiesLabel?: string;
+  faqsLabel?: string;
 }
 
 // Use generic CardProps<ProductProps> instead

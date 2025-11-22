@@ -5,6 +5,8 @@ import { fadeInUp, staggerChildren } from '@/lib/animations';
 import { PageContent } from '@/lib/types/core';
 import { ProductProps } from '@/lib/types/content';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 interface ProductsListSectionProps {
   pageContent?: PageContent | null;
@@ -17,6 +19,8 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
   products,
   isLoading = false
 }) => {
+  const { t } = useTranslation();
+  
   // Get products section from page content
   const productsSection = pageContent?.sections?.find(s => s.type === 'products');
 
@@ -56,14 +60,14 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
           className="text-center mb-4"
         >
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            {productsSection?.badge || "Our Products"}
+            {productsSection?.badge || t('ui.ourProjects') || uiLabels.ourProjects}
           </div>
           <div className="text-center mb-16">
             <h2 className="section-title text-blue-900 dark:text-blue-200">
-              {productsSection?.title || "Our Digital Solutions"}
+              {productsSection?.title || t('products.listTitle') || uiLabels.products.listTitle}
             </h2>
             <p className="section-subtitle">
-              {productsSection?.subtitle || "Comprehensive products for modern businesses"}
+              {productsSection?.subtitle || t('products.listSubtitle') || uiLabels.products.listSubtitle}
             </p>
           </div>
         </motion.div>

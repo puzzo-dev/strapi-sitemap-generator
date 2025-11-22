@@ -4,17 +4,21 @@ import GradientButton from '@/components/ui/GradientButton';
 import { PageContent, PageSection } from '@/lib/types/core';
 import { fadeInUp } from '@/lib/animations';
 import { ProductCTASectionProps } from '@/lib/types/components';
+import { useTranslation } from 'react-i18next';
+import { uiLabels } from '@/lib/data';
 
 const ProductCTASection: React.FC<ProductCTASectionProps> = ({
   isLoading,
   pageContent
 }) => {
+  const { t } = useTranslation();
+  
   // Get CTA section from pageContent
   const ctaSection = pageContent?.sections?.find(s => s.type === 'cta') as PageSection;
 
   // Extract data from ctaSection with fallbacks
-  const title = ctaSection?.title || 'Ready to Get Started?';
-  const subtitle = ctaSection?.subtitle || 'Contact us today to discuss how we can help you achieve your business goals.';
+  const title = ctaSection?.title || t('ui.readyToStart') || uiLabels.readyToStart;
+  const subtitle = ctaSection?.subtitle || t('ui.contactUsToday') || uiLabels.contactUsToday;
   const primaryButton = ctaSection?.settings?.primaryButton;
 
   if (isLoading) {
@@ -52,7 +56,7 @@ const ProductCTASection: React.FC<ProductCTASectionProps> = ({
             </p>
             <div className="flex justify-center">
               <GradientButton href={primaryButton?.href} size="lg" variant="light">
-                {primaryButton?.children || primaryButton?.title || 'Get Started'}
+                {primaryButton?.children || primaryButton?.title || t('ui.getStarted') || uiLabels.getStarted}
               </GradientButton>
             </div>
           </div>
