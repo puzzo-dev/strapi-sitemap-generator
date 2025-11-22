@@ -7,6 +7,7 @@ import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 interface ProductsCTASectionProps {
   pageContent?: PageContent | null;
@@ -81,7 +82,7 @@ const ProductsCTASection: React.FC<ProductsCTASectionProps> = ({
                       size="lg" 
                       endIcon={<ArrowRight />}
                     >
-                      {ctaSection?.settings?.primaryButton?.children || t('ui.requestDemo') || uiLabels.requestDemo}
+                      {ctaSection?.settings?.primaryButton?.children || getTranslation(t, 'ui.requestDemo', uiLabels.requestDemo)}
                     </GradientButton>
                   </motion.div>
                   <motion.div variants={fadeInUp(10, 0.5, 0.1)}>
@@ -90,7 +91,7 @@ const ProductsCTASection: React.FC<ProductsCTASectionProps> = ({
                       variant="outline" 
                       size="lg"
                     >
-                      {ctaSection?.settings?.secondaryButton?.children || t('ui.readSuccessStories') || uiLabels.readSuccessStories}
+                      {ctaSection?.settings?.secondaryButton?.children || getTranslation(t, 'ui.readSuccessStories', uiLabels.readSuccessStories)}
                     </GradientButton>
                   </motion.div>
                 </motion.div>

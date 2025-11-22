@@ -4,6 +4,7 @@ import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 interface ProductDetailDescriptionSectionProps {
   product: any;
@@ -23,8 +24,8 @@ const ProductDetailDescriptionSection: React.FC<ProductDetailDescriptionSectionP
   const descriptionContent = descriptionSection?.settings?.productContent?.description;
 
   const content = {
-    keyFeatures: product?.keyFeaturesLabel || t('ui.keyFeatures') || uiLabels.keyFeatures,
-    benefits: product?.benefitsLabel || t('ui.benefits') || uiLabels.benefits
+    keyFeatures: product?.keyFeaturesLabel || getTranslation(t, 'ui.keyFeatures', uiLabels.keyFeatures),
+    benefits: product?.benefitsLabel || getTranslation(t, 'ui.benefits', uiLabels.benefits)
   };
 
   if (isLoading) {

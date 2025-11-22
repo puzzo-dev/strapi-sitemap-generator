@@ -8,6 +8,7 @@ import { IndustryProps } from '@/lib/types/content';
 import { PageSection, PageContent } from '@/lib/types/core';
 import { IndustriesSectionProps } from '@/lib/types/components';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 const IndustriesSection: React.FC<IndustriesSectionProps> = ({
   industries = [],
@@ -143,7 +144,7 @@ const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                   href={`/industries/${industry.slug}`}
                   className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium group-hover:underline transition-all duration-300"
                 >
-                  {t('ui.learnMore') || uiLabels.learnMore}
+                  {getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
                   <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
                 </AppLink>
               </div>

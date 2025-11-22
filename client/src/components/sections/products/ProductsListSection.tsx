@@ -7,6 +7,7 @@ import { ProductProps } from '@/lib/types/content';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 interface ProductsListSectionProps {
   pageContent?: PageContent | null;
@@ -60,7 +61,7 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
           className="text-center mb-4"
         >
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            {productsSection?.badge || t('ui.ourProjects') || uiLabels.ourProjects}
+            {productsSection?.badge || getTranslation(t, 'ui.ourProjects', uiLabels.ourProjects)}
           </div>
           <div className="text-center mb-16">
             <h2 className="section-title text-blue-900 dark:text-blue-200">

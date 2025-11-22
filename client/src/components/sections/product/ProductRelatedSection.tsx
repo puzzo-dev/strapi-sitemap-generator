@@ -5,6 +5,7 @@ import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 interface ProductRelatedSectionProps {
   currentProductSlug: string;
@@ -83,7 +84,7 @@ const ProductRelatedSection: React.FC<ProductRelatedSectionProps> = ({
                 <p className="text-gray-600 dark:text-gray-300 mb-6">{product.shortDescription || product.description}</p>
                 <Link href={`/products/${product.slug}`}>
                   <a className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center">
-                    <span>{product.learnMoreText || relatedContent?.learnMore || t('ui.learnMore') || uiLabels.learnMore}</span>
+                    <span>{product.learnMoreText || relatedContent?.learnMore || getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}</span>
                     <ArrowRight className="h-4 w-4 ml-1" />
                   </a>
                 </Link>

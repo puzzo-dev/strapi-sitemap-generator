@@ -5,6 +5,7 @@ import { ServiceProps } from '@/lib/types';
 import { Link } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 interface ServiceCardProps {
   service: ServiceProps;
@@ -90,12 +91,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, featured = false }) 
               href={`/services/${slug}`}
               className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium text-sm group/link"
             >
-              {learnMoreText || readMoreText || t('ui.learnMore') || uiLabels.learnMore}
+              {learnMoreText || readMoreText || getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
               <ArrowRight className="ml-1 transform group-hover/link:translate-x-1.5 transition-transform h-4 w-4" />
             </Link>
           ) : (
             <span className="inline-flex items-center text-gray-400 dark:text-gray-500 font-medium text-sm">
-              {learnMoreText || readMoreText || t('ui.learnMore') || uiLabels.learnMore}
+              {learnMoreText || readMoreText || getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
               <ArrowRight className="ml-1 h-4 w-4" />
             </span>
           )}

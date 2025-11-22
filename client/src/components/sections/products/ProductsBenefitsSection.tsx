@@ -6,6 +6,7 @@ import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 interface ProductsBenefitsSectionProps {
   pageContent?: PageContent | null;
@@ -31,7 +32,7 @@ const ProductsBenefitsSection: React.FC<ProductsBenefitsSectionProps> = ({
       <div className="container-custom">
         <motion.div variants={fadeInUp()} className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            {featuresSection?.badge || t('ui.whyChooseUs') || uiLabels.whyChooseUs}
+            {featuresSection?.badge || getTranslation(t, 'ui.whyChooseUs', uiLabels.whyChooseUs)}
           </div>
           <h2 className="section-title text-blue-900 dark:text-blue-200">{featuresSection?.title || t('products.benefitsTitle') || uiLabels.products.benefitsTitle}</h2>
           <p className="section-subtitle">

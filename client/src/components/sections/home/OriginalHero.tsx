@@ -47,6 +47,7 @@ import BackgroundDecoration from '@/components/ui/BackgroundDecoration';
 import { getThemeColors, getSpacing, getAnimationVariants } from '@/lib/utils/theme-helpers';
 import { isString, isValidUrl } from '@/lib/utils/type-guards';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 // Helper function to get social icon paths
 const getSocialIconPath = (platform: string): string => {
@@ -169,9 +170,9 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
         "Elevate your business with our cutting-edge digital solutions.";
 
     // Get button info from currentSlide
-    const primaryBtnText = currentSlide.primaryButton?.children || t('ui.getStarted') || uiLabels.getStarted;
+    const primaryBtnText = currentSlide.primaryButton?.children || getTranslation(t, 'ui.getStarted', uiLabels.getStarted);
     const primaryBtnUrl = currentSlide.primaryButton?.href || "/services";
-    const secondaryBtnText = currentSlide.secondaryButton?.children || t('ui.learnMore') || uiLabels.learnMore;
+    const secondaryBtnText = currentSlide.secondaryButton?.children || getTranslation(t, 'ui.learnMore', uiLabels.learnMore);
     const secondaryBtnUrl = currentSlide.secondaryButton?.href || "/#about";
 
     // Use isPageLoading or isHeroLoading as fallback for isLoading

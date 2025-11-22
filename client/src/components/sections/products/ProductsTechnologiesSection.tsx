@@ -18,6 +18,7 @@ import { PageContent } from '@/lib/types/core';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 interface ProductsTechnologiesSectionProps {
   pageContent?: PageContent | null;
@@ -138,7 +139,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
 
                   <div className="mt-6">
                     <GradientButton href="/products/1" size="sm">
-                      {t('ui.learnMore') || uiLabels.learnMore}
+                      {getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
                     </GradientButton>
                   </div>
                 </div>

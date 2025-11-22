@@ -32,7 +32,7 @@ RUN echo "Build date: ${BUILD_DATE}" > /app/build_info.txt && \
 COPY client/dist ./frontend/dist
 
 # Copy Strapi backend
-COPY I-VarseTech\ CMS\ Backend ./strapi
+COPY I-VarseTech\ CMS\ Backend ./strapi/
 
 # Install Strapi dependencies
 WORKDIR /app/strapi

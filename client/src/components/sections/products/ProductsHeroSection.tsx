@@ -6,6 +6,7 @@ import { fadeInUp, staggerChildren, scaleUp } from '@/lib/animations';
 import { PageContent } from '@/lib/types/core';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 interface ProductsHeroSectionProps {
   pageContent?: PageContent | null;
@@ -151,14 +152,14 @@ const ProductsHeroSection: React.FC<ProductsHeroSectionProps> = ({
               size="lg"
               endIcon={<ArrowRight />}
             >
-              {heroSection?.settings?.primaryButton?.children || t('ui.exploreProducts') || uiLabels.exploreProducts}
+              {heroSection?.settings?.primaryButton?.children || getTranslation(t, 'ui.exploreProducts', uiLabels.exploreProducts)}
             </GradientButton>
             <GradientButton
               href={heroSection?.settings?.secondaryButton?.href || "/contact"}
               variant="outline"
               size="lg"
             >
-              {heroSection?.settings?.secondaryButton?.children || t('ui.requestDemo') || uiLabels.requestDemo}
+              {heroSection?.settings?.secondaryButton?.children || getTranslation(t, 'ui.requestDemo', uiLabels.requestDemo)}
             </GradientButton>
           </motion.div>
         </motion.div>

@@ -253,6 +253,13 @@ i18n
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
     },
+    // Return key when translation is missing, but we handle this in components
+    // with fallback chain: t('ui.key') || uiLabels.fallback
+    returnNull: false,
+    returnEmptyString: false,
+    saveMissing: false,
+    // This prevents console warnings for missing keys
+    missingKeyHandler: false,
   });
 
 import { queryClient } from './queryClient';

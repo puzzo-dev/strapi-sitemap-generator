@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { SectionItem, ProductCardProps } from '@/lib/types';
 import { useTranslation } from 'react-i18next';
 import { uiLabels } from '@/lib/data';
+import { getTranslation } from '@/lib/utils/translationHelpers';
 
 const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = false }) => {
   const { t } = useTranslation();
@@ -77,7 +78,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = f
             transition={{ duration: 0.4, delay: 0.2 }}
           >
             <h4 className="text-sm sm:text-base font-bold text-gray-700 dark:text-gray-200 mb-2 sm:mb-3">
-              {product?.keyFeaturesLabel || t('ui.keyFeatures') || uiLabels.keyFeatures}
+              {product?.keyFeaturesLabel || getTranslation(t, 'ui.keyFeatures', uiLabels.keyFeatures)}
             </h4>
             <ul className="space-y-1.5 sm:space-y-2">
               {product?.keyFeatures?.map((feature: string, index: number) => (
@@ -108,7 +109,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = f
             transition={{ duration: 0.4, delay: 0.3 }}
           >
             <h4 className="text-sm sm:text-base font-bold text-gray-700 dark:text-gray-200 mb-2 sm:mb-3">
-              {product?.benefitsLabel || t('ui.benefits') || uiLabels.benefits}
+              {product?.benefitsLabel || getTranslation(t, 'ui.benefits', uiLabels.benefits)}
             </h4>
             <ul className="space-y-1.5 sm:space-y-2">
               {benefits.map((benefit: SectionItem, index: number) => (
@@ -146,7 +147,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = f
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <span>
-                {product?.learnMoreText || t('ui.learnMore') || uiLabels.learnMore}
+                {product?.learnMoreText || getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
               </span>
               <motion.span
                 className="ml-1 inline-flex"
