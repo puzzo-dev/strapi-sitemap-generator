@@ -20,7 +20,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
 
   // Extract section content from caseStudiesSection
   const title = caseStudiesSection?.title || t('home.caseStudies.title', 'Featured Case Studies');
-  const subtitle = caseStudiesSection?.subtitle || t('home.caseStudies.subtitle', 'Real results from real projects');
+  const subtitle = caseStudiesSection?.subtitle || t('home.caseStudies.subtitle', 'Real Results From Real Projects');
   const description = caseStudiesSection?.content || t('home.caseStudies.description', 'Discover how we\'ve helped businesses transform their operations and achieve remarkable results through innovative technology solutions.');
   const buttonSettings = caseStudiesSection?.settings?.primaryButton;
   const featuredCaseStudies = caseStudiesSection?.settings?.featured;

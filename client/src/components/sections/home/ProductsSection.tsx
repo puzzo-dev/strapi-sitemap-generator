@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'wouter';
 import GradientButton from '@/components/ui/GradientButton';
-import ProductCard from '@/components/ui/ProductCard';
 import { ProductProps } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
 import { ProductsSectionProps } from '@/lib/types/components';
@@ -16,9 +16,12 @@ import {
   Database,
   Server,
   Cloud,
-  Layers
+  Layers,
+  Check
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { getTranslation } from '@/lib/utils/translationHelpers';
+import { uiLabels } from '@/lib/data';
 
 // Loading placeholder for product cards
 const ProductCardSkeleton = () => (
@@ -147,11 +150,16 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, prod
         </div>
 
         {/* Products Display */}
-        <div className="space-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
           {isLoading ? (
             // Loading placeholders
-            Array(2).fill(0).map((_, index) => (
-              <ProductCardSkeleton key={index} />
+            Array(4).fill(0).map((_, index) => (
+              <div key={index} className="animate-pulse space-y-4">
+                <div className="aspect-video bg-gradient-to-br from-blue-100/50 to-purple-100/50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl"></div>
+                <div className="h-6 bg-blue-100/50 dark:bg-blue-900/20 rounded w-3/4"></div>
+                <div className="h-4 bg-blue-100/50 dark:bg-blue-900/20 rounded w-full"></div>
+                <div className="h-4 bg-blue-100/50 dark:bg-blue-900/20 rounded w-5/6"></div>
+              </div>
             ))
           ) : productsToDisplay && productsToDisplay.length > 0 ? (
             productsToDisplay.map((product, index) => (
@@ -160,21 +168,81 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, prod
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: index * 0.1 }}
-                className={index % 2 === 0
-                  ? ''
-                  : 'bg-gradient-to-br from-white to-blue-50 dark:from-[#132f4c] dark:to-[#0f2744] py-12 -mx-4 px-4 md:-mx-8 md:px-8 lg:-mx-16 lg:px-16 shadow-lg'
-                }
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group relative"
               >
-                <ProductCard
-                  item={product as ProductProps}
-                  isReversed={index % 2 !== 0}
-                />
+                {/* Tech border frame that appears on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none -m-4">
+                  <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-blue-500 dark:border-blue-400"></div>
+                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-blue-500 dark:border-blue-400"></div>
+                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-blue-500 dark:border-blue-400"></div>
+                  <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-blue-500 dark:border-blue-400"></div>
+                </div>
+
+                {/* Image with overlay gradient */}
+                <Link href={`/products/${product.slug}`}>
+                  <a className="block relative aspect-video overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 mb-6">
+                    {product.image ? (
+                      <>
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Package className="h-20 w-20 text-blue-300 dark:text-blue-700 opacity-30" />
+                      </div>
+                    )}
+                    
+                    {/* Hover icon */}
+                    <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <div className="bg-blue-600 dark:bg-blue-500 rounded-full p-3">
+                        <ArrowRight className="h-5 w-5 text-white" />
+                      </div>
+                    </div>
+                  </a>
+                </Link>
+
+                {/* Content */}
+                <div className="space-y-4">
+                  <Link href={`/products/${product.slug}`}>
+                    <a>
+                      <h3 className="text-2xl font-extrabold text-blue-900 dark:text-blue-200 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
+                        {product.title}
+                      </h3>
+                    </a>
+                  </Link>
+                  
+                  <p className="text-base text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2">
+                    {product.shortDescription || product.description}
+                  </p>
+
+                  {/* Key Features - compact list */}
+                  {product.keyFeatures && product.keyFeatures.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {product.keyFeatures.slice(0, 3).map((feature: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="inline-flex items-center text-xs px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full border border-blue-200 dark:border-blue-800"
+                        >
+                          <Check className="h-3 w-3 mr-1.5 flex-shrink-0" />
+                          {feature.length > 30 ? feature.substring(0, 30) + '...' : feature}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Bottom indicator line */}
+                  <div className="h-1 w-12 bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] dark:from-[#2FB8FF] dark:to-[#0047AB] group-hover:w-full transition-all duration-500"></div>
+                </div>
               </motion.div>
             ))
           ) : (
             // No products fallback
-            <div className="text-center py-12">
+            <div className="text-center py-12 col-span-full">
               <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
                 No products available

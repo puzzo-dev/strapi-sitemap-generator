@@ -11,12 +11,16 @@ import {
     TrendingUp,
     Award,
     Users,
-    Target
+    Target,
+    ArrowRight
 } from 'lucide-react';
 import { PageContent } from '@/lib/types/core';
 import { Button } from '@/components/ui/button';
 import { AboutSectionProps } from '@/lib/types/components';
 import { fadeInUp, staggerChildren } from '@/lib/animations';
+import GradientButton from '@/components/ui/GradientButton';
+import { getTranslation } from '@/lib/utils/translationHelpers';
+import { uiLabels } from '@/lib/data';
 
 // Counter animation hook
 const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean = false) => {
@@ -50,6 +54,7 @@ const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean =
 const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
+    const { t } = useTranslation();
 
     // Intersection observer for triggering animations
     useEffect(() => {
@@ -129,10 +134,10 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                         )}
                     </motion.div>
 
-                    <div className="flex flex-col lg:flex-row items-center gap-12">
+                    <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12">
                         {/* Content */}
                         <motion.div variants={fadeInUp(20, 0.6)} className="w-full lg:w-1/2">
-                            <div className="text-gray-600 dark:text-gray-300 space-y-4 text-lg leading-relaxed">
+                            <div className="text-gray-600 dark:text-gray-300 space-y-4 text-lg leading-relaxed mb-20">
                                 {contentParagraphs.length > 0 ? (
                                     contentParagraphs.map((paragraph, index) => (
                                         <p key={index}>{paragraph}</p>
@@ -142,6 +147,17 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                                         Content will be displayed here when available.
                                     </p>
                                 )}
+                            </div>
+
+                            {/* CTA Link */}
+                            <div>
+                                <a 
+                                    href="/about" 
+                                    className="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-300 group"
+                                >
+                                    {getTranslation(t, 'ui.learnMoreAboutUs', uiLabels.learnMoreAboutUs)}
+                                    <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
+                                </a>
                             </div>
                         </motion.div>
 
@@ -236,7 +252,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                                             </div>
 
                                             {/* Bottom indicator line */}
-                                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-transparent via-blue-500 dark:via-blue-400 to-transparent group-hover:w-full transition-all duration-500"></div>
+                                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-transparent via-[#2FB8FF] dark:via-[#2FB8FF] to-transparent group-hover:w-full transition-all duration-500"></div>
 
                                             {/* Pulse effect on hover */}
                                             <div className="absolute inset-0 bg-blue-500/5 dark:bg-blue-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>

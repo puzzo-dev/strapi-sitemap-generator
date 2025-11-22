@@ -20,6 +20,7 @@ export const uiLabels = {
   requestDemo: "Request Demo",
   exploreProducts: "Explore Products",
   readSuccessStories: "Read Success Stories",
+  learnMoreAboutUs: "Learn More About Us",
   
   // Navigation & Buttons
   home: "Home",
