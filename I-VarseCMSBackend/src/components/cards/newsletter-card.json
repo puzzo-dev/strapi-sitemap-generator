@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_cards_newsletter_cards",
+  "info": {
+    "displayName": "newsletterCard"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,56 @@
+{
+  "collectionName": "components_blocks_base_rows",
+  "info": {
+    "displayName": "baseRow"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "component",
+      "component": "elements.badge",
+      "repeatable": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "filter": {
+      "type": "component",
+      "component": "blocks.filter",
+      "repeatable": false
+    },
+    "gallery": {
+      "type": "component",
+      "component": "blocks.gallery-section",
+      "repeatable": false
+    },
+    "baseCards": {
+      "type": "component",
+      "component": "cards.base-card",
+      "repeatable": true
+    },
+    "socialLinks": {
+      "type": "component",
+      "component": "cards.social-link",
+      "repeatable": true
+    },
+    "statCards": {
+      "type": "component",
+      "component": "cards.stat",
+      "repeatable": true
+    },
+    "testimonialCards": {
+      "type": "component",
+      "component": "cards.testimonial-card",
+      "repeatable": true
+    },
+    "cta": {
+      "type": "component",
+      "component": "blocks.cta-section",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

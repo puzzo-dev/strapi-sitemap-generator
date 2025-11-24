@@ -4,6 +4,27 @@
     "displayName": "heroFull"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "heroBadge": {
+      "type": "component",
+      "component": "elements.badge",
+      "repeatable": false
+    },
+    "heroSlides": {
+      "type": "component",
+      "component": "hero.hero-slide",
+      "repeatable": true
+    },
+    "heroMediaCards": {
+      "type": "component",
+      "component": "cards.media-card",
+      "repeatable": true
+    },
+    "heroStat": {
+      "type": "component",
+      "component": "cards.stat",
+      "repeatable": true
+    }
+  },
   "config": {}
 }

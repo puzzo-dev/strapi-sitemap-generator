@@ -4,6 +4,53 @@
     "displayName": "logo"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "logoThemeType": {
+      "type": "enumeration",
+      "enum": [
+        "light",
+        "dark"
+      ]
+    },
+    "logoText": {
+      "type": "string"
+    },
+    "logoImageLight": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "logoThemeType"
+            },
+            "light"
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "logoImageDark": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "logoThemeType"
+            },
+            "dark"
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    }
+  },
   "config": {}
 }

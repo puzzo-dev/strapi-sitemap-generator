@@ -4,6 +4,28 @@
     "displayName": "heroSlide"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "slideCTA": {
+      "type": "component",
+      "component": "elements.link",
+      "repeatable": true
+    }
+  },
   "config": {}
 }

@@ -4,6 +4,45 @@
     "displayName": "link"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "linkType": {
+      "type": "enumeration",
+      "enum": [
+        "internal",
+        "external"
+      ]
+    },
+    "externalUrl": {
+      "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "external"
+          ]
+        }
+      }
+    },
+    "pages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::page.page",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    }
+  },
   "config": {}
 }

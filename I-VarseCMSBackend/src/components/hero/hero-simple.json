@@ -4,6 +4,26 @@
     "displayName": "heroSimple"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "heroBadge": {
+      "type": "component",
+      "component": "elements.badge",
+      "repeatable": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    }
+  },
   "config": {}
 }

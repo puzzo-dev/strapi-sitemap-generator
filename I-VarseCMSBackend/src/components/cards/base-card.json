@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_cards_base_cards",
+  "info": {
+    "displayName": "baseCard"
+  },
+  "options": {},
+  "attributes": {
+    "cardBadge": {
+      "type": "component",
+      "component": "elements.badge",
+      "repeatable": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "cardImages": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "cardContent": {
+      "type": "richtext"
+    },
+    "cardLink": {
+      "type": "component",
+      "component": "elements.link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}
