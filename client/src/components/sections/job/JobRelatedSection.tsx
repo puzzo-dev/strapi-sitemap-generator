@@ -31,7 +31,7 @@ const JobRelatedSection: React.FC<JobRelatedSectionProps> = ({
     // Get related jobs content from page content settings
     const relatedSection = pageContent?.sections?.find(s => s.type === 'custom');
     const relatedContent = relatedSection?.settings?.jobContent?.related;
-    
+
     // Filter out the current job and limit to 3 related jobs
     const filteredJobs = relatedJobs
         .filter(job => job.slug !== currentJobSlug)

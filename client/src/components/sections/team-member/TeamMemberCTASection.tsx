@@ -12,14 +12,14 @@ interface TeamMemberCTASectionProps {
     pageContent?: PageContent;
 }
 
-const TeamMemberCTASection: React.FC<TeamMemberCTASectionProps> = ({ 
+const TeamMemberCTASection: React.FC<TeamMemberCTASectionProps> = ({
     member,
-    isLoading = false, 
-    pageContent 
+    isLoading = false,
+    pageContent
 }) => {
     // Get CTA section from page content
     const ctaSection = pageContent?.sections?.find(s => s.type === 'cta');
-    
+
     // Get team members from page content settings
     const teamMembers = useMemo(() => {
         return pageContent?.sections?.[0]?.settings?.teamMembers || [];
@@ -69,21 +69,21 @@ const TeamMemberCTASection: React.FC<TeamMemberCTASectionProps> = ({
                                 {ctaSection?.title || ctaSection?.settings?.teamMemberContent?.cta?.title || "Ready to Work With Our Team?"}
                             </h2>
                             <p className="text-white/90 max-w-3xl mx-auto mb-8">
-                                {ctaSection?.content || ctaSection?.settings?.teamMemberContent?.cta?.description || 
-                                 `Contact us today to discuss how our experts can help you achieve your business goals.`}
+                                {ctaSection?.content || ctaSection?.settings?.teamMemberContent?.cta?.description ||
+                                    `Contact us today to discuss how our experts can help you achieve your business goals.`}
                             </p>
-                            
+
                             <div className="flex flex-wrap justify-center gap-4">
-                                <GradientButton 
-                                    href={ctaSection?.settings?.primaryButton?.href || "/contact"} 
-                                    variant="light" 
+                                <GradientButton
+                                    href={ctaSection?.settings?.primaryButton?.href || "/contact"}
+                                    variant="light"
                                     className="border border-white/20"
                                 >
                                     {ctaSection?.settings?.primaryButton?.children || "Get in Touch"}
                                 </GradientButton>
-                                <GradientButton 
-                                    href={ctaSection?.settings?.secondaryButton?.href || "/services"} 
-                                    variant="light" 
+                                <GradientButton
+                                    href={ctaSection?.settings?.secondaryButton?.href || "/services"}
+                                    variant="light"
                                     className="border border-white/20"
                                 >
                                     {ctaSection?.settings?.secondaryButton?.children || "Explore Our Services"}
