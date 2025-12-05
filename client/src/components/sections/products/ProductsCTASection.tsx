@@ -30,7 +30,7 @@ const ProductsCTASection: React.FC<ProductsCTASectionProps> = ({
       viewport={{ once: true, amount: 0.3 }}
       className="content-section bg-blue-50 dark:bg-[#0a1929]"
     >
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <motion.div 
           variants={scaleUp(0.95, 0.8)}
         >

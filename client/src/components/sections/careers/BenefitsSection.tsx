@@ -40,7 +40,7 @@ const BenefitsSection: React.FC<BenefitsSectionProps> = ({
 
   return (
     <section className={`content-section ${backgroundColor || 'bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]'}`}>
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
             {benefitsSection.settings?.badge}

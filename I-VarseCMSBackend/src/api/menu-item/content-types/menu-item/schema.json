@@ -13,7 +13,7 @@
   "attributes": {
     "menuLink": {
       "type": "component",
-      "component": "elements.link",
+      "component": "shared.link",
       "repeatable": true
     },
     "order": {

@@ -92,7 +92,7 @@ const BlogPostsSection: React.FC<BlogPostsSectionProps> = ({ homePageContent, bl
     <section className="py-24 bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] relative overflow-hidden">
       <BackgroundDecoration />
 
-      <div className="container-custom relative z-10">
+      <div className="container-custom relative z-10 max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">

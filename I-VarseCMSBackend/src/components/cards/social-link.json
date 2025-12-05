@@ -16,7 +16,7 @@
     },
     "linkUrl": {
       "type": "component",
-      "component": "elements.link",
+      "component": "shared.link",
       "repeatable": false
     }
   },

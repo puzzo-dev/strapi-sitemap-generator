@@ -37,7 +37,7 @@ const ProductsTestimonialsSection: React.FC<ProductsTestimonialsSectionProps> = 
       viewport={{ once: true, amount: 0.1 }}
       className="content-section bg-white dark:bg-[#132f4c]"
     >
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <motion.div 
           variants={fadeInUp(20, 0.6)}
           className="text-center mb-16"

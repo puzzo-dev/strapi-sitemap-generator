@@ -137,7 +137,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, prod
     <section id="products" className="py-24 bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 dark:from-blue-950/20 dark:via-blue-950/30 dark:to-blue-950/40 relative overflow-hidden">
       <BackgroundDecoration />
 
-      <div className="container-custom relative z-10">
+      <div className="container-custom relative z-10 max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">

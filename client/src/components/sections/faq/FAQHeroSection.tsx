@@ -15,7 +15,7 @@ const FAQHeroSection: React.FC<FAQHeroSectionProps> = ({
                 <div className="hidden md:block absolute bottom-20 left-1/4 w-20 h-20 border-2 border-blue-200 dark:border-blue-800/50 rounded-full"></div>
             </div>
 
-            <div className="container-custom relative z-10">
+            <div className="container-custom relative z-10 max-w-7xl">
                 <div className="max-w-4xl mx-auto">
                     {isLoading ? (
                         <div className="animate-pulse space-y-6">

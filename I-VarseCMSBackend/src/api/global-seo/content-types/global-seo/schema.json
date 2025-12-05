@@ -1,0 +1,54 @@
+{
+  "kind": "singleType",
+  "collectionName": "global_seos",
+  "info": {
+    "singularName": "global-seo",
+    "pluralName": "global-seos",
+    "displayName": "globalSeo"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "siteName": {
+      "type": "string"
+    },
+    "defaultMetaTitle": {
+      "type": "string"
+    },
+    "defaultMetaDesc": {
+      "type": "text"
+    },
+    "defaultOgImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "websiteUrl": {
+      "type": "string"
+    },
+    "logoUrl": {
+      "type": "string"
+    },
+    "contactEmail": {
+      "type": "email"
+    },
+    "contactPhone": {
+      "type": "string"
+    },
+    "socialLinks": {
+      "type": "component",
+      "component": "cards.social-link",
+      "repeatable": true
+    },
+    "address": {
+      "type": "json"
+    }
+  }
+}

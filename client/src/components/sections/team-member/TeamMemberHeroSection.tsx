@@ -29,7 +29,7 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
     if (isLoading || !currentMember) {
         return (
             <section className={`relative overflow-hidden ${heroSection?.backgroundColor || 'bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]'} py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section`}>
-                <div className="container mx-auto px-4 relative z-10">
+                <div className="container mx-auto px-4 relative z-10 max-w-7xl">
                     <div className="max-w-6xl mx-auto">
                         <SkeletonHero
                             showBadge={true}
@@ -113,7 +113,7 @@ const TeamMemberHeroSection: React.FC<TeamMemberHeroSectionProps> = ({
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 relative z-10">
+            <div className="container mx-auto px-4 relative z-10 max-w-7xl">
                 <div className="max-w-6xl mx-auto">
                     {/* Badge */}
                     {heroSection?.badge && (

@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
 import { usePageContent } from '@/hooks/useContent';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { industriesPageContent as localIndustriesPageContent } from '@/lib/data/pages';
 import { IndustryProps, TestimonialProps } from '@/lib/types/content';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { defaultSiteConfig } from '@/lib/data/config';
 
@@ -17,8 +16,6 @@ import {
 } from '@/components/sections/industries';
 
 const Industries: React.FC = () => {
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
-
   // Fetch page content from Strapi with fallback to local data
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('industries');
 
@@ -50,8 +47,6 @@ const Industries: React.FC = () => {
   }, [testimonialsSection]);
 
   // Generate SEO metadata
-  const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
-  const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
   const structuredData = generateOrganizationSchema();
 
   // Extract sections with fallback to local data
@@ -62,19 +57,15 @@ const Industries: React.FC = () => {
   const ctaSection = displayPageContent?.sections?.find(s => s.type === 'cta') || { id: 0 };
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={`${defaultSiteConfig.siteUrl}/industries`}
-        ogImage={`${defaultSiteConfig.siteUrl}/src/assets/images/IMG_2257.JPG`}
-        ogUrl={`${defaultSiteConfig.siteUrl}/industries`}
-        ogType="website"
-        twitterCard="summary_large_image"
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayPageContent.metaTitle}
+      description={displayPageContent.metaDescription}
+      canonicalUrl={`${defaultSiteConfig.siteUrl}/industries`}
+      ogImage={`${defaultSiteConfig.siteUrl}/src/assets/images/IMG_2257.JPG`}
+      pageContent={displayPageContent}
+      isLoading={isPageLoading}
+      structuredData={structuredData}
+    >
       {/* Hero Section */}
       <IndustriesHeroSection
         {...heroSection}
@@ -106,7 +97,7 @@ const Industries: React.FC = () => {
         {...ctaSection}
         isLoading={isPageLoading}
       />
-    </>
+    </PageLayout>
   );
 };
 

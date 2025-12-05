@@ -7,7 +7,7 @@
   "attributes": {
     "ctaBadge": {
       "type": "component",
-      "component": "elements.badge",
+      "component": "shared.badge",
       "repeatable": false
     },
     "title": {
@@ -21,7 +21,7 @@
     },
     "ctaButtons": {
       "type": "component",
-      "component": "elements.link",
+      "component": "shared.link",
       "repeatable": true
     }
   },

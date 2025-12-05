@@ -1,14 +1,12 @@
 import React, { useMemo } from 'react';
 import { useLocation } from 'wouter';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { caseStudies } from '@/lib/data/case-studies';
 import { CaseStudyProps } from '@/lib/types/content';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import AppLink from '@/components/ui/AppLink';
 import { ArrowLeft, Calendar, Users, Clock, CheckCircle } from 'lucide-react';
 
 const CaseStudyDetail: React.FC = () => {
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
   const [, setLocation] = useLocation();
 
   // Get the slug from the URL
@@ -30,10 +28,6 @@ const CaseStudyDetail: React.FC = () => {
   if (!caseStudy) {
     return null;
   }
-
-  // SEO metadata
-  const pageTitle = generateSeoTitle(`${caseStudy.title} - Case Study`);
-  const pageDescription = generateSeoDescription(caseStudy.description);
 
   // Generate structured data for the case study
   const structuredData = {
@@ -64,28 +58,15 @@ const CaseStudyDetail: React.FC = () => {
   };
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        keywords={[
-          'case study',
-          caseStudy.industry.toLowerCase(),
-          'digital transformation',
-          'technology solutions',
-          'I-Varse Technologies',
-          caseStudy.client,
-          ...caseStudy.technologies
-        ]}
-        canonicalUrl={`https://itechnologies.ng/case-studies/${caseStudy.slug}`}
-        ogImage={`https://itechnologies.ng${caseStudy.image}`}
-        ogUrl={`https://itechnologies.ng/case-studies/${caseStudy.slug}`}
-        ogType="article"
-        twitterCard="summary_large_image"
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={`${caseStudy.title} - Case Study`}
+      description={caseStudy.description}
+      canonicalUrl={`https://itechnologies.ng/case-studies/${caseStudy.slug}`}
+      ogImage={`https://itechnologies.ng${caseStudy.image}`}
+      pageContent={caseStudy as any}
+      isLoading={false}
+      structuredData={structuredData}
+    >
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
@@ -318,7 +299,7 @@ const CaseStudyDetail: React.FC = () => {
           </div>
         </div>
       </section>
-    </>
+    </PageLayout>
   );
 };
 

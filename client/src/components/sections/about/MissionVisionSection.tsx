@@ -25,7 +25,7 @@ const MissionVisionSection: React.FC<MissionVisionSectionProps> = ({
     if (isPageLoading) {
         return (
             <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f]">
-                <div className="container-custom">
+                <div className="container-custom max-w-7xl">
                     <div className="text-center mb-16">
                         <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4 animate-pulse"></div>
                         <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mx-auto animate-pulse"></div>
@@ -68,7 +68,7 @@ const MissionVisionSection: React.FC<MissionVisionSectionProps> = ({
                 <Shield className="absolute top-1/2 right-1/4 h-24 w-24 text-cyan-400 dark:text-cyan-600" />
             </div>
 
-            <div className="container-custom relative z-10">
+            <div className="container-custom relative z-10 max-w-7xl">
                 <motion.div
                     variants={slideIn('left')}
                     className="text-center mb-16"

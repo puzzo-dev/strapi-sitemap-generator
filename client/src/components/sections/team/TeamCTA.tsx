@@ -28,7 +28,7 @@ const TeamCTA: React.FC<TeamCTAProps> = ({
             viewport={{ once: true, amount: 0.3 }}
             className="content-section bg-white dark:bg-[#132f4c]"
         >
-            <div className="container-custom">
+            <div className="container-custom max-w-7xl">
                 <motion.div 
                     variants={scaleUp(0.95, 0.8)}
                 >

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PageLayout from '@/components/layout/PageLayout';
 import { usePageContent, useTestimonials, useFAQItems } from '@/hooks/useContent';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { usePageTracking } from '@/contexts/AnalyticsContext';
-import MetaTags from '@/components/seo/MetaTags';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { contactPageContent as localContactPageContent } from '@/lib/data/pages';
 import { defaultSiteConfig } from '@/lib/data/config';
@@ -17,7 +16,6 @@ import {
 } from '@/components/sections/contact';
 
 const Contact: React.FC = () => {
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
   const [formType, setFormType] = useState<'contact' | 'booking'>('contact');
   const [isDemoRequest, setIsDemoRequest] = useState(false);
 
@@ -44,9 +42,7 @@ const Contact: React.FC = () => {
   // Use local page content if Strapi data is not available
   const displayPageContent = pageContent || localContactPageContent;
 
-  // Generate SEO metadata
-  const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
-  const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
+  // Structured data
   const structuredData = generateOrganizationSchema();
 
   // Extract sections with fallback to local data
@@ -60,19 +56,18 @@ const Contact: React.FC = () => {
   const displayFAQItems = apiFAQItems || (faqSection?.settings?.items as any[]) || [];
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl="https://itechnologies.ng/contact"
-        ogImage="https://itechnologies.ng/contact-og-image.jpg"
-        ogUrl="https://itechnologies.ng/contact"
-        ogType="website"
-        twitterCard="summary_large_image"
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayPageContent.metaTitle}
+      description={displayPageContent.metaDescription}
+      canonicalUrl="https://itechnologies.ng/contact"
+      ogImage="https://itechnologies.ng/contact-og-image.jpg"
+      ogType="website"
+      twitterCard="summary_large_image"
+      pageContent={displayPageContent}
+      isLoading={isPageLoading}
+      structuredData={structuredData}
+      animationType="fade"
+    >
       {/* Hero Section */}
       <ContactHeroSection
         heroSection={heroSection}
@@ -102,7 +97,7 @@ const Contact: React.FC = () => {
         isLoading={isFAQLoading}
         isPageLoading={isPageLoading}
       />
-    </>
+    </PageLayout>
   );
 };
 export default Contact;

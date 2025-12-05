@@ -46,7 +46,7 @@
           "localized": true
         }
       },
-      "component": "elements.seo",
+      "component": "shared.seo",
       "repeatable": false,
       "required": true
     },
@@ -60,8 +60,8 @@
       "components": [
         "hero.hero-simple",
         "hero.hero-full",
-        "elements.link",
-        "elements.badge",
+        "shared.link",
+        "shared.badge",
         "cards.testimonial-card",
         "cards.stat",
         "cards.base-card",

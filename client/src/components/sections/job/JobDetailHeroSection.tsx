@@ -28,7 +28,7 @@ const JobDetailHeroSection: React.FC<JobDetailHeroSectionProps> = ({
   if (isLoading) {
     return (
       <div className="bg-gradient-to-br from-blue-50 via-white to-blue-50/30 dark:from-gray-900 dark:via-[#0a192f] dark:to-[#132f4c] border-b border-blue-100/50 dark:border-blue-900/30">
-        <div className="container mx-auto px-4 py-16 md:py-24">
+        <div className="container mx-auto px-4 py-16 md:py-24 max-w-7xl">
           <div className="animate-pulse space-y-6">
             <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
             <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>

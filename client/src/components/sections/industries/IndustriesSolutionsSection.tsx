@@ -41,7 +41,7 @@ const IndustriesSolutionsSection: React.FC<IndustriesSolutionsSectionProps> = ({
   if (isLoading) {
     return (
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-7xl">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-8"></div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -62,7 +62,7 @@ const IndustriesSolutionsSection: React.FC<IndustriesSolutionsSectionProps> = ({
       variants={staggerChildren()}
       className="py-16 md:py-24 bg-blue-50 dark:bg-blue-900/10"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2
             variants={fadeInUp()}

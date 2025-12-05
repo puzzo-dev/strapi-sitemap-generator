@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
+import PageLayout from '@/components/layout/PageLayout';
 import { usePageContent } from '@/hooks/useContent';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { servicesPageContent as localServicesPageContent } from '@/lib/data/pages';
 import { services as fallbackServices } from '@/lib/data';
 import { ServiceProps, TestimonialProps } from '@/lib/types/content';
-import MetaTags from '@/components/seo/MetaTags';
 
 // Import section components
 import {
@@ -17,8 +16,6 @@ import {
 } from '@/components/sections/services';
 
 const Services: React.FC = () => {
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
-
   // Use fallback data temporarily until Strapi is configured
   const isServicesLoading = false;
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('services');
@@ -43,16 +40,12 @@ const Services: React.FC = () => {
     return [];
   }, [testimonialsSection]);
 
-  // SEO metadata
-  const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
-  const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
-
   // Generate structured data for services
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
     "name": "I-Varse Technologies Services",
-    "description": pageDescription,
+    "description": displayPageContent.metaDescription,
     "provider": {
       "@type": "Organization",
       "name": "I-Varse Technologies",
@@ -63,27 +56,26 @@ const Services: React.FC = () => {
   };
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        keywords={[
-          'professional services',
-          'digital solutions',
-          'technology services',
-          'business solutions',
-          'I-Varse Technologies',
-          'Nigeria tech company'
-        ]}
-        canonicalUrl="https://itechnologies.ng/services"
-        ogImage="https://itechnologies.ng/og-services.jpg"
-        ogUrl="https://itechnologies.ng/services"
-        ogType="website"
-        twitterCard="summary_large_image"
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayPageContent.metaTitle}
+      description={displayPageContent.metaDescription}
+      keywords={[
+        'professional services',
+        'digital solutions',
+        'technology services',
+        'business solutions',
+        'I-Varse Technologies',
+        'Nigeria tech company'
+      ]}
+      canonicalUrl="https://itechnologies.ng/services"
+      ogImage="https://itechnologies.ng/og-services.jpg"
+      ogType="website"
+      twitterCard="summary_large_image"
+      pageContent={displayPageContent}
+      isLoading={isPageLoading}
+      structuredData={structuredData}
+      animationType="fade"
+    >
       {/* Hero Section */}
       <ServicesHeroSection
         pageContent={displayPageContent}
@@ -120,7 +112,7 @@ const Services: React.FC = () => {
         pageContent={displayPageContent}
         isLoading={isPageLoading}
       />
-    </>
+    </PageLayout>
   );
 };
 

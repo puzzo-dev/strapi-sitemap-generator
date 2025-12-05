@@ -16,7 +16,7 @@ const CaseStudiesCTASection: React.FC<CaseStudiesCTASectionProps> = ({
   if (isLoading) {
     return (
       <section className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]">
-        <div className="container-custom">
+        <div className="container-custom max-w-7xl">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-pulse">
               ✨ Get Started
@@ -32,7 +32,7 @@ const CaseStudiesCTASection: React.FC<CaseStudiesCTASectionProps> = ({
 
   return (
     <section className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]">
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
             {t('caseStudies.cta.badge', '✨ Success Stories')}

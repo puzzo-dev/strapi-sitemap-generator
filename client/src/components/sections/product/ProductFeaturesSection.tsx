@@ -29,7 +29,7 @@ const ProductFeaturesSection: React.FC<ProductFeaturesSectionProps> = ({
   if (isLoading) {
     return (
       <section className="content-section bg-gray-50 dark:bg-[#0a1929]">
-        <div className="container-custom">
+        <div className="container-custom max-w-7xl">
           <div className="text-center mb-12">
             <div className="animate-pulse space-y-4">
               <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mx-auto"></div>
@@ -58,7 +58,7 @@ const ProductFeaturesSection: React.FC<ProductFeaturesSectionProps> = ({
 
   return (
     <section className="content-section bg-gray-50 dark:bg-[#0a1929]">
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <div className="text-center mb-12">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
             {content.badge}

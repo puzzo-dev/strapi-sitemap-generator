@@ -26,7 +26,7 @@ const ServiceDetailErrorSection: React.FC<ServiceDetailErrorSectionProps> = ({
 
   return (
     <div className="content-section bg-white dark:bg-[#132f4c]">
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <Card className="p-8 text-center">
           <CardContent>
             <h1 className="text-2xl font-bold text-blue-900 dark:text-blue-200 mb-4">

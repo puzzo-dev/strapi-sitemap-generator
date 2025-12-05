@@ -486,8 +486,8 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
     content: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
-        'elements.link',
-        'elements.badge',
+        'shared.link',
+        'shared.badge',
         'cards.testimonial-card',
         'cards.stat',
         'cards.social-link',
@@ -518,7 +518,7 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
       'api::case-study.case-study'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'elements.seo', false> &
+    seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -542,6 +542,44 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiGlobalSeoGlobalSeo extends Struct.SingleTypeSchema {
+  collectionName: 'global_seos';
+  info: {
+    displayName: 'globalSeo';
+    pluralName: 'global-seos';
+    singularName: 'global-seo';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Schema.Attribute.JSON;
+    companyName: Schema.Attribute.String;
+    contactEmail: Schema.Attribute.Email;
+    contactPhone: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    defaultMetaDesc: Schema.Attribute.Text;
+    defaultMetaTitle: Schema.Attribute.String;
+    defaultOgImage: Schema.Attribute.Media<'images'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::global-seo.global-seo'
+    > &
+      Schema.Attribute.Private;
+    logoUrl: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    siteName: Schema.Attribute.String;
+    socialLinks: Schema.Attribute.Component<'cards.social-link', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    websiteUrl: Schema.Attribute.String;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
@@ -561,12 +599,6 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    favicon: Schema.Attribute.Media<'images' | 'files'> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     footer: Schema.Attribute.Component<'layout.footer', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -582,21 +614,7 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::global.global'>;
     publishedAt: Schema.Attribute.DateTime;
-    seoDefaults: Schema.Attribute.Component<'elements.seo', false> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    siteLogo: Schema.Attribute.Media<'images' | 'files'> &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    siteName: Schema.Attribute.String &
-      Schema.Attribute.Required &
+    seoDefaults: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -627,8 +645,8 @@ export interface ApiIndustryIndustry extends Struct.CollectionTypeSchema {
     content: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
-        'elements.link',
-        'elements.badge',
+        'shared.link',
+        'shared.badge',
         'cards.testimonial-card',
         'cards.stat',
         'cards.social-link',
@@ -659,7 +677,7 @@ export interface ApiIndustryIndustry extends Struct.CollectionTypeSchema {
       'api::industry.industry'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'elements.seo', false> &
+    seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -707,7 +725,7 @@ export interface ApiMenuItemMenuItem extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::menu-item.menu-item'
     >;
-    menuLink: Schema.Attribute.Component<'elements.link', true>;
+    menuLink: Schema.Attribute.Component<'shared.link', true>;
     order: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
@@ -748,8 +766,8 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
       [
         'hero.hero-simple',
         'hero.hero-full',
-        'elements.link',
-        'elements.badge',
+        'shared.link',
+        'shared.badge',
         'cards.testimonial-card',
         'cards.stat',
         'cards.base-card',
@@ -765,7 +783,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    seo: Schema.Attribute.Component<'elements.seo', false> &
+    seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -809,8 +827,8 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     content: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
-        'elements.link',
-        'elements.badge',
+        'shared.link',
+        'shared.badge',
         'cards.testimonial-card',
         'cards.stat',
         'cards.social-link',
@@ -841,7 +859,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
       'api::project.project'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'elements.seo', false> &
+    seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -884,8 +902,8 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
     content: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
-        'elements.link',
-        'elements.badge',
+        'shared.link',
+        'shared.badge',
         'cards.testimonial-card',
         'cards.stat',
         'cards.social-link',
@@ -917,7 +935,7 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
       'api::service.service'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'elements.seo', false> &
+    seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -960,8 +978,8 @@ export interface ApiTeamTeam extends Struct.CollectionTypeSchema {
     content: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
-        'elements.link',
-        'elements.badge',
+        'shared.link',
+        'shared.badge',
         'cards.testimonial-card',
         'cards.stat',
         'cards.social-link',
@@ -991,7 +1009,7 @@ export interface ApiTeamTeam extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::team.team'>;
     publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'elements.seo', false> &
+    seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1527,6 +1545,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::case-study.case-study': ApiCaseStudyCaseStudy;
+      'api::global-seo.global-seo': ApiGlobalSeoGlobalSeo;
       'api::global.global': ApiGlobalGlobal;
       'api::industry.industry': ApiIndustryIndustry;
       'api::menu-item.menu-item': ApiMenuItemMenuItem;

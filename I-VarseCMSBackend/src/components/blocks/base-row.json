@@ -7,7 +7,7 @@
   "attributes": {
     "badge": {
       "type": "component",
-      "component": "elements.badge",
+      "component": "shared.badge",
       "repeatable": false
     },
     "title": {

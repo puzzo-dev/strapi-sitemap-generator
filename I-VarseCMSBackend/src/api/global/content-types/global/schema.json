@@ -15,42 +15,6 @@
     }
   },
   "attributes": {
-    "siteName": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "required": true
-    },
-    "favicon": {
-      "type": "media",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "multiple": false,
-      "allowedTypes": [
-        "images",
-        "files"
-      ]
-    },
-    "siteLogo": {
-      "type": "media",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "multiple": false,
-      "required": true,
-      "allowedTypes": [
-        "images",
-        "files"
-      ]
-    },
     "seoDefaults": {
       "type": "component",
       "pluginOptions": {
@@ -58,7 +22,7 @@
           "localized": true
         }
       },
-      "component": "elements.seo",
+      "component": "shared.seo",
       "repeatable": false
     },
     "header": {

@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
+import PageLayout from '@/components/layout/PageLayout';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/components/context/LanguageContext';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { usePageContent, useSiteConfig } from '@/hooks/useContent';
-import MetaTags from '@/components/seo/MetaTags';
 import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { productsPageContent as localProductsPageContent } from '@/lib/data/pages';
 import { defaultSiteConfig } from '@/lib/data/';
@@ -24,7 +23,6 @@ import {
 const Products: React.FC = () => {
   useTranslation();
   useLanguage();
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
   const { data: siteConfig } = useSiteConfig();
 
   // Fetch page content from Strapi with fallback to local data
@@ -56,47 +54,36 @@ const Products: React.FC = () => {
 
   // Generate structured data
   const structuredData = {
-    ...generateWebsiteSchema(),
-    ...generateOrganizationSchema()
+    '@context': 'https://schema.org',
+    '@graph': [
+      generateWebsiteSchema(),
+      generateOrganizationSchema()
+    ]
   };
 
-  // SEO metadata
-  const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
-  const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
-
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={`${displaySiteConfig.siteUrl}/products`}
-        ogImage={`${displaySiteConfig.siteUrl}/og-products.jpg`}
-        ogUrl={`${displaySiteConfig.siteUrl}/products`}
-        ogType="website"
-        twitterCard="summary_large_image"
-        keywords={[
-          'software products',
-          'business solutions',
-          'enterprise software',
-          'digital transformation',
-          'I-Varse Technologies',
-          'cloud solutions',
-          'business automation',
-          'scalable software'
-        ]}
-        alternateLanguages={[
-          { lang: 'en', url: `${displaySiteConfig.siteUrl}/products` },
-          { lang: 'yo', url: `${displaySiteConfig.siteUrl}/yo/products` },
-          { lang: 'ig', url: `${displaySiteConfig.siteUrl}/ig/products` },
-          { lang: 'ha', url: `${displaySiteConfig.siteUrl}/ha/products` },
-          { lang: 'fr', url: `${displaySiteConfig.siteUrl}/fr/products` },
-          { lang: 'es', url: `${displaySiteConfig.siteUrl}/es/products` },
-          { lang: 'sw', url: `${displaySiteConfig.siteUrl}/sw/products` }
-        ]}
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayPageContent.metaTitle}
+      description={displayPageContent.metaDescription}
+      canonicalUrl={`${displaySiteConfig.siteUrl}/products`}
+      ogImage={`${displaySiteConfig.siteUrl}/og-products.jpg`}
+      ogType="website"
+      twitterCard="summary_large_image"
+      keywords={[
+        'software products',
+        'business solutions',
+        'enterprise software',
+        'digital transformation',
+        'I-Varse Technologies',
+        'cloud solutions',
+        'business automation',
+        'scalable software'
+      ]}
+      pageContent={displayPageContent}
+      isLoading={shouldShowLoading}
+      structuredData={structuredData}
+      animationType="fade"
+    >
       <main>
         {/* Hero Section */}
         <ProductsHeroSection
@@ -141,7 +128,7 @@ const Products: React.FC = () => {
           isLoading={shouldShowLoading}
         />
       </main>
-    </>
+    </PageLayout>
   );
 };
 

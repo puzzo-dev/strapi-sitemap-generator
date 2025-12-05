@@ -59,7 +59,7 @@ const JobStatsSection: React.FC<JobStatsSectionProps> = ({
 
   return (
     <section className={`py-16 bg-white dark:bg-gray-900 ${className}`}>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-4">

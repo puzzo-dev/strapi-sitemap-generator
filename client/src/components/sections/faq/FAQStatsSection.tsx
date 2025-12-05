@@ -42,7 +42,7 @@ const FAQStatsSection: React.FC<FAQStatsSectionProps> = ({
 
     return (
         <section className={`py-12 bg-gray-50 dark:bg-gray-900/50 ${className}`}>
-            <div className="container-custom">
+            <div className="container-custom max-w-7xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {stats.map((stat) => {
                         const IconComponent = stat.icon;

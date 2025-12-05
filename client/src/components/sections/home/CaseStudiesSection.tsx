@@ -50,7 +50,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
     return (
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-50/30 to-transparent dark:via-gray-800/30 pointer-events-none"></div>
-        <div className="container-custom">
+        <div className="container-custom max-w-7xl">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-8 mx-auto"></div>
             <div className="h-12 bg-gray-300 dark:bg-gray-600 rounded w-2/3 mb-4 mx-auto"></div>
@@ -71,7 +71,7 @@ const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-50/30 to-transparent dark:via-gray-800/30 pointer-events-none"></div>
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <div className="text-center mb-16 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

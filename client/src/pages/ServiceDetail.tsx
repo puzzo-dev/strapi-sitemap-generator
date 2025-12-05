@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
 import { useParams } from 'wouter';
 import { useTranslation } from 'react-i18next';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { useServiceById, useSiteConfig, usePageContent } from '@/hooks/useContent';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { serviceDetailPageContent as localServiceDetailPageContent } from '@/lib/data/pages';
 import { defaultSiteConfig, services as localServices } from '@/lib/data/';
@@ -53,7 +52,6 @@ const transformServiceForComponents = (service: ServiceProps) => {
 
 const ServiceDetail: React.FC = () => {
   const { slug } = useParams();
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
 
   // Fetch page content from Strapi or use fallback
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('service-detail');
@@ -81,47 +79,21 @@ const ServiceDetail: React.FC = () => {
   // Generate structured data
   const structuredData = generateOrganizationSchema();
 
-  // Prepare SEO metadata
-  const pageTitle = generateSeoTitle(displayService?.title ? `${displayService.title} - I-VARSE Technologies` : 'Service Details - I-VARSE Technologies');
-  const pageDescription = generateSeoDescription(displayService?.description || 'Learn more about our comprehensive services and how they can benefit your business');
-
   // Render error state or service not found
   if (error || !displayService) {
     return <ServiceDetailErrorSection pageContent={displayPageContent} />;
   }
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={`${displaySiteConfig.siteUrl}/services/${slug}`}
-        ogImage={displayService.image || `${displaySiteConfig.siteUrl}/og-service.jpg`}
-        ogUrl={`${displaySiteConfig.siteUrl}/services/${slug}`}
-        ogType="website"
-        twitterCard="summary_large_image"
-        keywords={[
-          displayService.title,
-          'digital solutions',
-          'technology services',
-          'I-VARSE Technologies',
-          'web development',
-          'mobile apps',
-          'cloud solutions'
-        ]}
-        alternateLanguages={[
-          { lang: 'en', url: `${displaySiteConfig.siteUrl}/services/${slug}` },
-          { lang: 'yo', url: `${displaySiteConfig.siteUrl}/yo/services/${slug}` },
-          { lang: 'ig', url: `${displaySiteConfig.siteUrl}/ig/services/${slug}` },
-          { lang: 'ha', url: `${displaySiteConfig.siteUrl}/ha/services/${slug}` },
-          { lang: 'fr', url: `${displaySiteConfig.siteUrl}/fr/services/${slug}` },
-          { lang: 'es', url: `${displaySiteConfig.siteUrl}/es/services/${slug}` },
-          { lang: 'sw', url: `${displaySiteConfig.siteUrl}/sw/services/${slug}` }
-        ]}
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayService?.title ? `${displayService.title} - I-VARSE Technologies` : 'Service Details - I-VARSE Technologies'}
+      description={displayService?.description || 'Learn more about our comprehensive services and how they can benefit your business'}
+      canonicalUrl={`${displaySiteConfig.siteUrl}/services/${slug}`}
+      ogImage={displayService.image || `${displaySiteConfig.siteUrl}/og-service.jpg`}
+      pageContent={displayService}
+      isLoading={isServiceLoading || isPageLoading}
+      structuredData={structuredData}
+    >
         {/* Hero Section */}
       <ServiceDetailHeroSection 
         service={displayService as any}
@@ -157,7 +129,7 @@ const ServiceDetail: React.FC = () => {
         service={displayService as any}
         siteConfig={displaySiteConfig}
       />
-    </>
+    </PageLayout>
   );
 };
 

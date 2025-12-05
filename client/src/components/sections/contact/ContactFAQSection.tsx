@@ -25,7 +25,7 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
         <section className="bg-gradient-to-b from-white to-gray-50 dark:from-[#0a1929] dark:to-[#0d1f33] py-24 relative overflow-hidden">
             <BackgroundDecoration variant="faq" />
 
-            <div className="container-custom relative z-10">
+            <div className="container-custom relative z-10 max-w-7xl">
                 <div 
                     className="text-center mb-16 space-y-4"
                     {...fadeInUp()}

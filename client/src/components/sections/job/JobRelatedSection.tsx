@@ -40,7 +40,7 @@ const JobRelatedSection: React.FC<JobRelatedSectionProps> = ({
     if (isLoading) {
         return (
             <section className="py-16 bg-white dark:bg-gray-900">
-                <div className="container mx-auto px-4">
+                <div className="container mx-auto px-4 max-w-7xl">
                     <div className="max-w-7xl mx-auto">
                         <div className="animate-pulse mb-12">
                             <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mx-auto mb-4"></div>
@@ -76,7 +76,7 @@ const JobRelatedSection: React.FC<JobRelatedSectionProps> = ({
 
     return (
         <section className="py-16 bg-white dark:bg-gray-900">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 max-w-7xl">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-4">

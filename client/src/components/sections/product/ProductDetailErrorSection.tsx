@@ -27,7 +27,7 @@ const ProductDetailErrorSection: React.FC<ProductDetailErrorSectionProps> = ({
 
   return (
     <div className="content-section bg-white dark:bg-[#132f4c] min-h-screen">
-      <div className="container-custom py-16">
+      <div className="container-custom py-16 max-w-7xl">
         <Card className="max-w-md mx-auto">
           <CardContent className="p-8 text-center">
             <div className="flex justify-center mb-4">

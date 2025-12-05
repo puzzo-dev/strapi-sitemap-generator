@@ -289,7 +289,7 @@ export type { ButtonProps };
 ### Component Documentation
 ```typescript
 /**
- * ProductCard displays product information with interactive elements.
+ * ProductCard displays product information with interactive shared.
  * 
  * @param product - The product data to display
  * @param isReversed - Whether to reverse the layout

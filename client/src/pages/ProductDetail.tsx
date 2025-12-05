@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import { useParams } from 'wouter';
 import { Shield, Zap, HeartPulse, BarChart } from 'lucide-react';
 import { useProductById, usePageContent } from '@/hooks/useContent';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { productDetailPageContent as localProductDetailPageContent } from '@/lib/data/pages';
 import { products } from '@/lib/data/';
 import { ProductProps } from '@/lib/types/content';
@@ -100,7 +99,6 @@ const transformProductForComponents = (product: ProductProps) => {
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { generateSeoTitle, generateSeoDescription, getCanonicalUrl, getOgImage, siteConfig } = useSeoHelpers();
 
   // Fetch page content from Strapi or use fallback
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('product-detail');
@@ -130,17 +128,6 @@ const ProductDetail: React.FC = () => {
     return transformProductForComponents(rawProduct) as any;
   }, [rawProduct]);
 
-  // SEO metadata
-  const pageTitle = useMemo(() => {
-    if (!product) return `Product Not Found | ${siteConfig.siteName}`;
-    return generateSeoTitle(`${product.title} | Products`);
-  }, [product, generateSeoTitle, siteConfig.siteName]);
-
-  const pageDescription = useMemo(() => {
-    if (!product) return 'The requested product could not be found.';
-    return generateSeoDescription(`${product.description} Discover the features and benefits of ${product.title}.`);
-  }, [product, generateSeoDescription]);
-
   // Show loading state
   if (isLoading) {
     return <ProductDetailLoadingSection />;
@@ -152,18 +139,14 @@ const ProductDetail: React.FC = () => {
   }
 
   return (
-    <>
-      {/* SEO metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        keywords={['product', 'software', product.title, siteConfig.siteName, 'technology']}
-        ogType="website"
-        canonicalUrl={getCanonicalUrl(`/products/${slug}`)}
-        ogUrl={getCanonicalUrl(`/products/${slug}`)}
-        ogImage={getOgImage(product.image, '/og-product.jpg')}
-      />
-
+    <PageLayout
+      title={product ? `${product.title} | Products` : 'Product Not Found'}
+      description={product ? `${product.description} Discover the features and benefits of ${product.title}.` : 'The requested product could not be found.'}
+      canonicalUrl={`https://itechnologies.ng/products/${slug}`}
+      ogImage={product?.image || 'https://itechnologies.ng/og-product.jpg'}
+      pageContent={product}
+      isLoading={isLoading}
+    >
       <main>
         {/* Hero Section */}
         <ProductDetailHeroSection
@@ -215,7 +198,7 @@ const ProductDetail: React.FC = () => {
           pageContent={displayPageContent}
         />
       </main>
-    </>
+    </PageLayout>
   );
 };
 

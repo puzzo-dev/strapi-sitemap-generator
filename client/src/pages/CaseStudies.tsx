@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { usePageContent } from '@/hooks/useContent';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { caseStudiesPageContent as localCaseStudiesPageContent } from '@/lib/data/pages';
 import { caseStudies } from '@/lib/data/case-studies';
 import { CaseStudiesContentSection } from '@/components/sections/case-studies';
 import { TestimonialProps } from '@/lib/types/content';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { defaultSiteConfig } from '@/lib/data/config';
 import {
@@ -19,7 +18,6 @@ import {
 import { CaseStudyProps } from '@/lib/types/case-studies';
 
 const CaseStudies: React.FC = () => {
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
   const [activeFilter, setActiveFilter] = useState('all');
 
   // Fetch page content from Strapi with fallback to local data
@@ -127,25 +125,18 @@ const CaseStudies: React.FC = () => {
     return [];
   }, [testimonialsSection]);
 
-  // SEO metadata
-  const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
-  const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
   const structuredData = generateOrganizationSchema();
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={`${defaultSiteConfig.siteUrl}/case-studies`}
-        ogImage={`${defaultSiteConfig.siteUrl}/og-case-studies.jpg`}
-        ogUrl={`${defaultSiteConfig.siteUrl}/case-studies`}
-        ogType="website"
-        twitterCard="summary_large_image"
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayPageContent.metaTitle}
+      description={displayPageContent.metaDescription}
+      canonicalUrl={`${defaultSiteConfig.siteUrl}/case-studies`}
+      ogImage={`${defaultSiteConfig.siteUrl}/og-case-studies.jpg`}
+      pageContent={displayPageContent}
+      isLoading={isPageLoading}
+      structuredData={structuredData}
+    >
       {/* Hero Section */}
       <CaseStudiesHeroSection
         pageContent={displayPageContent}
@@ -185,7 +176,7 @@ const CaseStudies: React.FC = () => {
         pageContent={displayPageContent}
         isLoading={isPageLoading}
       />
-    </>
+    </PageLayout>
   );
 };
 

@@ -25,7 +25,7 @@ const IndustryDetailCaseStudiesSection: React.FC<IndustryDetailCaseStudiesSectio
       variants={staggerChildren()}
       className="py-12 md:py-20 bg-white dark:bg-[#0a192f] border-b border-blue-100 dark:border-blue-900/40"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-7xl">
         <motion.h2 variants={fadeInUp()} className="text-2xl md:text-3xl font-bold text-blue-900 dark:text-blue-200 mb-8 text-center">
           Related Case Studies
         </motion.h2>

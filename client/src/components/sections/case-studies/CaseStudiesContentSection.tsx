@@ -12,7 +12,7 @@ const CaseStudiesContentSection: React.FC<CaseStudiesContentSectionProps> = ({
   if (isLoading) {
     return (
       <section className="py-16 bg-white dark:bg-[#0a192f]">
-        <div className="container-custom">
+        <div className="container-custom max-w-7xl">
           <div className="max-w-4xl mx-auto">
             <div className="animate-pulse">
               <div className="h-8 bg-blue-100 dark:bg-blue-800/50 rounded mb-8"></div>
@@ -39,7 +39,7 @@ const CaseStudiesContentSection: React.FC<CaseStudiesContentSectionProps> = ({
 
   return (
     <section className="py-16 bg-white dark:bg-[#0a192f]">
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title text-blue-900 dark:text-blue-200 mb-8">
             {title || 'About I-Varse Technologies'}

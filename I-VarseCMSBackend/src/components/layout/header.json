@@ -5,10 +5,20 @@
   },
   "options": {},
   "attributes": {
+    "siteLogo": {
+      "type": "component",
+      "component": "shared.logo",
+      "repeatable": false
+    },
     "headerMenu": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::menu-item.menu-item"
+    },
+    "navCta": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": false
     }
   },
   "config": {}

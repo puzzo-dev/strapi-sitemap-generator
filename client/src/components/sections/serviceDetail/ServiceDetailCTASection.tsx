@@ -31,7 +31,7 @@ const ServiceDetailCTASection: React.FC<ServiceDetailCTASectionProps> = ({
       viewport={{ once: true, amount: 0.1 }}
       className={`content-section ${backgroundColor}`}
     >
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <motion.div
           variants={fadeInUp()}
         >

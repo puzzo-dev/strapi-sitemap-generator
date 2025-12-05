@@ -44,7 +44,7 @@ const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
   if (isLoading) {
     return (
       <section className="py-12 bg-gray-50 dark:bg-gray-800">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-7xl">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-6"></div>
             <div className="flex gap-4">
@@ -60,7 +60,7 @@ const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
 
   return (
     <section className="py-12 bg-gray-50 dark:bg-gray-800">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-7xl">
         <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
           {t('caseStudies.filter.title', 'Filter by Industry')}
         </h3>

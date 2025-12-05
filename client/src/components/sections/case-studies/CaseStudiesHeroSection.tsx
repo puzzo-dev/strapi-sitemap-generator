@@ -94,7 +94,7 @@ const CaseStudiesHeroSection: React.FC<CaseStudiesHeroSectionProps> = ({
         </div>
       </div>
 
-      <div className="container-custom relative z-10">
+      <div className="container-custom relative z-10 max-w-7xl">
         <motion.div
           variants={staggerChildrenAnimation(0.1)}
           className="text-center max-w-4xl mx-auto"

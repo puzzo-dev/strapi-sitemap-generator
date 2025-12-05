@@ -4,6 +4,20 @@ import { SocialLink } from "./layout";
 // Re-export CaseStudyProps from its own module to avoid duplication
 export { CaseStudyProps } from "./case-studies";
 
+// SEO Types
+export interface SEOData {
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string; // Comma-separated or array
+  canonicalUrl?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article' | 'service' | 'product';
+  twitterCard?: 'summary' | 'summary_large_image';
+  noIndex?: boolean;
+}
+
 // Content-Specific Types
 export interface ServiceProps {
   id: number;
@@ -20,6 +34,8 @@ export interface ServiceProps {
   // Dynamic UI labels (from Strapi)
   learnMoreText?: string;
   readMoreText?: string;
+  // SEO data
+  seo?: SEOData;
 }
 
 // Use generic CardProps<ServiceProps> instead
@@ -73,6 +89,8 @@ export interface ProductProps {
   industriesLabel?: string;
   caseStudiesLabel?: string;
   faqsLabel?: string;
+  // SEO data
+  seo?: SEOData;
 }
 
 // Use generic CardProps<ProductProps> instead
@@ -107,9 +125,11 @@ export interface BlogPost {
   image?: string; // Primary image field (standardized naming)
   metaImage?: string; // Legacy field for backwards compatibility
   featuredImage?: string; // Legacy field for backwards compatibility
-  metaTitle?: string;
-  metaDescription?: string;
+  metaTitle?: string; // Legacy - prefer seo.metaTitle
+  metaDescription?: string; // Legacy - prefer seo.metaDescription
   author?: string;
+  // SEO data (for Strapi blogs, ERPNext uses metaTitle/metaDescription directly)
+  seo?: SEOData;
   authorDetails?: BlogAuthor;
   categories?: BlogCategory[];
   readTime?: number;
@@ -234,6 +254,8 @@ export interface TeamMember {
   erpNextId?: string;
   erpNextStatus?: 'active' | 'inactive' | 'terminated';
   erpNextDepartment?: string;
+  // SEO data
+  seo?: SEOData;
 }
 
 export interface TeamSectionProps extends PageSection {
@@ -283,6 +305,8 @@ export interface JobListing {
     reportsTo?: string;
   };
   skills?: string[];
+  // SEO data
+  seo?: SEOData;
 }
 
 // Hero stats and features types
@@ -351,6 +375,8 @@ export interface IndustryProps {
     value: string;
   }>;
   featured?: boolean;
+  // SEO data
+  seo?: SEOData;
 }
 
 

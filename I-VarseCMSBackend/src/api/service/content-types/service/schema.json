@@ -47,7 +47,7 @@
           "localized": true
         }
       },
-      "component": "elements.seo",
+      "component": "shared.seo",
       "repeatable": false
     },
     "content": {
@@ -59,8 +59,8 @@
       },
       "components": [
         "hero.hero-simple",
-        "elements.link",
-        "elements.badge",
+        "shared.link",
+        "shared.badge",
         "cards.testimonial-card",
         "cards.stat",
         "cards.social-link",

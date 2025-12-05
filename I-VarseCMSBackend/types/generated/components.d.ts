@@ -6,7 +6,7 @@ export interface BlocksBaseRow extends Struct.ComponentSchema {
     displayName: 'baseRow';
   };
   attributes: {
-    badge: Schema.Attribute.Component<'elements.badge', false>;
+    badge: Schema.Attribute.Component<'shared.badge', false>;
     baseCards: Schema.Attribute.Component<'cards.base-card', true>;
     cta: Schema.Attribute.Component<'blocks.cta-section', false>;
     description: Schema.Attribute.Text;
@@ -28,8 +28,8 @@ export interface BlocksCtaSection extends Struct.ComponentSchema {
     displayName: 'ctaSection';
   };
   attributes: {
-    ctaBadge: Schema.Attribute.Component<'elements.badge', false>;
-    ctaButtons: Schema.Attribute.Component<'elements.link', true>;
+    ctaBadge: Schema.Attribute.Component<'shared.badge', false>;
+    ctaButtons: Schema.Attribute.Component<'shared.link', true>;
     ctaContent: Schema.Attribute.RichText;
     description: Schema.Attribute.Text;
     title: Schema.Attribute.String;
@@ -59,7 +59,7 @@ export interface BlocksLegalLinks extends Struct.ComponentSchema {
   };
   attributes: {
     copyright: Schema.Attribute.String;
-    legalLink: Schema.Attribute.Component<'elements.link', true>;
+    legalLink: Schema.Attribute.Component<'shared.link', true>;
   };
 }
 
@@ -69,10 +69,10 @@ export interface CardsBaseCard extends Struct.ComponentSchema {
     displayName: 'baseCard';
   };
   attributes: {
-    cardBadge: Schema.Attribute.Component<'elements.badge', false>;
+    cardBadge: Schema.Attribute.Component<'shared.badge', false>;
     cardContent: Schema.Attribute.RichText;
     cardImages: Schema.Attribute.Media<'images' | 'files' | 'videos', true>;
-    cardLink: Schema.Attribute.Component<'elements.link', true>;
+    cardLink: Schema.Attribute.Component<'shared.link', true>;
     description: Schema.Attribute.Text;
     title: Schema.Attribute.String;
   };
@@ -97,7 +97,7 @@ export interface CardsFooterMenu extends Struct.ComponentSchema {
     displayName: 'FooterMenu';
   };
   attributes: {
-    footerMenuLink: Schema.Attribute.Component<'elements.link', true>;
+    footerMenuLink: Schema.Attribute.Component<'shared.link', true>;
     footerMenuTitle: Schema.Attribute.String;
   };
 }
@@ -130,7 +130,7 @@ export interface CardsSocialLink extends Struct.ComponentSchema {
     displayName: 'socialLink';
   };
   attributes: {
-    linkUrl: Schema.Attribute.Component<'elements.link', false>;
+    linkUrl: Schema.Attribute.Component<'shared.link', false>;
     socialIcon: Schema.Attribute.Media<'images' | 'files'> &
       Schema.Attribute.Required;
   };
@@ -152,55 +152,13 @@ export interface CardsTestimonialCard extends Struct.ComponentSchema {
   attributes: {};
 }
 
-export interface ElementsBadge extends Struct.ComponentSchema {
-  collectionName: 'components_elements_badges';
-  info: {
-    displayName: 'badge';
-  };
-  attributes: {};
-}
-
-export interface ElementsLink extends Struct.ComponentSchema {
-  collectionName: 'components_elements_links';
-  info: {
-    displayName: 'link';
-  };
-  attributes: {
-    externalUrl: Schema.Attribute.String;
-    label: Schema.Attribute.String;
-    linkType: Schema.Attribute.Enumeration<['internal', 'external']>;
-    pages: Schema.Attribute.Relation<'oneToMany', 'api::page.page'>;
-  };
-}
-
-export interface ElementsLogo extends Struct.ComponentSchema {
-  collectionName: 'components_elements_logos';
-  info: {
-    displayName: 'logo';
-  };
-  attributes: {
-    logoImageDark: Schema.Attribute.Media<'images' | 'files'>;
-    logoImageLight: Schema.Attribute.Media<'images' | 'files'>;
-    logoText: Schema.Attribute.String;
-    logoThemeType: Schema.Attribute.Enumeration<['light', 'dark']>;
-  };
-}
-
-export interface ElementsSeo extends Struct.ComponentSchema {
-  collectionName: 'components_elements_seos';
-  info: {
-    displayName: 'seo';
-  };
-  attributes: {};
-}
-
 export interface HeroHeroFull extends Struct.ComponentSchema {
   collectionName: 'components_hero_hero_fulls';
   info: {
     displayName: 'heroFull';
   };
   attributes: {
-    heroBadge: Schema.Attribute.Component<'elements.badge', false>;
+    heroBadge: Schema.Attribute.Component<'shared.badge', false>;
     heroMediaCards: Schema.Attribute.Component<'cards.media-card', true>;
     heroSlides: Schema.Attribute.Component<'hero.hero-slide', true>;
     heroStat: Schema.Attribute.Component<'cards.stat', true>;
@@ -214,7 +172,7 @@ export interface HeroHeroSimple extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
-    heroBadge: Schema.Attribute.Component<'elements.badge', false>;
+    heroBadge: Schema.Attribute.Component<'shared.badge', false>;
     heroImage: Schema.Attribute.Media<'images' | 'files'>;
     title: Schema.Attribute.String;
   };
@@ -228,7 +186,7 @@ export interface HeroHeroSlide extends Struct.ComponentSchema {
   attributes: {
     description: Schema.Attribute.Text;
     heroImage: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    slideCTA: Schema.Attribute.Component<'elements.link', true>;
+    slideCTA: Schema.Attribute.Component<'shared.link', true>;
     title: Schema.Attribute.String;
   };
 }
@@ -261,6 +219,67 @@ export interface LayoutHeader extends Struct.ComponentSchema {
       'oneToMany',
       'api::menu-item.menu-item'
     >;
+    navCta: Schema.Attribute.Component<'shared.link', false>;
+    siteLogo: Schema.Attribute.Component<'shared.logo', false>;
+  };
+}
+
+export interface SharedBadge extends Struct.ComponentSchema {
+  collectionName: 'components_elements_badges';
+  info: {
+    displayName: 'badge';
+  };
+  attributes: {
+    content: Schema.Attribute.String;
+  };
+}
+
+export interface SharedLink extends Struct.ComponentSchema {
+  collectionName: 'components_elements_links';
+  info: {
+    displayName: 'link';
+  };
+  attributes: {
+    externalUrl: Schema.Attribute.String;
+    label: Schema.Attribute.String;
+    linkType: Schema.Attribute.Enumeration<['internal', 'external']>;
+    pages: Schema.Attribute.Relation<'oneToMany', 'api::page.page'>;
+  };
+}
+
+export interface SharedLogo extends Struct.ComponentSchema {
+  collectionName: 'components_elements_logos';
+  info: {
+    displayName: 'logo';
+  };
+  attributes: {
+    logoImageDark: Schema.Attribute.Media<'images' | 'files'>;
+    logoImageLight: Schema.Attribute.Media<'images' | 'files'>;
+    logoText: Schema.Attribute.String;
+    logoThemeType: Schema.Attribute.Enumeration<['light', 'dark']>;
+  };
+}
+
+export interface SharedSeo extends Struct.ComponentSchema {
+  collectionName: 'components_elements_seos';
+  info: {
+    displayName: 'seo';
+  };
+  attributes: {
+    canonicalUrl: Schema.Attribute.String;
+    keywords: Schema.Attribute.String;
+    metaDescription: Schema.Attribute.Text;
+    metaTitle: Schema.Attribute.String;
+    noIndex: Schema.Attribute.Boolean;
+    ogDescription: Schema.Attribute.Text;
+    ogImage: Schema.Attribute.Media<'images' | 'files'>;
+    ogTitle: Schema.Attribute.String;
+    ogType: Schema.Attribute.Enumeration<
+      ['page', 'article', 'service', 'product']
+    >;
+    twitterCard: Schema.Attribute.Enumeration<
+      ['summary', 'summary_large_image']
+    >;
   };
 }
 
@@ -280,15 +299,15 @@ declare module '@strapi/strapi' {
       'cards.social-link': CardsSocialLink;
       'cards.stat': CardsStat;
       'cards.testimonial-card': CardsTestimonialCard;
-      'elements.badge': ElementsBadge;
-      'elements.link': ElementsLink;
-      'elements.logo': ElementsLogo;
-      'elements.seo': ElementsSeo;
       'hero.hero-full': HeroHeroFull;
       'hero.hero-simple': HeroHeroSimple;
       'hero.hero-slide': HeroHeroSlide;
       'layout.footer': LayoutFooter;
       'layout.header': LayoutHeader;
+      'shared.badge': SharedBadge;
+      'shared.link': SharedLink;
+      'shared.logo': SharedLogo;
+      'shared.seo': SharedSeo;
     }
   }
 }

@@ -2,9 +2,8 @@ import React, { useMemo } from 'react';
 import { useRoute } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/components/context/LanguageContext';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { usePageContent, useSiteConfig } from '@/hooks/useContent';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { industriesPageContent as localIndustriesPageContent } from '@/lib/data/pages';
 import { defaultSiteConfig } from '@/lib/data/';
@@ -25,7 +24,6 @@ import IndustryDetailCTASection from '@/components/sections/industry-detail/Indu
 const IndustryDetail: React.FC = () => {
   const { t } = useTranslation();
   useLanguage();
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
   const { data: siteConfig } = useSiteConfig();
   const [, params] = useRoute('/industries/:slug');
 
@@ -91,42 +89,16 @@ const IndustryDetail: React.FC = () => {
     "areaServed": "Nigeria"
   };
 
-  // SEO metadata
-  const pageTitle = generateSeoTitle(industry?.name || 'Industry Solutions');
-  const pageDescription = generateSeoDescription(industry?.description || 'Digital transformation solutions for various industries');
-
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={`${displaySiteConfig.siteUrl}/industries/${params?.slug}`}
-        ogImage={`${displaySiteConfig.siteUrl}/src/assets/images/IMG_2257.JPG`}
-        ogUrl={`${displaySiteConfig.siteUrl}/industries/${params?.slug}`}
-        ogType="website"
-        twitterCard="summary_large_image"
-        keywords={[
-          'industry solutions',
-          industry?.name?.toLowerCase() || 'digital transformation',
-          'business technology',
-          'sector-specific solutions',
-          'I-Varse Technologies',
-          'enterprise solutions',
-          'technology consulting'
-        ]}
-        alternateLanguages={[
-          { lang: 'en', url: `${displaySiteConfig.siteUrl}/industries/${params?.slug}` },
-          { lang: 'yo', url: `${displaySiteConfig.siteUrl}/yo/industries/${params?.slug}` },
-          { lang: 'ig', url: `${displaySiteConfig.siteUrl}/ig/industries/${params?.slug}` },
-          { lang: 'ha', url: `${displaySiteConfig.siteUrl}/ha/industries/${params?.slug}` },
-          { lang: 'fr', url: `${displaySiteConfig.siteUrl}/fr/industries/${params?.slug}` },
-          { lang: 'es', url: `${displaySiteConfig.siteUrl}/es/industries/${params?.slug}` },
-          { lang: 'sw', url: `${displaySiteConfig.siteUrl}/sw/industries/${params?.slug}` }
-        ]}
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={industry?.name || 'Industry Solutions'}
+      description={industry?.description || 'Digital transformation solutions for various industries'}
+      canonicalUrl={`${displaySiteConfig.siteUrl}/industries/${params?.slug}`}
+      ogImage={`${displaySiteConfig.siteUrl}/src/assets/images/IMG_2257.JPG`}
+      pageContent={industry as any}
+      isLoading={isPageLoading}
+      structuredData={structuredData}
+    >
       <main>
         {/* Hero Section */}
         <IndustryDetailHeroSection
@@ -177,7 +149,7 @@ const IndustryDetail: React.FC = () => {
           isLoading={shouldShowLoading}
         />
       </main>
-    </>
+    </PageLayout>
   );
 };
 

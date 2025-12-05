@@ -10,7 +10,7 @@
     },
     "legalLink": {
       "type": "component",
-      "component": "elements.link",
+      "component": "shared.link",
       "repeatable": true
     }
   },

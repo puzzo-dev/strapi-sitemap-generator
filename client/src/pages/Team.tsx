@@ -1,9 +1,8 @@
 import React from 'react';
 import { usePageContent } from '@/hooks/useContent';
 // import { useERPNextTeamMembers } from '@/hooks/useERPNextContent';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { defaultTeamMembers } from '@/lib/data/team';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { teamPageContent as localTeamPageContent } from '@/lib/data/pages';
 import { PageContent } from '@/lib/types/core';
@@ -16,8 +15,6 @@ import {
 } from '@/components/sections/team';
 
 const Team: React.FC = () => {
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
-
   // Fetch page content from Strapi or use local data
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('team');
 
@@ -28,9 +25,6 @@ const Team: React.FC = () => {
   // Use local page content if Strapi data is not available
   const displayPageContent = pageContent || localTeamPageContent;
 
-  // Generate SEO metadata
-  const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
-  const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
   const structuredData = generateOrganizationSchema();
 
   // Extract sections with fallback to local data
@@ -39,19 +33,15 @@ const Team: React.FC = () => {
   const ctaSection = displayPageContent?.sections?.find(s => s.type === 'cta') || { id: 0 };
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl="https://itechnologies.ng/team"
-        ogImage="https://itechnologies.ng/team-og-image.jpg"
-        ogUrl="https://itechnologies.ng/team"
-        ogType="website"
-        twitterCard="summary_large_image"
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayPageContent.metaTitle}
+      description={displayPageContent.metaDescription}
+      canonicalUrl="https://itechnologies.ng/team"
+      ogImage="https://itechnologies.ng/team-og-image.jpg"
+      pageContent={displayPageContent}
+      isLoading={isPageLoading}
+      structuredData={structuredData}
+    >
       {/* Hero Section */}
       <TeamHero
         {...heroSection}
@@ -70,7 +60,7 @@ const Team: React.FC = () => {
         {...ctaSection}
         isPageLoading={isPageLoading}
       />
-    </>
+    </PageLayout>
   );
 };
 

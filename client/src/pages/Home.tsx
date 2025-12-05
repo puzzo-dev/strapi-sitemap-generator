@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';
 
 // Import section components
@@ -38,8 +37,6 @@ import { heroStats, heroFeatures, defaultHeroProps } from '@/lib/data/hero';
 import { PageContent } from '@/lib/types/core';
 
 const Home: React.FC = () => {
-    const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
-
     // Initialize services (temporarily disabled)
     // const strapiService = new StrapiService();
     // const pageContentSource = new StrapiPageContentSource(strapiService);
@@ -125,31 +122,29 @@ const Home: React.FC = () => {
     const displayHomePageContent = pageContentQuery.data;
     const isLoading = false; // Using fallback data, so no loading state needed
 
-    // SEO data
-    const seoTitle = generateSeoTitle(displayHomePageContent?.title || 'I-VARSE Technologies');
-    const seoDescription = generateSeoDescription(displayHomePageContent?.description || 'Innovative digital solutions for modern businesses');
+    // Combine structured data for homepage
+    const structuredData = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            generateWebsiteSchema(),
+            generateOrganizationSchema()
+        ]
+    };
 
     return (
-        <>
-            <MetaTags
-                title={seoTitle}
-                description={seoDescription}
-                keywords={["digital solutions", "web development", "cloud infrastructure", "mobile applications", "digital marketing", "I-VARSE Technologies"]}
-                ogImage="/og-image.jpg"
-                ogType="website"
-                twitterCard="summary_large_image"
-            />
-
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        ...generateWebsiteSchema(),
-                        ...generateOrganizationSchema()
-                    })
-                }}
-            />
-
+        <PageLayout
+            title={displayHomePageContent?.title || 'I-VARSE Technologies'}
+            description={displayHomePageContent?.description || 'Innovative digital solutions for modern businesses'}
+            keywords={["digital solutions", "web development", "cloud infrastructure", "mobile applications", "digital marketing", "I-VARSE Technologies"]}
+            canonicalUrl="https://itechnologies.ng"
+            ogImage="/og-image.jpg"
+            ogType="website"
+            twitterCard="summary_large_image"
+            pageContent={displayHomePageContent}
+            isLoading={isLoading}
+            structuredData={structuredData}
+            animationType="fade"
+        >
             <main className="min-h-screen">
                 {/* Hero Section */}
                 {/* <OriginalHero /> */}
@@ -207,7 +202,7 @@ const Home: React.FC = () => {
                     isLoading={isLoading}
                 />
             </main>
-        </>
+        </PageLayout>
     );
 };
 

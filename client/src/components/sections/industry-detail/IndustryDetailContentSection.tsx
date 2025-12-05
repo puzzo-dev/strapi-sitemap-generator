@@ -15,7 +15,7 @@ const IndustryDetailContentSection: React.FC<IndustryDetailContentSectionProps> 
       variants={fadeInUp()}
       className="py-12 md:py-20 bg-white dark:bg-[#0a192f] border-b border-blue-100 dark:border-blue-900/40"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="max-w-4xl mx-auto">
           <motion.h2
             variants={fadeInUp()}

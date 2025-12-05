@@ -40,7 +40,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
             variants={staggerChildren()}
             className="py-16 md:py-24 bg-white dark:bg-[#132f4c]"
         >
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 max-w-7xl">
                 <div className="max-w-4xl mx-auto text-center mb-16">
                     {/* Section Label */}
                     {(settings?.label || settings?.badge) && (

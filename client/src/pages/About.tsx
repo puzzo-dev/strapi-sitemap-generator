@@ -1,8 +1,7 @@
 import React from 'react';
+import PageLayout from '@/components/layout/PageLayout';
 import { usePageContent } from '@/hooks/useContent';
 // import { useERPNextTeamMembers } from '@/hooks/useERPNextContent';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import MetaTags from '@/components/seo/MetaTags';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { aboutPageContent as localAboutPageContent } from '@/lib/data/pages';
 import { industries } from '@/lib/data/industries';
@@ -20,8 +19,6 @@ import {
 import IndustriesSection from '@/components/sections/home/IndustriesSection';
 
 const About: React.FC = () => {
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
-
   // Fetch page content from Strapi or use local data
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('about');
 
@@ -32,9 +29,7 @@ const About: React.FC = () => {
   // Use local page content if Strapi data is not available
   const displayPageContent = pageContent || localAboutPageContent;
 
-  // Generate SEO metadata
-  const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
-  const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
+  // Structured data
   const structuredData = generateOrganizationSchema();
 
   // Extract sections using unified helper
@@ -46,19 +41,18 @@ const About: React.FC = () => {
   const ctaSection = findSection(displayPageContent, 'cta') || { id: 0 };
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl="https://itechnologies.ng/about"
-        ogImage="https://itechnologies.ng/about-og-image.jpg"
-        ogUrl="https://itechnologies.ng/about"
-        ogType="website"
-        twitterCard="summary_large_image"
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayPageContent.metaTitle}
+      description={displayPageContent.metaDescription}
+      canonicalUrl="https://itechnologies.ng/about"
+      ogImage="https://itechnologies.ng/about-og-image.jpg"
+      ogType="website"
+      twitterCard="summary_large_image"
+      pageContent={displayPageContent}
+      isLoading={isPageLoading}
+      structuredData={structuredData}
+      animationType="fade"
+    >
       {/* Hero Section */}
       <AboutHero
         {...heroSection}
@@ -96,7 +90,7 @@ const About: React.FC = () => {
         {...ctaSection}
         isPageLoading={isPageLoading}
       />
-    </>
+    </PageLayout>
   );
 };
 export default About;

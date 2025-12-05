@@ -45,7 +45,7 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
 
     return (
         <section className="py-16 bg-white dark:bg-[#0a192f]">
-            <div className="container-custom">
+            <div className="container-custom max-w-7xl">
                 {isLoading ? (
                     <div className="max-w-4xl mx-auto">
                         <div className="animate-pulse space-y-8">

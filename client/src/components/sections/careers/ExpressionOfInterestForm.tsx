@@ -153,7 +153,7 @@ const ExpressionOfInterestForm: React.FC<ExpressionOfInterestFormProps> = ({
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                     className="overflow-hidden"
                 >
-                    <div className="container-custom py-8">
+                    <div className="container-custom py-8 max-w-7xl">
                         <Card className="max-w-4xl mx-auto shadow-xl border-blue-200 dark:border-blue-800">
                             <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-blue-200 dark:border-blue-800">
                                 <div className="flex items-center justify-between">

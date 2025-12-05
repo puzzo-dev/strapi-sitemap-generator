@@ -47,7 +47,7 @@ const TeamGrid: React.FC<TeamGridProps> = ({
             variants={staggerChildren()}
             className="py-16 md:py-24 bg-white dark:bg-[#132f4c] overflow-hidden"
         >
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-hidden">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-hidden max-w-7xl">
                 <div className="max-w-7xl mx-auto text-center mb-16 px-4 sm:px-8">
                     {/* Section Label */}
                     {settings?.label && (

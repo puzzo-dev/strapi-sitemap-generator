@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 
 // Import section components
@@ -20,9 +19,6 @@ const BlogPage: React.FC = () => {
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('all');
     const [tag, setTag] = useState('all');
-
-    // SEO optimization helpers
-    const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
 
     // Fetch page content from Strapi or use local data
     const { data: pageContent, isLoading: isPageLoading } = usePageContent('blog');
@@ -42,10 +38,6 @@ const BlogPage: React.FC = () => {
 
     // Generate structured data
     const structuredData = generateOrganizationSchema();
-
-    // Prepare SEO metadata
-    const pageTitle = generateSeoTitle(displayPageContent.metaTitle);
-    const pageDescription = generateSeoDescription(displayPageContent.metaDescription);
 
     // Get sections with fallbacks (memoized to prevent re-computation)
     const heroSection = useMemo(() => 
@@ -91,19 +83,18 @@ const BlogPage: React.FC = () => {
     }, []);
 
     return (
-        <>
-            {/* SEO Metadata */}
-            <MetaTags
-                title={pageTitle}
-                description={pageDescription}
-                canonicalUrl="https://itechnologies.ng/blog"
-                ogImage="https://itechnologies.ng/blog-og-image.jpg"
-                ogUrl="https://itechnologies.ng/blog"
-                ogType="website"
-                twitterCard="summary_large_image"
-                structuredData={structuredData}
-            />
-
+        <PageLayout
+            title={displayPageContent.metaTitle}
+            description={displayPageContent.metaDescription}
+            canonicalUrl="https://itechnologies.ng/blog"
+            ogImage="https://itechnologies.ng/blog-og-image.jpg"
+            ogType="website"
+            twitterCard="summary_large_image"
+            pageContent={displayPageContent}
+            isLoading={isPageLoading}
+            structuredData={structuredData}
+            animationType="fade"
+        >
             <div className="bg-slate-50 dark:bg-slate-900 min-h-screen flex flex-col">
                 {/* Hero Section */}
                 <BlogHeroSection
@@ -158,7 +149,7 @@ const BlogPage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </PageLayout>
     );
 };
 

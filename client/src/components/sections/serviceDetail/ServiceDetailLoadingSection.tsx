@@ -3,7 +3,7 @@ import React from 'react';
 const ServiceDetailLoadingSection: React.FC = () => {
   return (
     <div className="content-section bg-white dark:bg-[#132f4c] min-h-screen">
-      <div className="container-custom py-16">
+      <div className="container-custom py-16 max-w-7xl">
         <div className="animate-pulse space-y-8">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
           <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>

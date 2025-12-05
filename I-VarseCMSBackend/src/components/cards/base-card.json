@@ -7,7 +7,7 @@
   "attributes": {
     "cardBadge": {
       "type": "component",
-      "component": "elements.badge",
+      "component": "shared.badge",
       "repeatable": false
     },
     "title": {
@@ -30,7 +30,7 @@
     },
     "cardLink": {
       "type": "component",
-      "component": "elements.link",
+      "component": "shared.link",
       "repeatable": true
     }
   },

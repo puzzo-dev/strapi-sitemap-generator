@@ -39,7 +39,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
       variants={fadeInUp(30, 0.7, 0.3)}
       className="content-section pb-20 pt-1 bg-gray-50 dark:bg-[#0a1929]"
     >
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <motion.div
           variants={fadeInUp(20, 0.6)}
           className="container-custom text-center mb-5"

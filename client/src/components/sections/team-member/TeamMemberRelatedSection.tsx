@@ -49,7 +49,7 @@ const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({
     if (isLoading) {
         return (
             <section className="py-16 bg-gray-50 dark:bg-[#0a1929]">
-                <div className="container mx-auto px-4">
+                <div className="container mx-auto px-4 max-w-7xl">
                     <div className="animate-pulse space-y-8">
                         <div className="text-center space-y-4">
                             <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mx-auto"></div>
@@ -73,7 +73,7 @@ const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({
             viewport={{ once: true, amount: 0.1 }}
             className="py-16 bg-gray-50 dark:bg-[#0a1929]"
         >
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 max-w-7xl">
                 <motion.div
                     variants={fadeInUp(20, 0.6)}
                     className="text-center mb-12"

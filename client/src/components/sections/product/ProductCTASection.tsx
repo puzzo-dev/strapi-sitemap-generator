@@ -25,7 +25,7 @@ const ProductCTASection: React.FC<ProductCTASectionProps> = ({
   if (isLoading) {
     return (
       <section className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]">
-        <div className="container-custom">
+        <div className="container-custom max-w-7xl">
           <div className="bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] rounded-2xl p-8 md:p-12 shadow-lg">
             <div className="text-center max-w-3xl mx-auto">
               <div className="h-8 bg-white/20 rounded mb-4 animate-pulse"></div>
@@ -40,7 +40,7 @@ const ProductCTASection: React.FC<ProductCTASectionProps> = ({
 
   return (
     <section className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]">
-      <div className="container-custom">
+      <div className="container-custom max-w-7xl">
         <motion.div
           initial="initial"
           whileInView="animate"

@@ -72,7 +72,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading 
     if (isLoading) {
         return (
             <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f]">
-                <div className="container-custom">
+                <div className="container-custom max-w-7xl">
                     <div className="text-center mb-16">
                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-pulse">
                             {processSection?.badge}
@@ -82,7 +82,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading 
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
                         {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="bg-white dark:bg-blue-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800/50 animate-pulse">
+                            <div key={i} className="bg-white dark:bg-blue-900/20 rounded-xl p-3 border border-blue-100 dark:border-blue-800/50 animate-pulse">
                                 <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-800/50 mb-6"></div>
                                 <div className="h-6 bg-blue-100 dark:bg-blue-800/50 rounded mb-3"></div>
                                 <div className="h-4 bg-blue-100 dark:bg-blue-800/50 rounded mb-2"></div>
@@ -100,7 +100,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading 
 
     return (
         <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f]">
-            <div className="container-custom">
+            <div className="container-custom max-w-7xl">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                         {processSection?.badge}
@@ -113,7 +113,7 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading 
 
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {processItems.map((step, index) => (
-                        <Card key={step.id} className="p-6 border border-blue-100 dark:border-blue-800/50 relative group hover:shadow-md transition-all">
+                        <Card key={step.id} className="p-3 border border-blue-100 dark:border-blue-800/50 relative group hover:shadow-md transition-all">
                             <CardContent>
                                 <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${gradients[index % gradients.length]} flex items-center justify-center mb-6 text-white font-bold group-hover:scale-110 transition-transform`}>
                                     {getIcon(step.icon, step.id)}

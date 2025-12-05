@@ -49,7 +49,7 @@ const TeamMemberLoadingSection: React.FC = () => {
 
             {/* Content Loading Section */}
             <section className="content-section bg-white dark:bg-[#132f4c]">
-                <div className="container-custom">
+                <div className="container-custom max-w-7xl">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         <div className="lg:col-span-8">
                             <Card className="p-6 md:p-8 mb-8 animate-pulse">

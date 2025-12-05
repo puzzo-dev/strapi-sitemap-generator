@@ -2,10 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { useParams } from 'wouter';
 import { usePageContent } from '@/hooks/useContent';
 // import { useERPNextJobListing } from '@/hooks/useERPNextContent';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
 import { jobListings } from '@/lib/data';
 import { generateJobPostingSchema } from '@/components/seo/StructuredData';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { jobDetailPageContent as localJobDetailPageContent } from '@/lib/data/pages';
 import { PageContent } from '@/lib/types/core';
 import { JobListing } from '@/lib/types/content';
@@ -23,7 +22,6 @@ import {
 
 const JobDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { generateSeoTitle, generateSeoDescription, getCanonicalUrl, getOgImage, siteConfig } = useSeoHelpers();
   const [submitted, setSubmitted] = useState(false);
 
   // Fetch page content from Strapi or use fallback
@@ -64,21 +62,10 @@ const JobDetail: React.FC = () => {
       employmentType: job.type === 'Full-time' ? 'FULL_TIME' :
         job.type === 'Part-time' ? 'PART_TIME' :
           job.type === 'Contract' ? 'CONTRACTOR' : 'OTHER',
-      hiringOrganization: jobContent?.hero?.hiringOrganization || siteConfig.siteName,
+      hiringOrganization: jobContent?.hero?.hiringOrganization || 'I-Varse Technologies',
       jobLocation: job.location,
     });
-  }, [job, jobContent, siteConfig.siteName]);
-
-  // SEO metadata
-  const pageTitle = useMemo(() => {
-    if (!job) return jobContent?.hero?.notFoundTitle || `Job Not Found | ${siteConfig.siteName}`;
-    return generateSeoTitle(`${job.title} | Career Opportunities`);
-  }, [job, generateSeoTitle, jobContent, siteConfig.siteName]);
-
-  const pageDescription = useMemo(() => {
-    if (!job) return jobContent?.hero?.notFoundDescription || 'The requested job position could not be found.';
-    return generateSeoDescription(`Apply for the ${job.title} position at ${jobContent?.hero?.hiringOrganization || siteConfig.siteName}. ${job.description.substring(0, 120)}...`);
-  }, [job, generateSeoDescription, jobContent, siteConfig.siteName]);
+  }, [job, jobContent]);
 
   // Render loading state
   if (isLoading) {
@@ -91,19 +78,15 @@ const JobDetail: React.FC = () => {
   }
 
   return (
-    <>
-      {/* SEO metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        keywords={[...(jobContent?.hero?.keywords || []), job?.title, job?.department].filter(Boolean)}
-        structuredData={jobSchema}
-        ogType="website"
-        canonicalUrl={getCanonicalUrl(`/careers/${slug}`)}
-        ogUrl={getCanonicalUrl(`/careers/${slug}`)}
-        ogImage={getOgImage(jobContent?.hero?.ogImage, '/og-career.jpg')}
-      />
-
+    <PageLayout
+      title={job ? `${job.title} | Career Opportunities` : 'Job Not Found'}
+      description={job ? `Apply for the ${job.title} position at I-Varse Technologies. ${job.description.substring(0, 120)}...` : 'The requested job position could not be found.'}
+      canonicalUrl={`https://itechnologies.ng/careers/${slug}`}
+      ogImage={jobContent?.hero?.ogImage || 'https://itechnologies.ng/og-career.jpg'}
+      pageContent={job as any}
+      isLoading={isLoading}
+      structuredData={jobSchema}
+    >
       <main className="bg-slate-50 dark:bg-slate-900 min-h-screen">
         {/* Hero Section */}
         <JobDetailHeroSection
@@ -137,7 +120,7 @@ const JobDetail: React.FC = () => {
           pageContent={displayPageContent}
         />
       </main>
-    </>
+    </PageLayout>
   );
 };
 

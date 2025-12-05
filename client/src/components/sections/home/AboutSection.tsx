@@ -115,7 +115,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                 </div>
             </div>
 
-            <div className="container-custom relative z-10">
+            <div className="container-custom relative z-10 max-w-7xl">
                 <motion.div
                     initial="initial"
                     animate={isVisible ? "animate" : "initial"}
@@ -239,7 +239,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                                             </div>
 
                                             {/* Animated scanning line */}
-                                            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 duration-[5000ms] animate-scan-line"></div>
+                                            <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 duration-&lsqb;5000ms&rsqb; animate-scan-line"></div>
 
                                             {/* Value with gradient */}
                                             <div className="relative z-10 py-4">

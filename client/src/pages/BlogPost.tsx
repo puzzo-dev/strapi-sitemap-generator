@@ -12,8 +12,7 @@ import { generateDummyBlogPost } from '@/lib/blogUtils';
 import { defaultSiteConfig, blogPosts as localBlogPosts } from '@/lib/data/';
 import { blogPageContent as localBlogPageContent } from '@/lib/data/pages';
 import type { BlogPost } from '@/lib/types/content';
-import { useSeoHelpers } from '@/hooks/useSeoHelpers';
-import MetaTags from '@/components/seo/MetaTags';
+import PageLayout from '@/components/layout/PageLayout';
 import { generateArticleSchema } from '@/components/seo/StructuredData';
 import SocialShareButtons from '@/components/ui/SocialShareButtons';
 
@@ -43,7 +42,6 @@ const BlogPostPage: React.FC = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [commentTab, setCommentTab] = useState<string>('read'); // 'read' or 'write'
-  const { generateSeoTitle, generateSeoDescription } = useSeoHelpers();
 
   // Fetch blog post data from Strapi or fallback to local data
   const { data: post, isLoading: isPostLoading, error: postError } = useBlogPostBySlug(slug || '');
@@ -122,10 +120,6 @@ const BlogPostPage: React.FC = () => {
     });
   }, [displayPost, displaySiteConfig.siteUrl]);
 
-  // Prepare SEO metadata
-  const pageTitle = generateSeoTitle(displayPost?.metaTitle || displayPost?.title || 'Blog Post');
-  const pageDescription = generateSeoDescription(displayPost?.metaDescription || displayPost?.blogIntro || 'Read our latest blog post');
-
   // Render loading state
   if (isPostLoading) {
     return <BlogPostLoadingSection />;
@@ -151,35 +145,15 @@ const BlogPostPage: React.FC = () => {
   }
 
   return (
-    <>
-      {/* SEO Metadata */}
-      <MetaTags
-        title={pageTitle}
-        description={pageDescription}
-        canonicalUrl={`${displaySiteConfig.siteUrl}/blog/${displayPost.slug || ''}`}
-        ogImage={displayPost.metaImage || `${displaySiteConfig.siteUrl}/og-blog.jpg`}
-        ogUrl={`${displaySiteConfig.siteUrl}/blog/${displayPost.slug || ''}`}
-        ogType="article"
-        twitterCard="summary_large_image"
-        keywords={[
-          displayPost.blogCategories?.[0]?.name || 'General',
-          ...(displayPost.tags || []),
-          'I-VARSE Technologies',
-          'blog',
-          'technology insights'
-        ]}
-        alternateLanguages={[
-          { lang: 'en', url: `${displaySiteConfig.siteUrl}/blog/${displayPost.slug || ''}` },
-          { lang: 'yo', url: `${displaySiteConfig.siteUrl}/yo/blog/${displayPost.slug || ''}` },
-          { lang: 'ig', url: `${displaySiteConfig.siteUrl}/ig/blog/${displayPost.slug || ''}` },
-          { lang: 'ha', url: `${displaySiteConfig.siteUrl}/ha/blog/${displayPost.slug || ''}` },
-          { lang: 'fr', url: `${displaySiteConfig.siteUrl}/fr/blog/${displayPost.slug || ''}` },
-          { lang: 'es', url: `${displaySiteConfig.siteUrl}/es/blog/${displayPost.slug || ''}` },
-          { lang: 'sw', url: `${displaySiteConfig.siteUrl}/sw/blog/${displayPost.slug || ''}` }
-        ]}
-        structuredData={structuredData}
-      />
-
+    <PageLayout
+      title={displayPost?.metaTitle || displayPost?.title || 'Blog Post'}
+      description={displayPost?.metaDescription || displayPost?.blogIntro || 'Read our latest blog post'}
+      canonicalUrl={`${displaySiteConfig.siteUrl}/blog/${displayPost.slug || ''}`}
+      ogImage={displayPost.metaImage || `${displaySiteConfig.siteUrl}/og-blog.jpg`}
+      pageContent={displayPost as any}
+      isLoading={false}
+      structuredData={structuredData}
+    >
       <div className="bg-slate-50 dark:bg-slate-900 min-h-screen pb-16">
         {/* Hero Section */}
         <BlogPostHeroSection post={displayPost} />
@@ -208,7 +182,7 @@ const BlogPostPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </PageLayout>
   );
 };
 

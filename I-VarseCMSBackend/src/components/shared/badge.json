@@ -4,6 +4,10 @@
     "displayName": "badge"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "content": {
+      "type": "string"
+    }
+  },
   "config": {}
 }
