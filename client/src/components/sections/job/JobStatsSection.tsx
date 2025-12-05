@@ -10,18 +10,18 @@ interface JobStatsSectionProps {
   isLoading?: boolean;
 }
 
-const JobStatsSection: React.FC<JobStatsSectionProps> = ({ 
+const JobStatsSection: React.FC<JobStatsSectionProps> = ({
   job,
-  className = '', 
+  className = '',
   pageContent,
-  isLoading = false 
+  isLoading = false
 }) => {
   // Get stats content from page content settings
   const statsContent = pageContent?.sections?.find(s => s.type === 'custom')?.settings;
-  
+
   // Use job's team details if available, otherwise use default stats
   const teamDetails = job?.teamDetails;
-  
+
   const stats = [
     {
       name: 'Team Members',
@@ -59,8 +59,8 @@ const JobStatsSection: React.FC<JobStatsSectionProps> = ({
 
   return (
     <section className={`py-16 bg-white dark:bg-gray-900 ${className}`}>
-      <div className="container mx-auto px-4 max-w-7xl">
-        <div className="max-w-7xl mx-auto">
+      <div className="container mx-auto px-4 max-w-8xl">
+        <div className="max-w-8xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-4">
               {statsContent?.jobContent?.sections?.stats || "Job Statistics"}

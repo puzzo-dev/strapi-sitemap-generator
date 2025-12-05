@@ -40,7 +40,7 @@ const CoreValuesSection: React.FC<CoreValuesSectionProps> = ({
     if (isPageLoading) {
         return (
             <section className="py-24 bg-white dark:bg-[#132f4c]">
-                <div className="container-custom max-w-7xl">
+                <div className="container-custom max-w-8xl">
                     <div className="text-center mb-16">
                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                             {settings?.loadingText || "Loading..."}
@@ -76,7 +76,7 @@ const CoreValuesSection: React.FC<CoreValuesSectionProps> = ({
             variants={staggerChildren(0.1)}
             className="py-24 bg-white dark:bg-[#132f4c]"
         >
-            <div className="container-custom max-w-7xl">
+            <div className="container-custom max-w-8xl">
                 <motion.div
                     variants={fadeInUp()}
                     className="text-center mb-16"

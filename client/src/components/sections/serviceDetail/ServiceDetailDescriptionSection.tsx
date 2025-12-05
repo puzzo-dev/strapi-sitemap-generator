@@ -18,7 +18,7 @@ interface ServiceDetailDescriptionSectionProps {
 const ServiceDetailDescriptionSection: React.FC<ServiceDetailDescriptionSectionProps> = ({ service }) => {
   return (
     <section className="content-section bg-white dark:bg-[#132f4c]">
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8">
             <div className="prose prose-lg dark:prose-invert max-w-none prose-p:text-gray-600 dark:prose-p:text-gray-300">

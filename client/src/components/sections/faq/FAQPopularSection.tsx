@@ -17,7 +17,7 @@ const FAQPopularSection: React.FC<FAQPopularSectionProps> = ({
 
     return (
         <section className={`py-16 bg-white dark:bg-gray-900 ${className}`}>
-            <div className="container-custom max-w-7xl">
+            <div className="container-custom max-w-8xl">
                 <div className="text-center mb-12">
                     <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                         Popular Questions

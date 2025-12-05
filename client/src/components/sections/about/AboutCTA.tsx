@@ -22,7 +22,7 @@ const AboutCTA: React.FC<AboutCTAProps> = ({
     if (isPageLoading) {
         return (
             <section className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]">
-                <div className="container-custom max-w-7xl">
+                <div className="container-custom max-w-8xl">
                     <div className="text-center max-w-3xl mx-auto">
                         <Skeleton className="h-8 w-32 mx-auto mb-4" />
                         <Skeleton className="h-10 w-3/4 mx-auto mb-6" />
@@ -43,7 +43,7 @@ const AboutCTA: React.FC<AboutCTAProps> = ({
             viewport={{ once: true, amount: 0.3 }}
             className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]"
         >
-            <div className="container-custom max-w-7xl">
+            <div className="container-custom max-w-8xl">
                 <div className="text-center max-w-3xl mx-auto">
                     {/* Badge */}
                     <motion.div
@@ -91,7 +91,7 @@ const AboutCTA: React.FC<AboutCTAProps> = ({
                                 {settings?.primaryButton?.children || getUIText(undefined, 'getStarted', 'buttons')}
                             </GradientButton>
                         )}
-                        
+
                         {settings?.secondaryButton && (
                             <GradientButton href={settings.secondaryButton.href} variant="outline" size="lg">
                                 {settings.secondaryButton.children || settings.secondaryButton.title || getUIText(undefined, 'learnMore', 'buttons')}

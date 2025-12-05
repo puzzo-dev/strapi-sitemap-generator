@@ -26,10 +26,10 @@ const ClientsSection: React.FC<ClientsSectionProps> = ({ homePageContent, client
 
   // Safely extract client logos from the section
   const logosData = clientsSection?.settings?.logos || [];
-  const logos = Array.isArray(logosData) 
-    ? logosData.filter((logo): logo is ClientLogo => 
-        logo && typeof logo === 'object' && 'name' in logo && 'image' in logo
-      )
+  const logos = Array.isArray(logosData)
+    ? logosData.filter((logo): logo is ClientLogo =>
+      logo && typeof logo === 'object' && 'name' in logo && 'image' in logo
+    )
     : [];
 
   return (
@@ -38,7 +38,7 @@ const ClientsSection: React.FC<ClientsSectionProps> = ({ homePageContent, client
       <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 pointer-events-none overflow-hidden">
         <Sparkles className="absolute left-10 top-10 h-32 w-32 text-blue-400 dark:text-blue-600 opacity-30 animate-pulse-light" />
         <CircuitBoard className="absolute right-10 bottom-10 h-40 w-40 text-indigo-400 dark:text-indigo-600 opacity-20 animate-float" style={{ animationDelay: '1.5s' }} />
-        
+
         {/* Subtle grid pattern */}
         <div className="absolute inset-0 grid grid-cols-8 grid-rows-8">
           {[...Array(16)].map((_, i) => (
@@ -55,7 +55,7 @@ const ClientsSection: React.FC<ClientsSectionProps> = ({ homePageContent, client
         </div>
       </div>
 
-      <div className="container-custom relative z-10 max-w-7xl">
+      <div className="container-custom relative z-10 max-w-8xl">
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">

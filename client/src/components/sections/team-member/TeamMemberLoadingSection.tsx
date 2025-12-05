@@ -14,7 +14,7 @@ const TeamMemberLoadingSection: React.FC = () => {
                     <div className="absolute left-0 top-1/3 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/30 animate-pulse-slower" />
                 </div>
 
-                <div className="container-custom relative z-10">
+                <div className="container-custom relative z-10 max-w-8xl">
                     <Link href="/team">
                         <a className="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 mb-6 transition-colors">
                             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -49,7 +49,7 @@ const TeamMemberLoadingSection: React.FC = () => {
 
             {/* Content Loading Section */}
             <section className="content-section bg-white dark:bg-[#132f4c]">
-                <div className="container-custom max-w-7xl">
+                <div className="container-custom max-w-8xl">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         <div className="lg:col-span-8">
                             <Card className="p-6 md:p-8 mb-8 animate-pulse">

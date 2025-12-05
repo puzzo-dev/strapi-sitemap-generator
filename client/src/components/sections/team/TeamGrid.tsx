@@ -47,8 +47,8 @@ const TeamGrid: React.FC<TeamGridProps> = ({
             variants={staggerChildren()}
             className="py-16 md:py-24 bg-white dark:bg-[#132f4c] overflow-hidden"
         >
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-hidden max-w-7xl">
-                <div className="max-w-7xl mx-auto text-center mb-16 px-4 sm:px-8">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-hidden max-w-8xl">
+                <div className="max-w-8xl mx-auto text-center mb-16 px-4 sm:px-8">
                     {/* Section Label */}
                     {settings?.label && (
                         <motion.div
@@ -91,7 +91,7 @@ const TeamGrid: React.FC<TeamGridProps> = ({
                 {/* Team Grid - Enhanced responsive layout */}
                 <motion.div
                     variants={staggerChildren(0.1)}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-16 max-w-7xl mx-auto px-2 sm:px-4 overflow-hidden"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-16 max-w-8xl mx-auto p-2 sm:p-4 overflow-hidden"
                 >
                     {members.map((member, index) => (
                         <motion.div
@@ -133,7 +133,7 @@ const TeamGrid: React.FC<TeamGridProps> = ({
                                             <p className="text-gray-600 dark:text-gray-300 text-xs leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
                                                 {member.bio}
                                             </p>
-                                            
+
                                             {/* Skills/Expertise Tags */}
                                             <div className="flex flex-wrap gap-1 mt-3">
                                                 {member.role && (
@@ -154,7 +154,7 @@ const TeamGrid: React.FC<TeamGridProps> = ({
                                             View Profile
                                             <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-200" />
                                         </div>
-                                        
+
                                         {/* Social Links Preview */}
                                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                             {member.socialLinks?.slice(0, 2).map((social) => (
@@ -171,7 +171,7 @@ const TeamGrid: React.FC<TeamGridProps> = ({
                 </motion.div>
 
                 {/* CTA Section */}
-                {settings?.cta && (
+                {/* {settings?.cta && (
                     <motion.div
                         variants={fadeInUp()}
                         className="text-center"
@@ -180,7 +180,7 @@ const TeamGrid: React.FC<TeamGridProps> = ({
                             {settings.cta.text}
                         </GradientButton>
                     </motion.div>
-                )}
+                )} */}
             </div>
         </motion.section>
     );

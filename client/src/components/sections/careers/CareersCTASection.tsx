@@ -50,7 +50,7 @@ const CareersCTASection: React.FC<CareersCTASectionProps> = ({
     return (
         <>
             <section className={`content-section ${backgroundColor || 'bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900'} ${textColor || 'text-white'}`}>
-                <div className="container-custom max-w-7xl">
+                <div className="container-custom max-w-8xl">
                     <div className="text-center max-w-4xl mx-auto">
                         {isLoading ? (
                             <div className="animate-pulse space-y-6">

@@ -18,7 +18,7 @@ const ProductsHeroSection: React.FC<ProductsHeroSectionProps> = ({
   isLoading = false
 }) => {
   const { t } = useTranslation();
-  
+
   // Get hero section from page content
   const heroSection = pageContent?.sections?.find(s => s.type === 'hero');
 
@@ -97,7 +97,7 @@ const ProductsHeroSection: React.FC<ProductsHeroSectionProps> = ({
         </div>
       </div>
 
-      <div className="container-custom relative z-10 max-w-7xl">
+      <div className="container-custom relative z-10 max-w-8xl">
         <motion.div
           variants={staggerChildren(0.1)}
           className="text-center max-w-4xl mx-auto"

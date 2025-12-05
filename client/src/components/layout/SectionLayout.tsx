@@ -123,7 +123,7 @@ const SectionLayout: React.FC<SectionLayoutProps> = ({
     {
       'max-w-4xl': size === 'sm',
       'max-w-6xl': size === 'md',
-      'max-w-7xl': size === 'lg',
+      'max-w-8xl': size === 'lg',
       'max-w-full': size === 'xl',
     },
 

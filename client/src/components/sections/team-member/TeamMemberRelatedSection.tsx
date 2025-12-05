@@ -14,13 +14,13 @@ interface TeamMemberRelatedSectionProps {
     pageContent?: PageContent;
 }
 
-const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({ 
-    isLoading = false, 
-    pageContent 
+const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({
+    isLoading = false,
+    pageContent
 }) => {
     // Get related section from page content
     const relatedSection = pageContent?.sections?.find(s => s.type === 'custom' && s.title === 'Related Team Members');
-    
+
     // Get team members from page content settings
     const teamMembers = useMemo(() => {
         return pageContent?.sections?.[0]?.settings?.teamMembers || [];
@@ -31,17 +31,17 @@ const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({
         // Get related members from the related section settings
         const relatedTeamMembers = relatedSection?.settings?.teamMembers || [];
         const maxDisplay = relatedSection?.settings?.maxDisplay || 3;
-        
+
         // If no specific related members defined, try team members from page content
         if (relatedTeamMembers.length === 0 && teamMembers.length > 0) {
             return teamMembers.slice(0, maxDisplay);
         }
-        
+
         // Final fallback to default team members if no data available
         if (relatedTeamMembers.length === 0 && teamMembers.length === 0) {
             return defaultTeamMembers.slice(0, maxDisplay);
         }
-        
+
         return relatedTeamMembers.slice(0, maxDisplay);
     }, [relatedSection, teamMembers]);
 
@@ -49,7 +49,7 @@ const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({
     if (isLoading) {
         return (
             <section className="py-16 bg-gray-50 dark:bg-[#0a1929]">
-                <div className="container mx-auto px-4 max-w-7xl">
+                <div className="container mx-auto px-4 max-w-8xl">
                     <div className="animate-pulse space-y-8">
                         <div className="text-center space-y-4">
                             <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mx-auto"></div>
@@ -73,7 +73,7 @@ const TeamMemberRelatedSection: React.FC<TeamMemberRelatedSectionProps> = ({
             viewport={{ once: true, amount: 0.1 }}
             className="py-16 bg-gray-50 dark:bg-[#0a1929]"
         >
-            <div className="container mx-auto px-4 max-w-7xl">
+            <div className="container mx-auto px-4 max-w-8xl">
                 <motion.div
                     variants={fadeInUp(20, 0.6)}
                     className="text-center mb-12"

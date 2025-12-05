@@ -8,8 +8,8 @@ interface ServiceDetailErrorSectionProps {
   pageContent?: PageContent;
 }
 
-const ServiceDetailErrorSection: React.FC<ServiceDetailErrorSectionProps> = ({ 
-  pageContent 
+const ServiceDetailErrorSection: React.FC<ServiceDetailErrorSectionProps> = ({
+  pageContent
 }) => {
   // Get error content from page content settings
   const errorSection = pageContent?.sections?.find(s => s.type === 'hero');
@@ -26,7 +26,7 @@ const ServiceDetailErrorSection: React.FC<ServiceDetailErrorSectionProps> = ({
 
   return (
     <div className="content-section bg-white dark:bg-[#132f4c]">
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <Card className="p-8 text-center">
           <CardContent>
             <h1 className="text-2xl font-bold text-blue-900 dark:text-blue-200 mb-4">

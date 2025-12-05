@@ -23,7 +23,7 @@ const IndustriesGridSection: React.FC<IndustriesGridSectionProps> = ({
   if (isLoading) {
     return (
       <section className="py-16">
-        <div className="container mx-auto px-4 max-w-7xl">
+        <div className="container mx-auto px-4 max-w-8xl">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="h-64 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg"></div>
@@ -43,7 +43,7 @@ const IndustriesGridSection: React.FC<IndustriesGridSectionProps> = ({
       variants={staggerChildren()}
       className="py-16 md:py-24 bg-white dark:bg-[#132f4c]"
     >
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 max-w-8xl">
         <div className="max-w-4xl mx-auto text-center mb-16">
           {/* Title */}
           <motion.h2

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Benefit, PageContent } from '@/lib/types/core';
-import { 
+import {
     fadeInUp,
     staggerChildren
 } from '@/lib/animations';
@@ -23,11 +23,11 @@ const JobBenefitsSection: React.FC<JobBenefitsSectionProps> = ({
 
     // Get benefits content from page content settings
     const benefitsContent = pageContent?.sections?.find(s => s.type === 'features')?.settings;
-    
+
     // Use provided benefits or fallback to default benefits from page content
     const displayBenefits = benefits.length > 0 ? benefits : (benefitsContent?.items || []);
 
-  return (
+    return (
         <motion.section
             ref={benefitsRef}
             initial="initial"
@@ -35,13 +35,13 @@ const JobBenefitsSection: React.FC<JobBenefitsSectionProps> = ({
             variants={staggerChildren()}
             className="py-16 md:py-24 bg-white dark:bg-[#132f4c]"
         >
-      <div className="container mx-auto px-4 max-w-7xl">
+            <div className="container mx-auto px-4 max-w-8xl">
                 <div className="max-w-4xl mx-auto text-center mb-16">
                     <motion.h2
                         variants={fadeInUp()}
                         className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 dark:text-blue-200 mb-6"
                     >
-              {benefitsContent?.title || "Benefits & Perks"}
+                        {benefitsContent?.title || "Benefits & Perks"}
                     </motion.h2>
                     <motion.p
                         variants={fadeInUp(0.2)}
@@ -49,9 +49,9 @@ const JobBenefitsSection: React.FC<JobBenefitsSectionProps> = ({
                     >
                         {benefitsContent?.subtitle}
                     </motion.p>
-          </div>
+                </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {displayBenefits.map((benefit, index) => (
                         <motion.div
                             key={benefit.id || index}
@@ -61,13 +61,13 @@ const JobBenefitsSection: React.FC<JobBenefitsSectionProps> = ({
                                 <CardContent className="p-6 text-center">
                                     <div className="text-4xl mb-4">
                                         {benefit.icon}
-                  </div>
+                                    </div>
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                    {benefit.title}
-                  </h3>
+                                        {benefit.title}
+                                    </h3>
                                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                    {benefit.description}
-                  </p>
+                                        {benefit.description}
+                                    </p>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -88,11 +88,11 @@ const JobBenefitsSection: React.FC<JobBenefitsSectionProps> = ({
                         <p className="text-gray-600 dark:text-gray-300">
                             Join our innovative team and be part of creating cutting-edge solutions.
                         </p>
-          </div>
+                    </div>
                 </motion.div>
-        </div>
+            </div>
         </motion.section>
-  );
+    );
 };
 
 export default JobBenefitsSection;

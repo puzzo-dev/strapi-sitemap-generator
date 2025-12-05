@@ -25,8 +25,8 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
         <section className="bg-gradient-to-b from-white to-gray-50 dark:from-[#0a1929] dark:to-[#0d1f33] py-24 relative overflow-hidden">
             <BackgroundDecoration variant="faq" />
 
-            <div className="container-custom relative z-10 max-w-7xl">
-                <div 
+            <div className="container-custom relative z-10 max-w-8xl">
+                <div
                     className="text-center mb-16 space-y-4"
                     {...fadeInUp()}
                 >
@@ -46,9 +46,9 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
                         // Loading skeleton for FAQs
                         <div className="space-y-4">
                             {Array(5).fill(0).map((_, index) => (
-                                <div 
-                                    key={index} 
-                                    className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-gray-700 animate-pulse" 
+                                <div
+                                    key={index}
+                                    className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-gray-700 animate-pulse"
                                     aria-hidden="true"
                                 >
                                     <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-3/4"></div>
@@ -59,9 +59,9 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
                             ))}
                         </div>
                     ) : (
-                        <Accordion 
-                            type="single" 
-                            collapsible 
+                        <Accordion
+                            type="single"
+                            collapsible
                             className="space-y-4"
                             {...staggerChildren}
                         >

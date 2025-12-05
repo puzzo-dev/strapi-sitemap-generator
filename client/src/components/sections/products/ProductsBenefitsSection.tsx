@@ -13,23 +13,23 @@ interface ProductsBenefitsSectionProps {
   isLoading?: boolean;
 }
 
-const ProductsBenefitsSection: React.FC<ProductsBenefitsSectionProps> = ({ 
-  pageContent, 
-  isLoading = false 
+const ProductsBenefitsSection: React.FC<ProductsBenefitsSectionProps> = ({
+  pageContent,
+  isLoading = false
 }) => {
   const { t } = useTranslation();
-  
+
   // Get features section from page content
   const featuresSection = pageContent?.sections?.find(s => s.type === 'features');
 
   return (
-    <motion.section 
+    <motion.section
       initial="initial"
       whileInView="animate"
       viewport={{ once: true, amount: 0.2 }}
       className="content-section bg-white dark:bg-[#132f4c]"
     >
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <motion.div variants={fadeInUp()} className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
             {featuresSection?.badge || getTranslation(t, 'ui.whyChooseUs', uiLabels.whyChooseUs)}
@@ -39,18 +39,18 @@ const ProductsBenefitsSection: React.FC<ProductsBenefitsSectionProps> = ({
             {featuresSection?.subtitle || t('products.benefitsSubtitle') || uiLabels.products.benefitsSubtitle}
           </p>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           variants={staggerChildren(0.1)}
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
-          <motion.div 
+          <motion.div
             variants={scaleUp(0.95, 0.6, 0)}
             whileHover={{ y: -8, transition: { type: "spring", stiffness: 300 } }}
           >
             <Card className="p-8">
               <CardContent>
-                <motion.div 
+                <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", stiffness: 300 }}
@@ -65,14 +65,14 @@ const ProductsBenefitsSection: React.FC<ProductsBenefitsSectionProps> = ({
               </CardContent>
             </Card>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             variants={scaleUp(0.95, 0.6, 0.1)}
             whileHover={{ y: -8, transition: { type: "spring", stiffness: 300 } }}
           >
             <Card className="p-8">
               <CardContent>
-                <motion.div 
+                <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
@@ -87,14 +87,14 @@ const ProductsBenefitsSection: React.FC<ProductsBenefitsSectionProps> = ({
               </CardContent>
             </Card>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             variants={scaleUp(0.95, 0.6, 0.2)}
             whileHover={{ y: -8, transition: { type: "spring", stiffness: 300 } }}
           >
             <Card className="p-8">
               <CardContent>
-                <motion.div 
+                <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", stiffness: 300, delay: 0.2 }}

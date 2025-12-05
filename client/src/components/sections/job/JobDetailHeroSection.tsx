@@ -28,7 +28,7 @@ const JobDetailHeroSection: React.FC<JobDetailHeroSectionProps> = ({
   if (isLoading) {
     return (
       <div className="bg-gradient-to-br from-blue-50 via-white to-blue-50/30 dark:from-gray-900 dark:via-[#0a192f] dark:to-[#132f4c] border-b border-blue-100/50 dark:border-blue-900/30">
-        <div className="container mx-auto px-4 py-16 md:py-24 max-w-7xl">
+        <div className="container mx-auto px-4 py-16 md:py-24 max-w-8xl">
           <div className="animate-pulse space-y-6">
             <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
             <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
@@ -51,7 +51,7 @@ const JobDetailHeroSection: React.FC<JobDetailHeroSectionProps> = ({
         <div className="hidden md:block absolute bottom-20 left-1/4 w-20 h-20 border-2 border-blue-200/50 dark:border-blue-800/30 rounded-full shadow-lg"></div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 md:py-24 max-w-7xl relative z-10">
+      <div className="container mx-auto px-4 py-16 md:py-24 max-w-8xl relative z-10">
         <div className="max-w-6xl w-full mx-auto">
           <Link href="/careers">
             <div className="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 mb-10 group/back transition-all duration-300">

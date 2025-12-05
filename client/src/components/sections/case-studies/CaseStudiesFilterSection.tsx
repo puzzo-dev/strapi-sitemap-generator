@@ -20,7 +20,7 @@ const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
   const filters = useMemo(() => {
     const contentSection = pageContent?.sections?.find((s: any) => s.type === 'custom' && s.title?.includes('About'));
     const industryExpertise = contentSection?.settings?.industryExpertise || [];
-    
+
     // Create filter options from industry expertise
     const filterOptions = industryExpertise.map((industry: string) => {
       const key = industry.toLowerCase().replace(/[^a-z]/g, '');
@@ -29,7 +29,7 @@ const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
         label: industry
       };
     });
-    
+
     // Add "All Industries" option
     return [
       { key: 'all', label: 'All Industries' },
@@ -44,7 +44,7 @@ const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
   if (isLoading) {
     return (
       <section className="py-12 bg-gray-50 dark:bg-gray-800">
-        <div className="container mx-auto px-4 max-w-7xl">
+        <div className="container mx-auto px-4 max-w-8xl">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-6"></div>
             <div className="flex gap-4">
@@ -60,7 +60,7 @@ const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
 
   return (
     <section className="py-12 bg-gray-50 dark:bg-gray-800">
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 max-w-8xl">
         <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
           {t('caseStudies.filter.title', 'Filter by Industry')}
         </h3>
@@ -69,11 +69,10 @@ const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
             <button
               key={filter.key}
               onClick={() => handleFilterChange(filter.key)}
-              className={`px-6 py-3 rounded-full font-medium transition-colors ${
-                activeFilter === filter.key
+              className={`px-6 py-3 rounded-full font-medium transition-colors ${activeFilter === filter.key
                   ? 'bg-blue-600 text-white'
                   : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600'
-              }`}
+                }`}
             >
               {filter.label}
             </button>

@@ -25,12 +25,12 @@ interface ProductsTechnologiesSectionProps {
   isLoading?: boolean;
 }
 
-const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = ({ 
-  pageContent, 
-  isLoading = false 
+const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = ({
+  pageContent,
+  isLoading = false
 }) => {
   const { t } = useTranslation();
-  
+
   // Get custom section from page content
   const customSection = pageContent?.sections?.find(s => s.type === 'custom');
 
@@ -39,7 +39,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
       variants={fadeInUp(30, 0.7, 0.3)}
       className="content-section pb-20 pt-1 bg-gray-50 dark:bg-[#0a1929]"
     >
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <motion.div
           variants={fadeInUp(20, 0.6)}
           className="container-custom text-center mb-5"
@@ -49,9 +49,9 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
           </div>
           <div className="text-center mb-16">
             <h2 className="text-2xl md:text-3xl font-bold text-blue-900 dark:text-blue-200 mb-2">{customSection?.title || t('products.technologiesTitle') || uiLabels.products.technologiesTitle}</h2>
-          <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               {customSection?.subtitle || t('products.technologiesSubtitle') || uiLabels.products.technologiesSubtitle}
-          </p>
+            </p>
           </div>
         </motion.div>
 

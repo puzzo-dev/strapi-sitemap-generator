@@ -12,10 +12,10 @@ interface ServiceDetailCTASectionProps {
   siteConfig?: any;
 }
 
-const ServiceDetailCTASection: React.FC<ServiceDetailCTASectionProps> = ({ 
-  service, 
+const ServiceDetailCTASection: React.FC<ServiceDetailCTASectionProps> = ({
+  service,
   ctaSection,
-  siteConfig 
+  siteConfig
 }) => {
   // Extract data from ctaSection with fallbacks
   const title = ctaSection?.title || `Ready to Get Started with ${service.title}?`;
@@ -31,7 +31,7 @@ const ServiceDetailCTASection: React.FC<ServiceDetailCTASectionProps> = ({
       viewport={{ once: true, amount: 0.1 }}
       className={`content-section ${backgroundColor}`}
     >
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <motion.div
           variants={fadeInUp()}
         >
@@ -45,8 +45,8 @@ const ServiceDetailCTASection: React.FC<ServiceDetailCTASectionProps> = ({
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 {primaryButton && (
-                  <GradientButton 
-                    href={primaryButton.href || "/contact"} 
+                  <GradientButton
+                    href={primaryButton.href || "/contact"}
                     variant={primaryButton.variant as any || "light"}
                     className="border border-white/20"
                   >
@@ -54,8 +54,8 @@ const ServiceDetailCTASection: React.FC<ServiceDetailCTASectionProps> = ({
                   </GradientButton>
                 )}
                 {secondaryButton && (
-                  <GradientButton 
-                    href={secondaryButton.href || "/contact"} 
+                  <GradientButton
+                    href={secondaryButton.href || "/contact"}
                     variant={secondaryButton.variant as any || "light"}
                     className="border border-white/20"
                   >
@@ -67,10 +67,10 @@ const ServiceDetailCTASection: React.FC<ServiceDetailCTASectionProps> = ({
                   <>
                     <GradientButton href="/contact" variant="light" className="border border-white/20">
                       Request a Consultation
-                </GradientButton>
+                    </GradientButton>
                     <GradientButton href="/contact" variant="light" className="border border-white/20">
                       Request Custom Quote
-                </GradientButton>
+                    </GradientButton>
                   </>
                 )}
               </div>

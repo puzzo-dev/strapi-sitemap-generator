@@ -11,9 +11,9 @@ interface JobDetailErrorSectionProps {
     pageContent?: PageContent;
 }
 
-const JobDetailErrorSection: React.FC<JobDetailErrorSectionProps> = ({ 
+const JobDetailErrorSection: React.FC<JobDetailErrorSectionProps> = ({
     error,
-    pageContent 
+    pageContent
 }) => {
     const { t } = useTranslation();
 
@@ -22,7 +22,7 @@ const JobDetailErrorSection: React.FC<JobDetailErrorSectionProps> = ({
 
     return (
         <div className="bg-slate-50 dark:bg-slate-900 min-h-screen py-12">
-            <div className="container mx-auto px-4 max-w-7xl">
+            <div className="container mx-auto px-4 max-w-8xl">
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="mb-8">
                         <AlertTriangle className="mx-auto h-16 w-16 text-red-500 mb-4" />

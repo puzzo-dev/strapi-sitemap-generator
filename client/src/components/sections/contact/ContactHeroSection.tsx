@@ -49,7 +49,7 @@ const ContactHeroSection: React.FC<ContactHeroSectionProps> = ({
             </div>
 
             {/* Content */}
-            <motion.div variants={fadeInUp()} className="container-custom relative z-10 max-w-7xl">
+            <motion.div variants={fadeInUp()} className="container-custom relative z-10 max-w-8xl">
                 <div className="text-center max-w-4xl mx-auto">
                     {isPageLoading ? (
                         <>

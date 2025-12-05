@@ -21,7 +21,7 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
   isLoading = false
 }) => {
   const { t } = useTranslation();
-  
+
   // Get products section from page content
   const productsSection = pageContent?.sections?.find(s => s.type === 'products');
 
@@ -55,7 +55,7 @@ const ProductsListSection: React.FC<ProductsListSectionProps> = ({
       viewport={{ once: true, amount: 0.1 }}
       className="content-section bg-gray-50 dark:bg-[#0a1929]"
     >
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <motion.div
           variants={fadeInUp(20, 0.6)}
           className="text-center mb-4"

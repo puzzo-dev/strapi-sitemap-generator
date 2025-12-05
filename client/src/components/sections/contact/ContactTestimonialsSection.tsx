@@ -24,7 +24,7 @@ const ContactTestimonialsSection: React.FC<ContactTestimonialsSectionProps> = ({
         <section className="bg-gray-50 dark:bg-gray-900 py-24 relative overflow-hidden">
             <BackgroundDecoration variant="testimonials" />
 
-            <div className="container-custom relative z-10 max-w-7xl">
+            <div className="container-custom relative z-10 max-w-8xl">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold mb-4 text-center text-blue-900 dark:text-blue-200">
                         What Our Clients Say

@@ -39,7 +39,7 @@ const ProductDetailHeroSection: React.FC<ProductDetailHeroSectionProps> = ({
           <div className="hidden md:block absolute bottom-20 left-1/4 w-20 h-20 border-2 border-blue-200/50 dark:border-blue-800/30 rounded-full"></div>
         </div>
 
-        <div className="container-custom relative z-10 max-w-7xl">
+        <div className="container-custom relative z-10 max-w-8xl">
           <div className="flex flex-col items-center text-center mb-12">
             <div className="animate-pulse space-y-8 w-full max-w-4xl">
               <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-40 mx-auto"></div>

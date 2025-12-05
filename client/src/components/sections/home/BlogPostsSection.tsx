@@ -32,7 +32,7 @@ const BackgroundDecoration = () => (
     <Sparkles className="absolute left-10 top-20 h-48 w-48 text-blue-400 dark:text-blue-600 opacity-30 animate-pulse-slower" />
     <Code className="absolute right-10 bottom-10 h-56 w-56 text-indigo-400 dark:text-indigo-600 opacity-20 animate-float" style={{ animationDelay: '1.5s' }} />
     <CircuitBoard className="absolute left-1/4 top-1/3 h-40 w-40 text-purple-400 dark:text-purple-600 opacity-25 animate-pulse-slower transform rotate-12" />
-    
+
     {/* Decorative grid */}
     <div className="absolute inset-0 grid grid-cols-6 grid-rows-6">
       {[...Array(12)].map((_, i) => (
@@ -77,7 +77,7 @@ const BlogPostsSection: React.FC<BlogPostsSectionProps> = ({ homePageContent, bl
     // If we have featured posts in section settings, use those
     if (settings && 'featured' in settings && Array.isArray(settings.featured)) {
       // Filter only BlogPost types from the featured array
-      const blogPostsOnly = settings.featured.filter((item): item is BlogPost => 
+      const blogPostsOnly = settings.featured.filter((item): item is BlogPost =>
         'slug' in item && 'blogCategories' in item && 'blogIntro' in item
       );
       return blogPostsOnly.slice(0, postsToShow);
@@ -92,7 +92,7 @@ const BlogPostsSection: React.FC<BlogPostsSectionProps> = ({ homePageContent, bl
     <section className="py-24 bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] relative overflow-hidden">
       <BackgroundDecoration />
 
-      <div className="container-custom relative z-10 max-w-7xl">
+      <div className="container-custom relative z-10 max-w-8xl">
         {/* Section Header */}
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-3">

@@ -18,7 +18,7 @@ const ProductDetailDescriptionSection: React.FC<ProductDetailDescriptionSectionP
   pageContent
 }) => {
   const { t } = useTranslation();
-  
+
   // Get description section content from pageContent
   const descriptionSection = pageContent?.sections?.find(s => s.type === 'custom');
   const descriptionContent = descriptionSection?.settings?.productContent?.description;
@@ -31,7 +31,7 @@ const ProductDetailDescriptionSection: React.FC<ProductDetailDescriptionSectionP
   if (isLoading) {
     return (
       <section className="content-section bg-white dark:bg-[#132f4c]">
-        <div className="container-custom max-w-7xl">
+        <div className="container-custom max-w-8xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8">
               <div className="animate-pulse space-y-4">
@@ -62,7 +62,7 @@ const ProductDetailDescriptionSection: React.FC<ProductDetailDescriptionSectionP
 
   return (
     <section className="content-section bg-white dark:bg-[#132f4c]">
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8">
             {/* Justified Description */}

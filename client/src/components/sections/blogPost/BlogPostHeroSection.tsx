@@ -36,7 +36,7 @@ const BlogPostHeroSection: React.FC<BlogPostHeroSectionProps> = ({ post }) => {
         </div>
       )}
 
-      <div className="container mx-auto px-4 relative z-10 max-w-7xl">
+      <div className="container mx-auto px-4 relative z-10 max-w-8xl">
         <Link href="/blog">
           <div className="inline-flex items-center text-gray-600 dark:text-white/90 hover:text-gray-900 dark:hover:text-white mb-10 group/back transition-colors">
             <FiArrowLeft className="mr-2 group-hover/back:-translate-x-1 transition-transform" />

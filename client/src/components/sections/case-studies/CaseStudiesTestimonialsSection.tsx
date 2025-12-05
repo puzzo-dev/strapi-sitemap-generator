@@ -22,7 +22,7 @@ const CaseStudiesTestimonialsSection: React.FC<CaseStudiesTestimonialsSectionPro
   if (isLoading) {
     return (
       <section className="py-16 bg-blue-50 dark:bg-blue-900/20">
-        <div className="container mx-auto px-4 max-w-7xl">
+        <div className="container mx-auto px-4 max-w-8xl">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-8"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -40,7 +40,7 @@ const CaseStudiesTestimonialsSection: React.FC<CaseStudiesTestimonialsSectionPro
 
   return (
     <section className="py-16 bg-blue-50 dark:bg-blue-900/20">
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 max-w-8xl">
         <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-10 text-center">
           {testimonialsSection?.title || t('caseStudies.testimonials.title', 'What Our Clients Say')}
         </h2>

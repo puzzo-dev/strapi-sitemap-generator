@@ -532,7 +532,7 @@ const OriginalHero: React.FC<OriginalHeroProps> = ({
                 </svg>
             </div>
 
-            <div className="container-custom relative z-20 mx-auto h-full">
+            <div className="container-custom relative z-20 max-w-8xl mx-auto h-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center relative">
                     {/* Mobile Header (Shows above the slider on mobile) */}
                     <div className="block lg:hidden w-full mb-4 pt-10">

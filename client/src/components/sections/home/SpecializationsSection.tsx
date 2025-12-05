@@ -66,7 +66,7 @@ const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePag
                 <Sparkles className="absolute right-1/4 top-1/4 w-20 h-20 text-cyan-400 dark:text-cyan-600 animate-pulse-light" />
             </div>
 
-            <div className="container-custom relative z-10 max-w-7xl">
+            <div className="container-custom relative z-10 max-w-8xl">
                 {/* Section Header */}
                 <div className="text-center mb-16">
                     <motion.div

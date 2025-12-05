@@ -19,7 +19,7 @@ const CaseStudiesGridSection: React.FC<CaseStudiesGridSectionProps> = ({
     return (
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-8xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
               {[...Array(3)].map((_, i) => (
                 <div key={i} className="bg-white dark:bg-blue-900/20 rounded-lg shadow-lg overflow-hidden">
@@ -70,7 +70,7 @@ const CaseStudiesGridSection: React.FC<CaseStudiesGridSectionProps> = ({
   return (
     <section className="py-16 md:py-24 bg-white dark:bg-[#0a192f]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-8xl mx-auto">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 dark:text-blue-200 mb-12 md:mb-16 text-center">
             {pageContent?.sections?.find((s: any) => s.type === 'case-studies')?.title || 'Featured Case Studies'}
           </h2>

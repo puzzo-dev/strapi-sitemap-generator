@@ -32,7 +32,7 @@ const TeamHero: React.FC<TeamHeroProps> = ({
             className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40 hero-section"
         >
             {/* Background decoration */}
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-8xl">
                 <motion.div
                     variants={staggerChildren(0.2)}
                     className="text-center max-w-4xl mx-auto"

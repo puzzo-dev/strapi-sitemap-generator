@@ -19,8 +19,8 @@ const JobDetailMainContent: React.FC<JobDetailMainContentProps> = ({
   pageContent,
 }) => {
   return (
-    <div className="container mx-auto px-2 py-12 max-w-7xl">
-      <div className="max-w-7xl mx-auto">
+    <div className="container mx-auto px-2 py-12 max-w-8xl">
+      <div className="max-w-8xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main content */}
           <JobDetailContentSection job={job} isLoading={isLoading} pageContent={pageContent} />

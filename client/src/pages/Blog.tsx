@@ -105,7 +105,7 @@ const BlogPage: React.FC = () => {
                 />
 
                 {/* Main Content */}
-                <div className="container-custom mx-auto py-3 md:py-12 flex-grow md:px-9">
+                <div className="container-custom max-w-8xl mx-auto py-3 md:py-12 flex-grow md:px-9">
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="md:w-4/5">
                             {/* Search and Filter */}

@@ -3,7 +3,7 @@ import React from 'react';
 const FAQContactSection: React.FC = () => {
     return (
         <section className="py-16 bg-gray-50 dark:bg-gray-900/30">
-            <div className="container-custom max-w-7xl">
+            <div className="container-custom max-w-8xl">
                 <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl font-bold mb-4 text-blue-900 dark:text-blue-200">
                         Still have questions?

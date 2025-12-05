@@ -13,10 +13,10 @@ interface ServiceDetailOtherServicesSectionProps {
 
 const ServiceDetailOtherServicesSection: React.FC<ServiceDetailOtherServicesSectionProps> = ({ otherServices }) => {
   const { t } = useTranslation();
-  
+
   return (
     <section className="content-section bg-gray-50 dark:bg-[#0a1929]">
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
             Other Services

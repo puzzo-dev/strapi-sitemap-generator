@@ -416,7 +416,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
                 </motion.div>
             </div>
 
-            <div className="relative z-20 mx-auto h-full px-4 sm:px-6 lg:px-8 max-w-full overflow-hidden w-full">
+            <div className="relative z-20 mx-auto h-full px-4 sm:px-6 lg:px-8 max-w-8xl overflow-hidden">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center relative w-full max-w-full overflow-hidden">
                     {/* Mobile Header (Shows above the slider on mobile) */}
                     <div className="block lg:hidden w-full mb-4 pt-5">

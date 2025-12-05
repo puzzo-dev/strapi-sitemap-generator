@@ -130,13 +130,13 @@ export default {
           "50%": { transform: "translateY(-10px)" },
         },
         'ultra-sharp-fade': {
-          '0%': { 
-            opacity: '0', 
+          '0%': {
+            opacity: '0',
             transform: 'translateY(0.5rem) scale(0.98)',
             filter: 'blur(0.5px)'
           },
-          '100%': { 
-            opacity: '1', 
+          '100%': {
+            opacity: '1',
             transform: 'translateY(0) scale(1)',
             filter: 'blur(0px)'
           },
@@ -146,11 +146,11 @@ export default {
           '100%': { transform: 'scale(1)', filter: 'blur(0px)' },
         },
         'sharp-glow': {
-          '0%, 100%': { 
+          '0%, 100%': {
             boxShadow: '0 0 0.5rem rgba(59, 130, 246, 0.1)',
             filter: 'brightness(1)'
           },
-          '50%': { 
+          '50%': {
             boxShadow: '0 0 1.5rem rgba(59, 130, 246, 0.3)',
             filter: 'brightness(1.05)'
           },
@@ -181,6 +181,9 @@ export default {
         "crisp-scale": "crisp-scale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
         "sharp-glow": "sharp-glow 2s ease-in-out infinite",
         "scan-line": "scan-line 6s linear infinite",
+      },
+      maxWidth: {
+        '8xl': '96rem', // Adjust this value to your desired width
       },
     },
   },

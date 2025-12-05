@@ -56,7 +56,7 @@ const BlogPostDummySection: React.FC<BlogPostDummySectionProps> = ({
           </div>
         )}
 
-        <div className="container mx-auto px-4 relative z-10 max-w-7xl">
+        <div className="container mx-auto px-4 relative z-10 max-w-8xl">
           <div className="inline-flex items-center text-white/90 hover:text-white mb-10 group/back transition-colors">
             <Link href="/blog">
               <div className="flex items-center">
@@ -105,7 +105,7 @@ const BlogPostDummySection: React.FC<BlogPostDummySectionProps> = ({
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
+      <div className="container mx-auto px-4 py-12 max-w-8xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">

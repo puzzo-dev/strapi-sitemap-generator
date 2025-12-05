@@ -7,7 +7,7 @@ const JobDetailLoadingSection: React.FC = () => {
         <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
             {/* Hero Section Loading */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 py-16 md:py-24">
-                <div className="container mx-auto px-4 max-w-7xl">
+                <div className="container mx-auto px-4 max-w-8xl">
                     <div className="max-w-4xl mx-auto text-center">
                         <Skeleton className="h-12 w-3/4 mx-auto mb-6" />
                         <Skeleton className="h-6 w-full mx-auto mb-2" />
@@ -22,7 +22,7 @@ const JobDetailLoadingSection: React.FC = () => {
 
             {/* Main Content Loading */}
             <div className="py-16">
-                <div className="container mx-auto px-4 max-w-7xl">
+                <div className="container mx-auto px-4 max-w-8xl">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         {/* Main Content */}
                         <div className="lg:col-span-8">
@@ -36,8 +36,8 @@ const JobDetailLoadingSection: React.FC = () => {
                                             <Skeleton className="h-4 w-3/4" />
                                         </CardContent>
                                     </Card>
-                                        ))}
-                                    </div>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Sidebar */}

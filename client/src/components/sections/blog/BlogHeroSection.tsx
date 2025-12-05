@@ -121,10 +121,10 @@ const BlogHeroSection: React.FC<BlogHeroSectionProps> = ({
             </div>
 
             {/* Content */}
-            <div className="container-custom mx-auto px-4 relative z-10 max-w-7xl">
+            <div className="container-custom mx-auto px-4 relative z-10 max-w-8xl">
                 <motion.div
                     variants={staggerChildren(0.1)}
-                    className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8"
+                    className="max-w-8xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8"
                 >
                     <motion.div
                         variants={fadeInUp(20, 0.7)}

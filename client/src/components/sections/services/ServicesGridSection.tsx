@@ -97,7 +97,7 @@ const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ services, isL
 
     return (
         <section id="services" className="py-24 bg-gradient-to-b from-white via-blue-50/20 to-white dark:from-[#0a192f] dark:via-blue-950/30 dark:to-[#0a192f]">
-            <div className="container-custom max-w-7xl">
+            <div className="container-custom max-w-8xl">
                 <div className="text-center mb-16">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

@@ -14,7 +14,7 @@ const BlogPostErrorSection: React.FC<BlogPostErrorSectionProps> = ({ slug }) => 
 
   return (
     <div className="bg-slate-50 dark:bg-slate-900 min-h-screen py-12">
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 max-w-8xl">
         <div className="max-w-4xl mx-auto">
           <Alert variant="destructive" className="mb-8">
             <AlertDescription>

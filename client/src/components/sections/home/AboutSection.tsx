@@ -28,7 +28,7 @@ const useCountUp = (end: number, duration: number = 2000, shouldStart: boolean =
 
     useEffect(() => {
         if (!shouldStart) return;
-        
+
         let startTime: number;
         let animationFrame: number;
 
@@ -115,7 +115,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                 </div>
             </div>
 
-            <div className="container-custom relative z-10 max-w-7xl">
+            <div className="container-custom relative z-10 max-w-8xl">
                 <motion.div
                     initial="initial"
                     animate={isVisible ? "animate" : "initial"}
@@ -151,8 +151,8 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
 
                             {/* CTA Link */}
                             <div>
-                                <a 
-                                    href="/about" 
+                                <a
+                                    href="/about"
                                     className="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-300 group"
                                 >
                                     {getTranslation(t, 'ui.learnMoreAboutUs', uiLabels.learnMoreAboutUs)}
@@ -180,7 +180,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                                             alt={`Video: ${video?.title}`}
                                             className="absolute inset-0 w-full h-full object-cover opacity-90"
                                         />
-                                        <Button 
+                                        <Button
                                             size="lg"
                                             variant="ghost"
                                             className="z-20 w-20 h-20 rounded-full bg-white/90 shadow-lg flex items-center justify-center cursor-pointer hover:bg-white transition-all duration-300 hover:scale-110 p-0"

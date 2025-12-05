@@ -34,7 +34,7 @@ const TeamMemberCTASection: React.FC<TeamMemberCTASectionProps> = ({
     if (isLoading || !currentMember) {
         return (
             <section className="content-section bg-white dark:bg-[#132f4c]">
-                <div className="container-custom max-w-7xl">
+                <div className="container-custom max-w-8xl">
                     <Card className="p-8 md:p-12 gradient-bg shadow-lg text-center">
                         <CardContent>
                             <div className="animate-pulse text-center space-y-6">
@@ -59,7 +59,7 @@ const TeamMemberCTASection: React.FC<TeamMemberCTASectionProps> = ({
             viewport={{ once: true, amount: 0.1 }}
             className="content-section bg-white dark:bg-[#132f4c]"
         >
-            <div className="container-custom max-w-7xl">
+            <div className="container-custom max-w-8xl">
                 <motion.div
                     variants={fadeInUp(20, 0.6)}
                 >

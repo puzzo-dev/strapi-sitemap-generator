@@ -33,7 +33,7 @@ const ProductPricingSection: React.FC<ProductPricingSectionProps> = ({
   if (isLoading) {
     return (
       <section className="content-section bg-white dark:bg-[#132f4c]">
-        <div className="container-custom max-w-7xl">
+        <div className="container-custom max-w-8xl">
           <div className="text-center mb-12">
             <div className="animate-pulse space-y-4">
               <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mx-auto"></div>
@@ -69,7 +69,7 @@ const ProductPricingSection: React.FC<ProductPricingSectionProps> = ({
 
   return (
     <section className="content-section bg-white dark:bg-[#132f4c]">
-      <div className="container-custom max-w-7xl">
+      <div className="container-custom max-w-8xl">
         <div className="text-center mb-12">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
             {content.badge}
@@ -86,11 +86,10 @@ const ProductPricingSection: React.FC<ProductPricingSectionProps> = ({
           {product.pricing.plans.map((plan: any, index: number) => (
             <Card
               key={index}
-              className={`relative ${
-                plan.recommended
+              className={`relative ${plan.recommended
                   ? 'ring-2 ring-blue-500 dark:ring-blue-400 shadow-lg'
                   : 'hover:shadow-lg transition-shadow duration-300'
-              }`}
+                }`}
             >
               <CardContent className="p-6">
                 {plan.recommended && (

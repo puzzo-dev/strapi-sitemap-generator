@@ -14,6 +14,45 @@ interface SkeletonProps {
   height?: string | number;
 }
 
+interface SkeletonFormProps {
+  fields?: number;
+  showTitle?: boolean;
+  className?: string;
+}
+
+interface SkeletonTextProps {
+  lines?: number;
+  className?: string;
+}
+
+interface SkeletonCardProps {
+  showImage?: boolean;
+  textLines?: number;
+  className?: string;
+}
+
+interface SkeletonHeroProps {
+  showBadge?: boolean;
+  titleLines?: number;
+  descriptionLines?: number;
+  showButtons?: boolean;
+  className?: string;
+}
+
+interface SkeletonSectionProps {
+  children: React.ReactNode;
+  isLoading?: boolean;
+  className?: string;
+}
+
+interface SkeletonGridProps {
+  items?: number;
+  columns?: number;
+  showImage?: boolean;
+  textLines?: number;
+  className?: string;
+}
+
 /**
  * Base skeleton element
  */
@@ -27,7 +66,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   
   return (
     <div 
-      className={`bg-gray-200 dark:bg-gray-700 rounded animate-pulse ${widthClass} ${heightClass} ${className}`}
+      className={`bg-gray-200 max-w-8xl mx-auto dark:bg-gray-700 rounded animate-pulse ${widthClass} ${heightClass} ${className}`}
       style={{
         width: typeof width === 'number' ? `${width}px` : undefined,
         height: typeof height === 'number' ? `${height}px` : undefined,
@@ -35,12 +74,6 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     />
   );
 };
-
-interface SkeletonTextProps {
-  lines?: number;
-  className?: string;
-}
-
 /**
  * Multi-line text skeleton
  */
@@ -58,13 +91,6 @@ export const SkeletonText: React.FC<SkeletonTextProps> = ({
     ))}
   </div>
 );
-
-interface SkeletonCardProps {
-  showImage?: boolean;
-  textLines?: number;
-  className?: string;
-}
-
 /**
  * Card skeleton with optional image
  */
@@ -80,15 +106,6 @@ export const SkeletonCard: React.FC<SkeletonCardProps> = ({
     <SkeletonText lines={textLines} />
   </div>
 );
-
-interface SkeletonHeroProps {
-  showBadge?: boolean;
-  titleLines?: number;
-  descriptionLines?: number;
-  showButtons?: boolean;
-  className?: string;
-}
-
 /**
  * Hero section skeleton
  */
@@ -135,14 +152,6 @@ export const SkeletonHero: React.FC<SkeletonHeroProps> = ({
   </div>
 );
 
-interface SkeletonGridProps {
-  items?: number;
-  columns?: number;
-  showImage?: boolean;
-  textLines?: number;
-  className?: string;
-}
-
 /**
  * Grid skeleton (for products, services, team, etc.)
  */
@@ -153,7 +162,7 @@ export const SkeletonGrid: React.FC<SkeletonGridProps> = ({
   textLines = 3,
   className = ''
 }) => {
-  const gridClass = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${columns} gap-6 ${className}`;
+  const gridClass = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${columns} gap-6 ${className} max-w-8xl mx-auto`;
   
   return (
     <div className={gridClass}>
@@ -168,13 +177,6 @@ export const SkeletonGrid: React.FC<SkeletonGridProps> = ({
     </div>
   );
 };
-
-interface SkeletonFormProps {
-  fields?: number;
-  showTitle?: boolean;
-  className?: string;
-}
-
 /**
  * Form skeleton
  */
@@ -183,7 +185,7 @@ export const SkeletonForm: React.FC<SkeletonFormProps> = ({
   showTitle = true,
   className = ''
 }) => (
-  <div className={`space-y-6 ${className}`}>
+  <div className={`space-y-6 ${className} max-w-8xl mx-auto`}>
     {showTitle && (
       <Skeleton width="1/2" height="8" />
     )}
@@ -198,16 +200,9 @@ export const SkeletonForm: React.FC<SkeletonFormProps> = ({
     <Skeleton width="full" height="12" className="rounded-lg" />
   </div>
 );
-
 /**
  * Loading section wrapper
  */
-interface SkeletonSectionProps {
-  children: React.ReactNode;
-  isLoading?: boolean;
-  className?: string;
-}
-
 export const SkeletonSection: React.FC<SkeletonSectionProps> = ({
   children,
   isLoading = false,
@@ -215,7 +210,7 @@ export const SkeletonSection: React.FC<SkeletonSectionProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className={`animate-pulse ${className}`}>
+      <div className={`animate-pulse ${className} max-w-8xl mx-auto`}>
         {children}
       </div>
     );

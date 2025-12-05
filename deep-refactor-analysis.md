@@ -55,7 +55,7 @@ export const SPACING = {
   container: {
     sm: 'px-4 max-w-4xl',
     md: 'px-6 max-w-6xl',
-    lg: 'px-8 max-w-7xl'
+    lg: 'px-8 max-w-8xl'
   }
 } as const;
 ```

@@ -11,16 +11,16 @@ interface ProductsTestimonialsSectionProps {
   isLoading?: boolean;
 }
 
-const ProductsTestimonialsSection: React.FC<ProductsTestimonialsSectionProps> = ({ 
-  pageContent, 
-  isLoading = false 
+const ProductsTestimonialsSection: React.FC<ProductsTestimonialsSectionProps> = ({
+  pageContent,
+  isLoading = false
 }) => {
   // Get testimonials section from page content
   const testimonialsSection = pageContent?.sections?.find(s => s.type === 'testimonials');
-  
+
   // Extract testimonials from section data or fallback to empty array
   let displayTestimonials: TestimonialProps[] = [];
-  
+
   if (testimonialsSection?.settings?.featured) {
     const featured = testimonialsSection.settings.featured;
     if (Array.isArray(featured) && featured.length > 0) {
@@ -31,14 +31,14 @@ const ProductsTestimonialsSection: React.FC<ProductsTestimonialsSectionProps> = 
   }
 
   return (
-    <motion.section 
+    <motion.section
       initial="initial"
       whileInView="animate"
       viewport={{ once: true, amount: 0.1 }}
       className="content-section bg-white dark:bg-[#132f4c]"
     >
-      <div className="container-custom max-w-7xl">
-        <motion.div 
+      <div className="container-custom max-w-8xl">
+        <motion.div
           variants={fadeInUp(20, 0.6)}
           className="text-center mb-16"
         >
@@ -52,8 +52,8 @@ const ProductsTestimonialsSection: React.FC<ProductsTestimonialsSectionProps> = 
             </p>
           </div>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           variants={staggerChildren(0.1)}
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
@@ -83,8 +83,8 @@ const ProductsTestimonialsSection: React.FC<ProductsTestimonialsSectionProps> = 
                 key={testimonial.id}
                 variants={scaleUp(0.95, 0.6, index * 0.1)}
                 className="h-full"
-                whileHover={{ 
-                  y: -10, 
+                whileHover={{
+                  y: -10,
                   boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
                   transition: { type: "spring", stiffness: 300 }
                 }}

@@ -9,17 +9,17 @@ interface ServicesTestimonialsSectionProps {
     isLoading: boolean;
 }
 
-const ServicesTestimonialsSection: React.FC<ServicesTestimonialsSectionProps> = ({ 
-    testimonials, 
-    pageContent, 
-    isLoading 
+const ServicesTestimonialsSection: React.FC<ServicesTestimonialsSectionProps> = ({
+    testimonials,
+    pageContent,
+    isLoading
 }) => {
     // Get testimonials section from page content
     const testimonialsSection = pageContent?.sections?.find(s => s.type === 'testimonials');
-    
+
     // Extract testimonials from section data or use prop
     let displayTestimonials: TestimonialProps[] = [];
-    
+
     if (testimonials && testimonials.length > 0) {
         displayTestimonials = testimonials;
     } else if (testimonialsSection?.settings?.featured) {
@@ -52,7 +52,7 @@ const ServicesTestimonialsSection: React.FC<ServicesTestimonialsSectionProps> = 
 
     return (
         <section className="py-24 bg-white dark:bg-[#132f4c]">
-            <div className="container-custom max-w-7xl">
+            <div className="container-custom max-w-8xl">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                         {testimonialsSection?.badge || "💬 Client Feedback"}

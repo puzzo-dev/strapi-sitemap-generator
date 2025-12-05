@@ -118,7 +118,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => { } }) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50" ref={navRef}>
       <nav
-        className={`w-full transition-all duration-300 ${scrolled
+        className={`max-w-8xl mx-auto transition-all duration-300 ${scrolled
           ? 'bg-white/95 dark:bg-[#0a1929]/95 shadow-lg backdrop-blur-md'
           : 'bg-white/80 dark:bg-[#0a1929]/80 backdrop-blur-md shadow-sm'
           }`}

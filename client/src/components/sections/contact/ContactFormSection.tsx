@@ -26,7 +26,7 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
             "content-section py-16",
             getThemeColors('background', 'default')
         )}>
-            <div className="container-custom max-w-7xl">
+            <div className="container-custom max-w-8xl">
                 <div className="flex flex-col lg:flex-row gap-10">
                     {/* Form Section */}
                     <div className="w-full lg:w-1/2">
