@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_cards_forms",
+  "info": {
+    "displayName": "form"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "formInput": {
+      "type": "component",
+      "component": "shared.form-fields",
+      "repeatable": true
+    },
+    "endpoint": {
+      "type": "enumeration",
+      "enum": [
+        "contact-us",
+        "demo-request",
+        "newsletter"
+      ]
+    },
+    "erpNextFormName": {
+      "type": "text"
+    },
+    "submit": {
+      "type": "component",
+      "component": "shared.button",
+      "repeatable": false
+    },
+    "errorMessage": {
+      "type": "string"
+    },
+    "successMessage": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

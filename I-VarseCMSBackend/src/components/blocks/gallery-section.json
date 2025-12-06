@@ -4,6 +4,26 @@
     "displayName": "gallerySection"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "galleryImages": {
+      "type": "component",
+      "component": "shared.gallery-image",
+      "repeatable": true
+    },
+    "galleryCtaText": {
+      "type": "text"
+    },
+    "galleryCtaButton": {
+      "type": "component",
+      "component": "shared.button",
+      "repeatable": false
+    }
+  },
   "config": {}
 }

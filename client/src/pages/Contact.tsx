@@ -16,7 +16,7 @@ import {
 } from '@/components/sections/contact';
 
 const Contact: React.FC = () => {
-  const [formType, setFormType] = useState<'contact' | 'booking'>('contact');
+  const [formType, setFormType] = useState<'contact' | 'demoRequest'>('contact');
   const [isDemoRequest, setIsDemoRequest] = useState(false);
 
   // Check URL parameters for demo request

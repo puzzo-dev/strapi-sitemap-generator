@@ -23,6 +23,16 @@
         "images",
         "files"
       ]
+    },
+    "stats": {
+      "type": "component",
+      "component": "cards.stat",
+      "repeatable": true
+    },
+    "heroButtons": {
+      "type": "component",
+      "component": "shared.button",
+      "repeatable": true
     }
   },
   "config": {}

@@ -24,7 +24,7 @@ import {
   ContactFormData,
   FooterColumn,
   FAQItem,
-  BookingFormData,
+  DemoRequestFormData,
   ProductProps,
   ServiceProps,
   TestimonialProps,
@@ -1332,9 +1332,9 @@ export async function submitContactForm(data: ContactFormData): Promise<any> {
 }
 
 /**
- * Submit a booking/appointment request to ERPNext with enhanced event management
+ * Submit a demo request to ERPNext with enhanced event management
  */
-export async function scheduleAppointment(data: BookingFormData): Promise<any> {
+export async function submitDemoRequest(data: DemoRequestFormData): Promise<any> {
   try {
     // Try to get ERPNext credentials from SiteConfig first, then fallback to environment variables
     let ERP_NEXT_URL: string | undefined;
@@ -1359,22 +1359,22 @@ export async function scheduleAppointment(data: BookingFormData): Promise<any> {
 
     if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
       console.warn('ERPNext credentials not configured, using fallback');
-      // Simulate successful booking with a delay
+      // Simulate successful demo request with a delay
       await new Promise(resolve => setTimeout(resolve, 800));
-      return { success: true, message: 'Appointment scheduled successfully' };
+      return { success: true, message: 'Demo request scheduled successfully' };
     }
 
     // Format data for ERPNext API - Enhanced Event creation
-    const appointmentDate = new Date(`${data.date}T${data.time}`);
+    const demoDate = new Date(`${data.date}T${data.time}`);
     // Add duration (default 1 hour)
-    const endDate = new Date(appointmentDate.getTime() + (data.erpNextDuration || 60) * 60 * 1000);
+    const endDate = new Date(demoDate.getTime() + 60 * 60 * 1000);
 
     const erpNextData = {
       doctype: 'Event',
-      subject: `Consultation: ${data.topic}`,
-      event_type: data.erpNextEventType || 'Private',
+      subject: `Demo Request: ${data.topic}`,
+      event_type: 'Private',
       description: data.message,
-      starts_on: appointmentDate.toISOString(),
+      starts_on: demoDate.toISOString(),
       ends_on: endDate.toISOString(),
       all_day: 0,
       event_participants: [

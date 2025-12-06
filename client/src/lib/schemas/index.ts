@@ -42,13 +42,14 @@ export const newsletterSchema = z.object({
 });
 
 // Booking/Appointment Schema
-export const bookingSchema = z.object({
+// Demo Request Schema
+export const demoRequestSchema = z.object({
   name: baseValidation.name,
   email: baseValidation.email,
-  phone: z.string().min(10, 'Phone number is required for appointments'),
-  date: z.string().min(1, 'Date is required'),
-  time: z.string().min(1, 'Time is required'),
-  service: z.string().min(1, 'Service selection is required'),
+  phone: z.string().min(10, 'Phone number is required for demo requests'),
+  date: z.string().min(1, 'Preferred date is required'),
+  time: z.string().min(1, 'Preferred time is required'),
+  topic: z.string().min(1, 'Demo topic is required'),
   message: baseValidation.message.optional(),
 });
 
@@ -94,7 +95,7 @@ export const formSchemas = {
   contact: contactFormSchema,
   comment: commentSchema,
   newsletter: newsletterSchema,
-  booking: bookingSchema,
+  demoRequest: demoRequestSchema,
   jobApplication: jobApplicationSchema,
   quote: quoteRequestSchema,
   consultation: consultationSchema,
@@ -104,7 +105,7 @@ export const formSchemas = {
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 export type CommentFormData = z.infer<typeof commentSchema>;
 export type NewsletterFormData = z.infer<typeof newsletterSchema>;
-export type BookingFormData = z.infer<typeof bookingSchema>;
+export type DemoRequestFormData = z.infer<typeof demoRequestSchema>;
 export type JobApplicationFormData = z.infer<typeof jobApplicationSchema>;
 export type QuoteRequestFormData = z.infer<typeof quoteRequestSchema>;
 export type ConsultationFormData = z.infer<typeof consultationSchema>;

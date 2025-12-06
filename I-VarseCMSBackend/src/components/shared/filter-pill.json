@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_shared_filter_pills",
+  "info": {
+    "displayName": "filterPill"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "Icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "case_study": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::case-study.case-study"
+    },
+    "isActive": {
+      "type": "boolean"
+    }
+  },
+  "config": {}
+}

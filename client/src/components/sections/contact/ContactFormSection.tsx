@@ -1,14 +1,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import ContactForm from '@/components/ui/ContactForm';
-import BookingForm from '@/components/ui/BookingForm';
+import DemoRequestForm from '@/components/ui/DemoRequestForm';
 import { SiteConfig } from '@/lib/types/core';
 import { getThemeColors } from '@/lib/utils/theme-helpers';
 import { cn } from '@/lib/utils';
 
 interface ContactFormSectionProps {
-    formType: 'contact' | 'booking';
-    setFormType: (type: 'contact' | 'booking') => void;
+    formType: 'contact' | 'demoRequest';
+    setFormType: (type: 'contact' | 'demoRequest') => void;
     siteConfig: SiteConfig;
     isLoading: boolean;
     isDemoRequest?: boolean;
@@ -43,15 +43,15 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                                 Contact Us
                             </Button>
                             <Button
-                                variant={formType === 'booking' ? 'default' : 'outline'}
-                                className={formType === 'booking' ? 'gradient-bg' : ''}
-                                onClick={() => setFormType('booking')}
+                                variant={formType === 'demoRequest' ? 'default' : 'outline'}
+                                className={formType === 'demoRequest' ? 'gradient-bg' : ''}
+                                onClick={() => setFormType('demoRequest')}
                                 role="tab"
-                                aria-selected={formType === 'booking'}
-                                aria-controls="booking-form-panel"
-                                id="booking-tab"
+                                aria-selected={formType === 'demoRequest'}
+                                aria-controls="demo-request-form-panel"
+                                id="demo-request-tab"
                             >
-                                Book Appointment
+                                Demo Request
                             </Button>
                         </div>
 
@@ -75,11 +75,11 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                             </div>
                             <div
                                 role="tabpanel"
-                                id="booking-form-panel"
-                                aria-labelledby="booking-tab"
-                                hidden={formType !== 'booking'}
+                                id="demo-request-form-panel"
+                                aria-labelledby="demo-request-tab"
+                                hidden={formType !== 'demoRequest'}
                             >
-                                {formType === 'booking' && <BookingForm />}
+                                {formType === 'demoRequest' && <DemoRequestForm />}
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,6 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                                         </div>
                                         <div>
                                             <p className={cn(
-                                                "text-sm",
                                                 getThemeColors('text', 'muted')
                                             )}>Phone</p>
                                             <a href={`tel:${siteConfig?.contactPhone}`} className={getThemeColors('text', 'default')}>
@@ -166,8 +165,8 @@ const ContactFormSection: React.FC<ContactFormSectionProps> = ({
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 };
 

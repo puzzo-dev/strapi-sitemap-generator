@@ -21,7 +21,7 @@ export interface ContactFormData extends BaseFormData {
   erpNextPreferredContact?: 'email' | 'phone' | 'both';
 }
 
-export interface BookingFormData extends BaseFormData {
+export interface DemoRequestFormData extends BaseFormData {
   name: string;
   phone: string;
   date: string;
@@ -35,10 +35,10 @@ export interface BookingFormData extends BaseFormData {
   erpNextMeetingType?: 'in-person' | 'virtual' | 'hybrid';
 }
 
-export interface BookingFormProps {
+export interface DemoRequestFormProps {
   className?: string;
-  onSubmit?: (data: BookingFormData) => void;
-  defaultValues?: Partial<BookingFormData>;
+  onSubmit?: (data: DemoRequestFormData) => void;
+  defaultValues?: Partial<DemoRequestFormData>;
   successMessage?: string;
   errorMessage?: string;
 }

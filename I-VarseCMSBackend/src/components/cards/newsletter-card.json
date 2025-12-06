@@ -10,6 +10,11 @@
     },
     "description": {
       "type": "text"
+    },
+    "newsletterForm": {
+      "type": "component",
+      "component": "cards.form",
+      "repeatable": false
     }
   },
   "config": {}

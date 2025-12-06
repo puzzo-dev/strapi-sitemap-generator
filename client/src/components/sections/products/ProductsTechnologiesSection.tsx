@@ -137,11 +137,11 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
                     </li>
                   </ul>
 
-                  <div className="mt-6">
+                  {/* <div className="mt-6 max-w-xs">
                     <GradientButton href="/products/1" size="sm">
                       {getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
                     </GradientButton>
-                  </div>
+                  </div> */}
                 </div>
               </CardContent>
             </Card>
@@ -219,11 +219,11 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
                     </li>
                   </ul>
 
-                  <div className="mt-6">
+                  {/* <div className="mt-6 max-w-xs">
                     <GradientButton href="/products/2" size="sm">
-                      {t('ui.learnMore') || 'Learn More'}
+                      {getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
                     </GradientButton>
-                  </div>
+                  </div> */}
                 </div>
               </CardContent>
             </Card>
@@ -232,7 +232,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
 
         <motion.div
           variants={fadeInUp(20, 0.6, 0.7)}
-          className="mt-8 text-center"
+          className="mt-8 text-center max-w-sm mx-auto"
         >
           <GradientButton href="/contact" size="lg" className="mx-auto" endIcon={<ArrowRight className="h-4 w-4 ml-1" />}>
             Request Custom Solution

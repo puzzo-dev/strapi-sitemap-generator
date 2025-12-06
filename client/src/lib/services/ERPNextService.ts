@@ -7,7 +7,7 @@
 
 import { BaseFormService, BaseCMSService } from './BaseService';
 import { IFormSubmissionProvider, ILoggerService } from '@/lib/abstractions';
-import { BlogPost, BlogCategory, ContactFormData, BookingFormData, TeamMember, JobListing } from '@/lib/types';
+import { BlogPost, BlogCategory, ContactFormData, DemoRequestFormData, TeamMember, JobListing } from '@/lib/types';
 
 /**
  * ERPNext configuration interface
@@ -307,7 +307,7 @@ export class ERPNextBlogService {
   constructor(
     private readonly service: ERPNextService,
     private readonly logger?: ILoggerService
-  ) {}
+  ) { }
 
   /**
    * Get all blog posts
@@ -458,22 +458,22 @@ export class ERPNextFormService extends BaseFormService implements IFormSubmissi
   }
 
   /**
-   * Submit appointment booking as Event
+   * Submit demo request as Event
    */
-  public async submitBooking(formData: BookingFormData): Promise<boolean> {
+  public async submitDemoRequest(formData: DemoRequestFormData): Promise<boolean> {
     try {
       // Create Lead first
-      const leadData = this.transformBookingToLead(formData);
+      const leadData = this.transformDemoRequestToLead(formData);
       const leadResponse = await this.post<{ data: { name: string } }>('Lead', leadData);
 
-      // Create Event/Appointment
-      const eventData = this.transformBookingToEvent(formData, leadResponse.data.name);
+      // Create Event/Demo Appointment
+      const eventData = this.transformDemoRequestToEvent(formData, leadResponse.data.name);
       await this.post('Event', eventData);
 
-      this.logger?.info('Appointment booking submitted successfully');
+      this.logger?.info('Demo request submitted successfully');
       return true;
     } catch (error) {
-      this.logger?.error('Failed to submit appointment booking', error as Error);
+      this.logger?.error('Failed to submit demo request', error as Error);
       return false;
     }
   }
@@ -513,25 +513,25 @@ export class ERPNextFormService extends BaseFormService implements IFormSubmissi
   }
 
   /**
-   * Transform booking data to ERPNext Lead format
+   * Transform demo request data to ERPNext Lead format
    */
-  private transformBookingToLead(formData: BookingFormData) {
+  private transformDemoRequestToLead(formData: DemoRequestFormData) {
     return {
       lead_name: formData.fullName,
       email_id: formData.email,
       phone: formData.phone,
-      source: 'Website Appointment Booking',
+      source: 'Website Demo Request',
       status: 'Open',
       notes: formData.message
     };
   }
 
   /**
-   * Transform booking data to ERPNext Event format
+   * Transform demo request data to ERPNext Event format
    */
-  private transformBookingToEvent(formData: BookingFormData, leadName: string) {
+  private transformDemoRequestToEvent(formData: DemoRequestFormData, leadName: string) {
     return {
-      subject: `Appointment: ${formData.topic}`,
+      subject: `Demo Request: ${formData.topic}`,
       event_type: 'Public',
       starts_on: `${formData.date} ${formData.time}:00`,
       ends_on: `${formData.date} ${formData.time}:00`,
@@ -624,7 +624,7 @@ export class ERPNextTeamSource {
   constructor(
     private service: ERPNextService,
     private logger?: ILoggerService
-  ) {}
+  ) { }
 
   public async getAll(): Promise<TeamMember[]> {
     return this.service.getTeamMembers();
@@ -653,7 +653,7 @@ export class ERPNextJobsSource {
   constructor(
     private service: ERPNextService,
     private logger?: ILoggerService
-  ) {}
+  ) { }
 
   public async getAll(): Promise<JobListing[]> {
     return this.service.getJobListings();
@@ -680,7 +680,7 @@ export class ERPNextJobsSource {
  */
 export function createERPNextServices(logger?: ILoggerService) {
   const service = new ERPNextService(logger);
-  
+
   return {
     service,
     blog: new ERPNextBlogService(service, logger),

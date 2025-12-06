@@ -8,13 +8,15 @@ import { faqPageContent as localFAQPageContent } from '@/lib/data/pages';
 import {
     FAQHeroSection,
     FAQCategoriesSection,
-    FAQContactSection
+    FAQContactSection,
+    FAQStatsSection,
+    FAQPopularSection
 } from "@/components/sections/faq";
 
 const FAQ: React.FC = () => {
     // State for FAQ categories section
     const [activeCategory, setActiveCategory] = useState<number>(1);
-      const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set<number>());
+    const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set<number>());
 
     // Fetch page content from Strapi or use local data
     const { data: pageContent, isLoading: isPageLoading } = usePageContent('faq');
@@ -45,7 +47,7 @@ const FAQ: React.FC = () => {
             newSet.add(id);
         }
         setExpandedItems(newSet);
-    };    return (
+    }; return (
         <PageLayout
             title={displayPageContent.metaTitle}
             description={displayPageContent.metaDescription}
@@ -55,26 +57,38 @@ const FAQ: React.FC = () => {
             isLoading={isPageLoading}
             structuredData={structuredData}
         >
-                {/* Hero Section */}
-                <FAQHeroSection
+            {/* Hero Section */}
+            <FAQHeroSection
                 title={heroSection.title || "Frequently Asked Questions"}
                 description={heroSection.content || "Find answers to common questions about our services and solutions."}
                 isLoading={isPageLoading}
-                />
+            />
 
-            {/* FAQ Categories Section */}
-                    <FAQCategoriesSection
+            {/* FAQ Stats Section */}
+            <FAQStatsSection
                 categories={displayCategories}
                 faqItems={displayFAQItems}
-                        activeCategory={activeCategory}
-                        setActiveCategory={setActiveCategory}
-                        expandedItems={expandedItems}
-                        toggleItem={toggleItem}
-                        isLoading={isFAQLoading}
-                    />
+            />
 
-                {/* Contact Section */}
-                <FAQContactSection />
+            {/* FAQ Categories Section */}
+            <FAQCategoriesSection
+                categories={displayCategories}
+                faqItems={displayFAQItems}
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+                expandedItems={expandedItems}
+                toggleItem={toggleItem}
+                isLoading={isFAQLoading}
+            />
+
+            {/* FAQ Popular Section */}
+            <FAQPopularSection
+                faqItems={displayFAQItems}
+                onQuestionClick={() => { }}
+            />
+
+            {/* Contact Section */}
+            <FAQContactSection />
         </PageLayout>
     );
 };

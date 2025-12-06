@@ -10,7 +10,6 @@ export interface BlocksBaseRow extends Struct.ComponentSchema {
     baseCards: Schema.Attribute.Component<'cards.base-card', true>;
     cta: Schema.Attribute.Component<'blocks.cta-section', false>;
     description: Schema.Attribute.Text;
-    filter: Schema.Attribute.Component<'blocks.filter', false>;
     gallery: Schema.Attribute.Component<'blocks.gallery-section', false>;
     socialLinks: Schema.Attribute.Component<'cards.social-link', true>;
     statCards: Schema.Attribute.Component<'cards.stat', true>;
@@ -36,20 +35,29 @@ export interface BlocksCtaSection extends Struct.ComponentSchema {
   };
 }
 
-export interface BlocksFilter extends Struct.ComponentSchema {
-  collectionName: 'components_blocks_filters';
-  info: {
-    displayName: 'filter';
-  };
-  attributes: {};
-}
-
 export interface BlocksGallerySection extends Struct.ComponentSchema {
   collectionName: 'components_blocks_gallery_sections';
   info: {
     displayName: 'gallerySection';
   };
-  attributes: {};
+  attributes: {
+    description: Schema.Attribute.Text;
+    galleryCtaButton: Schema.Attribute.Component<'shared.button', false>;
+    galleryCtaText: Schema.Attribute.Text;
+    galleryImages: Schema.Attribute.Component<'shared.gallery-image', true>;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface BlocksIndustryFilter extends Struct.ComponentSchema {
+  collectionName: 'components_blocks_industry_filters';
+  info: {
+    displayName: 'IndustryFilter';
+  };
+  attributes: {
+    filter: Schema.Attribute.Component<'shared.filter-pill', true>;
+    title: Schema.Attribute.String;
+  };
 }
 
 export interface BlocksLegalLinks extends Struct.ComponentSchema {
@@ -94,11 +102,30 @@ export interface CardsContactInfo extends Struct.ComponentSchema {
 export interface CardsFooterMenu extends Struct.ComponentSchema {
   collectionName: 'components_cards_footer_menus';
   info: {
-    displayName: 'FooterMenu';
+    displayName: 'footerMenu';
   };
   attributes: {
     footerMenuLink: Schema.Attribute.Component<'shared.link', true>;
     footerMenuTitle: Schema.Attribute.String;
+  };
+}
+
+export interface CardsForm extends Struct.ComponentSchema {
+  collectionName: 'components_cards_forms';
+  info: {
+    displayName: 'form';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    endpoint: Schema.Attribute.Enumeration<
+      ['contact-us', 'demo-request', 'newsletter']
+    >;
+    erpNextFormName: Schema.Attribute.Text;
+    errorMessage: Schema.Attribute.String;
+    formInput: Schema.Attribute.Component<'shared.form-fields', true>;
+    submit: Schema.Attribute.Component<'shared.button', false>;
+    successMessage: Schema.Attribute.String;
+    title: Schema.Attribute.String;
   };
 }
 
@@ -120,6 +147,7 @@ export interface CardsNewsletterCard extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
+    newsletterForm: Schema.Attribute.Component<'cards.form', false>;
     title: Schema.Attribute.String;
   };
 }
@@ -141,7 +169,11 @@ export interface CardsStat extends Struct.ComponentSchema {
   info: {
     displayName: 'stat';
   };
-  attributes: {};
+  attributes: {
+    statImage: Schema.Attribute.Media<'images'>;
+    statInfo: Schema.Attribute.String;
+    statTitle: Schema.Attribute.String;
+  };
 }
 
 export interface CardsTestimonialCard extends Struct.ComponentSchema {
@@ -173,7 +205,9 @@ export interface HeroHeroSimple extends Struct.ComponentSchema {
   attributes: {
     description: Schema.Attribute.Text;
     heroBadge: Schema.Attribute.Component<'shared.badge', false>;
+    heroButtons: Schema.Attribute.Component<'shared.button', true>;
     heroImage: Schema.Attribute.Media<'images' | 'files'>;
+    stats: Schema.Attribute.Component<'cards.stat', true>;
     title: Schema.Attribute.String;
   };
 }
@@ -234,6 +268,65 @@ export interface SharedBadge extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedButton extends Struct.ComponentSchema {
+  collectionName: 'components_shared_buttons';
+  info: {
+    displayName: 'button';
+  };
+  attributes: {
+    icon: Schema.Attribute.Media<'images'>;
+    label: Schema.Attribute.String;
+    variant: Schema.Attribute.Enumeration<
+      ['primary', 'secondary', 'outline', 'ghost']
+    >;
+  };
+}
+
+export interface SharedFilterPill extends Struct.ComponentSchema {
+  collectionName: 'components_shared_filter_pills';
+  info: {
+    displayName: 'filterPill';
+  };
+  attributes: {
+    case_study: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::case-study.case-study'
+    >;
+    Icon: Schema.Attribute.Media<'images' | 'files'>;
+    isActive: Schema.Attribute.Boolean;
+    label: Schema.Attribute.String;
+  };
+}
+
+export interface SharedFormFields extends Struct.ComponentSchema {
+  collectionName: 'components_shared_form_fields';
+  info: {
+    displayName: 'formFields';
+  };
+  attributes: {
+    inputType: Schema.Attribute.Enumeration<
+      ['text', 'email', 'tel', 'textarea', 'select']
+    >;
+    label: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    options: Schema.Attribute.JSON;
+    placeholder: Schema.Attribute.Text;
+    required: Schema.Attribute.Boolean;
+  };
+}
+
+export interface SharedGalleryImage extends Struct.ComponentSchema {
+  collectionName: 'components_shared_gallery_images';
+  info: {
+    displayName: 'galleryImage';
+  };
+  attributes: {
+    galleryImage: Schema.Attribute.Media<'images'>;
+    imageCaption: Schema.Attribute.Text;
+    imageTag: Schema.Attribute.String;
+  };
+}
+
 export interface SharedLink extends Struct.ComponentSchema {
   collectionName: 'components_elements_links';
   info: {
@@ -288,12 +381,13 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'blocks.base-row': BlocksBaseRow;
       'blocks.cta-section': BlocksCtaSection;
-      'blocks.filter': BlocksFilter;
       'blocks.gallery-section': BlocksGallerySection;
+      'blocks.industry-filter': BlocksIndustryFilter;
       'blocks.legal-links': BlocksLegalLinks;
       'cards.base-card': CardsBaseCard;
       'cards.contact-info': CardsContactInfo;
       'cards.footer-menu': CardsFooterMenu;
+      'cards.form': CardsForm;
       'cards.media-card': CardsMediaCard;
       'cards.newsletter-card': CardsNewsletterCard;
       'cards.social-link': CardsSocialLink;
@@ -305,6 +399,10 @@ declare module '@strapi/strapi' {
       'layout.footer': LayoutFooter;
       'layout.header': LayoutHeader;
       'shared.badge': SharedBadge;
+      'shared.button': SharedButton;
+      'shared.filter-pill': SharedFilterPill;
+      'shared.form-fields': SharedFormFields;
+      'shared.gallery-image': SharedGalleryImage;
       'shared.link': SharedLink;
       'shared.logo': SharedLogo;
       'shared.seo': SharedSeo;

@@ -10,7 +10,7 @@
  * NOTE: Form submissions (contact, appointment, newsletter) are in strapi.ts
  */
 
-import { ContactFormData, BookingFormData } from '@/lib/types';
+import { ContactFormData, DemoRequestFormData } from '@/lib/types';
 
 // =============================================================================
 // ERPNEXT CONFIGURATION
@@ -63,13 +63,13 @@ async function getERPNextConfig(): Promise<ERPNextConfig> {
 // =============================================================================
 
 async function makeERPNextRequest(
-  endpoint: string, 
+  endpoint: string,
   options: RequestInit = {}
 ): Promise<any> {
   const config = await getERPNextConfig();
-  
+
   const url = `${config.baseUrl}/api/resource/${endpoint}`;
-  
+
   const headers = {
     'Authorization': `token ${config.apiKey}:${config.apiSecret}`,
     'Content-Type': 'application/json',
@@ -129,14 +129,14 @@ export async function submitContactForm(formData: ContactFormData): Promise<bool
  * @deprecated Use scheduleAppointment from strapi.ts instead
  * This function is kept for backward compatibility
  */
-export async function submitAppointmentBooking(formData: BookingFormData): Promise<boolean> {
-  console.warn('ERPNext submitAppointmentBooking is deprecated. Use strapi.scheduleAppointment instead');
+export async function submitDemoRequest(formData: DemoRequestFormData): Promise<boolean> {
+  console.warn('ERPNext submitDemoRequest is deprecated. Use strapi.scheduleDemoRequest instead');
   try {
     const leadData = {
       lead_name: formData.name,
       email_id: formData.email,
       phone: formData.phone,
-      source: 'Website Appointment Booking',
+      source: 'Website Demo Request',
       status: 'Open',
       notes: formData.message
     };
@@ -171,7 +171,7 @@ export async function submitAppointmentBooking(formData: BookingFormData): Promi
 
     return true;
   } catch (error) {
-    console.error('Failed to submit appointment booking to ERPNext:', error);
+    console.error('Failed to submit demo request to ERPNext:', error);
     return false;
   }
 }
@@ -240,7 +240,7 @@ export async function submitJobApplication(formData: any): Promise<boolean> {
 export async function checkERPNextHealth(): Promise<boolean> {
   try {
     await getERPNextConfig();
-    
+
     // Test connection with a simple request
     const response = await makeERPNextRequest('User', {
       method: 'GET'

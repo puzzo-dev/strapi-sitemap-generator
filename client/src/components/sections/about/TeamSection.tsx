@@ -129,7 +129,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
                 {settings?.cta && (
                     <motion.div
                         variants={fadeInUp()}
-                        className="text-center"
+                        className="text-center max-w-xs mx-auto"
                     >
                         <GradientButton href={settings.cta.url} size="lg" endIcon={<ArrowRight />}>
                             {settings.cta.text}

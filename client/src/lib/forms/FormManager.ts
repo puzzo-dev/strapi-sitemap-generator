@@ -13,14 +13,14 @@ import { z } from 'zod';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { 
-  IFormField, 
-  IFormConfig, 
+import {
+  IFormField,
+  IFormConfig,
   IValidationRule,
   IFormSubmissionProvider,
   INotificationService
 } from '@/lib/abstractions';
-import { ContactFormData, BookingFormData } from '@/lib/types';
+import { ContactFormData, DemoRequestFormData } from '@/lib/types';
 
 // =============================================================================
 // FORM VALIDATION BUILDER (Open/Closed Principle)
@@ -68,14 +68,14 @@ export class FormValidationBuilder {
 
   public static fromFields(fields: IFormField[]): z.ZodObject<any> {
     const builder = new FormValidationBuilder();
-    
+
     fields.forEach(field => {
       if (field.validation) {
         builder.addField(field.name, field.validation);
       } else {
         // Default validation based on field type
         const defaultRules: IValidationRule[] = [];
-        
+
         if (field.required) {
           defaultRules.push({
             type: 'required',
@@ -129,7 +129,7 @@ export class FormManager<T extends Record<string, any>> {
     this.notificationService = notificationService;
 
     const schema = FormValidationBuilder.fromFields(config.fields);
-    
+
     this.form = useForm<T>({
       resolver: zodResolver(schema),
       defaultValues: defaultValues as any
@@ -162,12 +162,12 @@ export class FormManager<T extends Record<string, any>> {
   private async handleSubmission(data: T): Promise<boolean> {
     // Determine submission method based on form type
     const formType = this.detectFormType(data);
-    
+
     switch (formType) {
       case 'contact':
         return this.submissionProvider.submitContact(data as any);
-      case 'booking':
-        return this.submissionProvider.submitBooking(data as any);
+      case 'demoRequest':
+        return this.submissionProvider.submitDemoRequest(data as any);
       case 'newsletter':
         return this.submissionProvider.submitNewsletter((data as any).email);
       case 'job':
@@ -179,7 +179,7 @@ export class FormManager<T extends Record<string, any>> {
 
   private detectFormType(data: T): string {
     if ('requestType' in data) return 'contact';
-    if ('date' in data && 'time' in data) return 'booking';
+    if ('date' in data && 'time' in data) return 'demoRequest';
     if ('email' in data && Object.keys(data).length === 1) return 'newsletter';
     if ('position' in data) return 'job';
     return 'unknown';
@@ -197,7 +197,7 @@ export class FormFactory {
   constructor(
     private submissionProvider: IFormSubmissionProvider,
     private notificationService: INotificationService
-  ) {}
+  ) { }
 
   public createContactForm(): FormManager<ContactFormData> {
     const config: IFormConfig = {
@@ -280,7 +280,7 @@ export class FormFactory {
     return new FormManager(config, this.submissionProvider, this.notificationService, defaultValues);
   }
 
-  public createBookingForm(): FormManager<BookingFormData> {
+  public createDemoRequestForm(): FormManager<DemoRequestFormData> {
     const config: IFormConfig = {
       fields: [
         {
@@ -307,41 +307,41 @@ export class FormFactory {
         {
           name: 'topic',
           type: 'text',
-          label: 'Topic',
-          placeholder: 'Meeting topic',
+          label: 'Demo Topic',
+          placeholder: 'What would you like a demo of?',
           required: true
         },
         {
           name: 'date',
           type: 'date',
-          label: 'Date',
+          label: 'Preferred Date',
           required: true
         },
         {
           name: 'time',
           type: 'time',
-          label: 'Time',
+          label: 'Preferred Time',
           required: true
         },
         {
           name: 'message',
           type: 'textarea',
-          label: 'Message',
-          placeholder: 'Tell us more about what you\'d like to discuss',
+          label: 'Additional Details',
+          placeholder: 'Tell us more about your needs',
           required: false
         }
       ],
       submitButton: {
-        text: 'Book Appointment',
-        submittingText: 'Booking...'
+        text: 'Request Demo',
+        submittingText: 'Requesting Demo...'
       },
       messages: {
-        success: 'Your appointment has been booked successfully! We\'ll send you a confirmation email.',
-        error: 'There was a problem booking your appointment. Please try again.'
+        success: 'Your demo request has been submitted successfully! We\'ll send you a confirmation email.',
+        error: 'There was a problem submitting your demo request. Please try again.'
       }
     };
 
-    const defaultValues: Partial<BookingFormData> = {
+    const defaultValues: Partial<DemoRequestFormData> = {
       fullName: '',
       email: '',
       phone: '',
@@ -421,18 +421,18 @@ export function useContactForm(
 export function useBookingForm(
   submissionProvider: IFormSubmissionProvider,
   notificationService: INotificationService
-) {
+/**
+ * Demo Request form hook
+ */
+export function useDemoRequestForm(
+    submissionProvider: IFormSubmissionProvider,
+    notificationService: INotificationService
+  ) {
   const factory = new FormFactory(submissionProvider, notificationService);
-  const formManager = factory.createBookingForm();
+  const formManager = factory.createDemoRequestForm();
   return useGenericForm(formManager);
 }
-
-/**
- * Newsletter form hook
- */
-export function useNewsletterForm(
-  submissionProvider: IFormSubmissionProvider,
-  notificationService: INotificationService
+notificationService: INotificationService
 ) {
   const factory = new FormFactory(submissionProvider, notificationService);
   const formManager = factory.createNewsletterForm();

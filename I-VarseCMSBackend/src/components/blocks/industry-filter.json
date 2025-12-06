@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_blocks_industry_filters",
+  "info": {
+    "displayName": "IndustryFilter"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "filter": {
+      "type": "component",
+      "component": "shared.filter-pill",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookingFormProps } from "@/lib/types";
+import { DemoRequestFormProps } from "@/lib/types";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -16,11 +16,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { submitAppointmentBooking } from '@/lib/erpnext';
+import { submitDemoRequest } from '@/lib/erpnext';
 import { useUIText } from '@/hooks/useContent';
 import { UI_TEXT_FALLBACKS } from '@/lib/fallbacks';
 
-const bookingFormSchema = z.object({
+const demoRequestFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
   email: z.string().email({ message: 'Please enter a valid email address' }),
   phone: z.string().min(10, { message: 'Please enter a valid phone number' }),
@@ -30,14 +30,14 @@ const bookingFormSchema = z.object({
   message: z.string().min(10, { message: 'Message must be at least 10 characters' }),
 });
 
-type BookingFormData = z.infer<typeof bookingFormSchema>;
+type DemoRequestFormData = z.infer<typeof demoRequestFormSchema>;
 
 
 
-const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
+const DemoRequestForm: React.FC<DemoRequestFormProps> = ({ className }) => {
   const { toast } = useToast();
-  const form = useForm<BookingFormData>({
-    resolver: zodResolver(bookingFormSchema),
+  const form = useForm<DemoRequestFormData>({
+    resolver: zodResolver(demoRequestFormSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -49,8 +49,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
     },
   });
 
-  const bookingMutation = useMutation({
-    mutationFn: submitAppointmentBooking,
+  const demoRequestMutation = useMutation({
+    mutationFn: submitDemoRequest,
     onSuccess: () => {
       toast({
         title: UI_TEXT_FALLBACKS.forms.messages.success,
@@ -68,8 +68,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
     },
   });
 
-  function onSubmit(data: BookingFormData) {
-    bookingMutation.mutate(data);
+  function onSubmit(data: DemoRequestFormData) {
+    demoRequestMutation.mutate(data);
   }
 
   return (
@@ -219,15 +219,15 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
           <Button
             type="submit"
             className="w-full gradient-bg px-6 py-3 rounded-lg text-white font-medium hover:opacity-90 transition-opacity"
-            disabled={bookingMutation.isPending}
+            disabled={demoRequestMutation.isPending}
           >
-            {bookingMutation.isPending ? (
+            {demoRequestMutation.isPending ? (
               <span className="flex items-center justify-center">
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                {UI_TEXT_FALLBACKS.buttons.booking}
+                {UI_TEXT_FALLBACKS.buttons.demoRequest}
               </span>
             ) : (
               UI_TEXT_FALLBACKS.buttons.bookAppointment
@@ -239,4 +239,4 @@ const BookingForm: React.FC<BookingFormProps> = ({ className }) => {
   );
 };
 
-export default BookingForm;
+export default DemoRequestForm;

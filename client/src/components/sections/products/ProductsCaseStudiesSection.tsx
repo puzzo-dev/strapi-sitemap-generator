@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import AppLink from '@/components/ui/AppLink';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card'; 
+import { ArrowRight } from 'lucide-react';
 
 interface ProductsCaseStudiesSectionProps {
   pageContent: any;
@@ -76,8 +77,9 @@ const ProductsCaseStudiesSection: React.FC<ProductsCaseStudiesSectionProps> = ({
                     </li>
                   ))}
                 </ul>
-                <AppLink href="/case-studies" className="text-blue-600 dark:text-blue-300 hover:underline font-medium">
+                <AppLink href="/case-studies" className="flex items-center text-blue-600 dark:text-blue-300 hover:underline font-medium">
                   View More Case Studies
+                  <ArrowRight className="h-4 w-4 ml-1" />
                 </AppLink>
               </CardContent>
             </Card>

@@ -50,8 +50,8 @@ const Footer: React.FC<FooterProps> = () => {
   };
 
   return (
-    <footer className="bg-gray-50 dark:bg-[#0a1929] pt-20 pb-8 border-t border-gray-200 dark:border-gray-800 max-w-8xl mx-auto">
-      <div className="container-custom">
+    <footer className="bg-gray-50 dark:bg-[#0a1929] pt-20 pb-8 border-t border-gray-200 dark:border-gray-800">
+      <div className="container-custom max-w-8xl mx-auto">
         {/* Footer top section with columns */}
         <div className="mb-16 pb-16 border-b border-gray-200 dark:border-gray-800">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-12">

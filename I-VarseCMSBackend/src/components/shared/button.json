@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_shared_buttons",
+  "info": {
+    "displayName": "button"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "primary",
+        "secondary",
+        "outline",
+        "ghost"
+      ]
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  },
+  "config": {}
+}

@@ -8,7 +8,7 @@ import { useLocation } from 'wouter';
  * A custom Link component that scrolls to the top of the page on navigation
  */
 const AppLink = React.forwardRef<HTMLAnchorElement, AppLinkProps>(
-  ({ href, children, className, style, onClick, ...props }, ref) => {
+  ({ href, children, className, style, onClick, ...props }, ref, endIcon) => {
     const [, navigate] = useLocation();
 
     const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {

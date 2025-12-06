@@ -50,6 +50,23 @@
       "component": "shared.seo",
       "repeatable": false
     },
+    "industry": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "enum": [
+        "all",
+        "banking-financial-services",
+        "healthcare-telemedicine",
+        "retail-ecommerce",
+        "education-elearning",
+        "real-estate-property",
+        "manufacturing-logistics"
+      ]
+    },
     "content": {
       "type": "dynamiczone",
       "pluginOptions": {
@@ -66,7 +83,6 @@
         "cards.social-link",
         "cards.base-card",
         "blocks.gallery-section",
-        "blocks.filter",
         "blocks.cta-section",
         "blocks.base-row"
       ]

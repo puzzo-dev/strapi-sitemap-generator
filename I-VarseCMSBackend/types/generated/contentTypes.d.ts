@@ -493,7 +493,6 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
         'cards.social-link',
         'cards.base-card',
         'blocks.gallery-section',
-        'blocks.filter',
         'blocks.cta-section',
         'blocks.base-row',
       ]
@@ -507,6 +506,22 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    industry: Schema.Attribute.Enumeration<
+      [
+        'all',
+        'banking-financial-services',
+        'healthcare-telemedicine',
+        'retail-ecommerce',
+        'education-elearning',
+        'real-estate-property',
+        'manufacturing-logistics',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -652,7 +667,6 @@ export interface ApiIndustryIndustry extends Struct.CollectionTypeSchema {
         'cards.social-link',
         'cards.base-card',
         'blocks.gallery-section',
-        'blocks.filter',
         'blocks.cta-section',
         'blocks.base-row',
       ]
@@ -772,7 +786,6 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'cards.stat',
         'cards.base-card',
         'blocks.gallery-section',
-        'blocks.filter',
         'blocks.cta-section',
         'cards.social-link',
         'cards.contact-info',
@@ -834,7 +847,6 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
         'cards.social-link',
         'cards.base-card',
         'blocks.gallery-section',
-        'blocks.filter',
         'blocks.cta-section',
         'blocks.base-row',
       ]
@@ -910,7 +922,6 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
         'cards.base-card',
         'cards.contact-info',
         'blocks.gallery-section',
-        'blocks.filter',
         'blocks.cta-section',
         'blocks.base-row',
       ]
@@ -987,7 +998,6 @@ export interface ApiTeamTeam extends Struct.CollectionTypeSchema {
         'cards.contact-info',
         'cards.base-card',
         'blocks.gallery-section',
-        'blocks.filter',
         'blocks.cta-section',
         'blocks.base-row',
       ]

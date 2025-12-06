@@ -44,7 +44,7 @@ export interface ICMSProvider {
 export interface IFormSubmissionProvider {
   readonly name: string;
   submitContact(data: any): Promise<boolean>;
-  submitBooking(data: any): Promise<boolean>;
+  submitDemoRequest(data: any): Promise<boolean>;
   submitNewsletter(email: string): Promise<boolean>;
   submitJobApplication(data: any): Promise<boolean>;
 }

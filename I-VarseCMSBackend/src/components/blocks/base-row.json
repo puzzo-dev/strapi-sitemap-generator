@@ -16,11 +16,6 @@
     "description": {
       "type": "text"
     },
-    "filter": {
-      "type": "component",
-      "component": "blocks.filter",
-      "repeatable": false
-    },
     "gallery": {
       "type": "component",
       "component": "blocks.gallery-section",

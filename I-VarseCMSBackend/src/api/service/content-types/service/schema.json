@@ -67,7 +67,6 @@
         "cards.base-card",
         "cards.contact-info",
         "blocks.gallery-section",
-        "blocks.filter",
         "blocks.cta-section",
         "blocks.base-row"
       ]

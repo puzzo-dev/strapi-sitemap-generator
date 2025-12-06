@@ -1,22 +1,22 @@
 {
-  "collectionName": "components_cards_stats",
+  "collectionName": "components_shared_gallery_images",
   "info": {
-    "displayName": "stat"
+    "displayName": "galleryImage"
   },
   "options": {},
   "attributes": {
-    "statTitle": {
+    "imageTag": {
       "type": "string"
     },
-    "statImage": {
+    "galleryImage": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
         "images"
       ]
     },
-    "statInfo": {
-      "type": "string"
+    "imageCaption": {
+      "type": "text"
     }
   },
   "config": {}
