@@ -4,12 +4,7 @@ import { Calendar, User } from 'lucide-react';
 import { BlogCardProps } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
 
-const BlogCard: React.FC<BlogCardProps> = ({
-    item,
-    isReversed = false,
-    className = ''
-}) => {
-    const post = item;
+const BlogCard: React.FC<BlogCardProps> = ({ item: post }) => {
     const postUrl = `/blog/${post.slug || ''}`;
     
     // Safely get image URL with fallback

@@ -22,11 +22,20 @@ export interface ContactFormData extends BaseFormData {
 }
 
 export interface DemoRequestFormData extends BaseFormData {
-  name: string;
-  phone: string;
-  date: string;
-  time: string;
-  topic: string;
+  name?: string;
+  phone?: string;
+  date?: string;
+  time?: string;
+  topic?: string;
+  companyName?: string;
+  companySize?: string;
+  industry?: string;
+  productInterest?: string;
+  challenges?: string;
+  decisionTimeframe?: string;
+  demoMethod?: string;
+  consentContact?: boolean;
+  consentSubscribe?: boolean;
   // Add ERPNext specific fields
   erpNextEventType?: string;
   erpNextDuration?: number;
@@ -67,4 +76,9 @@ export interface FormContent {
     title: string;
     description: string;
   };
+}
+
+export interface CareersFormState {
+  showExpressionForm: boolean;
+  formSubmitted: boolean;
 } 

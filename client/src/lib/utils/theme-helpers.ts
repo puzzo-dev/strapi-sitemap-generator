@@ -5,7 +5,7 @@
  * across all components and pages
  */
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
 
 // Color palette constants
 export const colors = {

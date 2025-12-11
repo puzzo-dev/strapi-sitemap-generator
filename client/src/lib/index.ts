@@ -1,5 +1,5 @@
 // Utility functions
-export * from './utils';
+export * from './utils/index';
 export * from './animations';
 export * from './blogUtils';
 
@@ -17,4 +17,4 @@ export * from './data';
 export * from './types';
 
 // Constants
-export { DEFAULT_SUPPORTED_LANGUAGES, getSupportedLanguages } from './utils';
+export { DEFAULT_SUPPORTED_LANGUAGES, getSupportedLanguages } from './utils/language';

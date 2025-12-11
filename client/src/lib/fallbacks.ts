@@ -48,6 +48,7 @@ export const UI_TEXT_FALLBACKS = {
     contactUs: 'Contact Us',
     submit: 'Submit',
     submitting: 'Submitting...',
+    demoRequest: 'Demo Request',
     bookAppointment: 'Book Appointment',
     booking: 'Booking...',
     subscribe: 'Subscribe',

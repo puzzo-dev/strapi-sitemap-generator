@@ -218,12 +218,6 @@ export interface FAQCategoriesSectionProps {
   isLoading?: boolean;
 }
 
-export interface BlogCardProps {
-  item: BlogPost;
-  isReversed?: boolean;
-  className?: string;
-}
-
 export interface TestimonialCardProps {
   testimonial: TestimonialProps;
   className?: string;
@@ -407,4 +401,3 @@ export interface ExtendedTeamMember extends TeamMember {
   expertise?: string[];
   achievements?: string[];
 }
-

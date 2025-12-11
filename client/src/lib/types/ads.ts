@@ -30,3 +30,10 @@ export interface DynamicAdsProps {
     onAdClick?: (ad: AdSlide) => void;
     onAdView?: (ad: AdSlide) => void;
 }
+
+export interface UseAdsOptions {
+    position?: string;
+    targetAudience?: string[];
+    maxAds?: number;
+    enabled?: boolean;
+}

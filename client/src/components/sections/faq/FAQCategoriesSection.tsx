@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FAQItem, FAQCategory, FAQCategoriesSectionProps } from '@/lib/types/content';
 import FAQSearchSection from './FAQSearchSection';
+import { FAQItem, FAQCategory, FAQCategoriesSectionProps } from '@/lib/types/content';
 
 const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
     categories,

@@ -123,7 +123,7 @@ const BlogPostsSection: React.FC<BlogPostsSectionProps> = ({
                             .filter(post => post.featured)
                             .slice(0, blogSection?.settings?.showFeaturedOnly ? 2 : 2)
                             .map(post => (
-                                <BlogPostCard key={post.slug} {...post} />
+                                <BlogPostCard key={post.slug} item={post} />
                             ))}
                     </motion.div>
                 </div>
@@ -162,7 +162,7 @@ const BlogPostsSection: React.FC<BlogPostsSectionProps> = ({
                             {filteredPosts
                                 .slice(0, blogSection?.settings?.postsToShow || 9)
                                 .map(post => (
-                                    <BlogPostCard key={post.slug} {...post} />
+                                    <BlogPostCard key={post.slug} item={post} />
                                 ))}
                         </motion.div>
                     )}

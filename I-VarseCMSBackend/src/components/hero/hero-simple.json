@@ -29,10 +29,10 @@
       "component": "cards.stat",
       "repeatable": true
     },
-    "heroButtons": {
+    "heroBtns": {
       "type": "component",
-      "component": "shared.button",
-      "repeatable": true
+      "component": "cards.cta-btn-card",
+      "repeatable": false
     }
   },
   "config": {}

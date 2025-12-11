@@ -1364,23 +1364,30 @@ export async function submitDemoRequest(data: DemoRequestFormData): Promise<any>
       return { success: true, message: 'Demo request scheduled successfully' };
     }
 
+    // Ensure required fields have sensible defaults
+    const name = data.name || data.fullName || 'Prospect';
+    const topic = data.topic || data.productInterest || 'Demo Request';
+    const date = data.date || new Date().toISOString().slice(0, 10);
+    const time = data.time || '09:00';
+    const message = data.message || data.challenges || '';
+
     // Format data for ERPNext API - Enhanced Event creation
-    const demoDate = new Date(`${data.date}T${data.time}`);
+    const demoDate = new Date(`${date}T${time}`);
     // Add duration (default 1 hour)
     const endDate = new Date(demoDate.getTime() + 60 * 60 * 1000);
 
     const erpNextData = {
       doctype: 'Event',
-      subject: `Demo Request: ${data.topic}`,
+      subject: `Demo Request: ${topic}`,
       event_type: 'Private',
-      description: data.message,
+      description: message,
       starts_on: demoDate.toISOString(),
       ends_on: endDate.toISOString(),
       all_day: 0,
       event_participants: [
         {
           reference_doctype: 'Contact',
-          reference_docname: data.name,
+          reference_docname: name,
           email: data.email,
           phone: data.phone
         }

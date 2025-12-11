@@ -11,7 +11,7 @@ import {
 import { LoadingSkeletons } from '@/components/ui/LoadingSkeleton';
 import BackgroundDecoration from '@/components/ui/BackgroundDecoration';
 import { getThemeColors } from '@/lib/utils/theme-helpers';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/index';
 import { defaultHeroProps } from '@/lib/data/hero';
 
 const AboutHero: React.FC<AboutHeroProps> = ({

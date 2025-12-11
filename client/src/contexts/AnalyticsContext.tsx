@@ -23,28 +23,22 @@ import {
   EcommerceEvent,
   PerformanceEvent,
   ErrorEvent,
-  ConsentSettings
+  ConsentSettings,
+  AnalyticsProviderProps
 } from '@/lib/types/analytics';
 
-// Default consent settings
+const CONSENT_STORAGE_KEY = 'ivarse_analytics_consent';
+
 const DEFAULT_CONSENT: ConsentSettings = {
   analytics: false,
   marketing: false,
   functional: true,
   necessary: true,
   timestamp: Date.now(),
-  version: '1.0'
+  version: '1.0.0',
 };
 
-// Analytics Context
-const AnalyticsContext = createContext<AnalyticsContextValue | null>(null);
-
-// Consent storage key
-const CONSENT_STORAGE_KEY = 'ivarse_analytics_consent';
-
-interface AnalyticsProviderProps {
-  children: ReactNode;
-}
+const AnalyticsContext = createContext<AnalyticsContextValue | undefined>(undefined);
 
 export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
   const [config, setConfig] = useState<AnalyticsConfig | null>(null);

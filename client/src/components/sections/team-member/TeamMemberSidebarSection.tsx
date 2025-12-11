@@ -3,12 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TeamMember } from '@/lib/types/content';
 import { PageContent } from '@/lib/types/core';
-
-interface TeamMemberSidebarSectionProps {
-    member: TeamMember;
-    isLoading?: boolean;
-    pageContent?: PageContent;
-}
+import { TeamMemberSidebarSectionProps } from '@/lib/types/components';
 
 const TeamMemberSidebarSection: React.FC<TeamMemberSidebarSectionProps> = ({ 
     member, 

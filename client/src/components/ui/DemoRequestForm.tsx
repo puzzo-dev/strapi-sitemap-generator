@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { submitDemoRequest } from '@/lib/erpnext';
+import { submitDemoRequest } from '@/lib/strapi';
 import { useUIText } from '@/hooks/useContent';
 
 const demoRequestFormSchema = z.object({
@@ -34,7 +34,7 @@ const demoRequestFormSchema = z.object({
     decisionTimeframe: z.enum(['Immediately', '1-3 months', '3-6 months', 'Not sure']),
     // Removed demoDate and demoTime
     demoMethod: z.enum(['Live Walkthrough', 'Recorded Demo', 'Full Trial Access', 'Technical Deep Dive']),
-    message: z.string().optional(),
+    message: z.string().optional().default(''),
     consentContact: z.boolean().refine(val => val, { message: 'Consent required' }),
     consentSubscribe: z.boolean().optional(),
 });
@@ -52,7 +52,7 @@ const industries = [
     'Technology', 'Finance', 'Healthcare', 'Education', 'Retail', 'Other'
 ];
 const products = [
-    'Product A', 'Product B', 'Product C', 'Product D'
+    'OpsCloud', 'OpsCloud HMS', 'OpsCloud IOT', 'OpsCloud Education', 'OpsCloud Commerce'
 ];
 const demoMethods = [
     'Live Walkthrough', 'Recorded Demo', 'Full Trial Access', 'Technical Deep Dive'

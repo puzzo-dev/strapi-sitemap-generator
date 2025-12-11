@@ -229,3 +229,8 @@ export interface ConsentManager {
   isConsentRequired(): boolean;
   showConsentBanner(): boolean;
 }
+
+export interface AnalyticsProviderProps {
+  children: ReactNode;
+}
+import { ReactNode } from 'react';

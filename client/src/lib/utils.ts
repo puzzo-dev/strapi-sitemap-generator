@@ -1,8 +1,35 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { NavItem } from '@/lib/types/layout';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+// Default visibility state (true if not specified)
+const DEFAULT_VISIBILITY = true;
+
+// Check if a navigation item is visible
+export const isNavItemVisible = (navItem: NavItem | null | undefined): boolean => {
+  if (!navItem) return false;
+  return navItem.isVisible ?? DEFAULT_VISIBILITY;
+};
+
+// Filter visible navigation items from an array
+export const filterVisibleNavItems = (navItems: NavItem[]): NavItem[] => {
+  return navItems.filter(isNavItemVisible).map(item => ({
+    ...item,
+    // Also filter children if they exist
+    children: item.children ? filterVisibleNavItems(item.children) : undefined
+  }));
+};
+
+/**
+ * Extract URL path from UrlProps or string
+ */
+export function getUrlPath(url: any): string {
+  if (typeof url === 'string') return url;
+  return url?.url || '/';
 }
 
 export function formatDate(dateString: string | undefined): string {
@@ -26,32 +53,4 @@ export function formatDate(dateString: string | undefined): string {
     console.error('Error formatting date:', error);
     return '';
   }
-}
-
-// Define supported languages
-// Default supported languages - will be overridden by Strapi configuration
-export const DEFAULT_SUPPORTED_LANGUAGES = ['en', 'yo', 'ig', 'ha', 'fr', 'es', 'sw'] as const;
-export type SupportedLanguage = string; // Now dynamic from Strapi
-
-/**
- * Get supported languages from language config hook
- * This is a utility function that components can use to access current supported languages
- */
-export const getSupportedLanguages = (languageConfig?: { supportedLanguages: string[] }): string[] => {
-  return languageConfig?.supportedLanguages || [...DEFAULT_SUPPORTED_LANGUAGES];
-};
-
-/**
- * Extract URL path from UrlProps or string
- */
-export function getUrlPath(url: any): string {
-  if (typeof url === 'string') return url;
-  return url?.url || '/';
-}
-
-/**
- * Filter navigation items to show only visible ones
- */
-export function filterVisibleNavItems(navItems: any[]): any[] {
-  return navItems.filter(item => item.isVisible !== false);
 }

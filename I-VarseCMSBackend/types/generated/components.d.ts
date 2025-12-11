@@ -99,6 +99,18 @@ export interface CardsContactInfo extends Struct.ComponentSchema {
   };
 }
 
+export interface CardsCtaBtnCard extends Struct.ComponentSchema {
+  collectionName: 'components_cards_cta_btn_cards';
+  info: {
+    displayName: 'ctaBtnCard';
+  };
+  attributes: {
+    ctaBtn: Schema.Attribute.Component<'shared.button', true>;
+    ctaLink: Schema.Attribute.Component<'shared.link', true>;
+    isLink: Schema.Attribute.Boolean;
+  };
+}
+
 export interface CardsFooterMenu extends Struct.ComponentSchema {
   collectionName: 'components_cards_footer_menus';
   info: {
@@ -181,7 +193,19 @@ export interface CardsTestimonialCard extends Struct.ComponentSchema {
   info: {
     displayName: 'testimonialCard';
   };
-  attributes: {};
+  attributes: {
+    customerImage: Schema.Attribute.Media<'images'>;
+    customerName: Schema.Attribute.String;
+    rating: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 1;
+        },
+        number
+      >;
+    testimonial: Schema.Attribute.Text;
+  };
 }
 
 export interface HeroHeroFull extends Struct.ComponentSchema {
@@ -205,7 +229,7 @@ export interface HeroHeroSimple extends Struct.ComponentSchema {
   attributes: {
     description: Schema.Attribute.Text;
     heroBadge: Schema.Attribute.Component<'shared.badge', false>;
-    heroButtons: Schema.Attribute.Component<'shared.button', true>;
+    heroBtns: Schema.Attribute.Component<'cards.cta-btn-card', false>;
     heroImage: Schema.Attribute.Media<'images' | 'files'>;
     stats: Schema.Attribute.Component<'cards.stat', true>;
     title: Schema.Attribute.String;
@@ -273,13 +297,7 @@ export interface SharedButton extends Struct.ComponentSchema {
   info: {
     displayName: 'button';
   };
-  attributes: {
-    icon: Schema.Attribute.Media<'images'>;
-    label: Schema.Attribute.String;
-    variant: Schema.Attribute.Enumeration<
-      ['primary', 'secondary', 'outline', 'ghost']
-    >;
-  };
+  attributes: {};
 }
 
 export interface SharedFilterPill extends Struct.ComponentSchema {
@@ -368,7 +386,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
     ogImage: Schema.Attribute.Media<'images' | 'files'>;
     ogTitle: Schema.Attribute.String;
     ogType: Schema.Attribute.Enumeration<
-      ['page', 'article', 'service', 'product']
+      ['website', 'article', 'service', 'product']
     >;
     twitterCard: Schema.Attribute.Enumeration<
       ['summary', 'summary_large_image']
@@ -386,6 +404,7 @@ declare module '@strapi/strapi' {
       'blocks.legal-links': BlocksLegalLinks;
       'cards.base-card': CardsBaseCard;
       'cards.contact-info': CardsContactInfo;
+      'cards.cta-btn-card': CardsCtaBtnCard;
       'cards.footer-menu': CardsFooterMenu;
       'cards.form': CardsForm;
       'cards.media-card': CardsMediaCard;

@@ -7,11 +7,8 @@ import {
     staggerChildren,
     slideIn
 } from '@/lib/animations';
+import { MissionVisionSectionProps } from '@/lib/types/components';
 import { defaultHeroProps } from '@/lib/data/hero';
-
-interface MissionVisionSectionProps extends PageSection {
-    isPageLoading?: boolean;
-}
 
 const MissionVisionSection: React.FC<MissionVisionSectionProps> = ({
     title,

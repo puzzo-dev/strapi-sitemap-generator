@@ -1,16 +1,15 @@
 /**
  * Content Management Hooks
- * 
- * Refactored to use generic hooks and follow DRY principles.
+ *
  * These hooks provide a unified interface for fetching content from Strapi
  * with automatic fallback to local data when APIs are unavailable.
  */
 
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
-import { 
-  PageContent, 
-  ProductProps, 
-  ServiceProps, 
+import {
+  PageContent,
+  ProductProps,
+  ServiceProps,
   TestimonialProps,
   TeamMember,
   CaseStudyProps,
@@ -28,213 +27,139 @@ import {
   BlogComment
 } from '@/lib/types';
 
-import { 
-  IQueryResult, 
-  IListQueryResult, 
-  IContentStatus 
-} from '@/lib/abstractions';
-
-import {
-  useGenericItem,
-  useGenericList,
-  useGenericPageContent,
-  useContentStatusAggregator,
-  useCompositeContent
-} from '@/hooks/useGenericContent';
-
-import { createStrapiDataSources } from '@/lib/services/StrapiService';
-import { createERPNextServices } from '@/lib/services/ERPNextService';
+import { strapiService } from '@/lib/services/StrapiService';
+import { erpNextService } from '@/lib/services/ERPNextService';
 import { checkERPNextHealth } from '@/lib/erpnext';
 import { loggerService, cacheService } from '@/lib/services/UtilityServices';
 
-import { 
+import {
   getUIText,
-  UI_TEXT_FALLBACKS 
+  UI_TEXT_FALLBACKS
 } from '@/lib/fallbacks';
 
 // =============================================================================
 // SERVICE INSTANCES (Singleton Pattern)
 // =============================================================================
 
-// Create service instances once and reuse them
-const strapiServices = createStrapiDataSources(loggerService, cacheService);
-const erpNextServices = createERPNextServices(loggerService);
+const erpNextServices = erpNextService;
+
+// =============================================================================
+// UI TEXT HOOKS
+// =============================================================================
+
+export function useUIText(
+  fallbackKey: string,
+  fallbackCategory: keyof typeof UI_TEXT_FALLBACKS = 'buttons'
+) {
+  return (strapiText?: string) => getUIText(strapiText, fallbackKey, fallbackCategory);
+}
 
 // =============================================================================
 // PAGE CONTENT HOOKS
 // =============================================================================
 
-/**
- * Get page content with Strapi integration and fallbacks
- * Refactored to use generic hook pattern
- */
-export function usePageContent(slug: string): IQueryResult<PageContent> {
-  return useGenericPageContent(
-    slug,
-    (slug: string) => strapiServices.pages.getBySlug(slug)
-  );
-}
-
-/**
- * Get UI translations with fallbacks
- * Refactored to use generic hook pattern
- */
-export function useUIContent(language: string = 'en'): IQueryResult<typeof UI_TEXT_FALLBACKS> {
-  return useGenericItem(
-    ['ui-content', language],
-    () => strapiServices.service.getUITranslations(language),
-    UI_TEXT_FALLBACKS,
-    { staleTime: 15 * 60 * 1000, gcTime: 120 * 60 * 1000 }
-  );
+export function usePageContent(slug: string): UseQueryResult<PageContent | null> {
+  return useQuery({
+    queryKey: ['page-content', slug],
+    queryFn: () => strapiService.getPageBySlug(slug),
+  });
 }
 
 // =============================================================================
-// CONTENT LIST HOOKS (Refactored with Generic Patterns)
+// CONTENT LIST HOOKS
 // =============================================================================
 
-/**
- * Get products with Strapi integration and fallbacks
- * Refactored to eliminate duplication
- */
-export function useProducts(): IListQueryResult<ProductProps> {
-  return useGenericList(
-    ['products'],
-    () => strapiServices.products.getAll(),
-    'products'
-  );
+export function useProducts(): UseQueryResult<ProductProps[]> {
+  return useQuery({
+    queryKey: ['products'],
+    queryFn: () => strapiService.getProducts(),
+  });
 }
 
-/**
- * Get services with Strapi integration and fallbacks
- * Refactored to eliminate duplication
- */
-export function useServices(): IListQueryResult<ServiceProps> {
-  return useGenericList(
-    ['services'],
-    () => strapiServices.services.getAll(),
-    'services'
-  );
+export function useServices(): UseQueryResult<ServiceProps[]> {
+  return useQuery({
+    queryKey: ['services'],
+    queryFn: () => strapiService.getServices(),
+  });
 }
 
-/**
- * Get testimonials with Strapi integration and fallbacks
- */
-export function useTestimonials(): IListQueryResult<TestimonialProps> {
-  return useGenericList(
-    ['testimonials'],
-    () => strapiServices.testimonials.getAll(),
-    'testimonials'
-  );
+export function useTestimonials(): UseQueryResult<TestimonialProps[]> {
+  return useQuery({
+    queryKey: ['testimonials'],
+    queryFn: () => strapiService.getTestimonials(),
+  });
 }
 
-/**
- * Get team members with Strapi integration and fallbacks
- */
-export function useTeamMembers(): IListQueryResult<TeamMember> {
-  return useGenericList(
-    ['team-members'],
-    () => strapiServices.team.getAll(),
-    'team'
-  );
+export function useTeamMembers(): UseQueryResult<TeamMember[]> {
+  return useQuery({
+    queryKey: ['team-members'],
+    queryFn: () => strapiService.getTeam(),
+  });
 }
 
-/**
- * Get case studies with Strapi integration and fallbacks
- */
-export function useCaseStudies(): IListQueryResult<CaseStudyProps> {
-  return useGenericList(
-    ['case-studies'],
-    () => strapiServices.caseStudies.getAll(),
-    'caseStudies'
-  );
+export function useCaseStudies(): UseQueryResult<CaseStudyProps[]> {
+  return useQuery({
+    queryKey: ['case-studies'],
+    queryFn: () => strapiService.getCaseStudies(),
+  });
 }
 
-/**
- * Get industries with Strapi integration and fallbacks
- */
-export function useIndustries(): IListQueryResult<IndustryProps> {
-  return useGenericList(
-    ['industries'],
-    () => strapiServices.industries.getAll(),
-    'industries'
-  );
+export function useIndustries(): UseQueryResult<IndustryProps[]> {
+  return useQuery({
+    queryKey: ['industries'],
+    queryFn: () => strapiService.getIndustries(),
+  });
 }
 
-/**
- * Get job listings with Strapi integration and fallbacks
- */
-export function useJobListings(): IListQueryResult<JobListing> {
-  return useGenericList(
-    ['job-listings'],
-    () => strapiServices.jobs.getAll(),
-    'jobs'
-  );
+export function useJobListings(): UseQueryResult<JobListing[]> {
+  return useQuery({
+    queryKey: ['job-listings'],
+    queryFn: () => strapiService.getJobs(),
+  });
 }
 
-/**
- * Get client logos with Strapi integration and fallbacks
- */
-export function useClientLogos(): IListQueryResult<ClientLogo> {
-  return useGenericList(
-    ['client-logos'],
-    () => strapiServices.clientLogos.getAll(),
-    'clients'
-  );
+export function useClientLogos(): UseQueryResult<ClientLogo[]> {
+  return useQuery({
+    queryKey: ['client-logos'],
+    queryFn: () => strapiService.getClientLogos(),
+  });
 }
 
-/**
- * Get FAQ items with Strapi integration and fallbacks
- */
-export function useFAQItems(): IListQueryResult<FAQItem> {
-  return useGenericList(
-    ['faq-items'],
-    () => strapiServices.faqs.getAll(),
-    'faqs'
-  );
+export function useFAQItems(): UseQueryResult<FAQItem[]> {
+  return useQuery({
+    queryKey: ['faq-items'],
+    queryFn: () => strapiService.getFaqs(),
+  });
 }
 
 // =============================================================================
-// BLOG HOOKS (ERPNext Integration - Refactored)
+// BLOG HOOKS (ERPNext Integration)
 // =============================================================================
 
-/**
- * Get blog posts from ERPNext with fallbacks
- */
-export function useBlogPosts(): IListQueryResult<BlogPost> {
-  return useGenericList(
-    ['blog-posts'],
-    () => erpNextServices.blog.getAllPosts(),
-    'blogs',
-    { retry: 2 }
-  );
+export function useBlogPosts(): UseQueryResult<BlogPost[]> {
+  return useQuery({
+    queryKey: ['blog-posts'],
+    queryFn: () => erpNextServices.getAllBlogPosts(),
+    retry: 2,
+  });
 }
 
-/**
- * Get single blog post from ERPNext with fallbacks
- */
-export function useBlogPost(slug: string): IQueryResult<BlogPost | null> {
-  return useGenericItem(
-    ['blog-post', slug],
-    () => erpNextServices.blog.getPost(slug),
-    null,
-    { 
-      retry: 2, 
-      enabled: !!slug,
-      staleTime: 10 * 60 * 1000,
-      gcTime: 60 * 60 * 1000
-    }
-  );
+export function useBlogPost(slug: string): UseQueryResult<BlogPost | null> {
+  return useQuery({
+    queryKey: ['blog-post', slug],
+    queryFn: () => erpNextServices.getBlogPost(slug),
+    retry: 2,
+    enabled: !!slug,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+  });
 }
 
-/**
- * Get blog categories from ERPNext with fallbacks
- */
 export function useBlogCategories(): UseQueryResult<BlogCategory[]> {
   return useQuery({
     queryKey: ['blog-categories'],
     queryFn: async () => {
       // TODO: Implement ERPNext blog categories endpoint
-      // For now, return empty array as placeholder
       return [];
     },
     staleTime: 20 * 60 * 1000,
@@ -247,101 +172,21 @@ export function useBlogCategories(): UseQueryResult<BlogCategory[]> {
 // SYSTEM HEALTH HOOKS
 // =============================================================================
 
-/**
- * Check ERPNext system health
- */
 export function useERPNextHealth() {
   return useQuery({
     queryKey: ['erpnext-health'],
     queryFn: checkERPNextHealth,
-    staleTime: 2 * 60 * 1000, // 2 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: 2 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     retry: 1,
     refetchOnWindowFocus: false
   });
 }
 
 // =============================================================================
-// UTILITY HOOKS
+// NAVIGATION & LAYOUT HOOKS
 // =============================================================================
 
-/**
- * Get UI text with fallback support
- */
-export function useUIText(key: string, category: keyof typeof UI_TEXT_FALLBACKS = 'buttons') {
-  const { data: uiContent } = useUIContent();
-  
-  return (strapiText?: string) => {
-    if (strapiText) return strapiText;
-    
-    const categoryData = uiContent?.[category] as any;
-    return categoryData?.[key] || key;
-  };
-}
-
-/**
- * Comprehensive content status hook
- * Refactored to use generic status aggregator
- */
-export function useContentStatus(): IContentStatus {
-  const products = useProducts();
-  const services = useServices();
-  const blogs = useBlogPosts();
-  const testimonials = useTestimonials();
-  const team = useTeamMembers();
-  const erpHealth = useERPNextHealth();
-
-  return useContentStatusAggregator([
-    { key: 'products', query: products },
-    { key: 'services', query: services },
-    { key: 'blogs', query: blogs },
-    { key: 'testimonials', query: testimonials },
-    { key: 'team', query: team },
-    { key: 'erpnext', query: erpHealth }
-  ]);
-}
-
-/**
- * Composite content hook for dashboard/admin views
- * DRY principle: Load multiple content types efficiently
- */
-export function useAllContent() {
-  return useCompositeContent({
-    products: {
-      queryKey: ['products'],
-      fetcher: () => strapiServices.products.getAll(),
-      contentType: 'products'
-    },
-    services: {
-      queryKey: ['services'],
-      fetcher: () => strapiServices.services.getAll(),
-      contentType: 'services'
-    },
-    blogs: {
-      queryKey: ['blog-posts'],
-      fetcher: () => erpNextServices.blog.getAllPosts(),
-      contentType: 'blogs'
-    },
-    testimonials: {
-      queryKey: ['testimonials'],
-      fetcher: () => strapiServices.testimonials.getAll(),
-      contentType: 'testimonials'
-    },
-    team: {
-      queryKey: ['team-members'],
-      fetcher: () => strapiServices.team.getAll(),
-      contentType: 'team'
-    }
-  });
-}
-
-// =============================================================================
-// NAVIGATION & LAYOUT HOOKS (from useStrapiContent.ts)
-// =============================================================================
-
-/**
- * Custom hook to fetch navigation menu items
- */
 export function useNavigation() {
   return useQuery<NavItem[]>({
     queryKey: ['navigation'],
@@ -363,9 +208,6 @@ export function useNavigation() {
   });
 }
 
-/**
- * Custom hook to fetch social media links
- */
 export function useSocialLinks() {
   return useQuery<SocialLink[]>({
     queryKey: ['social-links'],
@@ -384,9 +226,6 @@ export function useSocialLinks() {
   });
 }
 
-/**
- * Custom hook to fetch footer columns
- */
 export function useFooterColumns() {
   return useQuery<FooterColumn[]>({
     queryKey: ['footer-columns'],
@@ -404,9 +243,6 @@ export function useFooterColumns() {
   });
 }
 
-/**
- * Custom hook to fetch site configuration
- */
 export function useSiteConfig() {
   return useQuery<SiteConfig>({
     queryKey: ['site-config'],
@@ -425,9 +261,6 @@ export function useSiteConfig() {
   });
 }
 
-/**
- * Custom hook to fetch footer data
- */
 export function useFooter() {
   return useQuery<FooterProps>({
     queryKey: ['footer'],
@@ -447,12 +280,9 @@ export function useFooter() {
 }
 
 // =============================================================================
-// BLOG HOOKS (Extended from useStrapiContent.ts)
+// BLOG HOOKS (Extended)
 // =============================================================================
 
-/**
- * Custom hook to fetch blog posts with parameters
- */
 export function useBlogPostsWithParams(params?: {
   limit?: number;
   category?: string;
@@ -479,9 +309,6 @@ export function useBlogPostsWithParams(params?: {
   });
 }
 
-/**
- * Custom hook to fetch a blog post by slug
- */
 export function useBlogPostBySlug(slug: string) {
   return useQuery<BlogPost | null>({
     queryKey: ['blog-post', slug],
@@ -502,9 +329,6 @@ export function useBlogPostBySlug(slug: string) {
   });
 }
 
-/**
- * Custom hook to fetch blog comments for a post
- */
 export function useBlogComments(postId: string) {
   return useQuery<BlogComment[]>({
     queryKey: ['blog-comments', postId],
@@ -528,9 +352,6 @@ export function useBlogComments(postId: string) {
 // ITEM-SPECIFIC HOOKS (Extended)
 // =============================================================================
 
-/**
- * Custom hook to fetch a single service by ID
- */
 export function useServiceById(id: number) {
   return useQuery<ServiceProps | undefined>({
     queryKey: ['services', id],
@@ -550,9 +371,6 @@ export function useServiceById(id: number) {
   });
 }
 
-/**
- * Custom hook to fetch a single product by ID
- */
 export function useProductById(id: number) {
   return useQuery<ProductProps | undefined>({
     queryKey: ['products', id],
@@ -572,9 +390,6 @@ export function useProductById(id: number) {
   });
 }
 
-/**
- * Custom hook to fetch job by ID
- */
 export function useJobById(id: number) {
   return useQuery<JobListing | undefined>({
     queryKey: ['job-listings', id],

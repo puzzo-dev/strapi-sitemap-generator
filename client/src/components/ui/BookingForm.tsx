@@ -16,8 +16,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { submitDemoRequest } from '@/lib/erpnext';
-import { useUIText } from '@/hooks/useContent';
+import { submitDemoRequest } from '@/lib/strapi';
+// import { useUIText } from '@/hooks/useContent';
 import { UI_TEXT_FALLBACKS } from '@/lib/fallbacks';
 
 const demoRequestFormSchema = z.object({

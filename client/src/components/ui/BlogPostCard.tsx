@@ -10,13 +10,11 @@ import {
     FiTag,
 } from 'react-icons/fi';
 import { Badge } from '@/components/ui/badge';
-import type { BlogPost } from '@/lib/types';
+import type { BlogPostCardProps } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
 import { gridItemAnimation } from '@/lib/animations';
 
-interface BlogPostCardProps extends BlogPost { }
-
-const BlogPostCard: React.FC<BlogPostCardProps> = (post) => {
+const BlogPostCard: React.FC<BlogPostCardProps> = ({ item: post }) => {
     const { t } = useTranslation();
 
     // Truncate text

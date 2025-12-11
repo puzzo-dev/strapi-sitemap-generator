@@ -23,27 +23,31 @@ export type ToastProps = {
   onOpenChange?: (open: boolean) => void
 }
 
-export type ToastActionType = {
-  ADD_TOAST: "ADD_TOAST"
-  UPDATE_TOAST: "UPDATE_TOAST"
-  DISMISS_TOAST: "DISMISS_TOAST"
-  REMOVE_TOAST: "REMOVE_TOAST"
-}
+export const ToastActionTypes = {
+  ADD_TOAST: "ADD_TOAST",
+  UPDATE_TOAST: "UPDATE_TOAST",
+  DISMISS_TOAST: "DISMISS_TOAST",
+  REMOVE_TOAST: "REMOVE_TOAST",
+} as const;
+ 
+export type ToastActionType = typeof ToastActionTypes[keyof typeof ToastActionTypes];
 
 export type ToastAction =
   | {
-    type: ToastActionType["ADD_TOAST"]
+    type: typeof ToastActionTypes.ADD_TOAST
     toast: ToasterToast
   }
   | {
-    type: ToastActionType["UPDATE_TOAST"]
+    type: typeof ToastActionTypes.UPDATE_TOAST
     toast: Partial<ToasterToast>
   }
   | {
-    type: ToastActionType["DISMISS_TOAST"]
+    type: typeof ToastActionTypes.DISMISS_TOAST
     toastId?: ToasterToast["id"]
   }
   | {
-    type: ToastActionType["REMOVE_TOAST"]
+    type: typeof ToastActionTypes.REMOVE_TOAST
     toastId?: ToasterToast["id"]
-  } 
+  }
+
+export type Toast = Omit<ToasterToast, "id"> 

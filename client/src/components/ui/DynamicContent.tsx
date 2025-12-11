@@ -24,8 +24,10 @@ const DynamicContent: React.FC<DynamicContentProps> = ({ content }) => {
               case 'paragraph':
                 return <p key={index} className="mb-4">{block.text}</p>;
               case 'heading':
-                const HeadingTag = `h${block.level}` as keyof JSX.IntrinsicElements;
-                return <HeadingTag key={index} className="mt-6 mb-4">{block.text}</HeadingTag>;
+                {
+                  const HeadingTag = `h${block.level}` as keyof JSX.IntrinsicElements;
+                  return <HeadingTag key={index} className="mt-6 mb-4">{block.text}</HeadingTag>;
+                }
               case 'list':
                 if (block.format === 'ordered') {
                   return (

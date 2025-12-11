@@ -6,7 +6,7 @@
  */
 
 import { PageSection, PageContent, SiteConfig } from './core';
-import { BlogPost, BlogCategory, FAQItem, FAQCategory, TestimonialProps, IndustryProps, CaseStudyProps, ServiceProps, HeroSlide, ProductProps } from './content';
+import { BlogPost, BlogCategory, FAQItem, FAQCategory, TestimonialProps, IndustryProps, CaseStudyProps, ServiceProps, HeroSlide, ProductProps, TeamMember } from './content';
 import { SocialLink } from './layout';
 // ============================================================================
 // SECTION COMPONENT PROPS
@@ -117,6 +117,12 @@ export interface BlogSidebarSectionProps {
   setCategory: (value: string) => void;
   pageContent: PageContent;
   isLoading?: boolean;
+}
+
+export interface TeamMemberSidebarSectionProps {
+    member: TeamMember;
+    isLoading?: boolean;
+    pageContent?: PageContent;
 }
 
 // Posts/Content Section Props

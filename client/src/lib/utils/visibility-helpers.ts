@@ -54,16 +54,7 @@ export const filterVisibleSections = (sections: PageSection[]): PageSection[] =>
   return sections.filter(isSectionVisible);
 };
 
-/**
- * Filter visible navigation items from an array
- */
-export const filterVisibleNavItems = (navItems: NavItem[]): NavItem[] => {
-  return navItems.filter(isNavItemVisible).map(item => ({
-    ...item,
-    // Also filter children if they exist
-    children: item.children ? filterVisibleNavItems(item.children) : undefined
-  }));
-};
+
 
 /**
  * Filter visible footer columns from an array
@@ -175,7 +166,7 @@ export const batchUpdatePageVisibility = (
   updates: Record<number, boolean>
 ): PageContent[] => {
   return pages.map(page => 
-    updates.hasOwnProperty(page.id) 
+    Object.prototype.hasOwnProperty.call(updates, page.id)
       ? setPageVisibility(page, updates[page.id])
       : page
   );
@@ -189,7 +180,7 @@ export const batchUpdateSectionVisibility = (
   updates: Record<number, boolean>
 ): PageSection[] => {
   return sections.map(section => 
-    updates.hasOwnProperty(section.id) 
+    Object.prototype.hasOwnProperty.call(updates, section.id)
       ? setSectionVisibility(section, updates[section.id])
       : section
   );
@@ -221,7 +212,7 @@ export default {
   isFooterColumnVisible,
   filterVisiblePages,
   filterVisibleSections,
-  filterVisibleNavItems,
+
   filterVisibleFooterColumns,
   getVisibleSections,
   hasVisibleSections,

@@ -1,14 +1,17 @@
 // Export all services
 export { AnalyticsService as AnalyticsServiceClass, analyticsService } from './AnalyticsService';
 export { BaseService } from './BaseService';
-export { ERPNextService } from './ERPNextService';
-export { StrapiService } from './StrapiService';
+export { ERPNextService, erpNextService } from './ERPNextService';
+export { StrapiService, strapiService } from './StrapiService';
 export {
     BrowserCacheService,
     MemoryCacheService,
     ConsoleLoggerService,
     RemoteLoggerService,
     ToastNotificationService,
-    ServiceFactory
+    ServiceFactory,
+    cacheService,
+    loggerService,
+    notificationService
 } from './UtilityServices';
 export { AdManager, adManager } from './adManager';

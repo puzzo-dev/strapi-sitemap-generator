@@ -1,11 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useJobListings } from '@/hooks/useContent';
 import { jobListings as fallbackJobListings } from '@/lib/data/';
-
-export interface CareersFormState {
-  showExpressionForm: boolean;
-  formSubmitted: boolean;
-}
+import { CareersFormState } from '@/lib/types/forms';
 
 export const useCareersPageState = () => {
   // Expression form state

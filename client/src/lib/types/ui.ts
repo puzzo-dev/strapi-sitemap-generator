@@ -110,4 +110,7 @@ export interface CardProps<T> {
 
 // Specific card type aliases for consistency
 export type ProductCardProps = CardProps<import('./content').ProductProps>;
-export type ServiceCardProps = CardProps<import('./content').ServiceProps>; 
+export type ServiceCardProps = CardProps<import('./content').ServiceProps>;
+export type BlogCardProps = CardProps<import('./content').BlogPost>;
+export type BlogPostCardProps = CardProps<import('./content').BlogPost>;
+ 

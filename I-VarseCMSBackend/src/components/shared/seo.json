@@ -34,7 +34,7 @@
     "ogType": {
       "type": "enumeration",
       "enum": [
-        "page",
+        "website",
         "article",
         "service",
         "product"

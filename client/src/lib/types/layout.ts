@@ -1,5 +1,4 @@
 import React from "react";
-import { SupportedLanguage } from "../utils";
 import { AppLinkProps } from "./core";
 
 // Layout and Navigation Types
