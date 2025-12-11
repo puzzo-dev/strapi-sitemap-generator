@@ -14,6 +14,7 @@ import {
   JobListing
 } from '@/lib/types';
 import { getSiteConfig } from './strapi';
+import { getSecret } from './utils/credentials';
 
 interface ERPNextCredentials {
   url?: string;
@@ -26,13 +27,23 @@ async function getERPNextCredentials(): Promise<ERPNextCredentials> {
   let ERP_NEXT_API_KEY: string | undefined;
   let ERP_NEXT_API_SECRET: string | undefined;
 
-  try {
-    const siteConfig = await getSiteConfig();
-    ERP_NEXT_URL = siteConfig.erpNextUrl;
-    ERP_NEXT_API_KEY = siteConfig.erpNextApiKey;
-    ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret;
-  } catch {
-    console.warn('Could not fetch SiteConfig, using environment variables for ERPNext');
+  // Production: prefer Cloudflare secret store if available
+  if (import.meta.env.PROD) {
+    ERP_NEXT_URL = getSecret('ERP_NEXT_URL');
+    ERP_NEXT_API_KEY = getSecret('ERP_NEXT_API_KEY');
+    ERP_NEXT_API_SECRET = getSecret('ERP_NEXT_API_SECRET');
+  }
+
+  // Try to fetch dynamic config (can override CF secrets if present)
+  if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
+    try {
+      const siteConfig = await getSiteConfig();
+      ERP_NEXT_URL = siteConfig.erpNextUrl || ERP_NEXT_URL;
+      ERP_NEXT_API_KEY = siteConfig.erpNextApiKey || ERP_NEXT_API_KEY;
+      ERP_NEXT_API_SECRET = siteConfig.erpNextApiSecret || ERP_NEXT_API_SECRET;
+    } catch {
+      console.warn('Could not fetch SiteConfig; using secrets/env for ERPNext');
+    }
   }
 
   if (!ERP_NEXT_URL || !ERP_NEXT_API_KEY || !ERP_NEXT_API_SECRET) {
@@ -274,11 +285,9 @@ export async function getERPNextBlogPosts(): Promise<BlogPost[]> {
 
 export async function getERPNextBlogPost(slug: string): Promise<BlogPost | null> {
   try {
-    const result = await fetchERPNext<{ data: any[] }>('Blog Post', {
-      method: 'GET',
-      body: JSON.stringify({
-        filters: `[["route","=","/${slug}"]]`
-      })
+    const filter = encodeURIComponent(`[["route","=","/${slug}"]]`);
+    const result = await fetchERPNext<{ data: any[] }>(`Blog Post?filters=${filter}`, {
+      method: 'GET'
     });
     const post = result.data?.[0];
     return post ? transformERPNextBlogPost(post) : null;
@@ -309,11 +318,9 @@ export async function getERPNextTeamMember(_slug: string): Promise<TeamMember | 
 
 export async function getERPNextJobListings(): Promise<JobListing[]> {
   try {
-    const result = await fetchERPNext<{ data: any[] }>('Job Opening', {
-      method: 'GET',
-      body: JSON.stringify({
-        filters: `[["status","=","Open"]]`
-      })
+    const filters = encodeURIComponent('[["status","=","Open"]]');
+    const result = await fetchERPNext<{ data: any[] }>(`Job Opening?filters=${filters}`, {
+      method: 'GET'
     });
 
     return (result.data || []).map((job: any) => ({
@@ -390,11 +397,9 @@ export async function getERPNextJobListing(idOrName: string): Promise<JobListing
 
 export async function getERPNextBlogComments(postId: string): Promise<BlogComment[]> {
   try {
-    const result = await fetchERPNext<{ data: any[] }>('Blog Comment', {
-      method: 'GET',
-      body: JSON.stringify({
-        filters: `[["blog_post","=","${postId}"]]`
-      })
+    const filters = encodeURIComponent(`[["blog_post","=","${postId}"]]`);
+    const result = await fetchERPNext<{ data: any[] }>(`Blog Comment?filters=${filters}`, {
+      method: 'GET'
     });
 
     return (result.data || []).map((comment: any, index: number) => ({

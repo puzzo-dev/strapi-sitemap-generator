@@ -1,7 +1,42 @@
 /**
  * Strapi Service
  *
- * This service is responsible for all communication with the Strapi CMS.
+ * This service handles all communication with the Strapi CMS Backend.
+ * 
+ * IMPORTANT: Strapi Structure Overview
+ * =====================================
+ * 
+ * Current Strapi Collections (exist in backend):
+ * - services          → /api/services
+ * - case-studies      → /api/case-studies
+ * - projects          → /api/projects (used as products - no separate products collection)
+ * - teams             → /api/teams
+ * - industries        → /api/industries
+ * - pages             → /api/pages
+ * - menu-items        → /api/menu-items
+ * - global (single)   → /api/global (contains header with client logos)
+ * - global-seo (single) → /api/global-seo
+ * 
+ * Data Mapping:
+ * - products          → Uses 'projects' collection (no separate products collection)
+ * - testimonials      → Static items extracted from page/content components (cards.testimonial-card)
+ * - faq-items         → Missing collection, returns empty (uses client fallback data)
+ * - client-logos      → Extracted from global.header.siteLogo component
+ * 
+ * All collections use i18n for localization and dynamic content zones for flexible layouts.
+ * 
+ * Dynamic Content Components Available:
+ * - hero.hero-simple, hero.hero-full
+ * - cards.base-card, cards.testimonial-card, cards.stat, cards.social-link, cards.contact-info
+ * - blocks.gallery-section, blocks.cta-section, blocks.base-row
+ * - shared.link, shared.badge, shared.seo, shared.logo
+ * 
+ * To create missing collections in Strapi:
+ * 1. Go to Content-Type Builder in Strapi admin
+ * 2. Create Collection Type (e.g., "product", "testimonial", "faq-item", "client-logo")
+ * 3. Add fields matching the interfaces in /client/src/lib/types/
+ * 4. Enable i18n plugin for localization
+ * 5. Update this service to fetch from the new endpoints
  */
 import { ILoggerService, ICacheService } from '@/lib/abstractions';
 import {
@@ -16,6 +51,7 @@ import {
   ClientLogo,
   FAQItem
 } from '@/lib/types';
+import { getSecret } from '@/lib/utils/credentials';
 
 export class StrapiService {
   private readonly baseUrl: string;
@@ -24,9 +60,13 @@ export class StrapiService {
   private readonly cache?: ICacheService;
 
   constructor(logger?: ILoggerService, cache?: ICacheService) {
-    this.baseUrl = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
+    const secretBaseUrl = import.meta.env.PROD ? getSecret('STRAPI_API_URL') : undefined;
+    const secretToken = import.meta.env.PROD ? getSecret('STRAPI_API_TOKEN') : undefined;
+    this.baseUrl = secretBaseUrl || import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
     this.headers = {
-      'Authorization': `Bearer ${import.meta.env.VITE_STRAPI_API_TOKEN}`,
+      ...(secretToken || import.meta.env.VITE_STRAPI_API_TOKEN
+        ? { 'Authorization': `Bearer ${secretToken || import.meta.env.VITE_STRAPI_API_TOKEN}` }
+        : {}),
       'Content-Type': 'application/json',
     };
     this.logger = logger;
@@ -87,205 +127,276 @@ export class StrapiService {
   }
 
   public async getProducts(): Promise<ProductProps[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/products');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        title: attrs.title || '',
-        slug: attrs.slug || '',
-        translationKey: attrs.translationKey,
-        description: attrs.description || '',
-        image: attrs.image?.data?.attributes?.url,
-        keyFeatures: attrs.keyFeatures || [],
-        benefits: attrs.benefits || { id: 0, title: '', content: '', items: [] },
-        industries: attrs.industries || { id: 0, title: '', content: '', items: [] },
-        casestudies: attrs.casestudies || { id: 0, title: '', content: '', items: [] },
-        faqs: attrs.faqs || { id: 0, title: '', content: '', items: [] },
-        pricing: attrs.pricing || [],
-        demoUrl: attrs.demoUrl || '',
-        downloadUrl: attrs.downloadUrl || '',
-        supportUrl: attrs.supportUrl || '',
-        category: attrs.category || [],
-        tags: attrs.tags || [],
-        status: attrs.status || 'Active'
-      };
-    });
+    // Products are stored in the 'projects' collection in Strapi
+    // There is no separate 'products' collection - projects serve as products
+    try {
+      const response = await this.makeRequest<{ data: any[] }>('/api/projects', {
+        'populate': 'deep'
+      });
+      return response.data.map(item => {
+        const attrs = item.attributes || {};
+        return {
+          id: item.id,
+          title: attrs.title || '',
+          slug: attrs.slug || '',
+          translationKey: attrs.translationKey,
+          description: attrs.description || '',
+          image: attrs.content?.find((c: any) => c.__component === 'blocks.gallery-section')?.galleryImages?.[0] || '',
+          keyFeatures: [],
+          benefits: { id: 0, title: '', content: '', items: [] },
+          industries: { id: 0, title: '', content: '', items: [] },
+          casestudies: { id: 0, title: '', content: '', items: [] },
+          faqs: { id: 0, title: '', content: '', items: [] },
+          pricing: [],
+          demoUrl: '',
+          downloadUrl: '',
+          supportUrl: '',
+          category: [],
+          tags: [],
+          status: 'Active' as const
+        };
+      });
+    } catch (error) {
+      this.logger?.warn('Products/Projects not found in Strapi, returning empty array');
+      return [];
+    }
   }
-  
-  
+
   public async getServices(): Promise<ServiceProps[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/services');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        title: attrs.title || '',
-        slug: attrs.slug || '',
-        subtitle: attrs.subtitle || '',
-        description: attrs.description || '',
-        fullDescription: attrs.fullDescription || '',
-        benefits: attrs.benefits || { id: 0, title: '', content: '', items: [] },
-        casestudies: attrs.casestudies || { id: 0, title: '', content: '', items: [] },
-        faqs: attrs.faqs || { id: 0, title: '', content: '', items: [] },
-        icon: attrs.icon || 'fa-cog',
-        image: attrs.image?.data?.attributes?.url || attrs.image
-      };
-    });
+    try {
+      const response = await this.makeRequest<{ data: any[] }>('/api/services', {
+        'populate': 'deep'
+      });
+      return response.data.map(item => {
+        const attrs = item.attributes || {};
+        // Extract image from content blocks if not directly available
+        const heroBlock = attrs.content?.find((c: any) => c.__component === 'hero.hero-simple');
+        const galleryBlock = attrs.content?.find((c: any) => c.__component === 'blocks.gallery-section');
+
+        return {
+          id: item.id,
+          title: attrs.title || '',
+          slug: attrs.slug || '',
+          subtitle: heroBlock?.subtitle || '',
+          description: attrs.description || '',
+          fullDescription: attrs.description || '',
+          benefits: { id: 0, title: '', content: '', items: [] },
+          casestudies: { id: 0, title: '', content: '', items: [] },
+          faqs: { id: 0, title: '', content: '', items: [] },
+          icon: 'fa-cog',
+          image: heroBlock?.backgroundImage || galleryBlock?.galleryImages?.[0] || undefined,
+          seo: attrs.seo
+        };
+      });
+    } catch (error) {
+      this.logger?.warn('Services not found in Strapi, returning empty array');
+      return [];
+    }
   }
 
   public async getTestimonials(): Promise<TestimonialProps[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/testimonials');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        name: attrs.name || '',
-        content: attrs.content || '',
-        translationKey: attrs.translationKey,
-        rating: attrs.rating || 5,
-        image: attrs.image?.data?.attributes?.url || attrs.avatar,
-        avatar: attrs.avatar, // Legacy support
-        position: attrs.position,
-        company: attrs.company
-      };
-    });
+    // Testimonials collection doesn't exist - extract from pages or return empty
+    // Testimonials are stored as components within dynamic content zones
+    try {
+      const response = await this.makeRequest<{ data: any[] }>('/api/pages', {
+        'populate': 'deep'
+      });
+
+      const testimonials: TestimonialProps[] = [];
+
+      // Extract testimonial cards from all pages
+      response.data.forEach(page => {
+        const content = page.attributes?.section || page.attributes?.content || [];
+        content.forEach((block: any) => {
+          if (block.__component === 'cards.testimonial-card') {
+            testimonials.push({
+              id: testimonials.length + 1,
+              name: block.customerName || '',
+              content: block.testimonial || '',
+              rating: block.rating || 5,
+              image: block.customerImage?.url || block.customerImage?.data?.attributes?.url,
+              position: '',
+              company: ''
+            });
+          }
+        });
+      });
+
+      return testimonials;
+    } catch (error) {
+      this.logger?.warn('Testimonials not found in Strapi, returning empty array');
+      return [];
+    }
   }
 
   public async getTeam(): Promise<TeamMember[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/team-members');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        name: attrs.name || '',
-        position: attrs.position || '',
-        translationKey: attrs.translationKey,
-        bio: attrs.bio || '',
-        role: attrs.role || attrs.position || '',
-        image: attrs.image?.data?.attributes?.url || '',
-        slug: attrs.slug || '',
-        description: attrs.description || '',
-        email: attrs.email,
-        phone: attrs.phone,
-        location: attrs.location,
-        joinDate: attrs.joinDate,
-        socialLinks: attrs.socialLinks || [],
-        projects: attrs.projects,
-        relatedTeamMembers: attrs.relatedTeamMembers
-      };
-    });
+    try {
+      const response = await this.makeRequest<{ data: any[] }>('/api/teams', {
+        'populate': 'deep'
+      });
+      return response.data.map(item => {
+        const attrs = item.attributes || {};
+        // Extract data from content blocks
+        const heroBlock = attrs.content?.find((c: any) => c.__component === 'hero.hero-simple');
+        const contactBlock = attrs.content?.find((c: any) => c.__component === 'cards.contact-info');
+        const socialBlock = attrs.content?.find((c: any) => c.__component === 'cards.social-link');
+
+        return {
+          id: item.id,
+          name: attrs.title || '',
+          position: heroBlock?.subtitle || '',
+          translationKey: attrs.translationKey,
+          bio: attrs.description || '',
+          role: heroBlock?.subtitle || '',
+          image: heroBlock?.backgroundImage || '',
+          slug: attrs.slug || '',
+          description: attrs.description || '',
+          email: contactBlock?.email,
+          phone: contactBlock?.phone,
+          location: contactBlock?.address,
+          socialLinks: socialBlock ? [socialBlock] : [],
+          seo: attrs.seo
+        };
+      });
+    } catch (error) {
+      this.logger?.warn('Team members not found in Strapi, returning empty array');
+      return [];
+    }
   }
 
   public async getCaseStudies(): Promise<CaseStudyProps[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/case-studies');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        title: attrs.title || '',
-        slug: attrs.slug || '',
-        translationKey: attrs.translationKey,
-        description: attrs.description || '',
-        image: attrs.image?.data?.attributes?.url,
-        client: attrs.client || '',
-        industry: attrs.industry || '',
-        duration: attrs.duration || '3 months',
-        status: attrs.status || 'completed',
-        challenge: attrs.challenge || '',
-        solution: attrs.solution || '',
-        results: attrs.results || [],
-        technologies: attrs.technologies || [],
-        timeline: attrs.timeline || '',
-        teamSize: attrs.teamSize,
-        testimonial: attrs.testimonial,
-        gallery: attrs.gallery || [],
-        tags: attrs.tags || [],
-        featured: attrs.featured || false,
-        publishedDate: attrs.publishedAt || new Date().toISOString()
-      };
-    });
+    try {
+      const response = await this.makeRequest<{ data: any[] }>('/api/case-studies', {
+        'populate': 'deep'
+      });
+      return response.data.map(item => {
+        const attrs = item.attributes || {};
+        // Extract data from dynamic content
+        const heroBlock = attrs.content?.find((c: any) => c.__component === 'hero.hero-simple');
+        const statsBlock = attrs.content?.find((c: any) => c.__component === 'cards.stat');
+        const galleryBlock = attrs.content?.find((c: any) => c.__component === 'blocks.gallery-section');
+        const testimonialBlock = attrs.content?.find((c: any) => c.__component === 'cards.testimonial-card');
+
+        return {
+          id: item.id,
+          title: attrs.title || '',
+          slug: attrs.slug || '',
+          translationKey: attrs.translationKey,
+          description: attrs.description || '',
+          image: heroBlock?.backgroundImage || galleryBlock?.galleryImages?.[0],
+          client: '', // Not in current schema
+          industry: attrs.industry || '',
+          duration: '3 months',
+          teamSize: 0, // Not in current schema
+          status: 'completed' as const,
+          challenge: '',
+          solution: '',
+          results: statsBlock ? [statsBlock] : [],
+          technologies: [],
+          timeline: [],
+          testimonial: testimonialBlock,
+          gallery: galleryBlock?.galleryImages || [],
+          tags: [],
+          featured: false,
+          publishedDate: attrs.publishedAt || attrs.createdAt || new Date().toISOString(),
+          seo: attrs.seo
+        };
+      });
+    } catch (error) {
+      this.logger?.warn('Case studies not found in Strapi, returning empty array');
+      return [];
+    }
   }
 
   public async getIndustries(): Promise<IndustryProps[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/industries');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        name: attrs.name || attrs.title || '',
-        title: attrs.title || '',
-        slug: attrs.slug || '',
-        translationKey: attrs.translationKey,
-        description: attrs.description || '',
-        image: attrs.image?.data?.attributes?.url,
-        challenges: attrs.challenges || [],
-        solutions: attrs.solutions || [],
-        technologies: attrs.technologies || [],
-        caseStudies: attrs.caseStudies || [],
-        benefits: attrs.benefits || [],
-        stats: attrs.stats || [],
-        featured: attrs.featured || false
-      };
-    });
-  }
+    try {
+      const response = await this.makeRequest<{ data: any[] }>('/api/industries', {
+        'populate': 'deep'
+      });
+      return response.data.map(item => {
+        const attrs = item.attributes || {};
+        const heroBlock = attrs.content?.find((c: any) => c.__component === 'hero.hero-simple');
+        const statsBlock = attrs.content?.filter((c: any) => c.__component === 'cards.stat') || [];
+        const cardsBlock = attrs.content?.filter((c: any) => c.__component === 'cards.base-card') || [];
 
-  public async getJobs(): Promise<JobListing[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/job-listings');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        title: attrs.title || '',
-        slug: attrs.slug || '',
-        translationKey: attrs.translationKey,
-        department: attrs.department || '',
-        location: attrs.location || '',
-        type: attrs.type || 'Full-time',
-        experience: attrs.experience || '',
-        salary: attrs.salary,
-        description: attrs.description || '',
-        requirements: attrs.requirements || [],
-        responsibilities: attrs.responsibilities || [],
-        benefits: attrs.benefits || [],
-        qualifications: attrs.qualifications || [],
-        skills: attrs.skills || [],
-        applicationDeadline: attrs.applicationDeadline,
-        isActive: attrs.isActive !== false,
-        featured: attrs.featured || false,
-        postedAt: attrs.postedAt || new Date().toISOString()
-      };
-    });
+        return {
+          id: item.id,
+          name: attrs.title || '',
+          title: attrs.title || '',
+          slug: attrs.slug || '',
+          translationKey: attrs.translationKey,
+          description: attrs.description || '',
+          image: heroBlock?.backgroundImage,
+          challenges: cardsBlock.map((c: any) => c.title).filter(Boolean),
+          solutions: cardsBlock.map((c: any) => c.description).filter(Boolean),
+          technologies: [],
+          caseStudies: [],
+          benefits: cardsBlock.map((c: any) => c.title).filter(Boolean),
+          stats: statsBlock.map((s: any) => ({
+            label: s.label || s.title,
+            value: s.value || s.description
+          })),
+          featured: false,
+          seo: attrs.seo
+        };
+      });
+    } catch (error) {
+      this.logger?.warn('Industries not found in Strapi, returning empty array');
+      return [];
+    }
   }
 
   public async getClientLogos(): Promise<ClientLogo[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/client-logos');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        name: attrs.name || '',
-        translationKey: attrs.translationKey,
-        image: attrs.image?.data?.attributes?.url || '',
-        url: attrs.url ? { url: attrs.url, isExternal: true } : undefined
-      };
-    });
+    // Client logos are stored in global.header.siteLogo component
+    try {
+      const response = await this.makeRequest<{ data: any }>('/api/global', {
+        'populate': 'deep'
+      });
+
+      const header = response.data?.attributes?.header;
+      const siteLogo = header?.siteLogo;
+
+      if (!siteLogo) {
+        this.logger?.warn('No site logo found in global.header, returning empty array');
+        return [];
+      }
+
+      // Extract logo information from the siteLogo component
+      const logos: ClientLogo[] = [];
+
+      // Handle light logo
+      if (siteLogo.logoImageLight?.data) {
+        logos.push({
+          id: 1,
+          name: siteLogo.logoText || 'Company Logo (Light)',
+          image: siteLogo.logoImageLight.data.attributes?.url || '',
+          url: undefined
+        });
+      }
+
+      // Handle dark logo
+      if (siteLogo.logoImageDark?.data) {
+        logos.push({
+          id: 2,
+          name: siteLogo.logoText || 'Company Logo (Dark)',
+          image: siteLogo.logoImageDark.data.attributes?.url || '',
+          url: undefined
+        });
+      }
+
+      return logos;
+    } catch (error) {
+      this.logger?.warn('Failed to fetch client logos from global.header, returning empty array');
+      return [];
+    }
   }
 
   public async getFaqs(): Promise<FAQItem[]> {
-    const response = await this.makeRequest<{ data: any[] }>('/api/faq-items');
-    return response.data.map(item => {
-      const attrs = item.attributes || {};
-      return {
-        id: item.id,
-        question: attrs.question || '',
-        answer: attrs.answer || '',
-        translationKey: attrs.translationKey,
-        category: attrs.category || 'General',
-        order: attrs.order || 0,
-        featured: attrs.featured || false
-      };
-    });
+    // FAQ items collection is the only missing collection in Strapi
+    // This will use fallback data from client/src/lib/data/faq.ts
+    // To enable Strapi FAQs: Create 'faq-item' collection in Strapi Content-Type Builder
+    this.logger?.debug('FAQ items collection not found in Strapi, using fallback data.');
+    return [];
   }
 }
 

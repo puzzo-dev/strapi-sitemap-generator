@@ -24,9 +24,14 @@ import {
 } from './types';
 
 // Constants for API integration
-const STRAPI_URL = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
-const STRAPI_API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
+const STRAPI_URL = import.meta.env.PROD
+  ? (getSecret('STRAPI_API_URL') || '')
+  : (import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337');
+const STRAPI_API_TOKEN = import.meta.env.PROD
+  ? getSecret('STRAPI_API_TOKEN')
+  : import.meta.env.VITE_STRAPI_API_TOKEN;
 
+import { getSecret } from '@/lib/utils/credentials';
 // Default headers for API requests
 const strapiHeaders = {
   'Content-Type': 'application/json',
@@ -201,9 +206,10 @@ export async function getFAQItems(): Promise<FAQItem[]> {
 
 /**
  * Get navigation menu items from API
+ * Maps from Strapi menu-items collection
  */
 export async function getNavItems(): Promise<NavItem[]> {
-  return fetchStrapiData<NavItem[]>('nav-items', localNavItems);
+  return fetchStrapiData<NavItem[]>('menu-items', localNavItems);
 }
 
 /**
@@ -221,7 +227,64 @@ export async function getFooterColumns(): Promise<FooterColumn[]> {
 }
 
 /**
+ * Get footer data from API
+ * Fetches from global single type footer component
+ */
+export async function getFooter(): Promise<FooterProps> {
+  try {
+    if (!STRAPI_API_TOKEN) {
+      return footerData;
+    }
+
+    const response = await fetch(`${STRAPI_URL}/api/global?populate=deep`, {
+      headers: strapiHeaders
+    });
+
+    if (!response.ok) {
+      throw new Error(`Strapi API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    if (!result.data?.attributes?.footer) {
+      return footerData;
+    }
+
+    const footer = result.data.attributes.footer;
+
+    // Map Strapi footer structure to FooterProps
+    return {
+      companyDescription: footer.companyDescFooter || footerData.companyDescription,
+      contactAddress: footer.companyContactInfo?.address || footerData.contactAddress,
+      contactPhone: footer.companyContactInfo?.phone || footerData.contactPhone,
+      contactEmail: footer.companyContactInfo?.email || footerData.contactEmail,
+      contactSectionTitle: footer.companyContactInfo?.title || footerData.contactSectionTitle,
+      columns: footer.FooterMenu?.map((menu: any, index: number) => ({
+        id: index + 1,
+        title: menu.footerMenuTitle || '',
+        links: menu.footerMenuLink?.map((link: any) => ({
+          title: link.linkText || '',
+          url: link.linkUrl || '#',
+          external: link.isExternal || false
+        })) || []
+      })) || footerData.columns,
+      socialLinks: footerData.socialLinks, // Use fallback for now
+      copyrightText: footer.legalFooter?.copyright || footerData.companyName,
+      companyName: footerData.companyName,
+      legalLinks: footer.legalFooter?.legalLink?.map((link: any) => ({
+        title: link.linkText || '',
+        url: link.linkUrl || '#',
+        external: link.isExternal || false
+      })) || footerData.legalLinks
+    };
+  } catch (error) {
+    console.warn('Error fetching footer:', error);
+    return footerData;
+  }
+}
+
+/**
  * Get site configuration from API
+ * Fetches from global-seo single type
  */
 export async function getSiteConfig(): Promise<SiteConfig> {
   try {
@@ -229,7 +292,7 @@ export async function getSiteConfig(): Promise<SiteConfig> {
       return defaultSiteConfig;
     }
 
-    const response = await fetch(`${STRAPI_URL}/api/site-config?populate=*`, {
+    const response = await fetch(`${STRAPI_URL}/api/global-seo?populate=*`, {
       headers: strapiHeaders
     });
 
@@ -242,9 +305,20 @@ export async function getSiteConfig(): Promise<SiteConfig> {
       return defaultSiteConfig;
     }
 
+    const attrs = result.data.attributes;
     return {
-      id: result.data.id,
-      ...result.data.attributes
+      siteName: attrs.siteName || defaultSiteConfig.siteName,
+      siteDescription: attrs.siteDescription || defaultSiteConfig.siteDescription,
+      siteUrl: attrs.websiteUrl || defaultSiteConfig.siteUrl,
+      contactEmail: attrs.contactEmail || defaultSiteConfig.contactEmail,
+      contactPhone: defaultSiteConfig.contactPhone,
+      contactAddress: defaultSiteConfig.contactAddress,
+      logoLight: attrs.logoUrl || defaultSiteConfig.logoLight,
+      logoDark: defaultSiteConfig.logoDark,
+      favicon: defaultSiteConfig.favicon,
+      erpNextUrl: defaultSiteConfig.erpNextUrl,
+      erpNextApiKey: defaultSiteConfig.erpNextApiKey,
+      erpNextApiSecret: defaultSiteConfig.erpNextApiSecret
     };
   } catch (error) {
     console.warn('Error fetching site config:', error);
@@ -517,5 +591,64 @@ export async function trackAdAnalytics(data: {
   } catch (error) {
     console.warn('Failed to track ad analytics:', error);
     // Don't throw error for analytics tracking failures
+  }
+}
+
+/**
+ * Get analytics configuration from Strapi CMS
+ */
+export async function getAnalyticsConfig(language?: string): Promise<any> {
+  try {
+    const apiUrl = STRAPI_URL;
+    const apiToken = STRAPI_API_TOKEN;
+
+    if (apiUrl && apiToken) {
+      const lang = language || 'en';
+      const response = await fetch(`${apiUrl}/api/analytics-config?locale=${lang}`, {
+        headers: {
+          'Authorization': `Bearer ${apiToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.data?.attributes || null;
+      }
+    }
+
+    // Fallback configuration - minimal defaults when Strapi is unavailable
+    return {
+      enabled: false,
+      debugMode: false,
+      cookieConsent: true,
+      dataRetentionDays: 365,
+      anonymizeIP: true,
+      googleAnalytics: {
+        measurementId: '',
+        enabled: false,
+        enhancedEcommerce: false,
+        customDimensions: [],
+        customMetrics: []
+      },
+      facebookPixel: {
+        pixelId: '',
+        enabled: false,
+        advancedMatching: false,
+        automaticMatching: false,
+        customEvents: []
+      },
+      matomo: {
+        siteId: '1',
+        url: '',
+        enabled: false,
+        trackSubdomains: false,
+        cookieDomain: typeof window !== 'undefined' ? window.location.hostname : '',
+        domains: typeof window !== 'undefined' ? [window.location.hostname] : []
+      }
+    };
+  } catch (error) {
+    console.warn('Error fetching analytics config:', error);
+    return null;
   }
 }

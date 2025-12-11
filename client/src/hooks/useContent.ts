@@ -394,7 +394,8 @@ export function useJobById(id: number) {
     queryKey: ['job-listings', id],
     queryFn: async () => {
       try {
-        return await getERPNextJobListing(String(id));
+        const job = await getERPNextJobListing(String(id));
+        return job || undefined;
       } catch (error) {
         console.error(`Failed to fetch job ${id}:`, error);
         const { jobListings } = await import('@/lib/data/jobs');
