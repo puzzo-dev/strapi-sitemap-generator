@@ -28,8 +28,15 @@ import {
 } from '@/lib/types';
 
 import { strapiService } from '@/lib/services/StrapiService';
-import { erpNextService } from '@/lib/services/ERPNextService';
-import { checkERPNextHealth } from '@/lib/erpnext';
+import {
+  checkERPNextHealth,
+  getERPNextBlogCategories,
+  getERPNextBlogPost,
+  getERPNextBlogPosts,
+  getERPNextBlogComments,
+  getERPNextJobListings,
+  getERPNextJobListing
+} from '@/lib/erpnext';
 import { loggerService, cacheService } from '@/lib/services/UtilityServices';
 
 import {
@@ -40,8 +47,6 @@ import {
 // =============================================================================
 // SERVICE INSTANCES (Singleton Pattern)
 // =============================================================================
-
-const erpNextServices = erpNextService;
 
 // =============================================================================
 // UI TEXT HOOKS
@@ -114,7 +119,7 @@ export function useIndustries(): UseQueryResult<IndustryProps[]> {
 export function useJobListings(): UseQueryResult<JobListing[]> {
   return useQuery({
     queryKey: ['job-listings'],
-    queryFn: () => strapiService.getJobs(),
+    queryFn: () => getERPNextJobListings(),
   });
 }
 
@@ -139,7 +144,7 @@ export function useFAQItems(): UseQueryResult<FAQItem[]> {
 export function useBlogPosts(): UseQueryResult<BlogPost[]> {
   return useQuery({
     queryKey: ['blog-posts'],
-    queryFn: () => erpNextServices.getAllBlogPosts(),
+    queryFn: () => getERPNextBlogPosts(),
     retry: 2,
   });
 }
@@ -147,7 +152,7 @@ export function useBlogPosts(): UseQueryResult<BlogPost[]> {
 export function useBlogPost(slug: string): UseQueryResult<BlogPost | null> {
   return useQuery({
     queryKey: ['blog-post', slug],
-    queryFn: () => erpNextServices.getBlogPost(slug),
+    queryFn: () => getERPNextBlogPost(slug),
     retry: 2,
     enabled: !!slug,
     staleTime: 10 * 60 * 1000,
@@ -158,10 +163,7 @@ export function useBlogPost(slug: string): UseQueryResult<BlogPost | null> {
 export function useBlogCategories(): UseQueryResult<BlogCategory[]> {
   return useQuery({
     queryKey: ['blog-categories'],
-    queryFn: async () => {
-      // TODO: Implement ERPNext blog categories endpoint
-      return [];
-    },
+    queryFn: () => getERPNextBlogCategories(),
     staleTime: 20 * 60 * 1000,
     gcTime: 120 * 60 * 1000,
     retry: 1
@@ -295,8 +297,7 @@ export function useBlogPostsWithParams(params?: {
     queryKey: ['blog-posts', params],
     queryFn: async () => {
       try {
-        const { getBlogPosts } = await import('@/lib/strapi');
-        return await getBlogPosts(params || {});
+        return await getERPNextBlogPosts();
       } catch (error) {
         console.error('Failed to fetch blog posts:', error);
         const { blogPosts } = await import('@/lib/data/blog');
@@ -314,8 +315,7 @@ export function useBlogPostBySlug(slug: string) {
     queryKey: ['blog-post', slug],
     queryFn: async () => {
       try {
-        const { getBlogPostBySlug } = await import('@/lib/strapi');
-        return await getBlogPostBySlug(slug);
+        return await getERPNextBlogPost(slug);
       } catch (error) {
         console.error(`Failed to fetch blog post ${slug}:`, error);
         const { blogPosts } = await import('@/lib/data/blog');
@@ -334,8 +334,7 @@ export function useBlogComments(postId: string) {
     queryKey: ['blog-comments', postId],
     queryFn: async () => {
       try {
-        const { getBlogComments } = await import('@/lib/strapi');
-        return await getBlogComments(postId);
+        return await getERPNextBlogComments(postId);
       } catch (error) {
         console.error(`Failed to fetch comments for post ${postId}:`, error);
         return [];
@@ -395,8 +394,7 @@ export function useJobById(id: number) {
     queryKey: ['job-listings', id],
     queryFn: async () => {
       try {
-        const { getJobById } = await import('@/lib/strapi');
-        return await getJobById(id);
+        return await getERPNextJobListing(String(id));
       } catch (error) {
         console.error(`Failed to fetch job ${id}:`, error);
         const { jobListings } = await import('@/lib/data/jobs');

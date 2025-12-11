@@ -2,12 +2,12 @@
  * Form Management System
  */
 
-import { z } from 'zod';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { ContactFormData, DemoRequestFormData } from '@/lib/types';
 import { erpNextService } from '@/lib/services/ERPNextService';
+import { formSchemas } from '@/lib/schemas';
 import { notificationService } from '@/lib/services/UtilityServices';
 
 // Define concrete types for form configuration
@@ -32,40 +32,6 @@ export interface FormConfig {
   };
 }
 
-// Zod schema builder remains the same, but without dependency on IValidationRule
-export class FormValidationBuilder {
-  private schema: Record<string, z.ZodType<any>> = {};
-
-  public addField(name: string, field: FormField): this {
-    let fieldSchema: z.ZodString = z.string();
-
-    if (field.required) {
-      fieldSchema = fieldSchema.min(1, { message: `${field.label} is required` });
-    }
-
-    if (field.type === 'email') {
-      fieldSchema = fieldSchema.email({ message: 'Please enter a valid email address' });
-    }
-
-    if (field.type === 'tel') {
-      fieldSchema = fieldSchema.regex(/^\+?[\d\s\-()]+$/, { message: 'Please enter a valid phone number' });
-    }
-    
-    this.schema[name] = fieldSchema;
-    return this;
-  }
-
-  public build(): z.ZodObject<any> {
-    return z.object(this.schema);
-  }
-
-  public static fromFields(fields: FormField[]): z.ZodObject<any> {
-    const builder = new FormValidationBuilder();
-    fields.forEach(field => builder.addField(field.name, field));
-    return builder.build();
-  }
-}
-
 /**
  * Hook to manage the contact form
  */
@@ -87,9 +53,8 @@ export function useContactForm() {
     messages: { success: 'Your message has been sent successfully!', error: 'There was a problem submitting your form.' }
   };
 
-  const schema = FormValidationBuilder.fromFields(config.fields);
   const form = useForm<ContactFormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(formSchemas.contact),
     defaultValues: { fullName: '', email: '', phone: '', requestType: 'Product Enquiry', message: '' }
   });
 
@@ -121,20 +86,35 @@ export function useDemoRequestForm() {
     fields: [
       { name: 'fullName', type: 'text', label: 'Full Name', placeholder: 'Enter your full name', required: true },
       { name: 'email', type: 'email', label: 'Email', placeholder: 'Enter your email address', required: true },
-      { name: 'phone', type: 'tel', label: 'Phone', placeholder: 'Enter your phone number', required: true },
-      { name: 'topic', type: 'text', label: 'Demo Topic', placeholder: 'What would you like a demo of?', required: true },
-      { name: 'date', type: 'date', label: 'Preferred Date', required: true },
-      { name: 'time', type: 'time', label: 'Preferred Time', required: true },
-      { name: 'message', type: 'textarea', label: 'Additional Details', placeholder: 'Tell us more about your needs', required: false }
+      { name: 'phone', type: 'tel', label: 'Phone', placeholder: 'Enter your phone number', required: false },
+      { name: 'companyName', type: 'text', label: 'Company Name', placeholder: 'Your company name', required: true },
+      { name: 'companySize', type: 'text', label: 'Company Size', placeholder: 'Select your company size', required: true },
+      { name: 'industry', type: 'text', label: 'Industry', placeholder: 'Industry (optional)', required: false },
+      { name: 'productInterest', type: 'text', label: 'Product Interest', placeholder: 'Which product are you interested in?', required: true },
+      { name: 'challenges', type: 'textarea', label: 'Challenges', placeholder: 'What challenges are you looking to solve?', required: true },
+      { name: 'decisionTimeframe', type: 'text', label: 'Decision Timeframe', placeholder: 'How soon do you plan to decide?', required: true },
+      { name: 'message', type: 'textarea', label: 'Additional Details', placeholder: 'Any other details (optional)', required: false }
     ],
     submitButton: { text: 'Request Demo', submittingText: 'Requesting Demo...' },
     messages: { success: 'Your demo request has been submitted!', error: 'There was a problem submitting your request.' }
   };
 
-  const schema = FormValidationBuilder.fromFields(config.fields);
   const form = useForm<DemoRequestFormData>({
-    resolver: zodResolver(schema),
-    defaultValues: { fullName: '', email: '', phone: '', topic: '', date: '', time: '', message: '' }
+    resolver: zodResolver(formSchemas.demoRequest),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      phone: '',
+      companyName: '',
+      companySize: '1-10',
+      industry: '',
+      productInterest: '',
+      challenges: '',
+      decisionTimeframe: 'Immediately',
+      message: '',
+      consentContact: false,
+      consentSubscribe: false
+    }
   });
 
   const mutation = useMutation({

@@ -37,7 +37,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { submitJobApplication } from '@/lib/strapi';
+import { submitJobApplication } from '@/lib/erpnext';
 
 interface ExpressionOfInterestFormProps {
     isVisible: boolean;

@@ -6,12 +6,13 @@ export interface BaseFormData {
   fullName?: string;
   email: string;
   phone?: string;
-  message: string;
+  message?: string;
   translationKey?: string;
 }
 
 export interface ContactFormData extends BaseFormData {
   fullName: string;
+  message: string;
   phone: string;
   requestType: 'Product Enquiry' | 'Request for Information' | 'Suggestions' | 'Other';
   erpNextNote?: string;
@@ -22,21 +23,16 @@ export interface ContactFormData extends BaseFormData {
 }
 
 export interface DemoRequestFormData extends BaseFormData {
-  name?: string;
-  phone?: string;
-  date?: string;
-  time?: string;
-  topic?: string;
-  companyName?: string;
-  companySize?: string;
+  fullName: string;
+  companyName: string;
+  companySize: '1-10' | '11-50' | '51-200' | '200+';
   industry?: string;
-  productInterest?: string;
-  challenges?: string;
-  decisionTimeframe?: string;
-  demoMethod?: string;
-  consentContact?: boolean;
+  productInterest: string;
+  challenges: string;
+  decisionTimeframe: 'Immediately' | '1-3 months' | '3-6 months' | 'Not sure';
+  consentContact: boolean;
   consentSubscribe?: boolean;
-  // Add ERPNext specific fields
+  // Optional metadata fields
   erpNextEventType?: string;
   erpNextDuration?: number;
   erpNextAttendees?: string[];

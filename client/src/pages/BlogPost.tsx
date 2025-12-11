@@ -7,7 +7,7 @@ import * as z from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useBlogPostBySlug, useBlogComments, useBlogPosts, useSiteConfig } from '@/hooks/useContent';
 import { useToast } from '@/hooks/useToast';
-import { submitBlogComment } from '@/lib/strapi';
+import { submitBlogComment } from '@/lib/erpnext';
 import { generateDummyBlogPost } from '@/lib/blogUtils';
 import { defaultSiteConfig, blogPosts as localBlogPosts } from '@/lib/data/';
 import { blogPageContent as localBlogPageContent } from '@/lib/data/pages';

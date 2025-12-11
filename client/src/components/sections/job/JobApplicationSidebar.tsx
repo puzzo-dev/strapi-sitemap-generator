@@ -26,7 +26,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PageContent } from '@/lib/types/core';
-import { submitJobApplication } from '@/lib/strapi';
+import { submitJobApplication } from '@/lib/erpnext';
 import {
   Select,
   SelectContent,

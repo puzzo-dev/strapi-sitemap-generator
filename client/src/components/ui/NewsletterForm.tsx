@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { subscribeToNewsletter } from '@/lib/strapi';
+import { subscribeToNewsletter } from '@/lib/erpnext';
 import { NewsletterFormProps } from '@/lib/types';
 
 const newsletterSchema = z.object({

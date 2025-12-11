@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/useToast';
 import { useAnalytics } from '@/contexts/AnalyticsContext';
@@ -17,19 +16,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ContactFormData } from '@/lib/types';
-import { submitContactForm } from '@/lib/strapi';
+import { submitContactForm } from '@/lib/erpnext';
 import { useUIText } from '@/hooks/useContent';
-import { getUIText as getUITextFallback, UI_TEXT_FALLBACKS } from '@/lib/fallbacks';
+import { UI_TEXT_FALLBACKS } from '@/lib/fallbacks';
+import { contactFormSchema } from '@/lib/schemas';
 
-const contactFormSchema = z.object({
-  fullName: z.string().min(2, { message: 'Name must be at least 2 characters' }),
-  email: z.string().email({ message: 'Please enter a valid email address' }),
-  phone: z.string().min(10, { message: 'Please enter a valid phone number' }),
-  requestType: z.enum(['Product Enquiry', 'Request for Information', 'Suggestions', 'Other'], {
-    required_error: 'Please select a request type'
-  }),
-  message: z.string().min(10, { message: 'Message must be at least 10 characters' }),
-});
 
 interface ContactFormProps {
   title?: string;
@@ -51,17 +42,19 @@ const ContactForm: React.FC<ContactFormProps> = ({
   defaultMessage
 }) => {
   const { toast } = useToast();
-  const getUITextForms = useUIText('contactUs', 'forms');
+  const getContactTitle = useUIText('contactUs', 'buttons');
   const getUITextButtons = useUIText('submit', 'buttons');
   const getUITextSubmitting = useUIText('submitting', 'buttons');
   const getUITextSuccess = useUIText('success', 'forms');
   const getUITextError = useUIText('error', 'forms');
-  const getUITextFullName = useUIText('fullName', 'forms');
-  const getUITextEmail = useUIText('email', 'forms');
   const { trackFormSubmission, trackEvent } = useAnalytics();
 
+  // Fallback UI text for labels/placeholders (ensures nested keys resolve correctly)
+  const formLabels = UI_TEXT_FALLBACKS.forms.labels;
+  const formPlaceholders = UI_TEXT_FALLBACKS.forms.placeholders;
+
   // Use dynamic content with fallbacks
-  const formTitle = title || getUITextForms();
+  const formTitle = title || getContactTitle() || 'Contact Us';
   const submitButtonText = submitText || getUITextButtons();
   const submittingButtonText = submittingText || getUITextSubmitting();
   const successMsg = successMessage || getUITextSuccess();
@@ -155,10 +148,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="fullName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{getUITextFullName()} *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{formLabels.fullName} *</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={getUITextFullName()}
+                    placeholder={formPlaceholders.fullName}
                     {...field}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
@@ -173,10 +166,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{getUITextEmail()} *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{formLabels.email} *</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={getUITextEmail()}
+                    placeholder={formPlaceholders.email}
                     type="email"
                     {...field}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -192,10 +185,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.phone} *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{formLabels.phone} *</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={UI_TEXT_FALLBACKS.forms.placeholders.phone}
+                    placeholder={formPlaceholders.phone}
                     type="tel"
                     {...field}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -211,7 +204,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="requestType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.requestType} *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{formLabels.requestType} *</FormLabel>
                 <FormControl>
                   <select
                     {...field}
@@ -234,10 +227,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{UI_TEXT_FALLBACKS.forms.labels.message} *</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700 dark:text-gray-300">{formLabels.message} *</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder={UI_TEXT_FALLBACKS.forms.placeholders.message}
+                    placeholder={formPlaceholders.message}
                     rows={4}
                     {...field}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

@@ -19,14 +19,15 @@ export const baseValidation = {
   position: z.string().max(100, 'Position must be less than 100 characters').optional(),
 };
 
-// Contact Form Schema
+// Contact Form Schema (aligned with current ContactForm UI)
 export const contactFormSchema = z.object({
-  name: baseValidation.name,
+  fullName: z.string().min(2, 'Name must be at least 2 characters'),
   email: baseValidation.email,
-  phone: baseValidation.phone,
-  subject: baseValidation.subject,
-  message: baseValidation.message,
-  company: baseValidation.company,
+  phone: z.string().min(10, 'Please enter a valid phone number'),
+  requestType: z.enum(['Product Enquiry', 'Request for Information', 'Suggestions', 'Other'], {
+    required_error: 'Please select a request type'
+  }),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
 });
 
 // Comment Schema (for blog posts)
@@ -42,15 +43,20 @@ export const newsletterSchema = z.object({
 });
 
 // Booking/Appointment Schema
-// Demo Request Schema
+// Demo Request Schema (aligned with current DemoRequestForm UI)
 export const demoRequestSchema = z.object({
-  name: baseValidation.name,
+  fullName: z.string().min(2, 'Full Name is required'),
   email: baseValidation.email,
-  phone: z.string().min(10, 'Phone number is required for demo requests'),
-  date: z.string().min(1, 'Preferred date is required'),
-  time: z.string().min(1, 'Preferred time is required'),
-  topic: z.string().min(1, 'Demo topic is required'),
-  message: baseValidation.message.optional(),
+  phone: z.string().min(7, 'Please enter a valid phone number').optional(),
+  companyName: z.string().min(2, 'Company Name is required'),
+  companySize: z.enum(['1-10', '11-50', '51-200', '200+']),
+  industry: z.string().optional(),
+  productInterest: z.string().min(1, 'Select a product'),
+  challenges: z.string().min(2, 'Describe your challenges'),
+  decisionTimeframe: z.enum(['Immediately', '1-3 months', '3-6 months', 'Not sure']),
+  message: z.string().optional(),
+  consentContact: z.boolean().refine(val => val, { message: 'Consent required' }),
+  consentSubscribe: z.boolean().optional(),
 });
 
 // Job Application Schema
