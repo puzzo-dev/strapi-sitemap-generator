@@ -22,11 +22,9 @@ const ServiceDetailHeroSection: React.FC<ServiceDetailHeroSectionProps> = ({ ser
       </div>
 
       <div className="container-custom relative z-10 max-w-8xl">
-        <Link href="/services">
-          <a className="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 mb-6 transition-colors">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            <span>All Services</span>
-          </a>
+        <Link href="/services" className="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 mb-6 transition-colors">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          <span>All Services</span>
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">

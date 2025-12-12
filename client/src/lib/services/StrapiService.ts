@@ -52,6 +52,7 @@ import {
   FAQItem
 } from '@/lib/types';
 import { getSecret } from '@/lib/utils/credentials';
+import { getCurrentLanguage } from '@/lib/strapi';
 
 export class StrapiService {
   private readonly baseUrl: string;
@@ -75,6 +76,13 @@ export class StrapiService {
 
   private async makeRequest<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
+
+    // Add locale parameter for localized content
+    const locale = getCurrentLanguage();
+    if (locale && locale !== 'en') {
+      url.searchParams.append('locale', locale);
+    }
+
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
@@ -111,7 +119,7 @@ export class StrapiService {
   public async getPageBySlug(slug: string): Promise<PageContent | null> {
     const response = await this.makeRequest<{ data: any[] }>('/api/pages', {
       'filters[slug][$eq]': slug,
-      'populate': 'deep'
+      'populate': '*'
     });
     const item = response.data?.[0];
     if (!item) return null;

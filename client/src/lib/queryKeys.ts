@@ -17,7 +17,7 @@ export const queryKeys = {
   // ============================================================================
   // CONTENT MANAGEMENT
   // ============================================================================
-  
+
   /** Products query keys */
   products: {
     all: () => ['products'] as const,
@@ -145,11 +145,12 @@ export const queryKeys = {
   // INTERNATIONALIZATION
   // ============================================================================
 
-  /** Language and translation query keys */
+  /** Language and translation query keys (uses Strapi's native i18n) */
   i18n: {
     all: () => ['i18n'] as const,
-    config: () => ['i18n', 'config'] as const,
-    languageConfig: () => ['language-config'] as const,
+    // Native Strapi i18n locales from /api/i18n/locales
+    locales: () => ['i18n-locales'] as const,
+    // UI translations (custom collection, optional)
     translations: (language: string) => ['ui-translations', language] as const,
     uiContent: (language: string) => ['ui-content', language] as const,
   },
@@ -167,7 +168,7 @@ export const queryKeys = {
   /** Advertisement query keys */
   ads: {
     all: () => ['ads'] as const,
-    byPosition: (position: string, targetAudience?: string[], maxAds?: number) => 
+    byPosition: (position: string, targetAudience?: string[], maxAds?: number) =>
       ['ads', position, targetAudience, maxAds] as const,
   },
 

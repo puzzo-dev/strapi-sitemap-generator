@@ -27,9 +27,12 @@ const resources = {
       // Language names for selector (minimal hardcoded)
       language: {
         en: 'English',
-        yo: 'Yorùbá',
-        ig: 'Igbo',
-        ha: 'Hausa',
+        'yo': 'Yorùbá',
+        'yo-NG': 'Yorùbá',
+        'ig': 'Igbo',
+        'ig-NG': 'Igbo',
+        'ha': 'Hausa',
+        'ha-Latn-NG': 'Hausa',
         fr: 'French',
         es: 'Spanish',
         sw: 'Swahili',
@@ -236,6 +239,106 @@ const resources = {
       },
     },
   },
+  // Map Strapi locale codes to their base language resources
+  'yo-NG': {
+    translation: {
+      language: {
+        en: 'Gẹ̀ẹ́sì',
+        'yo': 'Yorùbá',
+        'yo-NG': 'Yorùbá',
+        'ig': 'Ìgbò',
+        'ig-NG': 'Ìgbò',
+        'ha': 'Hausa',
+        'ha-Latn-NG': 'Hausa',
+        fr: 'Faransé',
+        es: 'Sipanisi',
+        sw: 'Swahili',
+      },
+      system: {
+        loading: 'Ìkó...',
+        error: 'Aṣiṣe kan ṣẹlẹ',
+        retry: 'Tun gbìyànjú',
+        cancel: 'Fagilé',
+        close: 'Pa',
+        search: 'Wá',
+        clear: 'Ko',
+        notFound: 'Kò rí',
+        pageNotFound: 'Ojú-ìwé Kò rí',
+        unauthorized: 'Aìforúkọsílẹ̀',
+        forbidden: 'Ẹ̀kọ́wọ̀',
+        serverError: 'Aṣiṣe Olùṣàkóso',
+        errorMessage: 'Kùnà láti mú dátà wá. Jọ̀ọ́ gbìyànjú lẹ́ẹ̀kan si.',
+        connectionError: 'Ìsopọ̀ kùnà. Jọ̀ọ́ ṣàyẹ̀wò ìsopọ̀ íńtánẹ́ẹ̀tì rẹ.',
+        timeoutError: 'Àkókò ti kọjá. Jọ̀ọ́ gbìyànjú lẹ́ẹ̀kan si.',
+      },
+    },
+  },
+  'ig-NG': {
+    translation: {
+      language: {
+        en: 'Bekee',
+        'yo': 'Yorùbá',
+        'yo-NG': 'Yorùbá',
+        'ig': 'Igbo',
+        'ig-NG': 'Igbo',
+        'ha': 'Hausa',
+        'ha-Latn-NG': 'Hausa',
+        fr: 'Fụrench',
+        es: 'Spanish',
+        sw: 'Swahili',
+      },
+      system: {
+        loading: 'Na-ebu...',
+        error: 'Njehie mere',
+        retry: 'Nwalee ọzọ',
+        cancel: 'Kagbuo',
+        close: 'Mechie',
+        search: 'Chọọ',
+        clear: 'Hichapụ',
+        notFound: 'Achọtaghị',
+        pageNotFound: 'Achọtaghị peeji',
+        unauthorized: 'Enyeghị ikike',
+        forbidden: 'Amachibidoro',
+        serverError: 'Njehie sava',
+        errorMessage: 'Ọ dịghị mma ibubata data. Biko nwaa ọzọ.',
+        connectionError: 'Njikọ dara ada. Biko lelee njikọ ịntanetị gị.',
+        timeoutError: 'Oge agwụla. Biko nwaa ọzọ.',
+      },
+    },
+  },
+  'ha-Latn-NG': {
+    translation: {
+      language: {
+        en: 'Turanci',
+        'yo': 'Yorùbá',
+        'yo-NG': 'Yorùbá',
+        'ig': 'Igbo',
+        'ig-NG': 'Igbo',
+        'ha': 'Hausa',
+        'ha-Latn-NG': 'Hausa',
+        fr: 'Faransanci',
+        es: 'Sifen',
+        sw: 'Swahili',
+      },
+      system: {
+        loading: 'Ana lodi...',
+        error: 'An sami kuskure',
+        retry: 'Sake gwadawa',
+        cancel: 'Soke',
+        close: 'Rufe',
+        search: 'Bincika',
+        clear: 'Share',
+        notFound: 'Ba a samo ba',
+        pageNotFound: 'Ba a sami shafi ba',
+        unauthorized: 'Ba a ba da izini ba',
+        forbidden: 'An hana',
+        serverError: 'Kuskuren sabar',
+        errorMessage: 'An kasa loda bayanai. Don Allah sake gwadawa.',
+        connectionError: 'Haɗin ya gaza. Don Allah duba haɗin intanet ɗinka.',
+        timeoutError: 'Lokaci ya ƙare. Don Allah sake gwadawa.',
+      },
+    },
+  },
 };
 
 // Initialize i18next
@@ -248,7 +351,11 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-    supportedLngs: Object.keys(resources),
+    // Support both base codes and Strapi locale codes
+    supportedLngs: ['en', 'yo', 'yo-NG', 'ig', 'ig-NG', 'ha', 'ha-Latn-NG', 'fr', 'es', 'sw'],
+    // Map Strapi locale codes to base language resources
+    load: 'currentOnly', // Don't load region-specific variants automatically
+    nonExplicitSupportedLngs: true, // Allow fallback to base language
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
@@ -267,44 +374,51 @@ import { getUITranslations } from './strapi';
 
 // Update Strapi language when i18n language changes
 i18n.on('languageChanged', async (lng) => {
+  console.log('🔄 i18n languageChanged event:', lng);
+
   // Set the current language for Strapi API calls
   setCurrentLanguage(lng);
-  
+  console.log('✓ Updated Strapi currentLanguage to:', lng);
+
   // Load UI translations from Strapi (buttons, labels, content-specific text)
   try {
     const strapiTranslations = await getUITranslations(lng);
-    
+
     if (strapiTranslations && Object.keys(strapiTranslations).length > 0) {
       // Get current translations (includes hardcoded system messages)
       const currentTranslations = i18n.getResourceBundle(lng, 'translation') || {};
-      
+
       // Merge strategy:
       // - Keep hardcoded: language names, system messages (loading, error, etc.)
       // - Override with Strapi: all UI labels, buttons, content text
       const mergedTranslations = {
         // Preserve hardcoded language names
         language: currentTranslations.language || resources[lng as keyof typeof resources]?.translation?.language,
-        
+
         // Preserve hardcoded system messages (loading, error, cancel, etc.)
         system: currentTranslations.system || resources[lng as keyof typeof resources]?.translation?.system,
-        
+
         // Add all Strapi UI translations (buttons, labels, blog interface, etc.)
         ...strapiTranslations,
       };
-      
+
       // Add the merged translations to i18n
       i18n.addResourceBundle(lng, 'translation', mergedTranslations, true, true);
-      
+
       console.log(`✓ Loaded Strapi UI translations for ${lng}`);
     } else {
-      console.warn(`No Strapi translations found for ${lng}, using hardcoded system messages only`);
+      // Silent fallback - ui-translations collection is optional
+      console.debug(`No Strapi UI translations for ${lng}, using system defaults`);
     }
   } catch (error) {
-    console.warn(`Failed to load Strapi translations for ${lng}:`, error);
+    // Silent fallback
+    console.debug(`Strapi translations unavailable for ${lng}, using defaults`);
   }
-  
+
   // Invalidate all queries to force refetch with new language
+  console.log('🔄 Invalidating all React Query caches for language change');
   queryClient.invalidateQueries();
+  console.log('✓ Query invalidation complete');
 });
 
 /**
@@ -315,22 +429,22 @@ i18n.on('languageChanged', async (lng) => {
 export async function loadStrapiTranslations(language: string): Promise<void> {
   try {
     const strapiTranslations = await getUITranslations(language);
-    
+
     if (strapiTranslations && Object.keys(strapiTranslations).length > 0) {
       const currentTranslations = i18n.getResourceBundle(language, 'translation') || {};
-      
+
       // Merge: Keep system messages hardcoded, override everything else from Strapi
       const mergedTranslations = {
         // Hardcoded: language names
         language: currentTranslations.language || resources[language as keyof typeof resources]?.translation?.language,
-        
+
         // Hardcoded: system/error messages
         system: currentTranslations.system || resources[language as keyof typeof resources]?.translation?.system,
-        
+
         // From Strapi: all UI content (buttons, labels, blog interface, forms, etc.)
         ...strapiTranslations,
       };
-      
+
       i18n.addResourceBundle(language, 'translation', mergedTranslations, true, true);
       console.log(`✓ Loaded Strapi translations for ${language}`);
     } else {

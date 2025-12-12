@@ -6,6 +6,7 @@
  */
 
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import { useLanguage } from '@/components/context/LanguageContext';
 import {
   PageContent,
   ProductProps,
@@ -64,8 +65,9 @@ export function useUIText(
 // =============================================================================
 
 export function usePageContent(slug: string): UseQueryResult<PageContent | null> {
+  const { currentLanguage } = useLanguage();
   return useQuery({
-    queryKey: ['page-content', slug],
+    queryKey: ['page-content', slug, currentLanguage],
     queryFn: () => strapiService.getPageBySlug(slug),
   });
 }
@@ -75,43 +77,49 @@ export function usePageContent(slug: string): UseQueryResult<PageContent | null>
 // =============================================================================
 
 export function useProducts(): UseQueryResult<ProductProps[]> {
+  const { currentLanguage } = useLanguage();
   return useQuery({
-    queryKey: ['products'],
+    queryKey: ['products', currentLanguage],
     queryFn: () => strapiService.getProducts(),
   });
 }
 
 export function useServices(): UseQueryResult<ServiceProps[]> {
+  const { currentLanguage } = useLanguage();
   return useQuery({
-    queryKey: ['services'],
+    queryKey: ['services', currentLanguage],
     queryFn: () => strapiService.getServices(),
   });
 }
 
 export function useTestimonials(): UseQueryResult<TestimonialProps[]> {
+  const { currentLanguage } = useLanguage();
   return useQuery({
-    queryKey: ['testimonials'],
+    queryKey: ['testimonials', currentLanguage],
     queryFn: () => strapiService.getTestimonials(),
   });
 }
 
 export function useTeamMembers(): UseQueryResult<TeamMember[]> {
+  const { currentLanguage } = useLanguage();
   return useQuery({
-    queryKey: ['team-members'],
+    queryKey: ['team-members', currentLanguage],
     queryFn: () => strapiService.getTeam(),
   });
 }
 
 export function useCaseStudies(): UseQueryResult<CaseStudyProps[]> {
+  const { currentLanguage } = useLanguage();
   return useQuery({
-    queryKey: ['case-studies'],
+    queryKey: ['case-studies', currentLanguage],
     queryFn: () => strapiService.getCaseStudies(),
   });
 }
 
 export function useIndustries(): UseQueryResult<IndustryProps[]> {
+  const { currentLanguage } = useLanguage();
   return useQuery({
-    queryKey: ['industries'],
+    queryKey: ['industries', currentLanguage],
     queryFn: () => strapiService.getIndustries(),
   });
 }
@@ -190,8 +198,9 @@ export function useERPNextHealth() {
 // =============================================================================
 
 export function useNavigation() {
+  const { currentLanguage } = useLanguage();
   return useQuery<NavItem[]>({
-    queryKey: ['navigation'],
+    queryKey: ['navigation', currentLanguage],
     queryFn: async () => {
       try {
         const { getNavItems } = await import('@/lib/strapi');

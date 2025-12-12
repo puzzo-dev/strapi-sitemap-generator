@@ -180,40 +180,36 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, prod
                 </div>
 
                 {/* Image with overlay gradient */}
-                <Link href={`/products/${product.slug}`}>
-                  <a className="block relative aspect-video overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 mb-6">
-                    {product.image ? (
-                      <>
-                        <img
-                          src={product.image}
-                          alt={product.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      </>
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Package className="h-20 w-20 text-blue-300 dark:text-blue-700 opacity-30" />
-                      </div>
-                    )}
-
-                    {/* Hover icon */}
-                    <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                      <div className="bg-blue-600 dark:bg-blue-500 rounded-full p-3">
-                        <ArrowRight className="h-5 w-5 text-white" />
-                      </div>
+                <Link href={`/products/${product.slug}`} className="block relative aspect-video overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 mb-6">
+                  {product.image ? (
+                    <>
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    </>
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Package className="h-20 w-20 text-blue-300 dark:text-blue-700 opacity-30" />
                     </div>
-                  </a>
+                  )}
+
+                  {/* Hover icon */}
+                  <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <div className="bg-blue-600 dark:bg-blue-500 rounded-full p-3">
+                      <ArrowRight className="h-5 w-5 text-white" />
+                    </div>
+                  </div>
                 </Link>
 
                 {/* Content */}
                 <div className="space-y-4">
                   <Link href={`/products/${product.slug}`}>
-                    <a>
-                      <h3 className="text-2xl font-extrabold text-blue-900 dark:text-blue-200 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
-                        {product.title}
-                      </h3>
-                    </a>
+                    <h3 className="text-2xl font-extrabold text-blue-900 dark:text-blue-200 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
+                      {product.title}
+                    </h3>
                   </Link>
 
                   <p className="text-base text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2">

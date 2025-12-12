@@ -24,8 +24,8 @@ import LoadingFallback from "@/components/ui/LoadingFallback";
 const Home = lazy(() => import("@/pages/Home"));
 const Services = lazy(() => import("@/pages/Services"));
 const ServiceDetail = lazy(() => import("@/pages/ServiceDetail"));
-const Products = lazy(() => import("@/pages/Products"));
-const ProductDetail = lazy(() => import("@/pages/ProductDetail"));
+const Solutions = lazy(() => import("@/pages/Solutions"));
+const SolutionDetail = lazy(() => import("@/pages/SolutionDetail"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const About = lazy(() => import("@/pages/About"));
 const Team = lazy(() => import("@/pages/Team"));
@@ -77,60 +77,60 @@ const App: React.FC = () => {
       <LanguageProvider>
         <AnalyticsProvider>
           <ThemeProvider defaultTheme="dark" storageKey="i-varse-theme">
-          {/* Base SEO MetaTags that will be overridden by page-specific ones */}
-          <MetaTags
-            title="Innovative Technology Solutions"
-            description="I-VARSE Technologies provides cutting-edge technology solutions for businesses and individuals, focusing on innovation, quality, and client satisfaction."
-            keywords={["technology", "innovation", "digital transformation", "software development", "IT solutions", "I-Varse"]}
-            structuredData={websiteSchema}
-            ogType="website"
-            canonicalUrl={`https://www.itechnologies.ng${location}`}
-            ogUrl={`https://www.itechnologies.ng${location}`}
-          />
+            {/* Base SEO MetaTags that will be overridden by page-specific ones */}
+            <MetaTags
+              title="Innovative Technology Solutions"
+              description="I-VARSE Technologies provides cutting-edge technology solutions for businesses and individuals, focusing on innovation, quality, and client satisfaction."
+              keywords={["technology", "innovation", "digital transformation", "software development", "IT solutions", "I-Varse"]}
+              structuredData={websiteSchema}
+              ogType="website"
+              canonicalUrl={`https://www.itechnologies.ng${location}`}
+              ogUrl={`https://www.itechnologies.ng${location}`}
+            />
 
-          <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white overflow-hidden w-full">
-            <Navbar onMenuToggle={toggleMobileMenu} logo={""} navItems={displayNavItems} />
-            <main className="flex-grow pt-10 overflow-hidden w-full">
-              <Suspense fallback={<LoadingFallback message="Loading page..." />}>
-                <AnimatePresence mode="wait">
-                  <Switch>
-                    <Route path="/" component={Home} />
-                    <Route path="/services" component={Services} />
-                    <Route path="/services/:slug" component={ServiceDetail} />
-                    <Route path="/products" component={Products} />
-                    <Route path="/products/:slug" component={ProductDetail} />
-                    <Route path="/about" component={About} />
-                    <Route path="/team" component={Team} />
-                    <Route path="/blog" component={Blog} />
-                    <Route path="/blog/:slug" component={BlogPost} />
-                    <Route path="/team/:slug" component={TeamMember} />
-                    <Route path="/careers" component={Careers} />
-                    <Route path="/careers/:slug" component={JobDetail} />
-                    <Route path="/contact" component={Contact} />
-                    <Route path="/faq" component={FAQ} />
-                    <Route path="/case-studies" component={CaseStudies} />
-                    <Route path="/case-studies/:slug" component={CaseStudyDetail} />
-                    <Route path="/industries" component={Industries} />
-                    <Route path="/industries/:slug" component={IndustryDetail} />
-                    {/* Policy pages */}
-                    <Route path="/terms" component={Terms} />
-                    <Route path="/privacy" component={Privacy} />
-                    <Route path="/cookies" component={Cookies} />
-                    <Route path="/accessibility" component={Accessibility} />
-                    <Route path="/sitemap" component={Sitemap} />
-                    <Route component={NotFound} />
-                  </Switch>
-                </AnimatePresence>
-              </Suspense>
-            </main>
-            <Footer {...footerData} />
+            <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a1929] text-gray-800 dark:text-white overflow-hidden w-full">
+              <Navbar onMenuToggle={toggleMobileMenu} logo={""} navItems={displayNavItems} />
+              <main className="flex-grow pt-10 overflow-hidden w-full">
+                <Suspense fallback={<LoadingFallback message="Loading page..." />}>
+                  <AnimatePresence mode="wait">
+                    <Switch>
+                      <Route path="/" component={Home} />
+                      <Route path="/services" component={Services} />
+                      <Route path="/services/:slug" component={ServiceDetail} />
+                      <Route path="/solutions" component={Solutions} />
+                      <Route path="/solutions/:slug" component={SolutionDetail} />
+                      <Route path="/about" component={About} />
+                      <Route path="/team" component={Team} />
+                      <Route path="/blog" component={Blog} />
+                      <Route path="/blog/:slug" component={BlogPost} />
+                      <Route path="/team/:slug" component={TeamMember} />
+                      <Route path="/careers" component={Careers} />
+                      <Route path="/careers/:slug" component={JobDetail} />
+                      <Route path="/contact" component={Contact} />
+                      <Route path="/faq" component={FAQ} />
+                      <Route path="/case-studies" component={CaseStudies} />
+                      <Route path="/case-studies/:slug" component={CaseStudyDetail} />
+                      <Route path="/industries" component={Industries} />
+                      <Route path="/industries/:slug" component={IndustryDetail} />
+                      {/* Policy pages */}
+                      <Route path="/terms" component={Terms} />
+                      <Route path="/privacy" component={Privacy} />
+                      <Route path="/cookies" component={Cookies} />
+                      <Route path="/accessibility" component={Accessibility} />
+                      <Route path="/sitemap" component={Sitemap} />
+                      <Route component={NotFound} />
+                    </Switch>
+                  </AnimatePresence>
+                </Suspense>
+              </main>
+              <Footer {...footerData} />
 
-            {/* Floating buttons container - positioned at root level */}
-            <FloatingButtons />
+              {/* Floating buttons container - positioned at root level */}
+              <FloatingButtons />
 
-            {/* Mobile Menu - positioned at root level */}
-            <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} navItems={displayNavItems} />
-          </div>
+              {/* Mobile Menu - positioned at root level */}
+              <MobileMenu isOpen={mobileMenuOpen} onClose={closeMobileMenu} navItems={displayNavItems} />
+            </div>
           </ThemeProvider>
         </AnalyticsProvider>
       </LanguageProvider>

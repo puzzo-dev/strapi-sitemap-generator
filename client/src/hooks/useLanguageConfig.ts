@@ -2,14 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import { getLanguageConfig, getUITranslations } from '@/lib/strapi';
 
 /**
- * Hook to fetch language configuration from Strapi
+ * Hook to fetch available locales from Strapi's native i18n plugin
+ * Uses the /api/i18n/locales endpoint
  */
 export const useLanguageConfig = () => {
   return useQuery({
-    queryKey: ['language-config'],
+    queryKey: ['i18n-locales'],
     queryFn: getLanguageConfig,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 30 * 60 * 1000, // 30 minutes
+    staleTime: 30 * 60 * 1000, // 30 minutes - locales rarely change
+    gcTime: 60 * 60 * 1000, // 60 minutes
     retry: 1
   });
 };
