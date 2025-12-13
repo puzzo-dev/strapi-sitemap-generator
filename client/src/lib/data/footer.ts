@@ -36,7 +36,7 @@ const createFooterColumns = (): FooterColumn[] => [
     translationKey: "footer-important-links",
     isVisible: true,
     links: [
-      { title: "About Us", href: "/about", translationKey: "footer-about" },
+      { title: "About Us", href: "/about-us", translationKey: "footer-about" },
       { title: "Services", href: "/services", translationKey: "footer-services" },
       { title: "Products", href: "/solutions", translationKey: "footer-products" },
       { title: "Insights", href: "/blog", translationKey: "footer-insights" },

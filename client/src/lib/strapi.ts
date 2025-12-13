@@ -70,6 +70,9 @@ export function getCurrentLanguage(): string {
 
 /**
  * Fetch data from Strapi API with error handling and fallback to local data
+ * Strapi v5: populate=* goes 1 level deep only.
+ * For dynamic zones: Use populate[dynamicZone][on][component.name][populate]=* syntax
+ * Based on actual schema from I-VarseCMSBackend
  */
 async function fetchStrapiData<T>(endpoint: string, fallbackData: T): Promise<T> {
   try {
@@ -82,7 +85,79 @@ async function fetchStrapiData<T>(endpoint: string, fallbackData: T): Promise<T>
     const locale = currentLanguage;
     const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
 
-    const response = await fetch(`${STRAPI_URL}/api/${endpoint}?populate=*${localeSuffix}`, {
+    // Build proper populate based on actual Strapi schema
+    let populateStrategy = '';
+
+    if (endpoint.includes('services')) {
+      // Services: populate what ServiceDetail page actually uses
+      // Hero section (hero.hero-simple) for title/description
+      // Base row sections with baseCards for "why choose us" content
+      populateStrategy =
+        'populate[content][on][hero.hero-simple][populate][heroBadge]=*' +
+        '&populate[content][on][hero.hero-simple][populate][heroImage]=true' +
+        '&populate[content][on][blocks.base-row][populate][badge]=*' +
+        '&populate[content][on][blocks.base-row][populate][title]=*' +
+        '&populate[content][on][blocks.base-row][populate][description]=*' +
+        '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardBadge]=*' +
+        '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardMedia]=true' +
+        '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][page]=true' +
+        '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][service]=true' +
+        '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][solution]=true' +
+        '&populate[seo][populate][ogImage]=true';
+    } else if (endpoint.includes('pages')) {
+      // Pages schema: section (dynamic zone) + seo component
+      populateStrategy =
+        'populate[section][on][hero.hero-simple][populate][heroBadge]=*' +
+        '&populate[section][on][hero.hero-simple][populate][heroImage]=true' +
+        '&populate[section][on][hero.hero-simple][populate][stats]=*' +
+        '&populate[section][on][hero.hero-simple][populate][heroBtns]=*' +
+        '&populate[section][on][hero.hero-full]=*' +
+        '&populate[section][on][blocks.base-row][populate][badge]=*' +
+        '&populate[section][on][blocks.base-row][populate][gallery]=*' +
+        '&populate[section][on][blocks.base-row][populate][baseCards]=*' +
+        '&populate[section][on][blocks.base-row][populate][socialLinks]=*' +
+        '&populate[section][on][blocks.base-row][populate][statCards]=*' +
+        '&populate[section][on][blocks.base-row][populate][testimonialCards]=*' +
+        '&populate[section][on][blocks.base-row][populate][cta]=*' +
+        '&populate[section][on][blocks.base-row][populate][CaseStudies]=*' +
+        '&populate[section][on][blocks.base-row][populate][Faqs]=*' +
+        '&populate[section][on][blocks.base-row][populate][button]=*' +
+        '&populate[section][on][blocks.base-row][populate][link]=*' +
+        '&populate[section][on][blocks.cta-section][populate][ctaBadge]=*' +
+        '&populate[section][on][blocks.cta-section][populate][ctaButtons]=*' +
+        '&populate[section][on][blocks.gallery-section]=*' +
+        '&populate[section][on][cards.testimonial-card]=*' +
+        '&populate[section][on][cards.stat]=*' +
+        '&populate[section][on][cards.social-link]=*' +
+        '&populate[section][on][cards.base-card]=*' +
+        '&populate[section][on][cards.contact-info]=*' +
+        '&populate[section][on][cards.newsletter-card]=*' +
+        '&populate[section][on][cards.media-card]=*' +
+        '&populate[section][on][cards.form]=*' +
+        '&populate[section][on][cards.footer-menu]=*' +
+        '&populate[section][on][cards.faq-card]=*' +
+        '&populate[section][on][cards.cta-btn-card]=*' +
+        '&populate[section][on][cards.case-studies-card]=*' +
+        '&populate[section][on][shared.link]=*' +
+        '&populate[section][on][shared.badge]=*' +
+        '&populate[section][on][shared.seo]=*' +
+        '&populate[section][on][shared.logo]=*' +
+        '&populate[section][on][shared.gallery-image]=*' +
+        '&populate[section][on][shared.form-fields]=*' +
+        '&populate[section][on][shared.filter-pill]=*' +
+        '&populate[section][on][shared.button]=*' +
+        '&populate[seo][populate][ogImage]=true';
+    } else if (endpoint.includes('products') || endpoint.includes('projects')) {
+      // Projects schema similar to pages with section dynamic zone
+      populateStrategy = 'populate=*';
+    } else if (endpoint.includes('case-studies')) {
+      populateStrategy = 'populate=*';
+    } else {
+      // Default: simple populate
+      populateStrategy = 'populate=*';
+    }
+
+    const response = await fetch(`${STRAPI_URL}/api/${endpoint}?${populateStrategy}${localeSuffix}`, {
       headers: getStrapiHeaders()
     });
 
@@ -188,7 +263,21 @@ export async function getServiceById(id: number): Promise<ServiceProps | undefin
     const locale = currentLanguage;
     const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
 
-    const response = await fetch(`${STRAPI_URL}/api/services/${id}?populate=*${localeSuffix}`, {
+    // Populate what ServiceDetail page actually uses
+    const populateStr =
+      'populate[content][on][hero.hero-simple][populate][heroBadge]=*' +
+      '&populate[content][on][hero.hero-simple][populate][heroImage]=true' +
+      '&populate[content][on][blocks.base-row][populate][badge]=*' +
+      '&populate[content][on][blocks.base-row][populate][title]=*' +
+      '&populate[content][on][blocks.base-row][populate][description]=*' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardBadge]=*' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardMedia]=true' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][page]=true' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][service]=true' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][solution]=true' +
+      '&populate[seo][populate][ogImage]=true';
+
+    const response = await fetch(`${STRAPI_URL}/api/services/${id}?${populateStr}${localeSuffix}`, {
       headers: getStrapiHeaders()
     });
 
@@ -198,15 +287,74 @@ export async function getServiceById(id: number): Promise<ServiceProps | undefin
     }
 
     const result = await response.json();
-    return {
-      id: result.data.id,
-      ...result.data.attributes
-    };
+
+    // Strapi v5: Data is flat (no attributes wrapper)
+    return result.data;
   } catch (error) {
     // Silent fallback to local data
     return localServices.find(service => service.id === id);
   }
 }
+
+/**
+ * Get a single service by slug from API or fallback to local data
+ */
+export async function getServiceBySlug(slug: string): Promise<ServiceProps | undefined> {
+  try {
+    if (!getStrapiToken()) {
+      return localServices.find(service => service.slug === slug);
+    }
+
+    console.log('🔍 Fetching service by slug:', slug);
+
+    // Use Strapi API with language param and slug filter
+    const locale = currentLanguage;
+    const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+    // Populate what ServiceDetail page actually uses
+    const populateStr =
+      'populate[content][on][hero.hero-simple][populate][heroBadge]=*' +
+      '&populate[content][on][hero.hero-simple][populate][heroImage]=true' +
+      '&populate[content][on][blocks.base-row][populate][badge]=*' +
+      '&populate[content][on][blocks.base-row][populate][title]=*' +
+      '&populate[content][on][blocks.base-row][populate][description]=*' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardBadge]=*' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardMedia]=true' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][page]=true' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][service]=true' +
+      '&populate[content][on][blocks.base-row][populate][baseCards][populate][cardLink][populate][solution]=true' +
+      '&populate[seo][populate][ogImage]=true';
+
+    const url = `${STRAPI_URL}/api/services?filters[slug][$eq]=${slug}&${populateStr}${localeSuffix}`;
+    console.log('📡 API URL:', url);
+
+    const response = await fetch(url, {
+      headers: getStrapiHeaders()
+    });
+
+    if (!response.ok) {
+      console.warn(`⚠️ Service not found in Strapi for slug: ${slug}`);
+      // Silent fallback for 404 - content not in Strapi yet
+      return localServices.find(service => service.slug === slug);
+    }
+
+    const result = await response.json();
+    console.log('✅ Strapi response:', result);
+
+    // Return first match or fallback
+    if (result.data && Array.isArray(result.data) && result.data.length > 0) {
+      console.log('✅ Found service in Strapi:', result.data[0].title);
+      return result.data[0];
+    }
+
+    console.warn(`⚠️ Empty data from Strapi for slug: ${slug}, using fallback`);
+    return localServices.find(service => service.slug === slug);
+  } catch (error) {
+    // Silent fallback to local data
+    return localServices.find(service => service.slug === slug);
+  }
+}
+
 
 /**
  * Get all testimonials from API or fallback to local data
@@ -235,7 +383,8 @@ export async function getNavItems(): Promise<NavItem[]> {
     const locale = currentLanguage;
     const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
 
-    const response = await fetch(`${STRAPI_URL}/api/menu-items?populate=deep${localeSuffix}`, {
+    // populate=deep doesn't work in Strapi v5, use populate=*
+    const response = await fetch(`${STRAPI_URL}/api/menu-items?populate=*${localeSuffix}`, {
       headers: getStrapiHeaders()
     });
 
@@ -671,8 +820,9 @@ export async function getAnalyticsConfig(language?: string): Promise<any> {
 
       if (response.ok) {
         const data = await response.json();
-        return data.data?.attributes || null;
+        return data.data || null;
       }
+      // Silent fail for 404 - collection doesn't exist
     }
 
     // Fallback configuration - minimal defaults when Strapi is unavailable

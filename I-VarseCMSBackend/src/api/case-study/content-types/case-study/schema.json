@@ -59,7 +59,7 @@
         "manufacturing-logistics"
       ]
     },
-    "content": {
+    "block": {
       "type": "dynamiczone",
       "pluginOptions": {
         "i18n": {

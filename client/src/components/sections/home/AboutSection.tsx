@@ -152,7 +152,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                             {/* CTA Link */}
                             <div>
                                 <a
-                                    href="/about"
+                                    href="/about-us"
                                     className="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-300 group"
                                 >
                                     {getTranslation(t, 'ui.learnMoreAboutUs', uiLabels.learnMoreAboutUs)}

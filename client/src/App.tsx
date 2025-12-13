@@ -99,7 +99,7 @@ const App: React.FC = () => {
                       <Route path="/services/:slug" component={ServiceDetail} />
                       <Route path="/solutions" component={Solutions} />
                       <Route path="/solutions/:slug" component={SolutionDetail} />
-                      <Route path="/about" component={About} />
+                      <Route path="/about-us" component={About} />
                       <Route path="/team" component={Team} />
                       <Route path="/blog" component={Blog} />
                       <Route path="/blog/:slug" component={BlogPost} />

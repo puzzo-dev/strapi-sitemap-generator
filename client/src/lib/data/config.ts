@@ -62,7 +62,7 @@ export const navItems: NavItem[] = [
   {
     id: 2,
     label: "About Us",
-    url: { url: "/about" },
+    url: { url: "/about-us" },
     order: 2,
     isButton: false,
     isVisible: true,

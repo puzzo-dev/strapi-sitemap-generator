@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useParams } from 'wouter';
 import { useTranslation } from 'react-i18next';
-import { useServiceById, useSiteConfig, usePageContent } from '@/hooks/useContent';
+import { useServiceBySlug, useSiteConfig, usePageContent } from '@/hooks/useContent';
 import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { serviceDetailPageContent as localServiceDetailPageContent } from '@/lib/data/pages';
@@ -57,24 +57,18 @@ const ServiceDetail: React.FC = () => {
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('service-detail');
   const displayPageContent = pageContent || localServiceDetailPageContent;
 
-  // Find service by slug from local services
-  const matchedService = useMemo(() => {
-    return localServices.find((service: ServiceProps) => service.slug === slug);
-  }, [slug]);
-
-  // Fetch service data from Strapi or use matched local service
-  const { data: service, isLoading: isServiceLoading, error } = useServiceById(matchedService?.id || 0);
+  // Fetch service data from Strapi by slug
+  const { data: service, isLoading: isServiceLoading, error } = useServiceBySlug(slug || '');
   const { data: siteConfig } = useSiteConfig();
 
-  // Use service data from Strapi or fallback to matched local service
-  const rawService = service || matchedService;
+  // Use service data from Strapi (no need for local matching anymore)
   const displaySiteConfig = siteConfig || defaultSiteConfig;
 
   // Transform service data for components
   const displayService = useMemo(() => {
-    if (!rawService) return null;
-    return transformServiceForComponents(rawService) as any;
-  }, [rawService]);
+    if (!service) return null;
+    return transformServiceForComponents(service) as any;
+  }, [service]);
 
   // Generate structured data
   const structuredData = generateOrganizationSchema();
@@ -94,38 +88,38 @@ const ServiceDetail: React.FC = () => {
       isLoading={isServiceLoading || isPageLoading}
       structuredData={structuredData}
     >
-        {/* Hero Section */}
-      <ServiceDetailHeroSection 
+      {/* Hero Section */}
+      <ServiceDetailHeroSection
         service={displayService as any}
       />
 
       {/* Description Section */}
-      <ServiceDetailDescriptionSection 
+      <ServiceDetailDescriptionSection
         service={displayService as any}
       />
 
-        {/* Benefits Section */}
-      <ServiceDetailBenefitsSection 
+      {/* Benefits Section */}
+      <ServiceDetailBenefitsSection
         service={displayService as any}
       />
 
       {/* Process Section */}
-      <ServiceDetailProcessSection 
+      <ServiceDetailProcessSection
         service={displayService as any}
       />
 
       {/* Case Studies Section */}
-      <ServiceDetailCaseStudiesSection 
+      <ServiceDetailCaseStudiesSection
         service={displayService as any}
       />
 
       {/* FAQ Section */}
-      <ServiceDetailFAQSection 
+      <ServiceDetailFAQSection
         service={displayService as any}
       />
 
-        {/* CTA Section */}
-      <ServiceDetailCTASection 
+      {/* CTA Section */}
+      <ServiceDetailCTASection
         service={displayService as any}
         siteConfig={displaySiteConfig}
       />

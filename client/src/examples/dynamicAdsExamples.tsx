@@ -130,7 +130,7 @@ export const locationSpecificAds: Record<string, AdSlide[]> = {
             bgColor: "from-green-700 to-green-900",
             icon: Globe,
             cta: "Join Us",
-            ctaUrl: "/about?region=nigeria",
+            ctaUrl: "/about-us?region=nigeria",
             clickTrackingId: 'sidebar-nigeria-banner'
         }
     ]

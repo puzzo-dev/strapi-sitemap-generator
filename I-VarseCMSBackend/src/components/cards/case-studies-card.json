@@ -9,6 +9,15 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::case-study.case-study"
+    },
+    "caseStudiesTitle": {
+      "type": "string"
+    },
+    "caseStudiesContent": {
+      "type": "richtext"
+    },
+    "caseStudiesResult": {
+      "type": "richtext"
     }
   },
   "config": {}

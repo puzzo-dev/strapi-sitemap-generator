@@ -111,28 +111,7 @@ const ProductDetailDescriptionSection: React.FC<ProductDetailDescriptionSectionP
                   return null;
                 })()}
               </div>
-            </div>            {/* Stylish Benefits Section */}
-            {product.benefits && product.benefits.length > 0 && (
-              <div className="mt-12 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8 border border-blue-200/50 dark:border-blue-800/50">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">{content.benefits}</h3>
-                  <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {product.benefits?.map((benefit: string, index: number) => (
-                    <div key={index} className="flex items-start group">
-                      <div className="flex-shrink-0 mt-1">
-                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
-                          <Check className="h-4 w-4 text-white" />
-                        </div>
-                      </div>
-                      <span className="ml-4 text-gray-700 dark:text-gray-200 font-medium leading-relaxed">{benefit}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            </div>
           </div>
 
           {/* Sidebar with Key Features Only */}
@@ -156,6 +135,29 @@ const ProductDetailDescriptionSection: React.FC<ProductDetailDescriptionSectionP
             </Card>
           </div>
         </div>
+
+        {/* Full Width Stylish Benefits Section */}
+        {product.benefits && product.benefits.length > 0 && (
+          <div className="mt-12 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8 border border-blue-200/50 dark:border-blue-800/50">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">{content.benefits}</h3>
+              <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {product.benefits?.map((benefit: string, index: number) => (
+                <div key={index} className="flex items-start group">
+                  <div className="flex-shrink-0 mt-1">
+                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                      <Check className="h-4 w-4 text-white" />
+                    </div>
+                  </div>
+                  <span className="ml-4 text-gray-700 dark:text-gray-200 font-medium leading-relaxed">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

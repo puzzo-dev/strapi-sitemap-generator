@@ -379,6 +379,25 @@ export function useServiceById(id: number) {
   });
 }
 
+export function useServiceBySlug(slug: string) {
+  return useQuery<ServiceProps | undefined>({
+    queryKey: ['services', 'slug', slug],
+    queryFn: async () => {
+      try {
+        const { getServiceBySlug } = await import('@/lib/strapi');
+        return await getServiceBySlug(slug);
+      } catch (error) {
+        console.error(`Failed to fetch service by slug ${slug}:`, error);
+        const { services } = await import('@/lib/data/services');
+        return services.find(s => s.slug === slug);
+      }
+    },
+    enabled: slug !== undefined && slug !== null && slug.length > 0,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+  });
+}
+
 export function useProductById(id: number) {
   return useQuery<ProductProps | undefined>({
     queryKey: ['products', id],

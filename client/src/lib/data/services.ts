@@ -6,11 +6,11 @@ export const services: ServiceProps[] = [
   {
     id: 5,
     title: "CustomERP Solutions (OpsCloud™)",
-    slug: "customerp-solutions-opscloud",
+    slug: "custom-erp-solutions",
     subtitle: "Enterprise Resource Planning Made Simple",
     description:
       "Streamline your business operations with our comprehensive ERP solutions. We implement customized enterprise resource planning systems that integrate all aspects of your business for improved efficiency and productivity.",
-    fullDescription: "Our CustomERP Solutions, powered by OpsCloud™, provide a complete enterprise resource planning platform that transforms how businesses manage their operations. From inventory and supply chain management to financial reporting and customer relationship management, our ERP solution integrates all critical business processes into a unified, cloud-based platform. With real-time analytics, automated workflows, and mobile accessibility, businesses can make data-driven decisions faster and more efficiently than ever before.",
+    fullDescription: "Our CustomERP Solutions, powered by OpsCloud ERS™, provide a complete enterprise resource planning platform that transforms how businesses manage their operations. From inventory and supply chain management to financial reporting and customer relationship management, our ERP solution integrates all critical business processes into a unified, cloud-based platform. With real-time analytics, automated workflows, and mobile accessibility, businesses can make data-driven decisions faster and more efficiently than ever before.",
     benefits: {
       id: 1,
       title: "ERP Benefits",
@@ -88,7 +88,7 @@ export const services: ServiceProps[] = [
   {
     id: 6,
     title: "Neuralcore Private AI Cloud",
-    slug: "neuralcore-private-ai-cloud",
+    slug: "private-ai-solutions",
     subtitle: "Secure AI Infrastructure for Regulated Industries",
     description:
       "Secure AI infrastructure tailored for regulated industries. Our private cloud solution provides compliant, isolated environments for deploying AI workloads with enterprise-grade security, governance, and automation capabilities.",
@@ -252,7 +252,7 @@ export const services: ServiceProps[] = [
   {
     id: 2,
     title: "Custom Mobile Applications",
-    slug: "custom-mobile-applications",
+    slug: "custom-applications-development",
     subtitle: "Native & Cross-Platform Solutions",
     description:
       "Create stunning, high-performance mobile applications for iOS and Android platforms. We deliver custom mobile solutions that engage users and drive business growth.",
@@ -334,7 +334,7 @@ export const services: ServiceProps[] = [
   {
     id: 3,
     title: "API Engineering & Business Automation",
-    slug: "api-engineering-integration",
+    slug: "api-engineering-and-business-automation",
     subtitle: "Seamless System Connectivity",
     description:
       "Connect your systems seamlessly with custom API development and integration services. We build robust APIs that enable efficient data exchange and system interoperability.",
@@ -416,7 +416,7 @@ export const services: ServiceProps[] = [
   {
     id: 4,
     title: "DevOps & CI/CD Implementation",
-    slug: "devops-cicd-implementation",
+    slug: "dev-ops-and-ci-cd-implementation",
     subtitle: "Streamline Your Development Pipeline",
     description:
       "Accelerate your software delivery with our DevOps and CI/CD implementation services. We automate your development pipeline for faster, more reliable deployments.",
@@ -498,7 +498,7 @@ export const services: ServiceProps[] = [
   {
     id: 7,
     title: "Data Analytics & Business Intelligence",
-    slug: "data-analytics-business-intelligence",
+    slug: "data-analytics-and-business-intelligence",
     subtitle: "Transform Data into Insights",
     description:
       "Turn your data into actionable insights with our analytics and business intelligence services. We help you make data-driven decisions that drive business growth.",
@@ -580,7 +580,7 @@ export const services: ServiceProps[] = [
   {
     id: 8,
     title: "Cybersecurity & Compliance",
-    slug: "cybersecurity-compliance",
+    slug: "cybersecurity-and-compliance",
     subtitle: "Protect Your Digital Assets",
     description:
       "Safeguard your business with comprehensive cybersecurity solutions and compliance services. We ensure your systems meet industry standards and protect against evolving threats.",
@@ -662,7 +662,7 @@ export const services: ServiceProps[] = [
   {
     id: 9,
     title: "Data Migration & Management",
-    slug: "data-migration-management",
+    slug: "data-migration-and-management",
     subtitle: "Seamless Data Transitions",
     description:
       "Migrate and manage your data efficiently with our expert data services. We ensure smooth transitions and optimal data governance for your business.",
@@ -744,7 +744,7 @@ export const services: ServiceProps[] = [
   {
     id: 10,
     title: "IoT Solutions & Smart Devices",
-    slug: "iot-solutions-smart-devices",
+    slug: "io-t-solutions-and-industry-4-0",
     subtitle: "Connect the Physical World",
     description:
       "Leverage the Internet of Things to create smart, connected solutions. We develop IoT platforms and applications that collect, analyze, and act on real-time data.",

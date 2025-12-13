@@ -254,7 +254,7 @@ export const products: ProductProps[] = [
     title: "OpsCloud™: Enterprise ERP Platform",
     slug: "opscloud-enterprise-erp-platform",
     translationKey: "opscloud-enterprise-erp-platform",
-    description: "OpsCloud™ is a comprehensive, cloud-based Enterprise Resource Planning (ERP) platform specifically engineered for small and medium enterprises across Africa. Built on a modern technology stack with modular architecture, OpsCloud™ provides businesses with a complete suite of integrated management tools including advanced accounting and financial management, sophisticated inventory and warehouse operations, manufacturing and production planning, customer relationship management (CRM), and robust e-commerce capabilities.\n\nDesigned with African businesses in mind, OpsCloud™ features seamless integration with popular local payment gateways including Opay, MoniePoint, and PayStack, ensuring smooth transaction processing for your customers. The platform's API-first architecture enables effortless integration with existing websites, mobile applications, and third-party business tools, making it the perfect solution for businesses looking to modernize their operations without disrupting their current workflows.\n\nWhat sets OpsCloud™ apart is its intelligent modular design that allows businesses to start with essential features and gradually expand their capabilities as they grow. Whether you're managing a fashion e-commerce store, running a manufacturing operation, operating an educational institution, or providing professional services, OpsCloud™ adapts to your specific industry requirements. The platform includes powerful business intelligence tools powered by Frappe Insights, providing real-time analytics, automated reporting, and AI-driven insights for data-driven decision making.\n\nBuilt on dedicated server infrastructure with a 99.9% uptime SLA, OpsCloud™ ensures your business operations never skip a beat. The platform supports multi-location management, multi-currency operations, and provides comprehensive workflow automation to streamline your business processes. With 24/7 support, comprehensive training programs, and a commitment to helping African SMEs compete on a global scale, OpsCloud™ is more than just software – it's your partner in business growth and digital transformation.",
+    description: "OpsCloud™ is a comprehensive, cloud-based Enterprise Resource Planning (ERP) platform specifically engineered for small and medium enterprises across Africa. Built on a modern technology stack with modular architecture, OpsCloud ERS™ provides businesses with a complete suite of integrated management tools including advanced accounting and financial management, sophisticated inventory and warehouse operations, manufacturing and production planning, customer relationship management (CRM), and robust e-commerce capabilities.\n\nDesigned with African businesses in mind, OpsCloud ERS™ features seamless integration with popular local payment gateways including Opay, MoniePoint, and PayStack, ensuring smooth transaction processing for your customers. The platform's API-first architecture enables effortless integration with existing websites, mobile applications, and third-party business tools, making it the perfect solution for businesses looking to modernize their operations without disrupting their current workflows.\n\nWhat sets OpsCloud ERS™ apart is its intelligent modular design that allows businesses to start with essential features and gradually expand their capabilities as they grow. Whether you're managing a fashion e-commerce store, running a manufacturing operation, operating an educational institution, or providing professional services, OpsCloud ERS™ adapts to your specific industry requirements. The platform includes powerful business intelligence tools powered by Frappe Insights, providing real-time analytics, automated reporting, and AI-driven insights for data-driven decision making.\n\nBuilt on dedicated server infrastructure with a 99.9% uptime SLA, OpsCloud ERS™ ensures your business operations never skip a beat. The platform supports multi-location management, multi-currency operations, and provides comprehensive workflow automation to streamline your business processes. With 24/7 support, comprehensive training programs, and a commitment to helping African SMEs compete on a global scale, OpsCloud ERS™ is more than just software – it's your partner in business growth and digital transformation.",
     shortDescription: "Cloud-based, modular ERP platform designed for African SMEs with comprehensive accounting, inventory, CRM, and e-commerce capabilities. Features API integrations, local payment gateways, and AI-driven analytics.",
     image: "/src/assets/images/IMG_2248.JPG",
     gallery: [
@@ -443,7 +443,7 @@ export const products: ProductProps[] = [
     faqs: {
       id: 8,
       title: "Frequently Asked Questions",
-      content: "Common questions about OpsCloud™ ERP platform and implementation",
+      content: "Common questions about OpsCloud ERS™ ERP platform and implementation",
       items: [
         {
           id: 4,
@@ -453,7 +453,7 @@ export const products: ProductProps[] = [
         {
           id: 5,
           title: "Can I start with specific modules and add more later?",
-          description: "Yes! OpsCloud™'s modular design allows you to start with essential features and seamlessly add modules as your business grows."
+          description: "Yes! OpsCloud ERS™'s modular design allows you to start with essential features and seamlessly add modules as your business grows."
         },
         {
           id: 6,
@@ -467,13 +467,13 @@ export const products: ProductProps[] = [
         },
         {
           id: 8,
-          title: "Can OpsCloud™ integrate with my existing website or app?",
+          title: "Can OpsCloud ERS™ integrate with my existing website or app?",
           description: "Absolutely! Our API-first architecture enables seamless integration with existing websites, mobile apps, and third-party business tools."
         },
         {
           id: 9,
           title: "Do you provide training and ongoing support?",
-          description: "Yes, we provide comprehensive training, 24/7 support, and dedicated account management to ensure your team maximizes OpsCloud™'s potential."
+          description: "Yes, we provide comprehensive training, 24/7 support, and dedicated account management to ensure your team maximizes OpsCloud ERS™'s potential."
         }
       ]
     },

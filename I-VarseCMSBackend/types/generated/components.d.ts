@@ -34,7 +34,6 @@ export interface BlocksCtaSection extends Struct.ComponentSchema {
     ctaBadge: Schema.Attribute.Component<'shared.badge', false>;
     ctaButtons: Schema.Attribute.Component<'shared.link', true>;
     ctaContent: Schema.Attribute.RichText;
-    description: Schema.Attribute.Text;
     title: Schema.Attribute.String;
   };
 }
@@ -99,6 +98,9 @@ export interface CardsCaseStudiesCard extends Struct.ComponentSchema {
       'oneToOne',
       'api::case-study.case-study'
     >;
+    caseStudiesContent: Schema.Attribute.RichText;
+    caseStudiesResult: Schema.Attribute.RichText;
+    caseStudiesTitle: Schema.Attribute.String;
   };
 }
 
@@ -319,7 +321,7 @@ export interface SharedBadge extends Struct.ComponentSchema {
     displayName: 'badge';
   };
   attributes: {
-    content: Schema.Attribute.String;
+    badgeText: Schema.Attribute.String;
   };
 }
 

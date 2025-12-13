@@ -483,7 +483,7 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    content: Schema.Attribute.DynamicZone<
+    block: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
         'shared.link',
@@ -671,7 +671,7 @@ export interface ApiIndustryIndustry extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    content: Schema.Attribute.DynamicZone<
+    block: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
         'shared.link',
@@ -733,23 +733,42 @@ export interface ApiMenuItemMenuItem extends Struct.CollectionTypeSchema {
   options: {
     draftAndPublish: true;
   };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::menu-item.menu-item'
-    > &
-      Schema.Attribute.Private;
+    >;
     menu_items: Schema.Attribute.Relation<
       'oneToMany',
       'api::menu-item.menu-item'
     >;
-    menuItemTitle: Schema.Attribute.String;
-    menuLink: Schema.Attribute.Component<'shared.link', true>;
-    order: Schema.Attribute.Integer;
+    menuItemTitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    menuLink: Schema.Attribute.Component<'shared.link', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    order: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -773,13 +792,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'>;
-    publishedAt: Schema.Attribute.DateTime;
-    section: Schema.Attribute.DynamicZone<
+    block: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
         'hero.hero-full',
@@ -813,6 +826,12 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'>;
+    publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -854,7 +873,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    content: Schema.Attribute.DynamicZone<
+    block: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
         'shared.link',
@@ -922,7 +941,7 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    content: Schema.Attribute.DynamicZone<
+    block: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
         'shared.link',
@@ -991,7 +1010,7 @@ export interface ApiTeamTeam extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    content: Schema.Attribute.DynamicZone<
+    block: Schema.Attribute.DynamicZone<
       [
         'hero.hero-simple',
         'shared.link',

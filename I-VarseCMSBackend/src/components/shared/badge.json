@@ -5,7 +5,7 @@
   },
   "options": {},
   "attributes": {
-    "content": {
+    "badgeText": {
       "type": "string"
     }
   },

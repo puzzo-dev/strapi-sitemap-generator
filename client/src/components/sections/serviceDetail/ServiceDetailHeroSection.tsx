@@ -9,6 +9,14 @@ interface ServiceDetailHeroSectionProps {
 }
 
 const ServiceDetailHeroSection: React.FC<ServiceDetailHeroSectionProps> = ({ service }) => {
+  // Get hero section from content dynamic zone
+  const heroSection = service.content?.find((item: any) => item.__component === 'hero.hero-simple');
+
+  // Use hero data if available, fallback to service fields
+  const title = heroSection?.title || service.title;
+  const description = heroSection?.description || service.description;
+  const badge = heroSection?.heroBadge?.text || 'Our Services';
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40">
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -30,15 +38,15 @@ const ServiceDetailHeroSection: React.FC<ServiceDetailHeroSectionProps> = ({ ser
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-              Our Services
+              {badge}
             </div>
 
             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              {service.title ? (
+              {title ? (
                 (() => {
-                  const words = service.title.split(' ');
+                  const words = title.split(' ');
                   const highlightedWords = words.length >= 2 ? words.slice(-2).join(' ') : '';
-                  const regularWords = words.length >= 2 ? words.slice(0, -2).join(' ') : service.title;
+                  const regularWords = words.length >= 2 ? words.slice(0, -2).join(' ') : title;
 
                   return (
                     <>
@@ -55,7 +63,7 @@ const ServiceDetailHeroSection: React.FC<ServiceDetailHeroSectionProps> = ({ ser
             </h1>
 
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              {service.description}
+              {description}
             </p>
 
             <div className="flex flex-wrap gap-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>

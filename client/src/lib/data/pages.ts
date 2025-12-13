@@ -671,7 +671,7 @@ export const servicesPageContent: PageContent = {
         },
         secondaryButton: {
           title: "Learn More",
-          href: "/about",
+          href: "/about-us",
           variant: "outline",
           children: "Learn More"
         },

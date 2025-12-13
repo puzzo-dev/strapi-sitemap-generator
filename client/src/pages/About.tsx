@@ -20,7 +20,7 @@ import IndustriesSection from '@/components/sections/home/IndustriesSection';
 
 const About: React.FC = () => {
   // Fetch page content from Strapi or use local data
-  const { data: pageContent, isLoading: isPageLoading } = usePageContent('about');
+  const { data: pageContent, isLoading: isPageLoading } = usePageContent('about-us');
 
   // Temporarily use fallback team data until ERPNext is configured
   const teamMembers = defaultTeamMembers;
@@ -44,7 +44,7 @@ const About: React.FC = () => {
     <PageLayout
       title={displayPageContent.metaTitle}
       description={displayPageContent.metaDescription}
-      canonicalUrl="https://itechnologies.ng/about"
+      canonicalUrl="https://itechnologies.ng/about-us"
       ogImage="https://itechnologies.ng/about-og-image.jpg"
       ogType="website"
       twitterCard="summary_large_image"
