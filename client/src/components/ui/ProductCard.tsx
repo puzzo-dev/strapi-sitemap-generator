@@ -140,7 +140,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item: product, isReversed = f
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.4 }}
         >
-          <Link href={`/products/${product?.slug}`}>
+          <Link href={`/solutions/${product?.slug}`}>
             <motion.div
               className="button-spec inline-flex items-center text-blue-600 dark:text-blue-400 text-sm sm:text-base font-medium group"
               whileHover={{ scale: 1.02 }}

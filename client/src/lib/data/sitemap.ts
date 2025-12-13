@@ -4,57 +4,57 @@ import { footerLinks } from "./footer";
 
 // Extract main navigation links using prop drilling
 const extractMainNavLinks = (): any[] => {
-  const mainLinks: any[] = [];
-  
-  navItems.forEach((item) => {
-    // Add main navigation item
-    mainLinks.push({
-      title: item.label,
-      path: item.url.url,
-      description: `Navigate to ${item.label.toLowerCase()} page`,
-    });
-    
-    // Add child navigation items if they exist
-    if (item.children && item.children.length > 0) {
-      item.children.forEach((child) => {
+    const mainLinks: any[] = [];
+
+    navItems.forEach((item) => {
+        // Add main navigation item
         mainLinks.push({
-          title: child.label,
-          path: child.url.url,
-          description: `Navigate to ${child.label.toLowerCase()} page`,
+            title: item.label,
+            path: item.url.url,
+            description: `Navigate to ${item.label.toLowerCase()} page`,
         });
-      });
-    }
-  });
-  
-  return mainLinks;
+
+        // Add child navigation items if they exist
+        if (item.children && item.children.length > 0) {
+            item.children.forEach((child) => {
+                mainLinks.push({
+                    title: child.label,
+                    path: child.url.url,
+                    description: `Navigate to ${child.label.toLowerCase()} page`,
+                });
+            });
+        }
+    });
+
+    return mainLinks;
 };
 
 // Extract footer column links using prop drilling
 const extractFooterColumnLinks = (): any[] => {
-  const footerColumnLinks: any[] = [];
-  
-  footerLinks.columns.forEach((column) => {
-    column.links.forEach((link) => {
-      if (link.title) {
-        footerColumnLinks.push({
-          title: link.title,
-          path: link.href,
-          description: `Access ${link.title.toLowerCase()} from footer`,
+    const footerColumnLinks: any[] = [];
+
+    footerLinks.columns.forEach((column) => {
+        column.links.forEach((link) => {
+            if (link.title) {
+                footerColumnLinks.push({
+                    title: link.title,
+                    path: link.href,
+                    description: `Access ${link.title.toLowerCase()} from footer`,
+                });
+            }
         });
-      }
     });
-  });
-  
-  return footerColumnLinks;
+
+    return footerColumnLinks;
 };
 
 // Extract legal links using prop drilling
 const extractLegalLinks = (): any[] => {
-  return footerLinks.legalLinks.map((link) => ({
-    title: link.title,
-    path: link.href,
-    description: `Legal information: ${link.title?.toLowerCase()}`,
-  }));
+    return footerLinks.legalLinks.map((link) => ({
+        title: link.title,
+        path: link.href,
+        description: `Legal information: ${link.title?.toLowerCase()}`,
+    }));
 };
 
 export const sitemapContent: PageContent = {
@@ -97,7 +97,7 @@ export const sitemapContent: PageContent = {
                 links: [
                     {
                         title: "Products Overview",
-                        path: "/products",
+                        path: "/solutions",
                         description: "View all our digital products and solutions",
                     }
                 ]

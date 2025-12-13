@@ -12,7 +12,7 @@ export * from './hero';
 
 // Services and Products
 export * from './services';
-export * from './products';
+export * from './solutions';
 
 // Team and People
 export * from './team';

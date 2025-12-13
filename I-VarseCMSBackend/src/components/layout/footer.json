@@ -5,6 +5,11 @@
   },
   "options": {},
   "attributes": {
+    "footerLogo": {
+      "type": "component",
+      "component": "shared.logo",
+      "repeatable": false
+    },
     "companyDescFooter": {
       "type": "text",
       "required": true

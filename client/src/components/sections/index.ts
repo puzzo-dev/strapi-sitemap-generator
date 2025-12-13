@@ -27,9 +27,9 @@ export { default as BlogSidebarSection } from './blog/BlogSidebarSection';
 export { default as BlogCTASection } from './blog/BlogCTASection';
 
 // Products sections
-export { default as ProductsHeroSection } from './products/ProductsHeroSection';
-export { default as ProductsListSection } from './products/ProductsListSection';
-export { default as ProductsCTASection } from './products/ProductsCTASection';
+export { default as ProductsHeroSection } from './solutions/ProductsHeroSection';
+export { default as ProductsListSection } from './solutions/ProductsListSection';
+export { default as ProductsCTASection } from './solutions/ProductsCTASection';
 
 // Services sections
 export { default as ServicesHeroSection } from './services/ServicesHeroSection';

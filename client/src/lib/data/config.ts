@@ -88,7 +88,7 @@ export const navItems: NavItem[] = [
   {
     id: 4,
     label: "Solutions",
-    url: { url: "/products" },
+    url: { url: "/solutions" },
     order: 4,
     isButton: false,
     isVisible: true,
@@ -160,10 +160,4 @@ export const socialLinks: SocialLink[] = [{
   platform: "Instagram",
   icon: "fa-instagram",
   href: "https://instagram.com/ivarse",
-},
-{
-  id: 5,
-  platform: "YouTube",
-  icon: "fa-youtube",
-  href: "https://youtube.com/@ivarse",
 }]; 

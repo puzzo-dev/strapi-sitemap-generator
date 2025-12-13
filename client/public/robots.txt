@@ -13,7 +13,7 @@ Disallow: /static/
 # Allow important pages
 Allow: /about/
 Allow: /services/
-Allow: /products/
+Allow: /solutions/
 Allow: /blog/
 Allow: /contact/
 Allow: /careers/

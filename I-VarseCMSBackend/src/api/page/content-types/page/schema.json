@@ -23,21 +23,14 @@
         }
       }
     },
-    "description": {
-      "type": "text",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "slug": {
-      "type": "string",
+      "type": "uid",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "targetField": "title"
     },
     "seo": {
       "type": "component",
@@ -68,7 +61,21 @@
         "blocks.gallery-section",
         "blocks.cta-section",
         "cards.social-link",
-        "cards.contact-info"
+        "cards.contact-info",
+        "shared.seo",
+        "shared.logo",
+        "shared.gallery-image",
+        "shared.form-fields",
+        "shared.filter-pill",
+        "shared.button",
+        "cards.newsletter-card",
+        "cards.media-card",
+        "cards.form",
+        "cards.footer-menu",
+        "cards.faq-card",
+        "cards.cta-btn-card",
+        "cards.case-studies-card",
+        "blocks.base-row"
       ]
     }
   }

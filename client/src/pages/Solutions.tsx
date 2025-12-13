@@ -7,7 +7,7 @@ import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/
 import { productsPageContent as localProductsPageContent } from '@/lib/data/pages';
 import { defaultSiteConfig } from '@/lib/data/';
 import { ProductProps, TestimonialProps } from '@/lib/types/content';
-import { products as fallbackProducts } from '@/lib/data/products';
+import { products as fallbackProducts } from '@/lib/data/solutions';
 
 // Import section components
 import {
@@ -18,7 +18,7 @@ import {
   ProductsCaseStudiesSection,
   ProductsTestimonialsSection,
   ProductsCTASection
-} from '@/components/sections/products';
+} from '@/components/sections/solutions';
 
 const Products: React.FC = () => {
   useTranslation();
@@ -65,7 +65,7 @@ const Products: React.FC = () => {
     <PageLayout
       title={displayPageContent.metaTitle}
       description={displayPageContent.metaDescription}
-      canonicalUrl={`${displaySiteConfig.siteUrl}/products`}
+      canonicalUrl={`${displaySiteConfig.siteUrl}/solutions`}
       ogImage={`${displaySiteConfig.siteUrl}/og-products.jpg`}
       ogType="website"
       twitterCard="summary_large_image"

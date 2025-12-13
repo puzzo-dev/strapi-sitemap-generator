@@ -11,6 +11,9 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "menuItemTitle": {
+      "type": "string"
+    },
     "menuLink": {
       "type": "component",
       "component": "shared.link",

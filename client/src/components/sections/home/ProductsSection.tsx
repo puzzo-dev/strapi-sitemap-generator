@@ -180,7 +180,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, prod
                 </div>
 
                 {/* Image with overlay gradient */}
-                <Link href={`/products/${product.slug}`} className="block relative aspect-video overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 mb-6">
+                <Link href={`/solutions/${product.slug}`} className="block relative aspect-video overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 mb-6">
                   {product.image ? (
                     <>
                       <img
@@ -206,7 +206,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ homePageContent, prod
 
                 {/* Content */}
                 <div className="space-y-4">
-                  <Link href={`/products/${product.slug}`}>
+                  <Link href={`/solutions/${product.slug}`}>
                     <h3 className="text-2xl font-extrabold text-blue-900 dark:text-blue-200 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
                       {product.title}
                     </h3>

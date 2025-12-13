@@ -45,7 +45,7 @@ const ProductDetailErrorSection: React.FC<ProductDetailErrorSectionProps> = ({
               </p>
             )}
             <Button asChild>
-              <a href="/products" className="inline-flex items-center">
+              <a href="/solutions" className="inline-flex items-center">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 {content.backButton}
               </a>

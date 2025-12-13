@@ -92,11 +92,11 @@ With:
 - ✅ `client/src/components/sections/product/ProductRelatedSection.tsx`
 
 ### Products Section Components
-- ✅ `client/src/components/sections/products/ProductsListSection.tsx`
-- ✅ `client/src/components/sections/products/ProductsBenefitsSection.tsx`
-- ✅ `client/src/components/sections/products/ProductsHeroSection.tsx`
-- ✅ `client/src/components/sections/products/ProductsTechnologiesSection.tsx`
-- ✅ `client/src/components/sections/products/ProductsCTASection.tsx`
+- ✅ `client/src/components/sections/solutions/ProductsListSection.tsx`
+- ✅ `client/src/components/sections/solutions/ProductsBenefitsSection.tsx`
+- ✅ `client/src/components/sections/solutions/ProductsHeroSection.tsx`
+- ✅ `client/src/components/sections/solutions/ProductsTechnologiesSection.tsx`
+- ✅ `client/src/components/sections/solutions/ProductsCTASection.tsx`
 
 ## AboutSection Enhancement
 

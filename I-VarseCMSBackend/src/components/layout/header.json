@@ -10,7 +10,7 @@
       "component": "shared.logo",
       "repeatable": false
     },
-    "headerMenu": {
+    "menu_items": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::menu-item.menu-item"

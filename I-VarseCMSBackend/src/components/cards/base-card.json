@@ -13,10 +13,7 @@
     "title": {
       "type": "string"
     },
-    "description": {
-      "type": "text"
-    },
-    "cardImages": {
+    "cardMedia": {
       "type": "media",
       "multiple": true,
       "allowedTypes": [

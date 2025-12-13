@@ -445,7 +445,7 @@ Test that all endpoints are working:
 
 - `GET /api/page-contents`
 - `GET /api/services`
-- `GET /api/products`
+- `GET /api/solutions`
 - `GET /api/testimonials`
 - `GET /api/case-studies`
 - `GET /api/industries`

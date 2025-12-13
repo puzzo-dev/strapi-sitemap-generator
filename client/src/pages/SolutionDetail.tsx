@@ -19,7 +19,7 @@ import {
   ProductCTASection,
   ProductDetailLoadingSection,
   ProductDetailErrorSection
-} from '@/components/sections/product';
+} from '@/components/sections/solution';
 
 // Helper function to map icon strings to React components
 const getIconComponent = (iconName: string) => {
@@ -142,7 +142,7 @@ const ProductDetail: React.FC = () => {
     <PageLayout
       title={product ? `${product.title} | Products` : 'Product Not Found'}
       description={product ? `${product.description} Discover the features and benefits of ${product.title}.` : 'The requested product could not be found.'}
-      canonicalUrl={`https://itechnologies.ng/products/${slug}`}
+      canonicalUrl={`https://itechnologies.ng/solutions/${slug}`}
       ogImage={product?.image || 'https://itechnologies.ng/og-product.jpg'}
       pageContent={product}
       isLoading={isLoading}

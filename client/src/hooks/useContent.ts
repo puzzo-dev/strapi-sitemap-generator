@@ -388,7 +388,7 @@ export function useProductById(id: number) {
         return await getProductById(id);
       } catch (error) {
         console.error(`Failed to fetch product ${id}:`, error);
-        const { products } = await import('@/lib/data/products');
+        const { products } = await import('@/lib/data/solutions');
         return products.find(p => p.id === id);
       }
     },

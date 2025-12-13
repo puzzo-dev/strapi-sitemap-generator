@@ -26,7 +26,7 @@ import { services, products, team } from "@/lib/data/";
 
 // New
 import { services } from "@/lib/data/services";
-import { products } from "@/lib/data/products";
+import { products } from "@/lib/data/solutions";
 import { team } from "@/lib/data/team";
 ```
 
@@ -41,8 +41,8 @@ import { team } from "@/lib/data/team";
 | `defaultHeroProps`     | `@/lib/data/hero`         | Default hero properties  |
 | `services`             | `@/lib/data/services`     | Service offerings        |
 | `extendedServices`     | `@/lib/data/services`     | Extended service details |
-| `products`             | `@/lib/data/products`     | Product catalog          |
-| `extendedProducts`     | `@/lib/data/products`     | Extended product details |
+| `products`             | `@/lib/data/solutions`     | Product catalog          |
+| `extendedProducts`     | `@/lib/data/solutions`     | Extended product details |
 | `defaultTeamMembers`   | `@/lib/data/team`         | Team members             |
 | `extendedTeamMembers`  | `@/lib/data/team`         | Extended team profiles   |
 | `testimonials`         | `@/lib/data/testimonials` | Customer testimonials    |
@@ -144,7 +144,7 @@ import { extendedServices } from "@/lib/data/services";
 ```typescript
 // Good
 import { services } from "@/lib/data/services";
-import { products } from "@/lib/data/products";
+import { products } from "@/lib/data/solutions";
 import { team } from "@/lib/data/team";
 
 // Alternative (if you need many items)

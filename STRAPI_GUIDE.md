@@ -641,7 +641,7 @@ curl http://localhost:1337/api/page-content?populate=*
 
 # Test main content types
 curl http://localhost:1337/api/services?populate=*
-curl http://localhost:1337/api/products?populate=*
+curl http://localhost:1337/api/solutions?populate=*
 curl http://localhost:1337/api/team-members?populate=*&filters[isActive][$eq]=true
 
 # Test detail pages content

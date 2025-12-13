@@ -9,7 +9,7 @@ import { services } from './services';
 // Extract service links from services using prop drilling
 const extractServiceLinks = (): AppLinkProps[] => {
   const serviceLinks: AppLinkProps[] = [];
-  
+
   services.forEach((service) => {
     serviceLinks.push({
       title: service.title,
@@ -17,43 +17,43 @@ const extractServiceLinks = (): AppLinkProps[] => {
       translationKey: `footer-service-${service.slug || service.id}`
     });
   });
-  
+
   // Add "View All Services" link
   serviceLinks.push({
     title: "View All Services",
     href: "/services",
     translationKey: "footer-view-all-services"
   });
-  
+
   return serviceLinks;
 };
 
 // Create footer columns using prop drilling
 const createFooterColumns = (): FooterColumn[] => [
-    {
-      id: 1,
-      title: "Important Links",
-      translationKey: "footer-important-links",
-      isVisible: true,
-      links: [
-        { title: "About Us", href: "/about", translationKey: "footer-about" },
-        { title: "Services", href: "/services", translationKey: "footer-services" },
-        { title: "Products", href: "/products", translationKey: "footer-products" },
-        { title: "Insights", href: "/blog", translationKey: "footer-insights" },
-        { title: "Careers", href: "/careers", translationKey: "footer-careers" },
-        { title: "Contact", href: "/contact", translationKey: "footer-contact" },
-        { title: "Our Team", href: "/team", translationKey: "footer-team" },
-        { title: "FAQ", href: "/faq", translationKey: "footer-faq" },
-        { title: "Insights Pages", href: "/blog", translationKey: "footer-insights-pages" },
-      ],
-    },
-    {
-      id: 2,
-      title: "Services",
-      translationKey: "footer-services-column",
-      isVisible: true,
-      links: extractServiceLinks(), // Use prop drilling from services
-    },
+  {
+    id: 1,
+    title: "Important Links",
+    translationKey: "footer-important-links",
+    isVisible: true,
+    links: [
+      { title: "About Us", href: "/about", translationKey: "footer-about" },
+      { title: "Services", href: "/services", translationKey: "footer-services" },
+      { title: "Products", href: "/solutions", translationKey: "footer-products" },
+      { title: "Insights", href: "/blog", translationKey: "footer-insights" },
+      { title: "Careers", href: "/careers", translationKey: "footer-careers" },
+      { title: "Contact", href: "/contact", translationKey: "footer-contact" },
+      { title: "Our Team", href: "/team", translationKey: "footer-team" },
+      { title: "FAQ", href: "/faq", translationKey: "footer-faq" },
+      { title: "Insights Pages", href: "/blog", translationKey: "footer-insights-pages" },
+    ],
+  },
+  {
+    id: 2,
+    title: "Services",
+    translationKey: "footer-services-column",
+    isVisible: true,
+    links: extractServiceLinks(), // Use prop drilling from services
+  },
 ];
 
 export const footerLinks: {
@@ -87,44 +87,44 @@ export const footerData: FooterProps = {
 export const footerHelpers = {
   // Get all service links
   getServiceLinks: (): AppLinkProps[] => extractServiceLinks(),
-  
+
   // Get service links without "View All Services"
   getServiceLinksOnly: (): AppLinkProps[] => {
     return extractServiceLinks().filter(link => link.title !== "View All Services");
   },
-  
+
   // Get service by slug
   getServiceBySlug: (slug: string): AppLinkProps | undefined => {
-    return extractServiceLinks().find(link => 
+    return extractServiceLinks().find(link =>
       link.href.includes(slug) && link.title !== "View All Services"
     );
   },
-  
+
   // Get all footer columns
   getColumns: (): FooterColumn[] => footerLinks.columns,
-  
+
   // Get column by ID
   getColumnById: (id: number): FooterColumn | undefined => {
     return footerLinks.columns.find(column => column.id === id);
   },
-  
+
   // Get column by title
   getColumnByTitle: (title: string): FooterColumn | undefined => {
-    return footerLinks.columns.find(column => 
+    return footerLinks.columns.find(column =>
       column.title.toLowerCase().includes(title.toLowerCase())
     );
   },
-  
+
   // Get legal links
   getLegalLinks: (): AppLinkProps[] => footerLinks.legalLinks,
-  
+
   // Get total number of services
   getServiceCount: (): number => services.length,
-  
+
   // Get services by category (if needed in future)
   getServicesByCategory: (category: string): AppLinkProps[] => {
-    return extractServiceLinks().filter(link => 
-      link.title?.toLowerCase().includes(category.toLowerCase()) && 
+    return extractServiceLinks().filter(link =>
+      link.title?.toLowerCase().includes(category.toLowerCase()) &&
       link.title !== "View All Services"
     );
   }

@@ -24,6 +24,11 @@
       "type": "component",
       "component": "cards.stat",
       "repeatable": true
+    },
+    "socialLinks": {
+      "type": "component",
+      "component": "cards.social-link",
+      "repeatable": true
     }
   },
   "config": {}

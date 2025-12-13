@@ -82,7 +82,7 @@ const ProductRelatedSection: React.FC<ProductRelatedSectionProps> = ({
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{product.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-6">{product.shortDescription || product.description}</p>
-                <Link href={`/products/${product.slug}`}>
+                <Link href={`/solutions/${product.slug}`}>
                   <a className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center">
                     <span>{product.learnMoreText || relatedContent?.learnMore || getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}</span>
                     <ArrowRight className="h-4 w-4 ml-1" />

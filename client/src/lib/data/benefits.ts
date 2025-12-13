@@ -1,7 +1,7 @@
 import {
   Benefit
 } from '@/lib/types';
-import { products } from './products';
+import { products } from './solutions';
 import { services } from './services';
 import { jobListings } from './jobs';
 
@@ -88,86 +88,86 @@ const extractAllBenefits = (): BenefitWithSource[] => {
 export const benefits = {
   // Single data source containing all benefits (internal with source tracking)
   _data: extractAllBenefits(),
-  
+
   // Public data following Benefit interface exactly
   get data(): Benefit[] {
     return this._data.map(({ source, sourceId, sourceSlug, sourceTitle, ...benefit }) => benefit);
   },
-  
+
   // Helper methods for accessing benefits (returning proper Benefit objects)
   getAll: (): Benefit[] => {
     return benefits.data;
   },
-  
+
   getBySource: (source: string): Benefit[] => {
     return benefits._data
       .filter(benefit => benefit.source === source)
       .map(({ source, sourceId, sourceSlug, sourceTitle, ...benefit }) => benefit);
   },
-  
+
   getByProduct: (productSlug: string): Benefit[] => {
     return benefits._data
       .filter(benefit => benefit.source === 'product' && benefit.sourceSlug === productSlug)
       .map(({ source, sourceId, sourceSlug, sourceTitle, ...benefit }) => benefit);
   },
-  
+
   getByService: (serviceSlug: string): Benefit[] => {
     return benefits._data
       .filter(benefit => benefit.source === 'service' && benefit.sourceSlug === serviceSlug)
       .map(({ source, sourceId, sourceSlug, sourceTitle, ...benefit }) => benefit);
   },
-  
+
   getBySourceId: (sourceId: number): Benefit[] => {
     return benefits._data
       .filter(benefit => benefit.sourceId === sourceId)
       .map(({ source, sourceId, sourceSlug, sourceTitle, ...benefit }) => benefit);
   },
-  
+
   getBySourceTitle: (sourceTitle: string): Benefit[] => {
     return benefits._data
       .filter(benefit => benefit.sourceTitle === sourceTitle)
       .map(({ source, sourceId, sourceSlug, sourceTitle, ...benefit }) => benefit);
   },
-  
+
   getProductBenefits: (): Benefit[] => {
     return benefits.getBySource('product');
   },
-  
+
   getServiceBenefits: (): Benefit[] => {
     return benefits.getBySource('service');
   },
-  
+
   getJobBenefits: (): Benefit[] => {
     return benefits.getBySource('job');
   },
-  
+
   getUniqueJobBenefits: (): Benefit[] => {
     // This ensures we get unique job benefits (already handled in extraction)
     return benefits.getBySource('job');
   },
-  
+
   getJobBenefitsByPosition: (jobSlug: string): Benefit[] => {
     return benefits._data
       .filter(benefit => benefit.source === 'job' && benefit.sourceSlug === jobSlug)
       .map(({ source, sourceId, sourceSlug, sourceTitle, ...benefit }) => benefit);
   },
-  
+
   search: (query: string): Benefit[] => {
     const lowerQuery = query.toLowerCase();
     return benefits._data
-      .filter(benefit => 
+      .filter(benefit =>
         benefit.title.toLowerCase().includes(lowerQuery) ||
         benefit.description?.toLowerCase().includes(lowerQuery) ||
         benefit.sourceTitle.toLowerCase().includes(lowerQuery)
       )
       .map(({ source, sourceId, sourceSlug, sourceTitle, ...benefit }) => benefit);
   },
-  
+
   getUniqueSources: (): string[] => {
     const sources = benefits._data.map(benefit => benefit.source);
     return Array.from(new Set(sources));
   },
-  
+
   getSourceCounts: (): { [key: string]: number } => {
     const counts: { [key: string]: number } = {};
     benefits._data.forEach(benefit => {

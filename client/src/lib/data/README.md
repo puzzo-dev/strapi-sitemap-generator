@@ -44,7 +44,7 @@ You can import data in several ways:
 
 ```typescript
 import { services } from "@/lib/data/services";
-import { products } from "@/lib/data/products";
+import { products } from "@/lib/data/solutions";
 ```
 
 2. **Import from the main index:**

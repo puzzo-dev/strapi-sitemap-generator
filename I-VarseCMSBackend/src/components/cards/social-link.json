@@ -5,10 +5,20 @@
   },
   "options": {},
   "attributes": {
+    "platform": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "X",
+        "facebook",
+        "instagram",
+        "linkedin"
+      ]
+    },
     "socialIcon": {
       "type": "media",
       "multiple": false,
-      "required": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files"

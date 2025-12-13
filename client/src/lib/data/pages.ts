@@ -1,6 +1,6 @@
 import { PageContent } from '@/lib/types/';
 import { services } from './services';
-import { products } from './products';
+import { products } from './solutions';
 import { defaultTeamMembers } from './team';
 import { testimonials } from './testimonials';
 import { jobListings } from './jobs';
@@ -94,7 +94,7 @@ export const homePageContent: PageContent = {
         maxDisplay: 2,
         primaryButton: {
           title: "View All Products",
-          href: "/products",
+          href: "/solutions",
           variant: "default",
           children: "View All Products"
         },
@@ -705,7 +705,7 @@ export const productsPageContent: PageContent = {
       settings: {
         primaryButton: {
           title: "View Products",
-          href: "/products",
+          href: "/solutions",
           variant: "default",
           children: "View Products"
         },

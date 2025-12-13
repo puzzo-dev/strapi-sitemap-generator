@@ -28,10 +28,40 @@
         }
       }
     },
-    "pages": {
+    "page": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "oneToOne",
       "target": "api::page.page",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    },
+    "service": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::service.service",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    },
+    "solution": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project.project",
       "conditions": {
         "visible": {
           "==": [

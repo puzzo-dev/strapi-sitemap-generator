@@ -4,7 +4,7 @@
   "info": {
     "singularName": "project",
     "pluralName": "projects",
-    "displayName": "Project"
+    "displayName": "Solution"
   },
   "options": {
     "draftAndPublish": true
@@ -16,14 +16,6 @@
   },
   "attributes": {
     "title": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "description": {
       "type": "string",
       "pluginOptions": {
         "i18n": {

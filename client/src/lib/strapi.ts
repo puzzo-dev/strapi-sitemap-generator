@@ -92,17 +92,13 @@ async function fetchStrapiData<T>(endpoint: string, fallbackData: T): Promise<T>
 
     const result = await response.json();
 
-    // Handle both collection and single type responses from Strapi
+    // Strapi v5: Data is flat (no attributes wrapper)
     if (Array.isArray(result.data)) {
-      return result.data.map((item: any) => ({
-        id: item.id,
-        ...item.attributes
-      })) as T;
-    } else if (result.data && result.data.attributes) {
-      return {
-        id: result.data.id,
-        ...result.data.attributes
-      } as T;
+      // Collection type - array of items
+      return result.data as T;
+    } else if (result.data) {
+      // Single type - single object
+      return result.data as T;
     }
 
     return fallbackData;
@@ -147,7 +143,7 @@ export async function getProductById(id: number): Promise<ProductProps | undefin
     const locale = currentLanguage;
     const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
 
-    const response = await fetch(`${STRAPI_URL}/api/products/${id}?populate=*${localeSuffix}`, {
+    const response = await fetch(`${STRAPI_URL}/api/solutions/${id}?populate=*${localeSuffix}`, {
       headers: getStrapiHeaders()
     });
 
@@ -231,7 +227,65 @@ export async function getFAQItems(): Promise<FAQItem[]> {
  * Maps from Strapi menu-items collection
  */
 export async function getNavItems(): Promise<NavItem[]> {
-  return fetchStrapiData<NavItem[]>('menu-items', localNavItems);
+  try {
+    if (!getStrapiToken()) {
+      return localNavItems;
+    }
+
+    const locale = currentLanguage;
+    const localeSuffix = locale !== 'en' ? `&locale=${locale}` : '';
+
+    const response = await fetch(`${STRAPI_URL}/api/menu-items?populate=deep${localeSuffix}`, {
+      headers: getStrapiHeaders()
+    });
+
+    if (!response.ok) {
+      return localNavItems;
+    }
+
+    const result = await response.json();
+
+    if (!Array.isArray(result.data) || result.data.length === 0) {
+      return localNavItems;
+    }
+
+    // Transform Strapi menu-items to NavItem format
+    const transformMenuItem = (item: any, index: number): NavItem => {
+      const menuLink = item.attributes?.menuLink?.[0] || item.menuLink?.[0];
+      const label = menuLink?.label || item.attributes?.menuItemTitle || item.menuItemTitle || 'Untitled';
+
+      // Generate URL from label (convert to lowercase, replace spaces with hyphens)
+      const generateUrl = (text: string): string => {
+        if (text === 'Home') return '/';
+        return '/' + text.toLowerCase().replace(/\s+/g, '-');
+      };
+
+      const url = menuLink?.externalUrl || generateUrl(label);
+
+      // Get children from menu_items relation
+      const childrenData = item.attributes?.menu_items?.data || item.menu_items || [];
+      const children = childrenData.length > 0
+        ? childrenData.map((child: any, childIndex: number) => transformMenuItem(child, childIndex))
+        : undefined;
+
+      return {
+        id: item.id || index,
+        label,
+        url: {
+          url,
+          openInNewTab: menuLink?.linkType === 'external'
+        },
+        order: item.attributes?.order || item.order || index,
+        isButton: false,
+        children
+      };
+    };
+
+    return result.data.map(transformMenuItem);
+  } catch (error) {
+    console.warn('Error fetching navigation items:', error);
+    return localNavItems;
+  }
 }
 
 /**

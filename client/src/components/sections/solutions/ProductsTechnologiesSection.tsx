@@ -138,7 +138,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
                   </ul>
 
                   {/* <div className="mt-6 max-w-xs">
-                    <GradientButton href="/products/1" size="sm">
+                    <GradientButton href="/solutions/1" size="sm">
                       {getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
                     </GradientButton>
                   </div> */}
@@ -220,7 +220,7 @@ const ProductsTechnologiesSection: React.FC<ProductsTechnologiesSectionProps> = 
                   </ul>
 
                   {/* <div className="mt-6 max-w-xs">
-                    <GradientButton href="/products/2" size="sm">
+                    <GradientButton href="/solutions/2" size="sm">
                       {getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
                     </GradientButton>
                   </div> */}

@@ -674,7 +674,7 @@ Use the data migration script:
 npm run migrate:products
 ```
 
-Or manually create products in Strapi using the data from `client/src/lib/data/products.ts`.
+Or manually create products in Strapi using the data from `client/src/lib/data/solutions.ts`.
 
 ### Step 3: Import Other Content
 

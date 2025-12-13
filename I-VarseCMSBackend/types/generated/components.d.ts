@@ -8,9 +8,13 @@ export interface BlocksBaseRow extends Struct.ComponentSchema {
   attributes: {
     badge: Schema.Attribute.Component<'shared.badge', false>;
     baseCards: Schema.Attribute.Component<'cards.base-card', true>;
+    button: Schema.Attribute.Component<'shared.button', true>;
+    CaseStudies: Schema.Attribute.Component<'cards.case-studies-card', true>;
     cta: Schema.Attribute.Component<'blocks.cta-section', false>;
     description: Schema.Attribute.Text;
+    Faqs: Schema.Attribute.Component<'cards.faq-card', true>;
     gallery: Schema.Attribute.Component<'blocks.gallery-section', false>;
+    link: Schema.Attribute.Component<'shared.link', true>;
     socialLinks: Schema.Attribute.Component<'cards.social-link', true>;
     statCards: Schema.Attribute.Component<'cards.stat', true>;
     testimonialCards: Schema.Attribute.Component<
@@ -79,10 +83,22 @@ export interface CardsBaseCard extends Struct.ComponentSchema {
   attributes: {
     cardBadge: Schema.Attribute.Component<'shared.badge', false>;
     cardContent: Schema.Attribute.RichText;
-    cardImages: Schema.Attribute.Media<'images' | 'files' | 'videos', true>;
     cardLink: Schema.Attribute.Component<'shared.link', true>;
-    description: Schema.Attribute.Text;
+    cardMedia: Schema.Attribute.Media<'images' | 'files' | 'videos', true>;
     title: Schema.Attribute.String;
+  };
+}
+
+export interface CardsCaseStudiesCard extends Struct.ComponentSchema {
+  collectionName: 'components_shared_case_studies_cards';
+  info: {
+    displayName: 'caseStudiesCard';
+  };
+  attributes: {
+    case_study: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::case-study.case-study'
+    >;
   };
 }
 
@@ -92,7 +108,7 @@ export interface CardsContactInfo extends Struct.ComponentSchema {
     displayName: 'contactInfo';
   };
   attributes: {
-    address: Schema.Attribute.Text;
+    address: Schema.Attribute.JSON;
     email: Schema.Attribute.Email;
     phone: Schema.Attribute.String;
     socialLinks: Schema.Attribute.Component<'cards.social-link', true>;
@@ -108,6 +124,16 @@ export interface CardsCtaBtnCard extends Struct.ComponentSchema {
     ctaBtn: Schema.Attribute.Component<'shared.button', true>;
     ctaLink: Schema.Attribute.Component<'shared.link', true>;
     isLink: Schema.Attribute.Boolean;
+  };
+}
+
+export interface CardsFaqCard extends Struct.ComponentSchema {
+  collectionName: 'components_cards_faq_cards';
+  info: {
+    displayName: 'faqCard';
+  };
+  attributes: {
+    faq: Schema.Attribute.Relation<'oneToOne', 'api::faq.faq'>;
   };
 }
 
@@ -171,8 +197,11 @@ export interface CardsSocialLink extends Struct.ComponentSchema {
   };
   attributes: {
     linkUrl: Schema.Attribute.Component<'shared.link', false>;
-    socialIcon: Schema.Attribute.Media<'images' | 'files'> &
+    platform: Schema.Attribute.Enumeration<
+      ['X', 'facebook', 'instagram', 'linkedin']
+    > &
       Schema.Attribute.Required;
+    socialIcon: Schema.Attribute.Media<'images' | 'files'>;
   };
 }
 
@@ -218,6 +247,7 @@ export interface HeroHeroFull extends Struct.ComponentSchema {
     heroMediaCards: Schema.Attribute.Component<'cards.media-card', true>;
     heroSlides: Schema.Attribute.Component<'hero.hero-slide', true>;
     heroStat: Schema.Attribute.Component<'cards.stat', true>;
+    socialLinks: Schema.Attribute.Component<'cards.social-link', true>;
   };
 }
 
@@ -261,6 +291,7 @@ export interface LayoutFooter extends Struct.ComponentSchema {
     > &
       Schema.Attribute.Required;
     companyDescFooter: Schema.Attribute.Text & Schema.Attribute.Required;
+    footerLogo: Schema.Attribute.Component<'shared.logo', false>;
     FooterMenu: Schema.Attribute.Component<'cards.footer-menu', true>;
     legalFooter: Schema.Attribute.Component<'blocks.legal-links', false>;
     newsLetter: Schema.Attribute.Component<'cards.newsletter-card', false>;
@@ -273,7 +304,7 @@ export interface LayoutHeader extends Struct.ComponentSchema {
     displayName: 'header';
   };
   attributes: {
-    headerMenu: Schema.Attribute.Relation<
+    menu_items: Schema.Attribute.Relation<
       'oneToMany',
       'api::menu-item.menu-item'
     >;
@@ -354,7 +385,9 @@ export interface SharedLink extends Struct.ComponentSchema {
     externalUrl: Schema.Attribute.String;
     label: Schema.Attribute.String;
     linkType: Schema.Attribute.Enumeration<['internal', 'external']>;
-    pages: Schema.Attribute.Relation<'oneToMany', 'api::page.page'>;
+    page: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
+    service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'>;
+    solution: Schema.Attribute.Relation<'oneToOne', 'api::project.project'>;
   };
 }
 
@@ -364,10 +397,9 @@ export interface SharedLogo extends Struct.ComponentSchema {
     displayName: 'logo';
   };
   attributes: {
-    logoImageDark: Schema.Attribute.Media<'images' | 'files'>;
+    logoImageDark: Schema.Attribute.Media<'images'>;
     logoImageLight: Schema.Attribute.Media<'images' | 'files'>;
     logoText: Schema.Attribute.String;
-    logoThemeType: Schema.Attribute.Enumeration<['light', 'dark']>;
   };
 }
 
@@ -403,8 +435,10 @@ declare module '@strapi/strapi' {
       'blocks.industry-filter': BlocksIndustryFilter;
       'blocks.legal-links': BlocksLegalLinks;
       'cards.base-card': CardsBaseCard;
+      'cards.case-studies-card': CardsCaseStudiesCard;
       'cards.contact-info': CardsContactInfo;
       'cards.cta-btn-card': CardsCtaBtnCard;
+      'cards.faq-card': CardsFaqCard;
       'cards.footer-menu': CardsFooterMenu;
       'cards.form': CardsForm;
       'cards.media-card': CardsMediaCard;

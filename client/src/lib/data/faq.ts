@@ -3,7 +3,7 @@ import {
   FAQItem,
   FAQCategory
 } from '@/lib/types';
-import { products } from './products';
+import { products } from './solutions';
 import { services } from './services';
 
 // Extract FAQ items from products using prop drilling
@@ -255,45 +255,45 @@ export const faqItems: FAQItem[] = faqContent.items;
 export const faqHelpers = {
   // Get all FAQs
   getAll: (): FAQItem[] => faqContent.items,
-  
+
   // Get FAQs by category
   getByCategory: (categoryId: number): FAQItem[] => {
     return faqContent.items.filter(faq => faq.categoryIds?.includes(categoryId));
   },
-  
+
   // Get FAQs by category name
   getByCategoryName: (categoryName: string): FAQItem[] => {
     const category = faqContent.categories.find(cat => cat.name === categoryName);
     if (!category) return [];
     return faqHelpers.getByCategory(category.id);
   },
-  
+
   // Get product FAQs
   getProductFAQs: (): FAQItem[] => faqHelpers.getByCategory(3),
-  
+
   // Get service FAQs
   getServiceFAQs: (): FAQItem[] => faqHelpers.getByCategory(2),
-  
+
   // Get general FAQs
   getGeneralFAQs: (): FAQItem[] => faqHelpers.getByCategory(1),
-  
+
   // Search FAQs
   search: (query: string): FAQItem[] => {
     const lowerQuery = query.toLowerCase();
-    return faqContent.items.filter(faq => 
+    return faqContent.items.filter(faq =>
       faq.question.toLowerCase().includes(lowerQuery) ||
       faq.answer.toLowerCase().includes(lowerQuery)
     );
   },
-  
+
   // Get FAQ by ID
   getById: (id: number): FAQItem | undefined => {
     return faqContent.items.find(faq => faq.id === id);
   },
-  
+
   // Get categories
   getCategories: (): FAQCategory[] => faqContent.categories,
-  
+
   // Get category by ID
   getCategoryById: (id: number): FAQCategory | undefined => {
     return faqContent.categories.find(cat => cat.id === id);
