@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { usePageContent } from '@/hooks/useContent';
 import { caseStudiesPageContent as localCaseStudiesPageContent } from '@/lib/data/pages';
 import { caseStudies } from '@/lib/data/case-studies';
+import { testimonials } from '@/lib/data/testimonials';
 import { CaseStudiesContentSection } from '@/components/sections/case-studies';
 import { TestimonialProps } from '@/lib/types/content';
 import PageLayout from '@/components/layout/PageLayout';
@@ -23,43 +24,25 @@ const CaseStudies: React.FC = () => {
   // Fetch page content from Strapi with fallback to local data
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('case-studies');
 
-  // Always inject the imported caseStudies data into the fallback page content
-  const fallbackPageContent = React.useMemo(() => {
-    const fallback = { ...localCaseStudiesPageContent };
-    if (
-      fallback.sections &&
-      fallback.sections[2] &&
-      fallback.sections[2].type === 'case-studies'
-    ) {
-      fallback.sections[2] = {
-        ...fallback.sections[2],
-        settings: {
-          ...fallback.sections[2].settings,
-          featured: caseStudies
-        }
-      };
-    }
-    return fallback;
-  }, []);
-
-  // Use Strapi data if available, otherwise fallback
-  const displayPageContent = pageContent || fallbackPageContent;
+  // Use Strapi data if available, otherwise fallback (caseStudies already embedded in localCaseStudiesPageContent)
+  const displayPageContent = pageContent || localCaseStudiesPageContent;
 
   // Get case studies from page content
   const allCaseStudies = useMemo((): CaseStudyProps[] => {
     const caseStudiesSection = displayPageContent.sections?.find(s => s.type === 'case-studies');
     const featuredCaseStudies = caseStudiesSection?.settings?.featured;
-    if (featuredCaseStudies && Array.isArray(featuredCaseStudies)) {
+    if (featuredCaseStudies && Array.isArray(featuredCaseStudies) && featuredCaseStudies.length > 0) {
       return featuredCaseStudies as CaseStudyProps[];
     }
-    return [];
+    // Fallback to direct import if extraction fails
+    return caseStudies;
   }, [displayPageContent]);
 
   // Get filter options from page content
   const filterOptions = useMemo(() => {
     const contentSection = displayPageContent.sections?.find(s => s.type === 'custom' && s.title?.includes('About'));
     const industryExpertise = contentSection?.settings?.industryExpertise || [];
-    
+
     // Create filter options from industry expertise
     const filters = industryExpertise.map((industry: string) => {
       const key = industry.toLowerCase().replace(/[^a-z]/g, '');
@@ -68,7 +51,7 @@ const CaseStudies: React.FC = () => {
         label: industry
       };
     });
-    
+
     return filters;
   }, [displayPageContent]);
 
@@ -77,31 +60,31 @@ const CaseStudies: React.FC = () => {
     if (activeFilter === 'all') {
       return allCaseStudies;
     }
-    
+
     const selectedFilter = filterOptions.find((f: any) => f.key === activeFilter);
-    
+
     if (!selectedFilter) {
       return allCaseStudies;
     }
-    
+
     const filtered = allCaseStudies.filter(cs => {
       const industry = cs.industry.toLowerCase();
       const filterLabel = selectedFilter.label.toLowerCase();
-      
+
       // Simple exact match
       if (industry === filterLabel) {
         return true;
       }
-      
+
       // If no exact match, try partial matching
       const words = filterLabel.split(' ');
-      const hasMatch = words.some((word: string) => 
+      const hasMatch = words.some((word: string) =>
         word.length > 2 && industry.includes(word)
       );
-      
+
       return hasMatch;
     });
-    
+
     return filtered;
   }, [allCaseStudies, activeFilter, filterOptions]);
 
@@ -122,7 +105,8 @@ const CaseStudies: React.FC = () => {
         return [featured as TestimonialProps];
       }
     }
-    return [];
+    // Fallback to direct import if extraction fails
+    return testimonials;
   }, [testimonialsSection]);
 
   const structuredData = generateOrganizationSchema();
@@ -144,14 +128,15 @@ const CaseStudies: React.FC = () => {
       />
 
       {/* Content Section */}
-      <CaseStudiesContentSection 
+      <CaseStudiesContentSection
         pageContent={displayPageContent}
-        isLoading={isPageLoading} 
+        isLoading={isPageLoading}
       />
 
       {/* Filter Section */}
       <CaseStudiesFilterSection
         pageContent={displayPageContent}
+        caseStudies={allCaseStudies}
         isLoading={isPageLoading}
         onFilterChange={handleFilterChange}
         activeFilter={activeFilter}

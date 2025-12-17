@@ -5,7 +5,7 @@ import { privacyContent } from '@/lib/data/';
 
 const Privacy: React.FC = () => {
   // Fetch privacy content from Strapi
-  const { data: pageContent } = usePageContent('privacy');
+  const { data: pageContent } = usePageContent('privacy-policy');
 
   // Use Strapi content if available, otherwise fall back to local data
   const title = pageContent?.title || privacyContent.title;

@@ -5,7 +5,7 @@ import { termsContent } from '@/lib/data/';
 
 const Terms: React.FC = () => {
   // Fetch terms content from Strapi if available
-  const { data: pageContent, isLoading } = usePageContent('terms');
+  const { data: pageContent, isLoading } = usePageContent('terms-of-service');
 
   // Get page title, description and content from Strapi or fallback
   const pageTitle = pageContent?.title || termsContent.title;

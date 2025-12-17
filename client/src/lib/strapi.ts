@@ -447,68 +447,18 @@ export async function getSocialLinks(): Promise<SocialLink[]> {
 /**
  * Get footer columns from API
  */
+// DEPRECATED: Use getGlobalLayout() instead
+// These footer functions are no longer used as footer data comes from global layout endpoint
+/*
 export async function getFooterColumns(): Promise<FooterColumn[]> {
   return fetchStrapiData<FooterColumn[]>('footer-columns', []);
 }
 
-/**
- * Get footer data from API
- * Fetches from global single type footer component
- */
 export async function getFooter(): Promise<FooterProps> {
-  try {
-    if (!getStrapiToken()) {
-      return footerData;
-    }
-
-    // Use wildcard population - Strapi v5 handles nested components automatically
-    const response = await fetch(`${STRAPI_URL}/api/global?populate=*`, {
-      headers: getStrapiHeaders()
-    });
-
-    if (!response.ok) {
-      // Content not published yet or doesn't exist - use fallback silently
-      return footerData;
-    }
-
-    const result = await response.json();
-    if (!result.data?.attributes?.footer) {
-      return footerData;
-    }
-
-    const footer = result.data.attributes.footer;
-
-    // Map Strapi footer structure to FooterProps
-    return {
-      companyDescription: footer.companyDescFooter || footerData.companyDescription,
-      contactAddress: footer.companyContactInfo?.address || footerData.contactAddress,
-      contactPhone: footer.companyContactInfo?.phone || footerData.contactPhone,
-      contactEmail: footer.companyContactInfo?.email || footerData.contactEmail,
-      contactSectionTitle: footer.companyContactInfo?.title || footerData.contactSectionTitle,
-      columns: footer.FooterMenu?.map((menu: any, index: number) => ({
-        id: index + 1,
-        title: menu.footerMenuTitle || '',
-        links: menu.footerMenuLink?.map((link: any) => ({
-          title: link.linkText || '',
-          url: link.linkUrl || '#',
-          external: link.isExternal || false
-        })) || []
-      })) || footerData.columns,
-      socialLinks: footerData.socialLinks, // Use fallback for now
-      copyrightText: footer.legalFooter?.copyright || footerData.companyName,
-      companyName: footerData.companyName,
-      legalLinks: footer.legalFooter?.legalLink?.map((link: any) => ({
-        title: link.linkText || '',
-        url: link.linkUrl || '#',
-        external: link.isExternal || false
-      })) || footerData.legalLinks
-    };
-  } catch (error) {
-    // Silent fallback - content not published in Strapi yet
-    console.debug('Footer content not available from Strapi, using fallback');
-    return footerData;
-  }
+  // This function has been replaced by getGlobalLayout()
+  throw new Error('getFooter() is deprecated. Use getGlobalLayout() instead.');
 }
+*/
 
 /**
  * Get site configuration from API
@@ -857,6 +807,90 @@ export async function getAnalyticsConfig(language?: string): Promise<any> {
     };
   } catch (error) {
     console.warn('Error fetching analytics config:', error);
+    return null;
+  }
+}
+
+/**
+ * Get global layout configuration (header, footer, navigation)
+ * This is a single type endpoint that doesn't need parameters
+ */
+export async function getGlobalLayout(): Promise<any> {
+  try {
+    if (!getStrapiToken()) {
+      return null;
+    }
+
+    console.log('🌍 Fetching global layout from Strapi');
+
+    const response = await fetch(`${STRAPI_URL}/api/global`, {
+      headers: getStrapiHeaders()
+    });
+
+    if (!response.ok) {
+      console.warn(`Failed to fetch global layout: ${response.status}`);
+      return null;
+    }
+
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    console.warn('Error fetching global layout:', error);
+    return null;
+  }
+}
+
+/**
+ * Get service detail by slug with proper block structure
+ * Uses the backend middleware that pre-populates all necessary data
+ */
+export async function getServiceDetailBySlug(slug: string): Promise<any> {
+  try {
+    console.log('🔍 Fetching service detail by slug:', slug);
+
+    const response = await fetch(`${STRAPI_URL}/api/services/${slug}`, {
+      headers: getStrapiHeaders()
+    });
+
+    if (!response.ok) {
+      throw new Error(`Service not found: ${slug}`);
+    }
+
+    const result = await response.json();
+    // The middleware returns { data: { data: {...} } } structure
+    return result.data?.data || result.data;
+  } catch (error) {
+    console.error(`Error fetching service ${slug}:`, error);
+    throw error; // Throw error instead of falling back to local data
+  }
+}
+
+/**
+ * Get project/solution detail by slug with proper block structure
+ * Uses the backend middleware that pre-populates all necessary data
+ */
+export async function getProjectDetailBySlug(slug: string): Promise<any> {
+  try {
+    if (!getStrapiToken()) {
+      return null;
+    }
+
+    console.log('🔍 Fetching project detail by slug:', slug);
+
+    const response = await fetch(`${STRAPI_URL}/api/projects/${slug}`, {
+      headers: getStrapiHeaders()
+    });
+
+    if (!response.ok) {
+      console.warn(`Project not found: ${slug}`);
+      return null;
+    }
+
+    const result = await response.json();
+    // API returns nested structure: { data: { data: {...} } }
+    return result.data?.data || result.data;
+  } catch (error) {
+    console.warn(`Error fetching project ${slug}:`, error);
     return null;
   }
 }

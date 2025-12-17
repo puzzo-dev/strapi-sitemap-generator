@@ -68,7 +68,17 @@ export function usePageContent(slug: string): UseQueryResult<PageContent | null>
   const { currentLanguage } = useLanguage();
   return useQuery({
     queryKey: ['page-content', slug, currentLanguage],
-    queryFn: () => strapiService.getPageBySlug(slug),
+    queryFn: async () => {
+      try {
+        return await strapiService.getPageBySlug(slug);
+      } catch (error) {
+        loggerService.warn(`Failed to fetch page content for slug ${slug}, will use fallback data in component`, error as Error);
+        return null;
+      }
+    },
+    retry: false,
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
   });
 }
 
@@ -197,62 +207,29 @@ export function useERPNextHealth() {
 // NAVIGATION & LAYOUT HOOKS
 // =============================================================================
 
+// DEPRECATED: Use useGlobalLayout() instead
+// These hooks are no longer used as navigation data comes from global layout endpoint
+/*
 export function useNavigation() {
-  const { currentLanguage } = useLanguage();
-  return useQuery<NavItem[]>({
-    queryKey: ['navigation', currentLanguage],
-    queryFn: async () => {
-      try {
-        const { getNavItems } = await import('@/lib/strapi');
-        const strapiNavItems = await getNavItems();
-        if (strapiNavItems && strapiNavItems.length > 0) {
-          return strapiNavItems;
-        }
-      } catch (error) {
-        console.error('Failed to fetch navigation from Strapi:', error);
-      }
-      const { navItems } = await import('@/lib/data/config');
-      return navItems;
-    },
-    staleTime: 20 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
-  });
+  throw new Error('useNavigation() is deprecated. Use useGlobalLayout() instead.');
 }
 
 export function useSocialLinks() {
-  return useQuery<SocialLink[]>({
-    queryKey: ['social-links'],
-    queryFn: async () => {
-      try {
-        const { getSocialLinks } = await import('@/lib/strapi');
-        return await getSocialLinks();
-      } catch (error) {
-        console.error('Failed to fetch social links:', error);
-        const { socialLinks } = await import('@/lib/data/config');
-        return socialLinks;
-      }
-    },
-    staleTime: 30 * 60 * 1000,
-    gcTime: 120 * 60 * 1000,
-  });
+  throw new Error('useSocialLinks() is deprecated. Use useGlobalLayout() instead.');
+}
+*/
+
+// DEPRECATED: Use useGlobalLayout() instead
+// These hooks are no longer used as footer data comes from global layout endpoint
+/*
+export function useFooterColumns() {
+  throw new Error('useFooterColumns() is deprecated. Use useGlobalLayout() instead.');
 }
 
-export function useFooterColumns() {
-  return useQuery<FooterColumn[]>({
-    queryKey: ['footer-columns'],
-    queryFn: async () => {
-      try {
-        const { getFooterColumns } = await import('@/lib/strapi');
-        return await getFooterColumns();
-      } catch (error) {
-        console.error('Failed to fetch footer columns:', error);
-        return [];
-      }
-    },
-    staleTime: 30 * 60 * 1000,
-    gcTime: 120 * 60 * 1000,
-  });
+export function useFooter() {
+  throw new Error('useFooter() is deprecated. Use useGlobalLayout() instead.');
 }
+*/
 
 export function useSiteConfig() {
   return useQuery<SiteConfig>({
@@ -272,23 +249,12 @@ export function useSiteConfig() {
   });
 }
 
+// DEPRECATED: Use useGlobalLayout() instead
+/*
 export function useFooter() {
-  return useQuery<FooterProps>({
-    queryKey: ['footer'],
-    queryFn: async () => {
-      try {
-        const { getFooter } = await import('@/lib/strapi');
-        return await getFooter();
-      } catch (error) {
-        console.error('Failed to fetch footer:', error);
-        const { footerData } = await import('@/lib/data/footer');
-        return footerData;
-      }
-    },
-    staleTime: 30 * 60 * 1000,
-    gcTime: 120 * 60 * 1000,
-  });
+  throw new Error('useFooter() is deprecated. Use useGlobalLayout() instead.');
 }
+*/
 
 // =============================================================================
 // BLOG HOOKS (Extended)
@@ -360,61 +326,12 @@ export function useBlogComments(postId: string) {
 // ITEM-SPECIFIC HOOKS (Extended)
 // =============================================================================
 
-export function useServiceById(id: number) {
-  return useQuery<ServiceProps | undefined>({
-    queryKey: ['services', id],
-    queryFn: async () => {
-      try {
-        const { getServiceById } = await import('@/lib/strapi');
-        return await getServiceById(id);
-      } catch (error) {
-        console.error(`Failed to fetch service ${id}:`, error);
-        const { services } = await import('@/lib/data/services');
-        return services.find(s => s.id === id);
-      }
-    },
-    enabled: id !== undefined && id !== null && id > 0,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
-  });
-}
-
+/**
+ * @deprecated Use useServiceDetailBySlug instead - uses new v5 endpoint with block structure
+ * Keeping for backwards compatibility during migration
+ */
 export function useServiceBySlug(slug: string) {
-  return useQuery<ServiceProps | undefined>({
-    queryKey: ['services', 'slug', slug],
-    queryFn: async () => {
-      try {
-        const { getServiceBySlug } = await import('@/lib/strapi');
-        return await getServiceBySlug(slug);
-      } catch (error) {
-        console.error(`Failed to fetch service by slug ${slug}:`, error);
-        const { services } = await import('@/lib/data/services');
-        return services.find(s => s.slug === slug);
-      }
-    },
-    enabled: slug !== undefined && slug !== null && slug.length > 0,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
-  });
-}
-
-export function useProductById(id: number) {
-  return useQuery<ProductProps | undefined>({
-    queryKey: ['products', id],
-    queryFn: async () => {
-      try {
-        const { getProductById } = await import('@/lib/strapi');
-        return await getProductById(id);
-      } catch (error) {
-        console.error(`Failed to fetch product ${id}:`, error);
-        const { products } = await import('@/lib/data/solutions');
-        return products.find(p => p.id === id);
-      }
-    },
-    enabled: id !== undefined && id !== null && id > 0,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
-  });
+  return useServiceDetailBySlug(slug);
 }
 
 export function useJobById(id: number) {
@@ -434,5 +351,76 @@ export function useJobById(id: number) {
     staleTime: 10 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
+  });
+}
+
+// =============================================================================
+// NEW STRAPI v5 ENDPOINT HOOKS
+// =============================================================================
+
+/**
+ * Hook for fetching global layout data (header/footer) from Strapi
+ * Uses /api/global single type endpoint with pre-populated middleware
+ */
+export function useGlobalLayout() {
+  return useQuery({
+    queryKey: ['global-layout'],
+    queryFn: async () => {
+      try {
+        const { getGlobalLayout } = await import('@/lib/strapi');
+        return await getGlobalLayout();
+      } catch (error) {
+        loggerService.error('Failed to fetch global layout:', error as Error);
+        return null;
+      }
+    },
+    staleTime: 60 * 60 * 1000, // 1 hour - layout changes infrequently
+    gcTime: 120 * 60 * 1000,
+  });
+}
+
+/**
+ * Hook for fetching service detail by slug from Strapi
+ * Uses /api/services/:slug endpoint with pre-populated middleware
+ * Returns block-based dynamic content structure
+ */
+export function useServiceDetailBySlug(slug: string) {
+  return useQuery({
+    queryKey: ['service-detail', slug],
+    queryFn: async () => {
+      try {
+        const { getServiceDetailBySlug } = await import('@/lib/strapi');
+        return await getServiceDetailBySlug(slug);
+      } catch (error) {
+        loggerService.error(`Failed to fetch service detail for slug ${slug}:`, error as Error);
+        return null;
+      }
+    },
+    enabled: !!slug,
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+  });
+}
+
+/**
+ * Hook for fetching project/solution detail by slug from Strapi
+ * Uses /api/projects/:slug endpoint with pre-populated middleware
+ * Returns block-based dynamic content structure
+ */
+export function useProjectDetailBySlug(slug: string) {
+  return useQuery({
+    queryKey: ['project-detail', slug],
+    queryFn: async () => {
+      try {
+        const { getProjectDetailBySlug } = await import('@/lib/strapi');
+        return await getProjectDetailBySlug(slug);
+      } catch (error) {
+        loggerService.error(`Failed to fetch project detail for slug ${slug}:`, error as Error);
+        return null;
+      }
+    },
+    enabled: !!slug,
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
   });
 }

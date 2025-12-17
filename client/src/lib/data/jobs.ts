@@ -5,118 +5,118 @@ import {
 export const jobListings: JobListing[] = [
   {
     id: 1,
-    title: "Senior Full Stack Developer",
+    title: "Senior Full Stack Engineer",
     slug: "senior-full-stack-developer",
     department: "Engineering",
     location: "Lagos, Nigeria",
     type: "Full-time",
     description:
-      "We're looking for an experienced Full Stack Developer to lead our development team in creating robust software solutions.",
+      "Join us in architecting solutions that transform enterprises. We're seeking a technical leader who thrives on complexity, champions engineering excellence, and mentors teams to deliver exceptional outcomes.",
     responsibilities: [
-      "Design and implement scalable web applications",
-      "Lead technical architecture decisions",
-      "Mentor junior developers and conduct code reviews",
-      "Collaborate with product and design teams",
+      "Architect and deliver scalable, cloud-native applications that serve millions",
+      "Drive technical strategy and influence architectural decisions across the organization",
+      "Cultivate engineering excellence through mentorship, code reviews, and thought leadership",
+      "Collaborate with cross-functional teams to translate business vision into technical reality",
     ],
     requirements: [
-      "5+ years of experience in full stack development",
-      "Proficiency in React, Node.js, and modern JavaScript",
-      "Experience with cloud infrastructure (AWS, Azure, or GCP)",
-      "Strong problem-solving skills and attention to detail",
+      "5+ years building production systems with modern JavaScript, React, and Node.js",
+      "Deep expertise in cloud platforms (AWS, Azure, or GCP) and distributed systems",
+      "Proven track record of technical leadership and delivering high-impact solutions",
+      "Passion for continuous learning and staying ahead of technology evolution",
     ],
     benefits: [
-      "Competitive salary and benefits package",
-      "Remote work options",
-      "Professional development opportunities",
-      "Collaborative and innovative work environment",
-      "Opportunity to work on challenging and impactful projects",
-      "Flexible working hours and work-life balance"
+      "Competitive compensation package with performance equity",
+      "Flexible remote-first work environment",
+      "Continuous learning investment—certifications, conferences, courses",
+      "Collaborate with brilliant minds solving complex challenges",
+      "Work on transformative projects that make real impact",
+      "Autonomy to innovate and shape technical direction"
     ],
     qualifications: [
-      "Experience with Agile development methodologies",
-      "Knowledge of best practices and design patterns",
-      "Ability to work independently and as part of a team",
-      "Strong attention to detail"
+      "Mastery of agile engineering practices and DevOps culture",
+      "Design pattern expertise and architectural thinking",
+      "Self-directed with strong collaborative instincts",
+      "Obsessive attention to quality and user experience"
     ],
     salary: "Competitive"
   },
   {
     id: 2,
-    title: "UX/UI Designer",
+    title: "Experience Designer",
     slug: "ux-ui-designer",
     department: "Design",
     location: "Remote",
     type: "Full-time",
     description:
-      "Join our creative team as a UX/UI Designer to craft intuitive and engaging user experiences for our products.",
+      "Craft experiences that users love and businesses rely on. We're looking for a design visionary who balances creativity with strategic thinking to create interfaces that solve real problems elegantly.",
     responsibilities: [
-      "Create user-centered designs for web and mobile applications",
-      "Develop wireframes, prototypes, and high-fidelity mockups",
-      "Conduct user research and usability testing",
-      "Collaborate with developers to ensure design implementation",
+      "Design intuitive, accessible experiences across web and mobile platforms",
+      "Transform research insights into design systems that scale",
+      "Lead design thinking workshops and advocate for user-centered approaches",
+      "Partner with engineering to ensure pixel-perfect, performant implementations",
     ],
     requirements: [
-      "3+ years of experience in UX/UI design",
-      "Proficiency in design tools like Figma or Adobe XD",
-      "Strong portfolio demonstrating user-centered design projects",
-      "Understanding of accessibility and responsive design principles",
+      "3+ years designing digital products that users actually love",
+      "Expert proficiency in Figma, Adobe Creative Suite, and prototyping tools",
+      "Portfolio showcasing user research, design thinking, and measurable impact",
+      "Deep understanding of accessibility standards and inclusive design principles",
     ],
     benefits: [
-      "Competitive salary and benefits package",
-      "Remote work options",
-      "Professional development opportunities",
-      "Collaborative and innovative work environment",
-      "Opportunity to work on challenging and impactful projects",
-      "Flexible working hours and work-life balance"
+      "Competitive compensation package with performance equity",
+      "Flexible remote-first work environment",
+      "Continuous learning investment—certifications, conferences, courses",
+      "Collaborate with brilliant minds solving complex challenges",
+      "Work on transformative projects that make real impact",
+      "Autonomy to innovate and shape design direction"
     ],
     qualifications: [
-      "Experience with design systems",
-      "Knowledge of user research methodologies",
-      "Ability to communicate design decisions effectively",
-      "Understanding of front-end development constraints"
+      "Experience building and maintaining design systems at scale",
+      "Expertise in qualitative and quantitative user research",
+      "Communication skills that influence cross-functional stakeholders",
+      "Technical understanding that bridges design and development"
     ],
     salary: "Competitive"
   },
   {
     id: 3,
-    title: "DevOps Engineer",
+    title: "Cloud Infrastructure Engineer",
     slug: "devops-engineer",
     department: "Infrastructure",
     location: "Lagos, Nigeria",
     type: "Full-time",
     description:
-      "We're seeking a DevOps Engineer to optimize our infrastructure and streamline our development workflows.",
+      "Build infrastructure that scales, performs, and never sleeps. We need an automation-obsessed engineer who transforms operational complexity into strategic advantage.",
     responsibilities: [
-      "Build and maintain CI/CD pipelines",
-      "Manage cloud infrastructure and containerization",
-      "Implement monitoring and logging solutions",
-      "Automate deployment processes and infrastructure",
+      "Architect and operate CI/CD pipelines that deploy hundreds of times daily",
+      "Design resilient, auto-scaling infrastructure spanning multi-cloud environments",
+      "Implement observability solutions that detect issues before users notice",
+      "Automate everything—infrastructure, deployments, security, compliance",
     ],
     requirements: [
-      "3+ years of experience in DevOps or related field",
-      "Experience with container orchestration (Kubernetes)",
-      "Knowledge of infrastructure as code (Terraform, CloudFormation)",
-      "Familiarity with monitoring tools and log management systems",
+      "3+ years engineering infrastructure at scale with modern DevOps practices",
+      "Kubernetes orchestration expertise in production environments",
+      "Infrastructure-as-code mastery (Terraform, CloudFormation, Pulumi)",
+      "Deep knowledge of monitoring, logging, and incident response",
     ],
     benefits: [
-      "Competitive salary and benefits package",
-      "Remote work options",
-      "Professional development opportunities",
-      "Collaborative and innovative work environment",
-      "Opportunity to work on challenging and impactful projects",
-      "Flexible working hours and work-life balance"
+      "Competitive compensation package with performance equity",
+      "Flexible remote-first work environment",
+      "Continuous learning investment—certifications, conferences, courses",
+      "Collaborate with brilliant minds solving complex challenges",
+      "Work on transformative projects that make real impact",
+      "Autonomy to innovate and shape infrastructure strategy"
     ],
     qualifications: [
-      "Experience with cloud platforms (AWS, Azure, GCP)",
-      "Knowledge of security best practices",
-      "Ability to troubleshoot complex systems",
-      "Understanding of networking concepts"
+      "Multi-cloud platform experience (AWS, Azure, GCP)",
+      "Security-first mindset with zero-trust architecture knowledge",
+      "Systems thinking and troubleshooting complex distributed systems",
+      "Networking fundamentals and performance optimization expertise"
     ],
     salary: "Competitive"
   },
   {
     id: 4,
-    title: "Data Scientist",
+    title: "Data Intelligence Scientist",
     slug: "digital-marketing-specialist",
     department: "Marketing",
     location: "Remote",

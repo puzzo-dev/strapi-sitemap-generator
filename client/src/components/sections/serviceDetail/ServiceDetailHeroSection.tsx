@@ -5,17 +5,19 @@ import GradientButton from '@/components/ui/GradientButton';
 import { ServiceProps } from '@/lib/types/content';
 
 interface ServiceDetailHeroSectionProps {
-  service: ServiceProps;
+  service: ServiceProps & {
+    content?: any[];
+  };
 }
 
 const ServiceDetailHeroSection: React.FC<ServiceDetailHeroSectionProps> = ({ service }) => {
   // Get hero section from content dynamic zone
-  const heroSection = service.content?.find((item: any) => item.__component === 'hero.hero-simple');
+  const heroSection = service.content ? service.content.find((item: any) => item.__component === 'hero.hero-simple') : null;
 
-  // Use hero data if available, fallback to service fields
-  const title = heroSection?.title || service.title;
-  const description = heroSection?.description || service.description;
-  const badge = heroSection?.heroBadge?.text || 'Our Services';
+  const title = heroSection?.title;
+  const description = heroSection?.description;
+  const badge = heroSection?.heroBadge?.badgeText;
+  const buttons = heroSection?.heroBtns?.ctaLink || [];
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c] py-16 md:pt-24 md:pb-16 border-b border-blue-100 dark:border-blue-900/40">
@@ -66,14 +68,26 @@ const ServiceDetailHeroSection: React.FC<ServiceDetailHeroSectionProps> = ({ ser
               {description}
             </p>
 
-            <div className="flex flex-wrap gap-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-              <GradientButton href="#benefits" endIcon={<ArrowRight />}>
-                Explore Benefits
-              </GradientButton>
-              <GradientButton href="/contact" variant="outline">
-                Get Started
-              </GradientButton>
-            </div>
+            {buttons.length > 0 && (
+              <div className="flex flex-wrap gap-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+                {buttons.map((button: any, index: number) => {
+                  const href = button.linkType === 'external'
+                    ? button.externalUrl
+                    : `/${button.page?.slug}`;
+
+                  return (
+                    <GradientButton
+                      key={index}
+                      href={href}
+                      variant={index === 0 ? 'default' : 'outline'}
+                      endIcon={index === 0 ? <ArrowRight /> : undefined}
+                    >
+                      {button.label}
+                    </GradientButton>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="hidden lg:flex justify-center animate-fade-in" style={{ animationDelay: '0.5s' }}>

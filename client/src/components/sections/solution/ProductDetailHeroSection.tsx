@@ -90,10 +90,10 @@ const ProductDetailHeroSection: React.FC<ProductDetailHeroSectionProps> = ({
         <div className="flex flex-col items-center text-center mb-12 max-w-4xl mx-auto">
           {/* Back to Products Link */}
           <Link href="/solutions">
-            <a className="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-6 transition-all duration-300 hover:scale-105 group">
+            <span className="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-6 transition-all duration-300 hover:scale-105 group cursor-pointer">
               <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
               <span>{content.backButton}</span>
-            </a>
+            </span>
           </Link>
 
           {/* Badge */}

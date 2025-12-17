@@ -10,7 +10,7 @@ import { benefits } from './benefits';
 import { clients } from './clients';
 import { heroSlides, defaultHeroProps } from './hero';
 import { industries } from './industries';
-import { caseStudies } from './case-studies';
+import { caseStudies, servicesCaseStudies } from './case-studies';
 
 // Extract hero content from heroSlides using prop drilling
 const extractHeroContent = () => {
@@ -40,10 +40,10 @@ const extractHeroContent = () => {
 export const homePageContent: PageContent = {
   id: 1,
   slug: "home",
-  title: "I-VARSE Technologies - Innovative Digital Solutions",
-  description: "I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel businesses forward.",
-  metaTitle: "I-VARSE Technologies - Innovative Digital Solutions",
-  metaDescription: "I-VARSE provides comprehensive tech solutions, specializing in web development, cloud infrastructure, mobile applications, and digital marketing. Our expert team crafts innovative solutions that propel real results.",
+  title: "I-VARSE Technologies - Intelligent Enterprise Transformation",
+  description: "I-VARSE architects intelligent solutions that transform enterprises. Specializing in cloud-native platforms, AI-powered applications, and digital ecosystems that deliver measurable business outcomes. We don't just modernize operations—we reimagine how organizations compete.",
+  metaTitle: "I-VARSE Technologies - Intelligent Enterprise Transformation",
+  metaDescription: "Partner with I-VARSE to architect intelligent solutions that transform operations, accelerate growth, and deliver measurable business outcomes. We specialize in cloud-native platforms, AI capabilities, and digital ecosystems that redefine competitive advantage.",
   isVisible: true,
   sections: [
     // Hero section using prop drilling from hero.ts
@@ -97,33 +97,6 @@ export const homePageContent: PageContent = {
           href: "/solutions",
           variant: "default",
           children: "View All Products"
-        },
-        animation: {
-          type: "fade",
-          duration: 0.5,
-          delay: 0.1
-        }
-      }
-    },
-    {
-      id: 4,
-      type: "case-studies",
-      title: "Featured Case Studies",
-      subtitle: "Real Results From Real Projects",
-      content: "Discover how we've helped businesses transform their operations and achieve remarkable results through innovative technology solutions. Our case studies showcase the tangible impact of our work across various industries.",
-      backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
-      badge: "📊 Case Studies",
-      settings: {
-        featured: caseStudies,
-        layout: "grid",
-        columns: 3,
-        gap: "large",
-        maxDisplay: 3,
-        primaryButton: {
-          title: "View All Case Studies",
-          href: "/case-studies",
-          variant: "default",
-          children: "View All Case Studies"
         },
         animation: {
           type: "fade",
@@ -239,7 +212,7 @@ export const homePageContent: PageContent = {
       settings: {
         primaryButton: {
           title: "Get Started",
-          href: "/contact",
+          href: "/contact-us",
           variant: "default",
           children: "Get Started"
         },
@@ -363,18 +336,18 @@ export const homePageHelpers = {
 // About Page Content
 export const aboutPageContent: PageContent = {
   id: 2,
-  slug: "about",
+  slug: "about-us",
   title: "About Us - I-VARSE Technologies",
-  description: "Learn about I-Varse Technologies, our mission, vision, and the team behind our innovative digital solutions.",
+  description: "I-VARSE Technologies is an innovation partner specializing in enterprise digital transformation. We architect intelligent solutions that don't just modernize operations, but fundamentally transform how organizations compete, deliver value, and scale for sustainable growth.",
   metaTitle: "About Us - I-VARSE Technologies",
-  metaDescription: "Learn about I-Varse Technologies, our mission, vision, and the team behind our innovative digital solutions.",
+  metaDescription: "Discover how I-VARSE Technologies partners with organizations to architect intelligent solutions that transform operations, accelerate growth, and deliver measurable business outcomes across industries.",
   sections: [
     {
       id: 1,
       type: "hero",
-      title: "About I-Varse Technologies",
-      subtitle: "Founded with a vision to revolutionize digital solutions, I-VARSE has been at the forefront of technology innovation since its inception. We combine technical expertise with creative thinking to deliver exceptional results.",
-      content: "Founded with a vision to revolutionize digital solutions, I-VARSE has been at the forefront of technology innovation since its inception. We combine technical expertise with creative thinking to deliver exceptional results.",
+      title: "Architecting Tomorrow's Enterprises",
+      subtitle: "Founded on the belief that technology should fundamentally transform—not just digitize—business operations, I-VARSE has emerged as a strategic partner for organizations seeking competitive reinvention. We combine deep technical expertise with industry insight to deliver solutions that create lasting competitive advantage.",
+      content: "Founded on the belief that technology should fundamentally transform—not just digitize—business operations, I-VARSE has emerged as a strategic partner for organizations seeking competitive reinvention. We combine deep technical expertise with industry insight to deliver solutions that create lasting competitive advantage.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
         badge: "ℹ️ About Us",
@@ -390,8 +363,8 @@ export const aboutPageContent: PageContent = {
       id: 2,
       type: "custom",
       title: "Our Mission & Vision",
-      subtitle: "Driving innovation through technology",
-      content: "At I-VARSE, our mission is to empower businesses through innovative technology solutions that drive growth and efficiency. We strive to be the trusted partner that helps organizations navigate their digital transformation journey.",
+      subtitle: "Transforming potential into performance",
+      content: "At I-VARSE, our mission is to architect intelligent solutions that don't just solve today's challenges, but position organizations for tomorrow's opportunities. We're not technology vendors—we're transformation partners committed to delivering measurable business outcomes that create sustainable competitive advantage.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
         missionLabel: "🚩 Our Mission",
@@ -531,30 +504,30 @@ export const servicesPageContent: PageContent = {
   id: 3,
   slug: "services",
   title: "Our Services - I-VARSE Technologies",
-  description: "Expert solutions tailored to your business requirements. Our team delivers high-quality services designed to help you succeed in today's competitive market.",
-  metaTitle: "Professional Services | Expert Digital Solutions",
-  metaDescription: "Expert solutions tailored to your business requirements. Our team delivers high-quality services designed to help you succeed in today's competitive market.",
+  description: "Enterprise solutions architected for transformation. We deliver cloud-native platforms, AI-powered applications, and intelligent ecosystems that create measurable competitive advantage—not just incremental improvement, but strategic reinvention.",
+  metaTitle: "Enterprise Solutions | I-VARSE Technologies",
+  metaDescription: "Partner with I-VARSE to architect solutions that transform operations and deliver measurable outcomes. From cloud-native platforms to AI-powered applications, we enable organizations to compete on innovation.",
   sections: [
     {
       id: 1,
       type: "hero",
-      badge: "🛠️ Professional Services",
-      title: "Comprehensive Digital Solutions",
-      subtitle: "Expert digital solutions tailored to your business needs",
-      content: "We offer comprehensive digital services designed to help your business thrive in the modern marketplace. From web development to cloud infrastructure, we have the expertise to deliver results.",
+      badge: "🛠️ Enterprise Solutions",
+      title: "Solutions That Transform Performance",
+      subtitle: "Strategic capabilities architected for competitive advantage",
+      content: "We architect intelligent solutions that don't just digitize existing processes—they fundamentally transform how organizations operate, compete, and deliver value. From cloud-native platforms to AI-powered applications, every solution is designed to create measurable business impact.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
         primaryButton: {
-          title: "Get a Quote",
-          href: "/contact",
+          title: "Discuss Your Transformation",
+          href: "/contact-us",
           variant: "default",
-          children: "Get a Quote"
+          children: "Discuss Your Transformation"
         },
         secondaryButton: {
-          title: "View Our Work",
+          title: "Explore Case Studies",
           href: "/portfolio",
           variant: "outline",
-          children: "View Our Work"
+          children: "Explore Case Studies"
         },
         backgroundImage: "/src/assets/images/IMG_2247.JPG",
         animation: {
@@ -637,6 +610,27 @@ export const servicesPageContent: PageContent = {
     },
     {
       id: 4,
+      type: "case-studies",
+      title: "Success Stories",
+      subtitle: "Real results from real projects",
+      content: "Discover how we've helped businesses transform their operations and achieve remarkable results through innovative technology solutions.",
+      backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
+      badge: "📊 Case Studies",
+      settings: {
+        featured: servicesCaseStudies,
+        layout: "grid",
+        columns: 2,
+        gap: "large",
+        maxDisplay: 2,
+        animation: {
+          type: "fade" as const,
+          duration: 0.5,
+          delay: 0.1
+        }
+      }
+    },
+    {
+      id: 5,
       type: "testimonials",
       title: "What Our Clients Say",
       subtitle: "Trusted by businesses across Nigeria",
@@ -655,7 +649,7 @@ export const servicesPageContent: PageContent = {
       }
     },
     {
-      id: 5,
+      id: 6,
       type: "cta",
       title: "Ready to Transform Your Business?",
       subtitle: "Let's discuss how we can help you achieve your digital goals",
@@ -665,7 +659,7 @@ export const servicesPageContent: PageContent = {
       settings: {
         primaryButton: {
           title: "Get Started",
-          href: "/contact",
+          href: "/contact-us",
           variant: "default",
           children: "Get Started"
         },
@@ -711,7 +705,7 @@ export const productsPageContent: PageContent = {
         },
         secondaryButton: {
           title: "Request Demo",
-          href: "/contact",
+          href: "/contact-us",
           variant: "outline",
           children: "Request Demo"
         },
@@ -893,7 +887,7 @@ export const productsPageContent: PageContent = {
       settings: {
         primaryButton: {
           title: "Get Started",
-          href: "/contact",
+          href: "/contact-us",
           variant: "default",
           children: "Get Started"
         },
@@ -930,6 +924,8 @@ export const teamPageContent: PageContent = {
       content: "Our team of experienced professionals brings together diverse expertise to deliver exceptional results for our clients.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
+        badge: "👥 Our Team",
+        overline: "Our Team",
         animation: {
           type: "fade" as const,
           duration: 0.5,
@@ -979,7 +975,7 @@ export const teamPageContent: PageContent = {
         },
         secondaryButton: {
           title: "Contact Us",
-          href: "/contact",
+          href: "/contact-us",
           variant: "outline",
           children: "Contact Us"
         },
@@ -1022,11 +1018,58 @@ export const careersPageContent: PageContent = {
       id: 2,
       type: "custom",
       title: "Why Join Us",
-      subtitle: "Be part of a dynamic and innovative team",
+      subtitle: "Be Part of Something Extraordinary",
       content: "At I-VARSE, we're more than just a technology company – we're a community of passionate innovators dedicated to creating solutions that make a difference. We believe in fostering a culture of creativity, collaboration, and continuous learning.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
-        badge: "👥 Why Join Us",
+        badge: "🌟 Why Join Us",
+        values: [
+          {
+            id: 1,
+            title: "Innovation First",
+            description: "Work on cutting-edge projects that push boundaries",
+            icon: "Award",
+            color: "from-blue-500 to-indigo-600"
+          },
+          {
+            id: 2,
+            title: "Growth Mindset",
+            description: "Continuous learning and development opportunities",
+            icon: "Laptop",
+            color: "from-purple-500 to-pink-600"
+          },
+          {
+            id: 3,
+            title: "Work-Life Balance",
+            description: "Flexible schedules and remote work options",
+            icon: "Heart",
+            color: "from-green-500 to-teal-600"
+          },
+          {
+            id: 4,
+            title: "Collaborative Culture",
+            description: "Work with talented professionals who inspire you",
+            icon: "Users",
+            color: "from-orange-500 to-red-600"
+          }
+        ],
+        image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
+        animation: {
+          type: "fade" as const,
+          duration: 0.5,
+          delay: 0.1
+        }
+      }
+    },
+    {
+      id: 3,
+      type: "custom",
+      title: "Employee Benefits",
+      subtitle: "Comprehensive benefits package designed for your well-being",
+      content: "We offer a comprehensive benefits package that goes beyond the basics, ensuring our team members are well taken care of.",
+      backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
+      settings: {
+        badge: "🎁 Benefits",
         items: benefits.getJobBenefits().map(benefit => ({
           ...benefit,
           id: benefit.id || 0
@@ -1042,7 +1085,7 @@ export const careersPageContent: PageContent = {
       }
     },
     {
-      id: 3,
+      id: 4,
       type: "jobs",
       title: "Open Positions",
       subtitle: "Find your next opportunity",
@@ -1061,7 +1104,7 @@ export const careersPageContent: PageContent = {
       }
     },
     {
-      id: 4,
+      id: 5,
       type: "cta",
       title: "Ready to Join Our Team?",
       subtitle: "Take the next step in your career journey",
@@ -1095,33 +1138,33 @@ export const careersPageContent: PageContent = {
 // Contact Page Content
 export const contactPageContent: PageContent = {
   id: 7,
-  slug: "contact",
+  slug: "contact-us",
   title: "Contact Us - I-VARSE Technologies",
-  description: "Get in touch with I-VARSE Technologies. We're here to help you transform your business with innovative digital solutions. Contact us today for a consultation.",
+  description: "Begin your transformation journey with I-VARSE Technologies. Partner with us to architect intelligent solutions that deliver measurable business outcomes. Let's discuss how we can help you compete on innovation.",
   metaTitle: "Contact Us - I-VARSE Technologies",
-  metaDescription: "Get in touch with I-VARSE Technologies. We're here to help you transform your business with innovative digital solutions. Contact us today for a consultation.",
+  metaDescription: "Start a strategic conversation with I-VARSE Technologies. Discuss how we can architect intelligent solutions that transform your operations and create sustainable competitive advantage.",
   sections: [
     {
       id: 1,
       type: "hero",
-      title: "Get in Touch",
-      subtitle: "Let's discuss your project",
-      content: "Ready to start your digital transformation journey? Contact us today to discuss your project and how we can help you achieve your goals.",
+      title: "Let's Architect Your Future",
+      subtitle: "Begin your transformation journey",
+      content: "Ready to reimagine what's possible? Partner with I-VARSE to architect solutions that don't just digitize operations, but fundamentally transform how your organization competes, delivers value, and scales for sustainable growth.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
-        badge: "📞 Contact Us",
-        buttonText: "Get Started",
+        badge: "📞 Start a Conversation",
+        buttonText: "Begin Transformation",
         primaryButton: {
-          title: "Get Started",
+          title: "Begin Transformation",
           href: "#contact-form",
           variant: "default",
-          children: "Get Started"
+          children: "Begin Transformation"
         },
         secondaryButton: {
-          title: "Learn More",
+          title: "Explore Capabilities",
           href: "/services",
           variant: "outline",
-          children: "Learn More"
+          children: "Explore Capabilities"
         },
         animation: {
           type: "fade" as const,
@@ -1133,8 +1176,8 @@ export const contactPageContent: PageContent = {
     {
       id: 2,
       type: "contact",
-      title: "Contact Form",
-      subtitle: "Send us a message",
+      title: "Start a Strategic Conversation",
+      subtitle: "Share your transformation objectives",
       content: "Fill out the form below and we'll get back to you as soon as possible.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
@@ -1490,7 +1533,7 @@ export const teamMemberDetailPageContent: PageContent = {
         },
         primaryButton: {
           title: "Get in Touch",
-          href: "/contact",
+          href: "/contact-us",
           variant: "default",
           children: "Get in Touch"
         },
@@ -1712,7 +1755,7 @@ export const industriesPageContent: PageContent = {
       type: "hero",
       title: "Industry Solutions for Every Sector",
       subtitle: "Explore how our technology expertise empowers organizations across diverse industries to achieve their goals.",
-      content: "We deliver innovative technology solutions across diverse industries, helping businesses transform and grow.",
+      content: "Innovative Solutions across diverse Industries and Sectors",
       backgroundColor: "bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
         badge: "🏭 Industries",
@@ -1725,10 +1768,44 @@ export const industriesPageContent: PageContent = {
     },
     {
       id: 2,
+      type: "custom",
+      title: "Our Industry Expertise",
+      subtitle: "Comprehensive solutions across diverse sectors",
+      content: "At I-Varse Technologies, we understand that each industry has unique challenges and requirements. Our expertise spans across multiple sectors, enabling us to deliver tailored technology solutions that address industry-specific needs and drive digital transformation. With deep domain knowledge and technical expertise, we help businesses across various industries achieve their goals and thrive in the digital economy.",
+      backgroundColor: "bg-white dark:bg-[#0a192f]",
+      settings: {
+        badge: "🎯 Industry Focus",
+        whyChooseUs: [
+          {
+            title: "Domain Expertise",
+            description: "Deep understanding of industry-specific challenges and requirements"
+          },
+          {
+            title: "Proven Solutions",
+            description: "Track record of successful implementations across various sectors"
+          },
+          {
+            title: "Regulatory Compliance",
+            description: "Ensuring adherence to industry standards and regulations"
+          },
+          {
+            title: "Scalable Architecture",
+            description: "Future-proof solutions that grow with your business"
+          }
+        ],
+        animation: {
+          type: "fade" as const,
+          duration: 0.5,
+          delay: 0.1
+        }
+      }
+    },
+    {
+      id: 3,
       type: "industries",
       title: "Industries We Serve",
       subtitle: "Sector-specific solutions",
-      content: "We deliver innovative technology solutions across diverse industries, helping businesses transform and grow.",
+      content: "Innovative Solutions across diverse Industries and Sectors",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
         featured: industries,
@@ -1743,7 +1820,23 @@ export const industriesPageContent: PageContent = {
       }
     },
     {
-      id: 3,
+      id: 4,
+      type: "custom",
+      title: "Industry Solutions",
+      subtitle: "Comprehensive technology solutions tailored to your industry needs",
+      content: "We deliver innovative technology solutions across diverse industries, helping businesses transform and grow with cutting-edge digital services.",
+      backgroundColor: "bg-blue-50 dark:bg-blue-900/10",
+      settings: {
+        badge: "💡 Solutions",
+        animation: {
+          type: "fade" as const,
+          duration: 0.5,
+          delay: 0.1
+        }
+      }
+    },
+    {
+      id: 5,
       type: "testimonials",
       title: "Industry Success Stories",
       subtitle: "Trusted by businesses across Nigeria",
@@ -1762,7 +1855,7 @@ export const industriesPageContent: PageContent = {
       }
     },
     {
-      id: 4,
+      id: 6,
       type: "cta",
       title: "Transform Your Industry with Technology",
       subtitle: "Ready to revolutionize your business? Let's discuss how our industry-specific solutions can drive your success.",

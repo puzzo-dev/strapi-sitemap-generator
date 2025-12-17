@@ -3,121 +3,121 @@ import { CaseStudyProps } from '@/lib/types/case-studies';
 export const caseStudies: CaseStudyProps[] = [
   {
     id: 1,
-    title: "Digital Transformation for Banking Sector",
+    title: "Financial Services Reinvented",
     slug: "banking-digital-transformation",
-    description: "Complete digital transformation solution for a leading Nigerian bank",
+    description: "Complete platform modernization delivering operational excellence at scale",
     client: "First Bank Nigeria",
     industry: "Banking & Financial Services",
     duration: "12 months",
     teamSize: 15,
     technologies: ["React", "Node.js", "AWS", "Docker", "PostgreSQL", "Redis"],
-    challenge: "Modernize legacy banking systems and improve customer experience while ensuring regulatory compliance and security standards.",
-    solution: "Developed a comprehensive digital banking platform with mobile app, real-time transaction processing, and advanced security features including biometric authentication and fraud detection.",
+    challenge: "Transform legacy infrastructure into a cloud-native platform capable of handling millions of transactions daily while meeting stringent regulatory requirements and elevating customer experience to match digital-first competitors.",
+    solution: "Architected a comprehensive digital banking ecosystem featuring microservices architecture, real-time transaction processing, AI-powered fraud detection, biometric authentication, and omnichannel customer engagement—all while maintaining zero-downtime migration from legacy systems.",
     results: [
-      "40% increase in customer satisfaction",
+      "40% increase in customer satisfaction scores",
       "60% reduction in transaction processing time",
-      "25% increase in digital adoption",
-      "99.9% system uptime achieved",
-      "50% reduction in operational costs"
+      "Digital adoption increased from 35% to 60% of customer base",
+      "99.99% system availability achieved",
+      "50% reduction in operational costs through intelligent automation"
     ],
     image: "/src/assets/images/IMG_2257.JPG",
     status: "Completed",
     featured: true,
     publishedDate: "2024-01-15",
-    content: "I-Varse Technologies successfully transformed First Bank Nigeria's digital infrastructure by implementing a modern, scalable banking platform. Our solution included mobile banking applications, real-time transaction processing, and advanced security features that met all regulatory requirements. The project demonstrated our expertise in financial technology and our ability to handle complex enterprise-level transformations.",
-    testimonial: "I-Varse Technologies delivered an exceptional digital banking platform that exceeded our expectations. Their expertise in financial technology and commitment to security made them the perfect partner for our digital transformation journey.",
+    content: "This transformation journey exemplifies how strategic technology modernization can redefine an institution's competitive position. By replacing decades-old infrastructure with cloud-native architecture, we enabled First Bank Nigeria to operate with the agility of a fintech startup while maintaining the trust and stability expected of a banking leader. The platform now processes transactions in milliseconds, adapts to demand dynamically, and provides insights that drive strategic decision-making at every organizational level.",
+    testimonial: "I-VARSE Technologies delivered more than technology—they delivered transformation. Their deep understanding of financial services, combined with technical excellence, made them the ideal partner for our journey toward becoming a truly digital-first institution.",
     testimonialAuthor: "John Adebayo",
     testimonialPosition: "CTO, First Bank Nigeria"
   },
   {
     id: 2,
-    title: "E-commerce Platform for Retail Chain",
+    title: "Retail Ecosystem Reimagined",
     slug: "retail-ecommerce-platform",
-    description: "Scalable e-commerce solution for a major retail chain",
+    description: "Unified commerce platform connecting physical and digital retail",
     client: "ShopRite Nigeria",
     industry: "Retail & E-commerce",
     duration: "8 months",
     teamSize: 12,
     technologies: ["Next.js", "Strapi", "PostgreSQL", "Redis", "AWS", "Stripe"],
-    challenge: "Create a unified online shopping experience across multiple locations with integrated inventory management and seamless payment processing.",
-    solution: "Built a multi-tenant e-commerce platform with inventory management, real-time stock updates, integrated payment gateways, and mobile-responsive design.",
+    challenge: "Create a seamless omnichannel experience that unifies 50+ physical locations with digital commerce while enabling real-time inventory visibility, personalized customer experiences, and friction-free fulfillment across all channels.",
+    solution: "Engineered a headless commerce platform with intelligent inventory orchestration, AI-driven product recommendations, seamless payment integration, progressive web app architecture, and real-time analytics—creating a single source of truth across all customer touchpoints.",
     results: [
-      "300% increase in online sales",
-      "50% reduction in inventory management time",
-      "Improved customer retention by 35%",
-      "90% faster page load times",
-      "Seamless integration with existing POS systems"
+      "300% increase in online revenue within 6 months",
+      "50% reduction in inventory carrying costs through predictive stocking",
+      "35% improvement in customer lifetime value",
+      "90% faster page performance vs. legacy platform",
+      "98% order accuracy through automated fulfillment"
     ],
     image: "/src/assets/images/IMG_2259.JPG",
     status: "Completed",
     featured: true,
     publishedDate: "2024-02-20",
-    content: "Our e-commerce solution for ShopRite Nigeria revolutionized their online presence by creating a unified platform that seamlessly integrated with their existing retail operations. The platform features advanced inventory management, real-time analytics, and a mobile-first design that provides an exceptional shopping experience across all devices.",
-    testimonial: "The e-commerce platform developed by I-Varse Technologies has transformed our business. The seamless integration with our existing systems and the exceptional user experience have significantly boosted our online sales.",
+    content: "This engagement redefined what unified commerce means for multi-location retailers. By connecting inventory, orders, and customer data in real-time across every channel, we eliminated the traditional boundaries between online and offline retail. Customers can now research online, purchase in-store, or order for delivery—all while enjoying consistent pricing, availability, and service. The platform's headless architecture ensures ShopRite can evolve their customer experience independently of backend systems, accelerating innovation velocity.",
+    testimonial: "The commerce platform I-VARSE Technologies delivered doesn't just process transactions—it creates experiences. The seamless integration across channels and the performance gains have fundamentally changed how we compete in digital retail.",
     testimonialAuthor: "Sarah Johnson",
     testimonialPosition: "Digital Director, ShopRite Nigeria"
   },
   {
     id: 3,
-    title: "Healthcare Management System",
+    title: "Healthcare Innovation at Scale",
     slug: "healthcare-management-system",
-    description: "Comprehensive healthcare management solution for hospital network",
+    description: "Integrated care platform transforming patient outcomes",
     client: "Lagos General Hospital Network",
     industry: "Healthcare & Telemedicine",
     duration: "10 months",
     teamSize: 18,
     technologies: ["React Native", "Python", "PostgreSQL", "HIPAA", "HL7", "AWS"],
-    challenge: "Develop a unified healthcare management system to handle patient records, appointments, and administrative tasks while ensuring HIPAA compliance and data security.",
-    solution: "Built a comprehensive healthcare management system with Electronic Health Records (EHR), appointment scheduling, telemedicine capabilities, and advanced reporting features.",
+    challenge: "Modernize fragmented clinical systems into a unified platform that improves care coordination, enables telemedicine at scale, reduces administrative burden, and maintains absolute compliance with healthcare regulations.",
+    solution: "Developed a comprehensive care management ecosystem featuring interoperable EHR, intelligent appointment scheduling, secure telemedicine infrastructure, clinical decision support, and advanced analytics—all architected for HIPAA compliance and seamless HL7/FHIR integration.",
     results: [
-      "40% improvement in operational efficiency",
-      "95% patient satisfaction rate",
-      "75% reduction in administrative errors",
-      "30% cost savings in administrative overhead",
-      "Enhanced patient care coordination"
+      "40% improvement in operational efficiency through workflow automation",
+      "95% patient satisfaction scores",
+      "75% reduction in medical record errors",
+      "30% decrease in administrative overhead costs",
+      "50% increase in care coordination effectiveness"
     ],
     image: "/src/assets/images/IMG_2260.JPG",
     status: "Completed",
     featured: true,
     publishedDate: "2024-03-15",
-    content: "I-Varse Technologies developed a state-of-the-art healthcare management system that modernized the Lagos General Hospital Network's operations. Our solution included secure patient data management, telemedicine capabilities, and comprehensive reporting tools that improved patient care and operational efficiency.",
-    testimonial: "I-Varse Technologies delivered a healthcare management system that has revolutionized our hospital operations. The system's security, ease of use, and comprehensive features have significantly improved our patient care delivery.",
+    content: "This transformation demonstrates how technology can elevate healthcare delivery from transactional to truly patient-centered. By unifying clinical, administrative, and communication systems, we enabled care teams to focus on patients rather than paperwork. The platform's telemedicine capabilities expanded access to care beyond hospital walls, while clinical decision support tools help providers deliver evidence-based treatment. Most importantly, the system's interoperability ensures patient data follows patients seamlessly across providers and care settings.",
+    testimonial: "I-VARSE Technologies delivered a healthcare platform that doesn't just manage data—it enables better care. The system's ease of use combined with robust security has transformed how our network operates and serves patients.",
     testimonialAuthor: "Dr. Aisha Mohammed",
     testimonialPosition: "Medical Director, Lagos General Hospital"
   },
   {
     id: 4,
-    title: "Manufacturing ERP Implementation",
+    title: "Industry 4.0 Manufacturing Transformation",
     slug: "manufacturing-erp-implementation",
-    description: "Complete ERP solution for manufacturing company",
+    description: "Intelligent manufacturing platform driving operational excellence",
     client: "Nigerian Steel Manufacturing Co.",
     industry: "Manufacturing & Logistics",
     duration: "14 months",
     teamSize: 20,
     technologies: ["React", "Node.js", "PostgreSQL", "IoT", "Machine Learning", "AWS"],
-    challenge: "Implement a comprehensive ERP system to automate manufacturing processes, improve inventory management, and enhance production planning across multiple facilities.",
-    solution: "Developed a comprehensive ERP system with IoT sensor integration, predictive analytics, quality management, and supply chain optimization features.",
+    challenge: "Transform traditional manufacturing operations into an intelligent, connected enterprise capable of predictive maintenance, real-time optimization, and demand-driven production across multiple facilities.",
+    solution: "Architected a comprehensive Industry 4.0 platform integrating IoT sensors, machine learning models for predictive analytics, digital twin simulation, quality management, supply chain optimization, and real-time production monitoring—creating a fully connected manufacturing ecosystem.",
     results: [
-      "45% improvement in production efficiency",
-      "98% inventory accuracy",
-      "95% order fulfillment rate",
-      "25% reduction in operational costs",
-      "Real-time production monitoring"
+      "45% improvement in overall equipment effectiveness",
+      "98% inventory accuracy through real-time tracking",
+      "95% on-time delivery rate",
+      "25% reduction in operational costs via predictive maintenance",
+      "30% decrease in unplanned downtime"
     ],
     image: "/src/assets/images/IMG_2262.JPG",
     status: "Completed",
     featured: true,
     publishedDate: "2024-04-10",
-    content: "Our ERP implementation for Nigerian Steel Manufacturing Co. transformed their manufacturing operations by introducing Industry 4.0 technologies. The system includes IoT sensor integration, predictive maintenance, and real-time production monitoring that has significantly improved efficiency and reduced costs.",
-    testimonial: "The ERP system implemented by I-Varse Technologies has revolutionized our manufacturing operations. The real-time monitoring and predictive analytics have given us unprecedented control over our production processes.",
+    content: "This engagement exemplifies the transformative potential of Industry 4.0 technologies. By connecting machines, materials, and people through a unified intelligent platform, we enabled Nigerian Steel Manufacturing to transition from reactive to predictive operations. IoT sensors provide real-time visibility into every production process, while machine learning models anticipate equipment failures before they occur. The result: a manufacturing operation that continuously optimizes itself, adapts to changing demands, and operates with unprecedented efficiency.",
+    testimonial: "The platform I-VARSE Technologies delivered has fundamentally changed how we manufacture. Real-time visibility and predictive analytics give us control we never thought possible. This is manufacturing for the 21st century.",
     testimonialAuthor: "Michael Okechukwu",
     testimonialPosition: "Operations Director, Nigerian Steel Manufacturing Co."
   },
   {
     id: 5,
-    title: "Educational Institution Platform",
+    title: "Educational Innovation Platform",
     slug: "educational-institution-platform",
-    description: "Learning management system for educational institutions",
+    description: "Comprehensive learning ecosystem enabling digital education at scale",
     client: "University of Lagos",
     industry: "Education & E-learning",
     duration: "9 months",
@@ -180,49 +180,49 @@ export const servicesCaseStudies: {
   results: string;
   image: string;
 }[] = [
-  {
-    title: "E-commerce Platform Transformation",
-    description: "Complete digital transformation for a leading retail chain",
-    metrics: {
-      "Revenue Increase": "150%",
-      "User Engagement": "200%",
-      "Load Time": "60% faster",
-      "Mobile Conversion": "85%"
+    {
+      title: "E-commerce Platform Transformation",
+      description: "Complete digital transformation for a leading retail chain",
+      metrics: {
+        "Revenue Increase": "150%",
+        "User Engagement": "200%",
+        "Load Time": "60% faster",
+        "Mobile Conversion": "85%"
+      },
+      challenge: "A traditional retail chain needed to modernize their online presence and improve customer experience across all digital touchpoints.",
+      solution: "We developed a comprehensive e-commerce platform with mobile-first design, integrated payment systems, and advanced analytics.",
+      results: "The new platform resulted in significant revenue growth, improved customer satisfaction, and streamlined operations.",
+      image: "/src/assets/images/IMG_2259.JPG"
     },
-    challenge: "A traditional retail chain needed to modernize their online presence and improve customer experience across all digital touchpoints.",
-    solution: "We developed a comprehensive e-commerce platform with mobile-first design, integrated payment systems, and advanced analytics.",
-    results: "The new platform resulted in significant revenue growth, improved customer satisfaction, and streamlined operations.",
-    image: "/src/assets/images/IMG_2259.JPG"
-  },
-  {
-    title: "Healthcare Management System",
-    description: "Custom healthcare management solution for a hospital network",
-    metrics: {
-      "Efficiency Gain": "40%",
-      "Patient Satisfaction": "95%",
-      "Error Reduction": "75%",
-      "Cost Savings": "30%"
+    {
+      title: "Healthcare Management System",
+      description: "Custom healthcare management solution for a hospital network",
+      metrics: {
+        "Efficiency Gain": "40%",
+        "Patient Satisfaction": "95%",
+        "Error Reduction": "75%",
+        "Cost Savings": "30%"
+      },
+      challenge: "A hospital network needed a unified system to manage patient records, appointments, and administrative tasks efficiently.",
+      solution: "We built a comprehensive healthcare management system with secure patient data handling, appointment scheduling, and reporting capabilities.",
+      results: "The system improved operational efficiency, enhanced patient care, and reduced administrative overhead.",
+      image: "/src/assets/images/IMG_2260.JPG"
     },
-    challenge: "A hospital network needed a unified system to manage patient records, appointments, and administrative tasks efficiently.",
-    solution: "We built a comprehensive healthcare management system with secure patient data handling, appointment scheduling, and reporting capabilities.",
-    results: "The system improved operational efficiency, enhanced patient care, and reduced administrative overhead.",
-    image: "/src/assets/images/IMG_2260.JPG"
-  },
-  {
-    title: "Financial Services Platform",
-    description: "Secure and scalable platform for a fintech startup",
-    metrics: {
-      "Transaction Volume": "500% increase",
-      "Security Score": "99.9%",
-      "User Growth": "300%",
-      "Uptime": "99.99%"
-    },
-    challenge: "A fintech startup needed a secure, scalable platform to handle growing transaction volumes and regulatory requirements.",
-    solution: "We developed a robust financial services platform with advanced security features, real-time processing, and compliance tools.",
-    results: "The platform successfully handled exponential growth while maintaining security and compliance standards.",
-    image: "/src/assets/images/IMG_2261.JPG"
-  }
-];
+    {
+      title: "Financial Services Platform",
+      description: "Secure and scalable platform for a fintech startup",
+      metrics: {
+        "Transaction Volume": "500% increase",
+        "Security Score": "99.9%",
+        "User Growth": "300%",
+        "Uptime": "99.99%"
+      },
+      challenge: "A fintech startup needed a secure, scalable platform to handle growing transaction volumes and regulatory requirements.",
+      solution: "We developed a robust financial services platform with advanced security features, real-time processing, and compliance tools.",
+      results: "The platform successfully handled exponential growth while maintaining security and compliance standards.",
+      image: "/src/assets/images/IMG_2261.JPG"
+    }
+  ];
 
 export const productsCaseStudies: {
   title: string;
@@ -233,46 +233,46 @@ export const productsCaseStudies: {
   results: string;
   image: string;
 }[] = [
-  {
-    title: "Manufacturing ERP Implementation",
-    description: "Complete ERP solution for a manufacturing company",
-    metrics: {
-      "Production Efficiency": "45%",
-      "Inventory Accuracy": "98%",
-      "Order Fulfillment": "95%",
-      "Cost Reduction": "25%"
+    {
+      title: "Manufacturing ERP Implementation",
+      description: "Complete ERP solution for a manufacturing company",
+      metrics: {
+        "Production Efficiency": "45%",
+        "Inventory Accuracy": "98%",
+        "Order Fulfillment": "95%",
+        "Cost Reduction": "25%"
+      },
+      challenge: "A manufacturing company struggled with manual processes, inventory management, and production planning across multiple facilities.",
+      solution: "We implemented a comprehensive ERP system that automated processes, improved inventory tracking, and enhanced production planning.",
+      results: "The ERP system streamlined operations, reduced costs, and improved overall business efficiency.",
+      image: "/src/assets/images/IMG_2262.JPG"
     },
-    challenge: "A manufacturing company struggled with manual processes, inventory management, and production planning across multiple facilities.",
-    solution: "We implemented a comprehensive ERP system that automated processes, improved inventory tracking, and enhanced production planning.",
-    results: "The ERP system streamlined operations, reduced costs, and improved overall business efficiency.",
-    image: "/src/assets/images/IMG_2262.JPG"
-  },
-  {
-    title: "Retail Management Suite",
-    description: "Multi-store retail management solution",
-    metrics: {
-      "Sales Growth": "120%",
-      "Inventory Turnover": "3x faster",
-      "Customer Retention": "40%",
-      "Operational Costs": "20% reduction"
+    {
+      title: "Retail Management Suite",
+      description: "Multi-store retail management solution",
+      metrics: {
+        "Sales Growth": "120%",
+        "Inventory Turnover": "3x faster",
+        "Customer Retention": "40%",
+        "Operational Costs": "20% reduction"
+      },
+      challenge: "A retail chain needed a unified system to manage multiple stores, inventory, and customer relationships effectively.",
+      solution: "We deployed a comprehensive retail management suite with POS integration, inventory management, and customer analytics.",
+      results: "The solution improved sales performance, optimized inventory levels, and enhanced customer experience across all stores.",
+      image: "/src/assets/images/IMG_2263.JPG"
     },
-    challenge: "A retail chain needed a unified system to manage multiple stores, inventory, and customer relationships effectively.",
-    solution: "We deployed a comprehensive retail management suite with POS integration, inventory management, and customer analytics.",
-    results: "The solution improved sales performance, optimized inventory levels, and enhanced customer experience across all stores.",
-    image: "/src/assets/images/IMG_2263.JPG"
-  },
-  {
-    title: "Educational Institution Platform",
-    description: "Learning management system for educational institutions",
-    metrics: {
-      "Student Engagement": "180%",
-      "Administrative Efficiency": "60%",
-      "Resource Utilization": "85%",
-      "Cost Savings": "35%"
-    },
-    challenge: "An educational institution needed a modern platform to manage online learning, student records, and administrative tasks.",
-    solution: "We developed a comprehensive learning management system with virtual classrooms, student portals, and administrative tools.",
-    results: "The platform improved student engagement, streamlined administrative processes, and reduced operational costs.",
-    image: "/src/assets/images/IMG_2247.JPG"
-  }
-];
+    {
+      title: "Educational Institution Platform",
+      description: "Learning management system for educational institutions",
+      metrics: {
+        "Student Engagement": "180%",
+        "Administrative Efficiency": "60%",
+        "Resource Utilization": "85%",
+        "Cost Savings": "35%"
+      },
+      challenge: "An educational institution needed a modern platform to manage online learning, student records, and administrative tasks.",
+      solution: "We developed a comprehensive learning management system with virtual classrooms, student portals, and administrative tools.",
+      results: "The platform improved student engagement, streamlined administrative processes, and reduced operational costs.",
+      image: "/src/assets/images/IMG_2247.JPG"
+    }
+  ];

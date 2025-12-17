@@ -57,19 +57,19 @@ const TeamHero: React.FC<TeamHeroProps> = ({
                             textShadow: '0 4px 20px rgba(0,0,0,0.3)'
                         }}
                     >
-                        {title ? (
-                            <>
-                                <span className="text-blue-800 dark:text-blue-200">{title.split(' ').slice(0, -1).join(' ')}</span>{' '}
-                                <span className="gradient-text">
-                                    {title.split(' ').slice(-1).join(' ')}
-                                </span>
-                            </>
-                        ) : (
-                            <>
-                                <span className="text-blue-800 dark:text-blue-200">Meet Our Expert</span>{' '}
-                                <span className="gradient-text">Team</span>
-                            </>
-                        )}
+                        {(() => {
+                            const displayTitle = title || 'Meet Our Team';
+                            const words = displayTitle.split(' ');
+                            const lastWord = words[words.length - 1];
+                            const restWords = words.slice(0, -1).join(' ');
+
+                            return (
+                                <>
+                                    <span className="text-blue-800 dark:text-blue-200">{restWords}</span>{' '}
+                                    <span className="gradient-text">{lastWord}</span>
+                                </>
+                            );
+                        })()}
                     </motion.h1>
 
                     {/* Subtitle */}

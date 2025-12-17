@@ -28,24 +28,11 @@ export interface MobileMenuProps {
 }
 
 export interface NavbarProps {
-  logo: string;
-  navItems: NavItem[];
-  translationKey?: string;
   onMenuToggle?: () => void;
 }
 
 export interface FooterProps {
-  companyDescription: string;
-  translationKey?: string;
-  contactAddress: string;
-  contactPhone: string;
-  contactEmail: string;
-  contactSectionTitle: string;
-  socialLinks: SocialLink[];
-  columns: FooterColumn[];
-  legalLinks: AppLinkProps[];
-  copyrightText?: string;
-  companyName?: string;
+  // Footer now fetches data from useGlobalLayout internally
 }
 
 export interface SocialLink extends AppLinkProps {
@@ -93,6 +80,116 @@ export interface SitemapSection extends PageSection {
 
 export interface SitemapContent extends PageContent {
   sections: SitemapSection[];
+}
+
+// =============================================================================
+// GLOBAL LAYOUT CMS TYPES (Strapi v5)
+// =============================================================================
+
+export interface CMSLink {
+  label: string;
+  linkType: 'internal' | 'external';
+  page?: {
+    slug: string;
+    title?: string;
+    documentId?: string;
+  };
+  externalUrl?: string;
+  service?: {
+    slug: string;
+    title?: string;
+    documentId?: string;
+  };
+}
+
+export interface CMSMenuItem {
+  id: number;
+  documentId?: string;
+  order?: number;
+  menuLink: CMSLink[];
+  menu_items?: CMSMenuItem[];
+}
+
+export interface CMSSocialLink {
+  id: number;
+  platform: string;
+  socialIcon?: {
+    url: string;
+    documentId?: string;
+  };
+  linkUrl: {
+    label: string;
+    externalUrl: string;
+  };
+}
+
+export interface CMSFooterMenu {
+  id: number;
+  footerMenuTitle: string;
+  footerMenuLink: CMSLink[];
+}
+
+export interface GlobalLayoutData {
+  header: {
+    siteLogo: {
+      logoText: string;
+      logoImageLight: {
+        url: string;
+        alternativeText?: string;
+      };
+      logoImageDark: {
+        url: string;
+        alternativeText?: string;
+      };
+    };
+    menu_items: CMSMenuItem[];
+  };
+  footer: {
+    companyDescFooter: string;
+    footerLogo: {
+      logoText: string;
+      logoImageLight: { url: string };
+      logoImageDark: { url: string };
+    };
+    companyContactInfo: {
+      phone: string;
+      email: string;
+      address: {
+        formatted: string;
+        street?: string;
+        city?: string;
+        state?: string;
+        country?: string;
+        postalCode?: string;
+        latitude?: number;
+        longitude?: number;
+      };
+      socialLinks: CMSSocialLink[];
+    };
+    FooterMenu: CMSFooterMenu[];
+    legalFooter?: {
+      copyright?: string;
+      legalLink?: CMSLink[];
+    };
+  };
+}
+
+// Transformed data interfaces for component use
+export interface TransformedFooterLink {
+  title: string;
+  href: string;
+}
+
+export interface TransformedSocialLink {
+  id: number;
+  platform: string;
+  href: string;
+}
+
+export interface TransformedFooterColumn {
+  id: number;
+  title: string;
+  links: TransformedFooterLink[];
 }
 
 // Import types from core

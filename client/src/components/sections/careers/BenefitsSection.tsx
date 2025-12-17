@@ -14,17 +14,13 @@ const BenefitsSection: React.FC<BenefitsSectionProps> = ({
   pageContent
 }) => {
   // Get benefits section from page content (Strapi)
-  const benefitsSection = pageContent?.sections?.find(s => s.type === 'custom');
+  const benefitsSection = pageContent?.sections?.find(s => s.type === 'custom' && s.title === 'Employee Benefits');
 
-  // If no page content or benefits section, don't render anything
-  if (!pageContent || !benefitsSection) {
-    return null;
-  }
-
-  const title = benefitsSection.title;
-  const subtitle = benefitsSection.subtitle;
-  const content = benefitsSection.content;
-  const backgroundColor = benefitsSection.backgroundColor;
+  const title = benefitsSection?.title || 'Employee Benefits';
+  const subtitle = benefitsSection?.subtitle || 'Comprehensive benefits package designed for your well-being';
+  const badge = benefitsSection?.settings?.badge || '🎁 Benefits';
+  const content = benefitsSection?.content;
+  const backgroundColor = benefitsSection?.backgroundColor;
 
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
@@ -43,7 +39,7 @@ const BenefitsSection: React.FC<BenefitsSectionProps> = ({
       <div className="container-custom max-w-8xl">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            {benefitsSection.settings?.badge}
+            {badge}
           </div>
           <h2 className="section-title text-blue-900 dark:text-blue-200">{title}</h2>
           <p className="section-subtitle">

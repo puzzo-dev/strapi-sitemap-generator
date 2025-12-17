@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 interface CaseStudiesFilterSectionProps {
   pageContent: any;
+  caseStudies?: any[];
   isLoading?: boolean;
   onFilterChange?: (filters: any) => void;
   activeFilter?: string;
@@ -10,32 +11,39 @@ interface CaseStudiesFilterSectionProps {
 
 const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
   pageContent,
+  caseStudies = [],
   isLoading = false,
   onFilterChange,
   activeFilter = 'all'
 }) => {
   const { t } = useTranslation();
 
-  // Get industry expertise from page content
+  // Get unique industries from case studies data
   const filters = useMemo(() => {
-    const contentSection = pageContent?.sections?.find((s: any) => s.type === 'custom' && s.title?.includes('About'));
-    const industryExpertise = contentSection?.settings?.industryExpertise || [];
+    // Extract unique industries from case studies
+    const industries = new Set<string>();
 
-    // Create filter options from industry expertise
-    const filterOptions = industryExpertise.map((industry: string) => {
+    caseStudies.forEach((cs: any) => {
+      if (cs.industry) {
+        industries.add(cs.industry);
+      }
+    });
+
+    // Create filter options from unique industries
+    const filterOptions = Array.from(industries).map(industry => {
       const key = industry.toLowerCase().replace(/[^a-z]/g, '');
       return {
         key,
         label: industry
       };
-    });
+    }).sort((a, b) => a.label.localeCompare(b.label));
 
     // Add "All Industries" option
     return [
       { key: 'all', label: 'All Industries' },
       ...filterOptions
     ];
-  }, [pageContent]);
+  }, [caseStudies]);
 
   const handleFilterChange = (filterKey: string) => {
     onFilterChange?.({ industry: filterKey });
@@ -70,8 +78,8 @@ const CaseStudiesFilterSection: React.FC<CaseStudiesFilterSectionProps> = ({
               key={filter.key}
               onClick={() => handleFilterChange(filter.key)}
               className={`px-6 py-3 rounded-full font-medium transition-colors ${activeFilter === filter.key
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600'
+                ? 'bg-blue-600 text-white'
+                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600'
                 }`}
             >
               {filter.label}

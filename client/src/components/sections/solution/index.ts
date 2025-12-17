@@ -7,3 +7,4 @@ export { default as ProductRelatedSection } from './ProductRelatedSection';
 export { default as ProductCTASection } from './ProductCTASection';
 export { default as ProductDetailLoadingSection } from './ProductDetailLoadingSection';
 export { default as ProductDetailErrorSection } from './ProductDetailErrorSection';
+export { default as DynamicBlockRenderer } from './DynamicBlockRenderer';

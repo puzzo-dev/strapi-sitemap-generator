@@ -7,23 +7,35 @@ interface ServiceDetailBenefitsSectionProps {
   service: ServiceProps & {
     benefits?: string[];
   };
+  badgeText?: string;
+  blockTitle?: string;
+  blockDescription?: string;
 }
 
-const ServiceDetailBenefitsSection: React.FC<ServiceDetailBenefitsSectionProps> = ({ service }) => {
+const ServiceDetailBenefitsSection: React.FC<ServiceDetailBenefitsSectionProps> = ({ service, badgeText, blockTitle, blockDescription }) => {
 
   const benefits = service.benefits;
 
+  // Generate dynamic ID from badge text (lowercase, hyphenated)
+  const sectionId = badgeText ? badgeText.toLowerCase().replace(/\s+/g, '-') : 'benefits';
+
   return (
-    <section id="benefits" className="content-section bg-gray-50 dark:bg-[#0a1929]">
+    <section id={sectionId} className="content-section bg-gray-50 dark:bg-[#0a1929]">
       <div className="container-custom max-w-8xl">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            Benefits
-          </div>
-          <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-4">How You'll Benefit</h2>
-          <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Our {service.title.toLowerCase()} services are designed to deliver tangible business value and address your specific challenges.
-          </p>
+          {badgeText && (
+            <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+              {badgeText}
+            </div>
+          )}
+          {blockTitle && (
+            <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-4">{blockTitle}</h2>
+          )}
+          {blockDescription && (
+            <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              {blockDescription}
+            </p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -34,9 +46,11 @@ const ServiceDetailBenefitsSection: React.FC<ServiceDetailBenefitsSectionProps> 
                   <Check className="h-5 w-5" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{benefit.split(':')[0]}</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {benefit.includes(':') ? benefit.split(':')[1].trim() : 'Leverage our expertise to achieve optimal results for your business.'}
-                </p>
+                {benefit.includes(':') && (
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {benefit.split(':')[1].trim()}
+                  </p>
+                )}
               </CardContent>
             </Card>
           ))}

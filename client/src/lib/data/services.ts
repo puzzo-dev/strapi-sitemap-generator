@@ -5,80 +5,80 @@ import {
 export const services: ServiceProps[] = [
   {
     id: 5,
-    title: "CustomERP Solutions (OpsCloud™)",
+    title: "Enterprise Resource Planning (OpsCloud™)",
     slug: "custom-erp-solutions",
-    subtitle: "Enterprise Resource Planning Made Simple",
+    subtitle: "Unified Operations. Amplified Performance.",
     description:
-      "Streamline your business operations with our comprehensive ERP solutions. We implement customized enterprise resource planning systems that integrate all aspects of your business for improved efficiency and productivity.",
-    fullDescription: "Our CustomERP Solutions, powered by OpsCloud ERS™, provide a complete enterprise resource planning platform that transforms how businesses manage their operations. From inventory and supply chain management to financial reporting and customer relationship management, our ERP solution integrates all critical business processes into a unified, cloud-based platform. With real-time analytics, automated workflows, and mobile accessibility, businesses can make data-driven decisions faster and more efficiently than ever before.",
+      "Transform fragmented operations into cohesive excellence. Our enterprise platforms integrate people, processes, and technology—delivering real-time visibility, intelligent automation, and the agility to scale with confidence.",
+    fullDescription: "OpsCloud™ represents the evolution of enterprise resource planning—a cloud-native platform engineered to eliminate operational silos and unlock organizational potential. By unifying financial management, supply chain orchestration, human capital management, and customer engagement into a single intelligent ecosystem, we enable businesses to move beyond operational efficiency into strategic advantage. Our platform leverages AI-driven insights, predictive analytics, and adaptive workflows to transform how organizations make decisions, allocate resources, and respond to market dynamics. With OpsCloud™, enterprise transformation isn't just possible—it's sustainable.",
     benefits: {
       id: 1,
-      title: "ERP Benefits",
-      content: "Key benefits of our CustomERP Solutions",
+      title: "Strategic Value Delivered",
+      content: "Measurable outcomes that drive competitive advantage",
       items: [
         {
           id: 1,
-          title: "Centralized data management across all departments",
-          description: "Streamline your business operations with unified data management across all departments and locations."
+          title: "360° Operational Visibility",
+          description: "Unify data across finance, operations, and workforce management—enabling real-time decision-making at every organizational level."
         },
         {
           id: 2,
-          title: "Real-time analytics and reporting",
-          description: "Access comprehensive insights and reports in real-time to make informed business decisions."
+          title: "Predictive Intelligence",
+          description: "Leverage AI-powered analytics to anticipate market shifts, optimize resource allocation, and identify growth opportunities before competitors."
         },
         {
           id: 3,
-          title: "Automated workflow processes",
-          description: "Reduce manual work and improve efficiency with intelligent automation of repetitive tasks."
+          title: "Intelligent Automation",
+          description: "Eliminate repetitive tasks and accelerate processes with adaptive workflows that learn and optimize continuously."
         },
         {
           id: 4,
-          title: "Mobile accessibility for remote teams",
-          description: "Enable your team to work from anywhere with full mobile access to all business systems."
+          title: "Borderless Collaboration",
+          description: "Empower distributed teams with seamless mobile access, real-time synchronization, and context-aware tools that work anywhere."
         },
         {
           id: 5,
-          title: "Scalable architecture for business growth",
-          description: "Built to grow with your business, ensuring your systems can handle increased demand."
+          title: "Future-Proof Architecture",
+          description: "Scale effortlessly with cloud-native infrastructure designed to evolve with your business—no re-platforming required."
         },
         {
           id: 6,
-          title: "Comprehensive audit trails and compliance",
-          description: "Maintain full compliance with industry regulations through detailed audit trails."
+          title: "Compliance by Design",
+          description: "Navigate regulatory complexity with confidence through automated audit trails, role-based governance, and built-in compliance frameworks."
         }
       ]
     },
     casestudies: {
       id: 1,
-      title: "Success Stories",
-      content: "Real-world implementations and measurable business improvements",
+      title: "Transformation in Action",
+      content: "Real enterprises, measurable results",
       items: [
         {
           id: 1,
-          title: "Manufacturing Efficiency Boost",
-          description: "Implemented ERP solution for manufacturing company, resulting in 40% reduction in production time and 25% cost savings"
+          title: "Manufacturing Excellence Accelerated",
+          description: "Transformed a regional manufacturer into a connected enterprise—reducing production cycles by 40% and operational costs by 25% through intelligent automation and real-time supply chain visibility"
         },
         {
           id: 2,
-          title: "Retail Chain Integration",
-          description: "Connected 50+ retail locations with centralized inventory and sales management system"
+          title: "Retail Network Unified",
+          description: "Integrated 50+ locations into a single operational ecosystem—achieving 99.9% inventory accuracy and reducing stockouts by 35% while enabling same-day insights across the enterprise"
         }
       ]
     },
     faqs: {
       id: 2,
-      title: "Frequently Asked Questions",
-      content: "Common questions about our ERP solutions",
+      title: "Your Questions, Answered",
+      content: "Insights on enterprise transformation",
       items: [
         {
           id: 1,
-          title: "How long does ERP implementation take?",
-          description: "Implementation typically takes 3-6 months depending on business complexity and customization requirements"
+          title: "What's the path from legacy systems to modern ERP?",
+          description: "Our phased approach ensures business continuity throughout transformation—typically 3-6 months depending on complexity, with parallel operations minimizing risk and accelerating time-to-value"
         },
         {
           id: 2,
-          title: "Can we integrate with existing systems?",
-          description: "Yes, our ERP solution is designed to integrate seamlessly with existing business systems and databases"
+          title: "How do you preserve existing technology investments?",
+          description: "OpsCloud™ features enterprise-grade integration capabilities—seamlessly connecting with existing systems, databases, and third-party applications while enabling gradual modernization at your pace"
         }
       ]
     },
@@ -87,63 +87,63 @@ export const services: ServiceProps[] = [
   },
   {
     id: 6,
-    title: "Neuralcore Private AI Cloud",
+    title: "NeuralCore Private AI Cloud",
     slug: "private-ai-solutions",
-    subtitle: "Secure AI Infrastructure for Regulated Industries",
+    subtitle: "Intelligence Without Compromise",
     description:
-      "Secure AI infrastructure tailored for regulated industries. Our private cloud solution provides compliant, isolated environments for deploying AI workloads with enterprise-grade security, governance, and automation capabilities.",
-    fullDescription: "Neuralcore Private AI Cloud delivers enterprise-grade AI infrastructure designed specifically for industries with strict compliance requirements. Our solution provides isolated, secure environments where organizations can deploy and manage AI workloads without compromising data security or regulatory compliance. With built-in governance controls, automated compliance reporting, and advanced security features, businesses can accelerate AI adoption while maintaining the highest standards of data protection and regulatory adherence.",
+      "Deploy transformative AI capabilities while maintaining absolute control over your data. Our sovereign AI infrastructure delivers enterprise-grade security, regulatory compliance, and the performance to scale intelligent automation across your organization.",
+    fullDescription: "NeuralCore Private AI Cloud redefines what's possible when security meets innovation. Built for industries where data governance isn't optional—healthcare, financial services, government—our platform provides isolated, compliant environments where organizations can harness the full potential of artificial intelligence without sacrificing control. From advanced model training to production-scale inference, every workload runs within your security perimeter, subject to your governance policies. With automated compliance monitoring, granular access controls, and enterprise-grade observability, you gain both the agility to innovate and the assurance to operate in even the most regulated environments. This is AI infrastructure engineered for the real world.",
     benefits: {
       id: 2,
-      title: "AI Cloud Benefits",
-      content: "Key benefits of our secure AI infrastructure",
+      title: "Security Meets Innovation",
+      content: "The capabilities you need, the protection you demand",
       items: [
         {
           id: 7,
-          title: "Enterprise-grade security and compliance",
-          description: "Protect your data with enterprise-level security measures and compliance frameworks."
+          title: "Sovereign AI Infrastructure",
+          description: "Maintain complete data residency and control—ensuring compliance with GDPR, HIPAA, SOC 2, and industry-specific regulations without compromising AI capabilities."
         },
         {
           id: 8,
-          title: "Isolated AI workload environments",
-          description: "Deploy AI workloads in secure, isolated environments for maximum data protection."
+          title: "Isolated Execution Environments",
+          description: "Deploy AI workloads in cryptographically isolated tenants with hardware-level security—protecting intellectual property and sensitive data at every layer."
         },
         {
           id: 9,
-          title: "Automated governance and audit trails",
-          description: "Ensure regulatory compliance with automated governance controls and audit trails."
+          title: "Automated Governance",
+          description: "Enforce policies automatically across the entire AI lifecycle—from data ingestion to model deployment—with comprehensive audit trails for regulatory reporting."
         },
         {
           id: 10,
-          title: "Scalable GPU and compute resources",
-          description: "Scale your AI workloads with flexible GPU and compute resource allocation."
+          title: "Elastic AI Infrastructure",
+          description: "Scale compute resources dynamically based on workload demands—GPU clusters, specialized accelerators, and distributed training—without infrastructure overhead."
         },
         {
           id: 11,
-          title: "Built-in model versioning and management",
-          description: "Manage AI models efficiently with built-in versioning and lifecycle management."
+          title: "Enterprise MLOps",
+          description: "Streamline the entire machine learning lifecycle with built-in versioning, experiment tracking, model registry, and automated deployment pipelines."
         },
         {
           id: 12,
-          title: "24/7 monitoring and support",
-          description: "Get round-the-clock monitoring and support to ensure your systems run smoothly."
+          title: "Always-On Excellence",
+          description: "24/7 monitoring, proactive incident response, and expert support ensure your AI infrastructure operates at peak performance without interruption."
         }
       ]
     },
     casestudies: {
       id: 3,
-      title: "AI Success Stories",
-      content: "Secure AI implementations for regulated industries",
+      title: "Secure Innovation Realized",
+      content: "Regulated industries, unregulated potential",
       items: [
         {
           id: 3,
-          title: "Healthcare AI Compliance",
-          description: "Deployed secure AI infrastructure for healthcare provider, ensuring HIPAA compliance while enabling advanced diagnostic AI"
+          title: "Healthcare Diagnostics Transformed",
+          description: "Enabled a leading healthcare network to deploy advanced diagnostic AI while maintaining HIPAA compliance—improving diagnostic accuracy by 30% and reducing turnaround time by 50%"
         },
         {
           id: 4,
-          title: "Financial Services AI Platform",
-          description: "Built private AI cloud for fintech company, meeting regulatory requirements for data residency and security"
+          title: "Financial Intelligence Platform",
+          description: "Built sovereign AI infrastructure for multinational fintech—processing millions of transactions daily while meeting data residency requirements across 15 jurisdictions"
         }
       ]
     },

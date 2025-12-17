@@ -12,6 +12,7 @@ import CaseStudiesSection from '@/components/sections/home/CaseStudiesSection';
 import ClientsSection from '@/components/sections/home/ClientsSection';
 import TestimonialsSection from '@/components/sections/home/TestimonialsSection';
 import BlogPostsSection from '@/components/sections/home/BlogPostsSection';
+import IndustriesSection from '@/components/sections/home/IndustriesSection';
 
 // Import hooks and services (temporarily using fallback data directly)
 // import { 
@@ -24,6 +25,7 @@ import BlogPostsSection from '@/components/sections/home/BlogPostsSection';
 import {
     homePageContent as localHomePageContent,
     services as fallbackServices,
+    industries as fallbackIndustries,
     products as fallbackProducts,
     caseStudies as fallbackCaseStudies,
     clients as fallbackClients,
@@ -118,6 +120,17 @@ const Home: React.FC = () => {
         count: fallbackBlogPosts.length
     };
 
+    const industriesQuery = {
+        data: fallbackIndustries,
+        isLoading: false,
+        error: null,
+        isSuccess: true,
+        isError: false,
+        isEmpty: false,
+        hasData: true,
+        count: fallbackIndustries.length
+    };
+
     // Extract data with fallbacks
     const displayHomePageContent = pageContentQuery.data;
     const isLoading = false; // Using fallback data, so no loading state needed
@@ -172,6 +185,13 @@ const Home: React.FC = () => {
                 <ProductsSection
                     homePageContent={displayHomePageContent}
                     products={productsQuery.data}
+                    isLoading={isLoading}
+                />
+
+                {/* Industries Section */}
+                <IndustriesSection
+                    homePageContent={displayHomePageContent}
+                    industries={industriesQuery.data}
                     isLoading={isLoading}
                 />
 

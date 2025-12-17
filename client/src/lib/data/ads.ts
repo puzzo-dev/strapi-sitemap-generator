@@ -45,7 +45,7 @@ export const blogSidebarAds: AdSlide[] = [
         icon: Star,
         image: placeholderImages.erp,
         cta: "Learn More",
-        ctaUrl: "/services/erp-solutions",
+        ctaUrl: "/services/custom-erp-solutions",
         priority: 1,
         targetAudience: ['business-owners', 'managers'],
         clickTrackingId: 'sidebar-erp-banner'
@@ -59,7 +59,7 @@ export const blogSidebarAds: AdSlide[] = [
         icon: Shield,
         image: placeholderImages.cloud,
         cta: "Get Started",
-        ctaUrl: "/services/cloud-services",
+        ctaUrl: "/services/cloud-infrastructure-management",
         priority: 2,
         targetAudience: ['developers', 'startups'],
         clickTrackingId: 'sidebar-cloud-banner'

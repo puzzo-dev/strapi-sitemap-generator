@@ -13,7 +13,7 @@ export const testimonials: TestimonialProps[] = [
     id: 1,
     name: "Mazi Godwin",
     content:
-      "I-Varse has a professional group of IT specialists. I am grateful for the consultancy services they rendered me. I recommend them to anyone who plans to take their business to the future.",
+      "Partnering with I-VARSE transformed how we approach technology. Their consultancy didn't just solve immediate challenges—it positioned us strategically for sustained growth. The expertise and foresight they brought to our digital transformation journey have been invaluable.",
     rating: 5,
     image: "/default-avatar.jpg",
   },
@@ -21,7 +21,7 @@ export const testimonials: TestimonialProps[] = [
     id: 2,
     name: "Jasper Paul",
     content:
-      "My business model was in a slump. I didn't know what to do, and I kept losing money. Then I contacted I-Varse, and now my business is up and running. Thank you, I-Varse!",
+      "When operational inefficiencies threatened our bottom line, I-VARSE didn't just diagnose the problem—they architected a comprehensive solution. The platform they delivered eliminated friction, automated workflows, and gave us the visibility we needed to make confident decisions. Our trajectory has completely reversed.",
     rating: 5,
     image: "/default-avatar.jpg",
   },
@@ -29,7 +29,7 @@ export const testimonials: TestimonialProps[] = [
     id: 3,
     name: "Chukwudi Obasi",
     content:
-      "I-Varse has the best SEO content writing service. I have used them for more projects than I can count. Their team's blog writing work has increased my company's Google ranking by 60%.",
+      "The digital strategy expertise at I-VARSE is exceptional. Their content engineering and SEO approach increased our organic visibility by 60% while establishing thought leadership in our space. Multiple successful engagements later, they remain our trusted partner for digital excellence.",
     rating: 5,
     image: "/default-avatar.jpg",
   },

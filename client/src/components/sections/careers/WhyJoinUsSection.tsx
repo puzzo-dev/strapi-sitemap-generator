@@ -22,17 +22,13 @@ const WhyJoinUsSection: React.FC<WhyJoinUsSectionProps> = ({
     // Get why join us section from page content
     const whyJoinUsSection = pageContent?.sections?.find(s => s.type === 'custom' && s.title === 'Why Join Us');
 
-    // If no page content or why join us section, don't render anything
-    if (!pageContent || !whyJoinUsSection) {
-        return null;
-    }
-
-    const title = whyJoinUsSection.title;
-    const subtitle = whyJoinUsSection.subtitle;
-    const content = whyJoinUsSection.content;
-    const image = whyJoinUsSection.settings?.image;
-    const values = whyJoinUsSection.settings?.values as ValueItem[];
-    const backgroundColor = whyJoinUsSection.backgroundColor;
+    const title = whyJoinUsSection?.title || 'Why Join Us';
+    const subtitle = whyJoinUsSection?.subtitle || 'Be Part of Something Extraordinary';
+    const content = whyJoinUsSection?.content || 'At I-VARSE, we\'re more than just a technology company – we\'re a community of passionate innovators dedicated to creating solutions that make a difference.';
+    const badge = whyJoinUsSection?.settings?.badge || '🌟 Why Join Us';
+    const image = whyJoinUsSection?.settings?.image;
+    const values = (whyJoinUsSection?.settings?.values as ValueItem[]) || [];
+    const backgroundColor = whyJoinUsSection?.backgroundColor;
 
     const getIconComponent = (iconName: string) => {
         switch (iconName) {
@@ -50,7 +46,7 @@ const WhyJoinUsSection: React.FC<WhyJoinUsSectionProps> = ({
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                            {whyJoinUsSection.settings?.badge || "Why Join Us"}
+                            {badge}
                         </div>
 
                         {isLoading ? (

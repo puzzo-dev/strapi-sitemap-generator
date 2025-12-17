@@ -32,13 +32,14 @@ const About: React.FC = () => {
   // Structured data
   const structuredData = generateOrganizationSchema();
 
-  // Extract sections using unified helper
-  const heroSection = findSection(displayPageContent, 'hero') || { id: 0 };
-  const missionSection = displayPageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('Mission')) || { id: 0 };
-  const featuresSection = findSection(displayPageContent, 'features') || { id: 0 };
-  const teamSection = findSection(displayPageContent, 'team') || { id: 0 };
-  const industriesSection = findSection(displayPageContent, 'industries') || { id: 0 };
-  const ctaSection = findSection(displayPageContent, 'cta') || { id: 0 };
+  // Extract sections using unified helper with proper fallbacks to local data
+  const heroSection = findSection(displayPageContent, 'hero') || findSection(localAboutPageContent, 'hero');
+  const missionSection = displayPageContent?.sections?.find(s => s.type === 'custom' && s.title?.includes('Mission'))
+    || localAboutPageContent.sections.find(s => s.type === 'custom' && s.title?.includes('Mission'));
+  const featuresSection = findSection(displayPageContent, 'features') || findSection(localAboutPageContent, 'features');
+  const teamSection = findSection(displayPageContent, 'team') || findSection(localAboutPageContent, 'team');
+  const industriesSection = findSection(displayPageContent, 'industries') || findSection(localAboutPageContent, 'industries');
+  const ctaSection = findSection(displayPageContent, 'cta') || findSection(localAboutPageContent, 'cta');
 
   return (
     <PageLayout
@@ -55,27 +56,31 @@ const About: React.FC = () => {
     >
       {/* Hero Section */}
       <AboutHero
-        {...heroSection}
+        id={heroSection?.id || 0}
+        title={heroSection?.title}
+        subtitle={heroSection?.subtitle}
+        settings={heroSection?.settings}
         isPageLoading={isPageLoading}
       />
 
       {/* Mission & Vision Section */}
       <MissionVisionSection
-        {...missionSection}
+        id={missionSection?.id || 0}
+        title={missionSection?.title}
+        subtitle={missionSection?.subtitle}
+        content={missionSection?.content}
+        settings={missionSection?.settings}
         isPageLoading={isPageLoading}
       />
 
       {/* Core Values Section */}
       <CoreValuesSection
-        {...featuresSection}
+        id={featuresSection?.id || 0}
+        title={featuresSection?.title}
+        subtitle={featuresSection?.subtitle}
+        content={featuresSection?.content}
+        settings={featuresSection?.settings}
         isPageLoading={isPageLoading}
-      />
-
-      {/* Team Section */}
-      <TeamSection
-        {...teamSection}
-        teamMembers={teamMembers}
-        isTeamLoading={isTeamLoading}
       />
 
       {/* Industries Section */}
@@ -85,9 +90,23 @@ const About: React.FC = () => {
         isLoading={isPageLoading}
       />
 
+      {/* Team Section */}
+      <TeamSection
+        id={teamSection?.id || 0}
+        title={teamSection?.title}
+        subtitle={teamSection?.subtitle}
+        settings={teamSection?.settings}
+        teamMembers={teamMembers}
+        isTeamLoading={isTeamLoading}
+      />
+
       {/* Call to Action Section */}
       <AboutCTA
-        {...ctaSection}
+        id={ctaSection?.id || 0}
+        title={ctaSection?.title}
+        subtitle={ctaSection?.subtitle}
+        content={ctaSection?.content}
+        settings={ctaSection?.settings}
         isPageLoading={isPageLoading}
       />
     </PageLayout>

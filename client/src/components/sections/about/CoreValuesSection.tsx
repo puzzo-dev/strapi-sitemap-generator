@@ -23,8 +23,30 @@ const CoreValuesSection: React.FC<CoreValuesSectionProps> = ({
 }) => {
     const [valuesRef, valuesInView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
-    // Get values from settings or use empty array if not available
-    const values: SectionItem[] = settings?.items || [];
+    // Get values from settings or use fallback defaults
+    const fallbackValues: SectionItem[] = [
+        {
+            id: 1,
+            title: 'Innovation',
+            description: 'We constantly push boundaries and explore new technologies to deliver forward-thinking solutions that keep our clients ahead of the curve.',
+            icon: 'lightning'
+        },
+        {
+            id: 2,
+            title: 'Excellence',
+            description: 'We are committed to delivering the highest quality in everything we do, with meticulous attention to detail and a passion for perfection.',
+            icon: 'shield'
+        },
+        {
+            id: 3,
+            title: 'Collaboration',
+            description: 'We believe in the power of teamwork, both within our organization and with our clients, fostering relationships built on trust and mutual success.',
+            icon: 'users'
+        }
+    ];
+    const values: SectionItem[] = settings?.items && settings.items.length > 0 ? settings.items : fallbackValues;
+    const displayTitle = title || 'Our Core Values';
+    const displaySubtitle = subtitle || 'The principles that guide everything we do';
 
     const getIconComponent = (iconName: string) => {
         switch (iconName) {
@@ -63,11 +85,6 @@ const CoreValuesSection: React.FC<CoreValuesSectionProps> = ({
         );
     }
 
-    // Don't render if no values are available
-    if (!values || values.length === 0) {
-        return null;
-    }
-
     return (
         <motion.section
             ref={valuesRef}
@@ -82,13 +99,13 @@ const CoreValuesSection: React.FC<CoreValuesSectionProps> = ({
                     className="text-center mb-16"
                 >
                     <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                        🏆 {settings?.label}
+                        🏆 {settings?.label || 'Our Core Values'}
                     </div>
                     <h2 className="section-title text-blue-900 dark:text-blue-200">
-                        {title}
+                        {displayTitle}
                     </h2>
                     <p className="section-subtitle">
-                        {subtitle}
+                        {displaySubtitle}
                     </p>
                 </motion.div>
 

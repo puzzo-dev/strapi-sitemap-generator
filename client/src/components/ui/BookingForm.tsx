@@ -1,5 +1,5 @@
 import React from 'react';
-import { DemoRequestFormProps } from "@/lib/types";
+import { DemoRequestFormProps, DemoRequestFormData } from "@/lib/types";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -30,13 +30,13 @@ const demoRequestFormSchema = z.object({
   message: z.string().min(10, { message: 'Message must be at least 10 characters' }),
 });
 
-type DemoRequestFormData = z.infer<typeof demoRequestFormSchema>;
+type BookingFormData = z.infer<typeof demoRequestFormSchema>;
 
 
 
 const DemoRequestForm: React.FC<DemoRequestFormProps> = ({ className }) => {
   const { toast } = useToast();
-  const form = useForm<DemoRequestFormData>({
+  const form = useForm<BookingFormData>({
     resolver: zodResolver(demoRequestFormSchema),
     defaultValues: {
       name: '',
@@ -68,8 +68,22 @@ const DemoRequestForm: React.FC<DemoRequestFormProps> = ({ className }) => {
     },
   });
 
-  function onSubmit(data: DemoRequestFormData) {
-    demoRequestMutation.mutate(data);
+  function onSubmit(data: BookingFormData) {
+    // Transform BookingFormData to DemoRequestFormData
+    const demoRequestData: DemoRequestFormData = {
+      fullName: data.name,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      message: `${data.message}\n\nPreferred Date: ${data.date}\nPreferred Time: ${data.time}`,
+      companyName: '',
+      companySize: '1-10',
+      productInterest: data.topic,
+      challenges: data.message,
+      decisionTimeframe: 'Not sure',
+      consentContact: true,
+    };
+    demoRequestMutation.mutate(demoRequestData);
   }
 
   return (

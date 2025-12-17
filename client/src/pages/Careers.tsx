@@ -38,9 +38,14 @@ const Careers: React.FC = () => {
   const structuredData = generateOrganizationSchema();
 
   // Extract sections with fallback to local data
-  const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero') || { id: 0 };
-  const benefitsSection = displayPageContent?.sections?.find(s => s.type === 'custom') || { id: 0 };
-  const jobsSection = displayPageContent?.sections?.find(s => s.type === 'jobs') || { id: 0 };
+  const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero')
+    || localCareersPageContent.sections.find(s => s.type === 'hero');
+  const whyJoinSection = displayPageContent?.sections?.find(s => s.type === 'custom' && s.title === 'Why Join Us')
+    || localCareersPageContent.sections.find(s => s.type === 'custom' && s.title === 'Why Join Us');
+  const benefitsSection = displayPageContent?.sections?.find(s => s.type === 'custom' && s.title === 'Employee Benefits')
+    || localCareersPageContent.sections.find(s => s.type === 'custom' && s.title === 'Employee Benefits');
+  const jobsSection = displayPageContent?.sections?.find(s => s.type === 'jobs')
+    || localCareersPageContent.sections.find(s => s.type === 'jobs');
 
   return (
     <PageLayout
@@ -57,6 +62,12 @@ const Careers: React.FC = () => {
     >
       {/* Hero Section */}
       <CareersHeroSection
+        pageContent={displayPageContent}
+        isLoading={isPageLoading}
+      />
+
+      {/* Why Join Us Section */}
+      <WhyJoinUsSection
         pageContent={displayPageContent}
         isLoading={isPageLoading}
       />

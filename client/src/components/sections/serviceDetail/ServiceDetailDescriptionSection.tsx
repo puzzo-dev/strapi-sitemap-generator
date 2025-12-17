@@ -7,6 +7,9 @@ import { Card, CardContent } from '@/components/ui/card';
 interface ServiceDetailDescriptionSectionProps {
   service: ServiceProps & {
     fullDescription?: string;
+    features?: Array<{ title: string; description: string }>;
+    whyChooseUs?: { title: string; content: string };
+    content?: any[];
     benefits?: string[];
     settings?: {
       whyChooseUsTitle?: string;
@@ -16,9 +19,83 @@ interface ServiceDetailDescriptionSectionProps {
 }
 
 const ServiceDetailDescriptionSection: React.FC<ServiceDetailDescriptionSectionProps> = ({ service }) => {
-  // Get base-row section from content dynamic zone (why choose us section)
+  // Support both old content dynamic zone and new fullDescription/features props
+  const hasNewFormat = service.fullDescription || service.features;
+
+  // Get base-row section from content dynamic zone (why choose us section) - old format
   const baseRowSection = service.content?.find((item: any) => item.__component === 'blocks.base-row');
   const baseCards = baseRowSection?.baseCards || [];
+
+  // If using new format (from DynamicBlockRenderer)
+  if (hasNewFormat) {
+    return (
+      <section className="content-section bg-white dark:bg-[#132f4c]">
+        <div className="container-custom max-w-8xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Main content - 8 columns */}
+            <div className="lg:col-span-8">
+              {service.fullDescription && (
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                  {service.fullDescription.split('\n\n').map((paragraph, index) => (
+                    <p key={index} className="text-base leading-relaxed text-gray-600 dark:text-gray-300 mb-4">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Why Choose Us - 4 columns, side by side */}
+            {service.whyChooseUs && (
+              <div className="lg:col-span-4">
+                <Card className="sticky top-24">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                      {service.whyChooseUs.title}
+                    </h3>
+                    <div className="space-y-2">
+                      {service.whyChooseUs.content.split('\n').map((line, index) => {
+                        const trimmedLine = line.trim();
+                        if (!trimmedLine) return null;
+                        // Check if line already starts with - or •
+                        const hasMarker = trimmedLine.startsWith('-') || trimmedLine.startsWith('•');
+                        const content = hasMarker ? trimmedLine.substring(1).trim() : trimmedLine;
+                        return (
+                          <div key={index} className="flex items-start gap-2">
+                            <Check className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-600 dark:text-gray-300 text-sm">
+                              {content}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
+
+          {service.features && service.features.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+              {service.features.map((feature: any, index: number) => (
+                <Card key={index} className="h-full">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="content-section bg-white dark:bg-[#132f4c]">
@@ -61,16 +138,14 @@ const ServiceDetailDescriptionSection: React.FC<ServiceDetailDescriptionSectionP
                       {card.cardLink && (
                         <GradientButton
                           href={
-                            card.cardLink.externalUrl ||
-                            (card.cardLink.page ? `/page/${card.cardLink.page.slug}` : '') ||
-                            (card.cardLink.service ? `/services/${card.cardLink.service.slug}` : '') ||
-                            (card.cardLink.solution ? `/solutions/${card.cardLink.solution.slug}` : '') ||
-                            '#'
+                            card.cardLink.linkType === 'external'
+                              ? card.cardLink.externalUrl
+                              : `/${card.cardLink.page?.slug || card.cardLink.service?.slug || card.cardLink.solution?.slug}`
                           }
                           variant="outline"
                           className="w-full justify-center"
                         >
-                          {card.cardLink.label || 'Learn More'}
+                          {card.cardLink.label}
                         </GradientButton>
                       )}
                     </CardContent>
@@ -94,11 +169,11 @@ const ServiceDetailDescriptionSection: React.FC<ServiceDetailDescriptionSectionP
           </div>
 
           <div className="lg:col-span-4">
-            {service.benefits && service.benefits.length > 0 && (
+            {service.benefits && service.benefits.length > 0 && service.settings?.whyChooseUsTitle && (
               <Card>
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
-                    {service.settings?.whyChooseUsTitle || 'Why Choose Us'}
+                    {service.settings.whyChooseUsTitle}
                   </h3>
                   <ul className="space-y-3">
                     {service.benefits.map((benefit, index) => (
@@ -113,11 +188,13 @@ const ServiceDetailDescriptionSection: React.FC<ServiceDetailDescriptionSectionP
                     ))}
                   </ul>
 
-                  <div className="mt-8">
-                    <GradientButton href="/contact" className="w-full justify-center">
-                      {service.settings?.ctaButtonText || 'Request a Consultation'}
-                    </GradientButton>
-                  </div>
+                  {service.settings?.ctaButtonText && (
+                    <div className="mt-8">
+                      <GradientButton href="/contact" className="w-full justify-center">
+                        {service.settings.ctaButtonText}
+                      </GradientButton>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}

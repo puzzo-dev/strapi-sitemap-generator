@@ -28,9 +28,12 @@ const Team: React.FC = () => {
   const structuredData = generateOrganizationSchema();
 
   // Extract sections with fallback to local data
-  const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero') || { id: 0 };
-  const teamSection = displayPageContent?.sections?.find(s => s.type === 'team') || { id: 0 };
-  const ctaSection = displayPageContent?.sections?.find(s => s.type === 'cta') || { id: 0 };
+  const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero')
+    || localTeamPageContent.sections.find(s => s.type === 'hero');
+  const teamSection = displayPageContent?.sections?.find(s => s.type === 'team')
+    || localTeamPageContent.sections.find(s => s.type === 'team');
+  const ctaSection = displayPageContent?.sections?.find(s => s.type === 'cta')
+    || localTeamPageContent.sections.find(s => s.type === 'cta');
 
   return (
     <PageLayout
@@ -44,20 +47,30 @@ const Team: React.FC = () => {
     >
       {/* Hero Section */}
       <TeamHero
-        {...heroSection}
+        id={heroSection?.id || 0}
+        title={heroSection?.title}
+        subtitle={heroSection?.subtitle}
+        content={heroSection?.content}
+        settings={heroSection?.settings}
         isPageLoading={isPageLoading}
       />
 
       {/* Team Grid Section */}
-      <TeamGrid
-        {...teamSection}
+      <TeamGrid id={teamSection?.id || 0} title={teamSection?.title}
+        subtitle={teamSection?.subtitle}
+        content={teamSection?.content}
+        settings={teamSection?.settings}
         teamMembers={teamMembers}
         isTeamLoading={isTeamLoading}
       />
 
       {/* Call to Action Section */}
       <TeamCTA
-        {...ctaSection}
+        id={ctaSection?.id || 0}
+        title={ctaSection?.title}
+        subtitle={ctaSection?.subtitle}
+        content={ctaSection?.content}
+        settings={ctaSection?.settings}
         isPageLoading={isPageLoading}
       />
     </PageLayout>

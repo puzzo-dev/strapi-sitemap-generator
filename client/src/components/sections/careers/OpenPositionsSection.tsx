@@ -19,21 +19,18 @@ const OpenPositionsSection: React.FC<OpenPositionsSectionProps> = ({
   // Get open positions section from page content
   const openPositionsSection = pageContent?.sections?.find(s => s.type === 'jobs');
 
-  // If no page content or open positions section, don't render anything
-  if (!pageContent || !openPositionsSection) {
-    return null;
-  }
-
-  const title = openPositionsSection.title;
-  const subtitle = openPositionsSection.subtitle;
-  const backgroundColor = openPositionsSection.backgroundColor;
+  const title = openPositionsSection?.title || 'Open Positions';
+  const subtitle = openPositionsSection?.subtitle || 'Find your next opportunity';
+  const badge = openPositionsSection?.settings?.badge || '💼 Current Openings';
+  const applyButtonText = openPositionsSection?.settings?.applyButton || 'Apply Now';
+  const backgroundColor = openPositionsSection?.backgroundColor;
 
   return (
     <section id="open-positions" className={`content-section ${backgroundColor || 'bg-white dark:bg-[#132f4c]'}`}>
       <div className="container-custom max-w-8xl">
         <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-            {openPositionsSection.settings?.badge || "Current Openings"}
+            {badge}
           </div>
           <h2 className="section-title text-blue-900 dark:text-blue-200">{title}</h2>
           <p className="section-subtitle">
@@ -99,7 +96,7 @@ const OpenPositionsSection: React.FC<OpenPositionsSectionProps> = ({
 
                     <div className="md:ml-6 flex-shrink-0">
                       <GradientButton href={`/careers/${job.slug}`} endIcon={<ArrowRight />}>
-                        {openPositionsSection.settings?.applyButton || "Apply Now"}
+                        {applyButtonText}
                       </GradientButton>
                     </div>
                   </div>

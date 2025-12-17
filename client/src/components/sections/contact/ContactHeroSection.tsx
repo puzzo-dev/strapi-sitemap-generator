@@ -62,13 +62,12 @@ const ContactHeroSection: React.FC<ContactHeroSectionProps> = ({
                     ) : (
                         <>
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                {heroSection?.settings?.badge || heroSection?.badge}
+                                {heroSection?.settings?.badge || heroSection?.badge || '📞 Contact Us'}
                             </div>
 
                             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                                 {(() => {
-                                    const title = heroSection?.title;
-                                    if (!title) return null;
+                                    const title = heroSection?.title || 'Get in Touch';
                                     const words = title.split(' ');
                                     const highlightedWords = words.length >= 2 ? words.slice(-2).join(' ') : '';
                                     const regularWords = words.length >= 2 ? words.slice(0, -2).join(' ') : title;
@@ -85,7 +84,7 @@ const ContactHeroSection: React.FC<ContactHeroSectionProps> = ({
                             </h1>
 
                             <p className="text-xl text-blue-700 dark:text-blue-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                                {heroSection?.subtitle}
+                                {heroSection?.subtitle || "Let's discuss your project and how we can help you achieve your goals"}
                             </p>
 
                             <motion.div
@@ -94,7 +93,7 @@ const ContactHeroSection: React.FC<ContactHeroSectionProps> = ({
                             >
                                 <a href="#contact-form">
                                     <GradientButton size="lg" endIcon={<ChevronRight />}>
-                                        {heroSection?.settings?.buttonText}
+                                        {heroSection?.settings?.buttonText || 'Get Started'}
                                     </GradientButton>
                                 </a>
                             </motion.div>

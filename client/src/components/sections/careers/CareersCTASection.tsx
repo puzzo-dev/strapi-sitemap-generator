@@ -29,18 +29,14 @@ const CareersCTASection: React.FC<CareersCTASectionProps> = ({
     // Get CTA section from page content
     const ctaSection = pageContent?.sections?.find(s => s.type === 'cta');
 
-    // If no page content or CTA section, don't render anything
-    if (!pageContent || !ctaSection) {
-        return null;
-    }
-
-    const title = ctaSection.title;
-    const subtitle = ctaSection.subtitle;
-    const content = ctaSection.content;
-    const primaryButton = ctaSection.settings?.primaryButton;
-    const secondaryButton = ctaSection.settings?.secondaryButton;
-    const backgroundColor = ctaSection.backgroundColor;
-    const textColor = ctaSection.textColor;
+    const title = ctaSection?.title || 'Ready to Join Our Team?';
+    const subtitle = ctaSection?.subtitle || 'Take the next step in your career journey';
+    const content = ctaSection?.content || 'Don\'t see the perfect role? We\'re always looking for talented individuals who are passionate about technology and innovation.';
+    const badge = ctaSection?.settings?.badge || '🚀 Get Started';
+    const primaryButton = ctaSection?.settings?.primaryButton;
+    const secondaryButton = ctaSection?.settings?.secondaryButton;
+    const backgroundColor = ctaSection?.backgroundColor;
+    const textColor = ctaSection?.textColor;
 
     const handleSendResumeClick = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -61,8 +57,7 @@ const CareersCTASection: React.FC<CareersCTASectionProps> = ({
                         ) : (
                             <>
                                 <div className="inline-flex items-center rounded-full border border-blue-200 bg-blue-100/20 px-3 py-1 text-sm font-medium text-blue-200 mb-4">
-                                    {/* <span className="flex h-2 w-2 rounded-full bg-blue-300 mr-2 animate-pulse"></span> */}
-                                    {ctaSection.settings?.badge || "Get Started"}
+                                    {badge}
                                 </div>
                                 <h2 className="section-title text-white mb-6">
                                     {title}

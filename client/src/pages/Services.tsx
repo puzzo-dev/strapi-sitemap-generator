@@ -3,6 +3,7 @@ import PageLayout from '@/components/layout/PageLayout';
 import { usePageContent } from '@/hooks/useContent';
 import { servicesPageContent as localServicesPageContent } from '@/lib/data/pages';
 import { services as fallbackServices } from '@/lib/data';
+import { testimonials } from '@/lib/data/testimonials';
 import { ServiceProps, TestimonialProps } from '@/lib/types/content';
 
 // Import section components
@@ -26,7 +27,7 @@ const Services: React.FC = () => {
   // Use fallback services data
   const displayServices = fallbackServices;
 
-  // Get testimonials from page content
+  // Get testimonials from page content with fallback to direct import
   const testimonialsSection = displayPageContent.sections?.find(s => s.type === 'testimonials');
   const displayTestimonials = useMemo((): TestimonialProps[] => {
     if (testimonialsSection?.settings?.featured) {
@@ -37,7 +38,8 @@ const Services: React.FC = () => {
         return [featured as TestimonialProps];
       }
     }
-    return [];
+    // Fallback to direct import if extraction fails
+    return testimonials;
   }, [testimonialsSection]);
 
   // Generate structured data for services

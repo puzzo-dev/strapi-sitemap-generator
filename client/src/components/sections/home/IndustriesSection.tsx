@@ -22,7 +22,7 @@ const IndustriesSection: React.FC<IndustriesSectionProps> = ({
 
   // Extract section content from industriesSection
   const title = industriesSection?.title || t('home.industries.title', 'Industries We Serve');
-  const subtitle = industriesSection?.subtitle || t('home.industries.subtitle', 'We deliver innovative technology solutions across diverse industries, helping businesses transform and grow.');
+  const subtitle = industriesSection?.subtitle || t('home.industries.subtitle', 'Innovative Solutions across diverse Industries and Sectors');
   const description = industriesSection?.content || t('home.industries.description', 'Our expertise spans across multiple sectors, enabling us to provide tailored solutions that address industry-specific challenges and drive digital transformation.');
   const buttonSettings = industriesSection?.settings?.primaryButton;
   const featuredIndustries = industriesSection?.settings?.featured;
@@ -128,25 +128,28 @@ const IndustriesSection: React.FC<IndustriesSectionProps> = ({
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group relative"
             >
-              <div className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-600 hover:border-blue-200 dark:hover:border-blue-600 h-full">
-                <div className="flex items-center justify-center w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-lg mb-4 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors duration-300">
-                  <div className="text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
-                    {getIndustryIcon(industry.icon || 'fa-university')}
+              {/* Gradient border wrapper */}
+              <div className="p-[2px] rounded-xl bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                <div className="bg-white dark:bg-gray-700 rounded-[10px] p-4 h-full">
+                  <div className="flex items-center justify-center w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-lg mb-3 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors duration-300">
+                    <div className="text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
+                      {getIndustryIcon(industry.icon || 'fa-university')}
+                    </div>
                   </div>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                    {industry.name}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 leading-relaxed line-clamp-2">
+                    {industry.description}
+                  </p>
+                  <AppLink
+                    href={`/industries/${industry.slug}`}
+                    className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium group-hover:underline transition-all duration-300"
+                  >
+                    {getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
+                    <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
+                  </AppLink>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                  {industry.name}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
-                  {industry.description}
-                </p>
-                <AppLink
-                  href={`/industries/${industry.slug}`}
-                  className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium group-hover:underline transition-all duration-300"
-                >
-                  {getTranslation(t, 'ui.learnMore', uiLabels.learnMore)}
-                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
-                </AppLink>
               </div>
             </motion.div>
           ))}

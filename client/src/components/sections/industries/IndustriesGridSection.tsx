@@ -34,8 +34,6 @@ const IndustriesGridSection: React.FC<IndustriesGridSectionProps> = ({
     );
   }
 
-  if (!industries.length) return null;
-
   return (
     <motion.section
       initial="initial"
@@ -69,53 +67,61 @@ const IndustriesGridSection: React.FC<IndustriesGridSectionProps> = ({
           variants={staggerChildren(0.1)}
           className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-16"
         >
-          {industries.map((ind) => (
-            <motion.div
-              key={ind.id}
-              variants={scaleUp()}
-              className="group relative"
-            >
-              <AppLink
-                href={`/industries/${ind.slug}`}
-                className="block h-full"
+          {industries.length > 0 ? (
+            industries.map((ind) => (
+              <motion.div
+                key={ind.id}
+                variants={scaleUp()}
+                className="group relative"
               >
-                <Card className="h-full cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl overflow-hidden">
-                  {/* Industry Image */}
-                  <div className="relative overflow-hidden aspect-square">
-                    <img
-                      src={ind.image}
-                      alt={ind.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-
-                  {/* Industry Info */}
-                  <CardContent className="p-4 flex flex-col h-full">
-                    <div className="flex-1">
-                      <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1">
-                        {ind.name}
-                      </h3>
-                      <p className="text-blue-600 dark:text-blue-400 font-medium mb-2 text-xs">
-                        {ind.icon && <span className={`mr-1 fa ${ind.icon}`}></span>}
-                        {ind.slug.replace(/-/g, ' ')}
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-300 text-xs leading-relaxed line-clamp-2">
-                        {ind.description}
-                      </p>
+                <AppLink
+                  href={`/industries/${ind.slug}`}
+                  className="block h-full"
+                >
+                  <Card className="h-full cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl overflow-hidden">
+                    {/* Industry Image */}
+                    <div className="relative overflow-hidden aspect-square">
+                      <img
+                        src={ind.image}
+                        alt={ind.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
-                  </CardContent>
 
-                  {/* View Details Button */}
-                  <CardFooter className="p-4 pt-0">
-                    <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 font-medium text-xs transition-colors duration-200">
-                      View Details
-                    </div>
-                  </CardFooter>
-                </Card>
-              </AppLink>
-            </motion.div>
-          ))}
+                    {/* Industry Info */}
+                    <CardContent className="p-4 flex flex-col h-full">
+                      <div className="flex-1">
+                        <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1">
+                          {ind.name}
+                        </h3>
+                        <p className="text-blue-600 dark:text-blue-400 font-medium mb-2 text-xs">
+                          {ind.icon && <span className={`mr-1 fa ${ind.icon}`}></span>}
+                          {ind.slug.replace(/-/g, ' ')}
+                        </p>
+                        <p className="text-gray-600 dark:text-gray-300 text-xs leading-relaxed line-clamp-2">
+                          {ind.description}
+                        </p>
+                      </div>
+                    </CardContent>
+
+                    {/* View Details Button */}
+                    <CardFooter className="p-4 pt-0">
+                      <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 font-medium text-xs transition-colors duration-200">
+                        View Details
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </AppLink>
+              </motion.div>
+            ))
+          ) : (
+            <div className="col-span-4 text-center py-12">
+              <p className="text-gray-500 dark:text-gray-400 text-lg">
+                No industries data available. Please check back later.
+              </p>
+            </div>
+          )}
         </motion.div>
       </div>
     </motion.section>

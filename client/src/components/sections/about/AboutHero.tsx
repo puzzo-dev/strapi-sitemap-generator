@@ -54,22 +54,21 @@ const AboutHero: React.FC<AboutHeroProps> = ({
                             </div>
 
                             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                                {title ? (
-                                    (() => {
-                                        const words = title.split(' ');
-                                        const highlightedWords = words.length >= 2 ? words.slice(-2).join(' ') : '';
-                                        const regularWords = words.length >= 2 ? words.slice(0, -2).join(' ') : title;
+                                {(() => {
+                                    const displayTitle = title || 'About I-Varse Technologies';
+                                    const words = displayTitle.split(' ');
+                                    const highlightedWords = words.length >= 2 ? words.slice(-2).join(' ') : '';
+                                    const regularWords = words.length >= 2 ? words.slice(0, -2).join(' ') : displayTitle;
 
-                                        return (
-                                            <>
-                                                <span className="text-blue-800 dark:text-blue-200">{regularWords}</span>{' '}
-                                                <span className="gradient-text">
-                                                    {highlightedWords}
-                                                </span>
-                                            </>
-                                        );
-                                    })()
-                                ) : null}
+                                    return (
+                                        <>
+                                            <span className="text-blue-800 dark:text-blue-200">{regularWords}</span>{' '}
+                                            <span className="gradient-text">
+                                                {highlightedWords}
+                                            </span>
+                                        </>
+                                    );
+                                })()}
                             </h1>
 
                             <p className={cn(

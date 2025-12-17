@@ -6,94 +6,94 @@ import {
 export const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    title: "Transform Your Digital Presence",
-    subtitle: "We build innovative web and mobile solutions that drive business growth",
+    title: "Reinvent What's Possible",
+    subtitle: "We partner with organizations to architect intelligent solutions that transform operations, accelerate growth, and deliver measurable business outcomes",
     primaryButton: {
-      title: "Our Services",
+      title: "Explore Our Services",
       href: "/services",
       variant: "default",
       endIcon: "arrow-right",
-      children: "Our Services"
+      children: "Explore Our Services"
     },
     secondaryButton: {
-      title: "Contact Us",
+      title: "Start a Conversation",
       href: "/contact",
       variant: "outline",
-      children: "Contact Us"
+      children: "Start a Conversation"
     },
     backgroundImage: "/src/assets/images/IMG_2247.JPG"
   },
   {
     id: 2,
-    title: "Cloud Infrastructure Management",
-    subtitle: "Optimize your cloud resources with our expert management services",
+    title: "Cloud-First Architecture That Scales",
+    subtitle: "Transform infrastructure complexity into strategic advantage with cloud solutions engineered for performance, security, and business agility",
     primaryButton: {
-      title: "Learn More",
-      href: "/services/cloud-infrastructure",
+      title: "Discover Cloud Excellence",
+      href: "/services/cloud-infrastructure-management",
       variant: "default",
-      children: "Learn More"
+      children: "Discover Cloud Excellence"
     },
     secondaryButton: {
-      title: "Get a Quote",
+      title: "Consult Our Experts",
       href: "/contact",
       variant: "outline",
-      children: "Get a Quote"
+      children: "Consult Our Experts"
     },
     backgroundImage: "/src/assets/images/IMG_2260.JPG"
   },
   {
     id: 3,
-    title: "Custom Mobile Applications",
-    subtitle: "Create stunning, high-performance apps for iOS and Android",
+    title: "Experiences That Drive Engagement",
+    subtitle: "Craft exceptional mobile experiences powered by cutting-edge technology, designed to captivate users and deliver tangible business value",
     primaryButton: {
-      title: "View Portfolio",
+      title: "Explore Success Stories",
       href: "/portfolio",
       variant: "default",
       startIcon: "phone",
-      children: "View Portfolio"
+      children: "Explore Success Stories"
     },
     secondaryButton: {
-      title: "Our Process",
-      href: "/services/mobile-development",
+      title: "Our Innovation Process",
+      href: "/services/custom-applications-development",
       variant: "outline",
-      children: "Our Process"
+      children: "Our Innovation Process"
     },
     backgroundImage: "/src/assets/images/IMG_2256.JPG"
   },
   {
     id: 4,
-    title: "Enterprise Solutions and Industry 4.0",
-    subtitle: "Streamline your business operations with our comprehensive ERP solutions",
+    title: "Enterprise Transformation at Scale",
+    subtitle: "Modernize operations with intelligent enterprise platforms that integrate seamlessly, adapt continuously, and unlock Industry 4.0 capabilities",
     primaryButton: {
-      title: "Discover Solutions",
-      href: "/services/erp-solutions",
+      title: "Explore Enterprise Solutions",
+      href: "/services/custom-erp-solutions",
       variant: "default",
-      children: "Discover Solutions"
+      children: "Explore Enterprise Solutions"
     },
     secondaryButton: {
-      title: "Schedule Demo",
+      title: "Request Consultation",
       href: "/contact?demo=erp",
       variant: "outline",
-      children: "Schedule Demo"
+      children: "Request Consultation"
     },
     backgroundImage: "/src/assets/images/IMG_2248.JPG"
   },
   {
     id: 5,
-    title: "NeuralCore AI - Private Agentic AI",
-    subtitle: "Connect your systems seamlessly with custom API development",
+    title: "Intelligent Automation for Tomorrow",
+    subtitle: "Harness the power of private AI to automate workflows, enhance decision-making, and unlock unprecedented operational efficiency",
     primaryButton: {
-      title: "Our Approach",
+      title: "Explore NeuralCore AI",
       href: "/services/neuralcore-private-ai-cloud",
       variant: "default",
       startIcon: "code",
-      children: "Our Approach"
+      children: "Explore NeuralCore AI"
     },
     secondaryButton: {
-      title: "Talk to an Expert",
+      title: "Connect With Specialists",
       href: "/contact",
       variant: "outline",
-      children: "Talk to an Expert"
+      children: "Connect With Specialists"
     },
     backgroundImage: "/src/assets/images/IMG_2257.JPG"
   }
@@ -106,50 +106,50 @@ const getDefaultHeroContent = (): HeroSlide => {
 
 // Hero stats configuration
 export const heroStats = [
-  { value: "500+", label: "Projects Delivered" },
-  { value: "10+", label: "Industries Served" },
-  { value: "99.9%", label: "Uptime SLA" }
+  { value: "500+", label: "Solutions Delivered" },
+  { value: "10+", label: "Industries Transformed" },
+  { value: "99.9%", label: "Service Excellence" }
 ];
 
 // Hero features configuration
 export const heroFeatures = [
-  { icon: "Brain", label: "AI Cloud" },
-  { icon: "Smartphone", label: "Mobile Apps" },
-  { icon: "Building2", label: "ERP Systems" },
-  { icon: "Lock", label: "Cybersecurity" }
+  { icon: "Brain", label: "AI & Automation" },
+  { icon: "Smartphone", label: "Digital Experiences" },
+  { icon: "Building2", label: "Enterprise Platforms" },
+  { icon: "Lock", label: "Security & Compliance" }
 ];
 
 // Create comprehensive hero props using prop drilling
 export const defaultHeroProps: HeroProps = {
   // Use prop drilling to get hero content from heroSlides
   heroContents: getDefaultHeroContent(),
-  
+
   // Include all hero slides for carousel functionality
   heroSlides: heroSlides,
 
-  badge: "🚀 Digital Innovation",
-  title: "Transform Your Digital Presence",
-  subtitle: "We build innovative web and mobile solutions that drive business growth",
-  buttonText: "Get Started",
-  
+  badge: "🚀 Innovation at Scale",
+  title: "Reinvent What's Possible",
+  subtitle: "We partner with organizations to architect intelligent solutions that transform operations, accelerate growth, and deliver measurable business outcomes",
+  buttonText: "Begin Your Journey",
+
   // Required boolean properties
   isHeroLoading: false,
   isPageLoading: false,
   isServicesLoading: false,
-  
+
   // Required number properties
   currentIndex: 0,
-  
+
   // Required function properties (empty functions as placeholders)
-  handleMouseEnter: () => {},
-  handleMouseLeave: () => {},
-  
+  handleMouseEnter: () => { },
+  handleMouseLeave: () => { },
+
   // Required string properties
   companyLogo: "/src/assets/images/IMG_2247.JPG",
-  
+
   // Optional properties
   translationKey: "hero-default",
-  
+
   // Dynamic content
   stats: heroStats,
   features: heroFeatures
@@ -159,33 +159,33 @@ export const defaultHeroProps: HeroProps = {
 export const heroHelpers = {
   // Get all hero slides
   getAllSlides: (): HeroSlide[] => heroSlides,
-  
+
   // Get slide by ID
   getSlideById: (id: number): HeroSlide | undefined => {
     return heroSlides.find(slide => slide.id === id);
   },
-  
+
   // Get slide by index
   getSlideByIndex: (index: number): HeroSlide | undefined => {
     return heroSlides[index];
   },
-  
+
   // Get default slide
   getDefaultSlide: (): HeroSlide => getDefaultHeroContent(),
-  
+
   // Get total number of slides
   getTotalSlides: (): number => heroSlides.length,
-  
+
   // Get slides with specific criteria
   getSlidesByTitle: (titleKeyword: string): HeroSlide[] => {
-    return heroSlides.filter(slide => 
+    return heroSlides.filter(slide =>
       slide.title.toLowerCase().includes(titleKeyword.toLowerCase())
     );
   },
-  
+
   // Get slides with specific button text
   getSlidesByButtonText: (buttonText: string): HeroSlide[] => {
-    return heroSlides.filter(slide => 
+    return heroSlides.filter(slide =>
       slide.primaryButton?.title?.toLowerCase().includes(buttonText.toLowerCase()) ||
       slide.secondaryButton?.title?.toLowerCase().includes(buttonText.toLowerCase())
     );

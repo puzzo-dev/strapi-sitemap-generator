@@ -4,6 +4,19 @@
     "displayName": "button"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "primary",
+        "secondary",
+        "outline",
+        "ghost"
+      ]
+    }
+  },
   "config": {}
 }

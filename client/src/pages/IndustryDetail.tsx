@@ -34,16 +34,20 @@ const IndustryDetail: React.FC = () => {
   const displayPageContent = pageContent || localIndustriesPageContent;
   const displaySiteConfig = siteConfig || defaultSiteConfig;
 
-  // Get the industry data
+  // Get the industry data with fallback to direct import
   const industry = useMemo((): IndustryProps | null => {
     if (!params?.slug) return null;
-    // Always get industries from the industries section's settings.featured
+
+    // Try to get from page content first (CMS)
     const industriesSection = displayPageContent.sections?.find(s => s.type === 'industries');
     const featuredIndustries = industriesSection?.settings?.featured;
     if (featuredIndustries && Array.isArray(featuredIndustries)) {
-      return (featuredIndustries as IndustryProps[]).find(ind => ind.slug === params.slug) || null;
+      const found = (featuredIndustries as IndustryProps[]).find(ind => ind.slug === params.slug);
+      if (found) return found;
     }
-    return null;
+
+    // Fallback to direct industries import
+    return directIndustries.find(ind => ind.slug === params.slug) || null;
   }, [params?.slug, displayPageContent]);
 
   // Only show loading if we're loading AND don't have fallback content

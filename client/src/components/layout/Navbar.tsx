@@ -5,13 +5,11 @@ import IVarseLogo from '@/components/ui/IVarseLogo';
 import GradientButton from '@/components/ui/GradientButton';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 import ThemeSelector from '@/components/ui/ThemeSelector';
-import { useNavigation } from '@/hooks/useContent';
-import { NavbarProps, NavItem } from '@/lib/types';
-import { navItems as defaultNavItems } from '@/lib/data/';
+import { useGlobalLayout } from '@/hooks/useContent';
+import { NavbarProps, GlobalLayoutData, CMSMenuItem } from '@/lib/types';
 import { useTheme } from '@/components/ui/theme-provider';
 import { Button } from '@/components/ui/button';
 import { Menu, ChevronDown } from 'lucide-react';
-import { filterVisibleNavItems, getUrlPath } from '@/lib/utils';
 
 const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => { } }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -53,33 +51,47 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => { } }) => {
 
   const isActive = (path: string) => location === path;
 
-  // Fetch navigation links from Strapi with fallback
-  const { data: strapiNavItems, error: navError } = useNavigation();
+  // Fetch global layout from CMS
+  const { data: globalLayout } = useGlobalLayout();
 
-  // Use Strapi data if available, otherwise fallback to default data
-  const navLinks = (() => {
-    let rawNavItems: NavItem[] = [];
+  if (!globalLayout) {
+    throw new Error('CMS unavailable - global layout not found');
+  }
 
-    if (strapiNavItems && !navError && strapiNavItems.length > 0) {
-      rawNavItems = strapiNavItems;
-    } else {
-      rawNavItems = defaultNavItems;
-    }
+  // Transform CMS menu structure to component format
+  interface TransformedNavLink {
+    id: number;
+    name: string;
+    path: string;
+    isButton: boolean;
+    children?: Array<{ id: number; name: string; path: string }>;
+  }
 
-    const visibleNavItems = filterVisibleNavItems(rawNavItems);
+  const navLinks: TransformedNavLink[] = globalLayout.header.menu_items.map((menuItem: CMSMenuItem) => {
+    const mainLink = menuItem.menuLink[0];
+    const path = mainLink.linkType === 'internal' && mainLink.page
+      ? `/${mainLink.page.slug}`
+      : mainLink.externalUrl || '/';
 
-    return visibleNavItems.map((item: NavItem) => ({
-      id: item.id,
-      name: item.translationKey ? t(`nav.${item.translationKey}`, item.label) : item.label,
-      path: getUrlPath(item.url),
-      isButton: item.isButton,
-      children: item.children ? item.children.map((child: NavItem) => ({
-        id: child.id,
-        name: child.translationKey ? t(`nav.${child.translationKey}`, child.label) : child.label,
-        path: getUrlPath(child.url)
-      })) : undefined
-    }));
-  })();
+    return {
+      id: menuItem.id,
+      name: mainLink.label,
+      path: path,
+      isButton: mainLink.label.toLowerCase().includes('contact'),
+      children: menuItem.menu_items?.map((childItem: CMSMenuItem) => {
+        const childLink = childItem.menuLink[0];
+        const childPath = childLink.linkType === 'internal' && childLink.page
+          ? `/${childLink.page.slug}`
+          : childLink.externalUrl || '/';
+
+        return {
+          id: childItem.id,
+          name: childLink.label,
+          path: childPath
+        };
+      }) || []
+    };
+  });
 
   const handleMouseEnter = (itemId: number, hasChildren: boolean) => {
     // Clear any pending close timeout
@@ -213,14 +225,14 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => { } }) => {
               <div className="ml-4">
                 {navLinks.find(item => item.isButton) ? (
                   <GradientButton
-                    href={navLinks.find(item => item.isButton)?.path || "/contact"}
+                    href={navLinks.find(item => item.isButton)?.path || "/contact-us"}
                     size="sm"
                     className="text-xs md:text-sm"
                   >
                     {navLinks.find(item => item.isButton)?.name || t('button.contactUs', 'Contact Us')}
                   </GradientButton>
                 ) : (
-                  <GradientButton href="/contact" size="sm" className="text-xs md:text-sm">
+                  <GradientButton href="/contact-us" size="sm" className="text-xs md:text-sm">
                     {t('button.contactUs', 'Contact Us')}
                   </GradientButton>
                 )}

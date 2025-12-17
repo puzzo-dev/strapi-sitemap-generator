@@ -27,8 +27,10 @@ interface ProcessSectionProps {
 }
 
 const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading = false }) => {
-    // Get process section from page content
-    const processSection = pageContent?.sections?.find(s => s.type === 'custom');
+    // Get process section from page content - look for custom section with "Process" in title
+    const processSection = pageContent?.sections?.find(s =>
+        s.type === 'custom' && (s.title?.includes('Process') || s.badge?.includes('Process'))
+    );
     const processItems = (processSection?.settings?.items as ProcessItem[]) || [];
 
     const gradients = [

@@ -5,7 +5,7 @@ import { cookiesContent } from '@/lib/data/';
 
 const Cookies: React.FC = () => {
   // Fetch cookies content from Strapi
-  const { data: pageContent } = usePageContent('cookies');
+  const { data: pageContent } = usePageContent('cookie-policy');
 
   // Use Strapi content if available, otherwise fall back to local data
   const title = pageContent?.title || cookiesContent.title;

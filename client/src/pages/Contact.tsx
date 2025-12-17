@@ -4,6 +4,8 @@ import { usePageContent, useTestimonials, useFAQItems } from '@/hooks/useContent
 import { usePageTracking } from '@/contexts/AnalyticsContext';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { contactPageContent as localContactPageContent } from '@/lib/data/pages';
+import { testimonials } from '@/lib/data/testimonials';
+import { faqContent } from '@/lib/data/faq';
 import { defaultSiteConfig } from '@/lib/data/config';
 import { PageContent } from '@/lib/types/core';
 
@@ -33,7 +35,7 @@ const Contact: React.FC = () => {
   });
 
   // Fetch page content from Strapi or use local data
-  const { data: pageContent, isLoading: isPageLoading } = usePageContent('contact');
+  const { data: pageContent, isLoading: isPageLoading } = usePageContent('contact-us');
 
   // Fetch testimonials and FAQ items from Strapi
   const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useTestimonials();
@@ -51,9 +53,18 @@ const Contact: React.FC = () => {
   const testimonialsSection = displayPageContent?.sections?.find(s => s.type === 'testimonials');
   const faqSection = displayPageContent?.sections?.find(s => s.type === 'faq');
 
-  // Use API data if available, otherwise fall back to section data from local content
-  const displayTestimonials = apiTestimonials || (testimonialsSection?.settings?.featured as any[]) || [];
-  const displayFAQItems = apiFAQItems || (faqSection?.settings?.items as any[]) || [];
+  // Use API data if available, otherwise fall back to section data from local content, then direct imports
+  const displayTestimonials = (apiTestimonials && apiTestimonials.length > 0)
+    ? apiTestimonials
+    : (testimonialsSection?.settings?.featured && Array.isArray(testimonialsSection.settings.featured) && testimonialsSection.settings.featured.length > 0)
+      ? testimonialsSection.settings.featured
+      : testimonials;
+
+  const displayFAQItems = (apiFAQItems && apiFAQItems.length > 0)
+    ? apiFAQItems
+    : (faqSection?.settings?.items && Array.isArray(faqSection.settings.items) && faqSection.settings.items.length > 0)
+      ? faqSection.settings.items
+      : faqContent.items.slice(0, 4);
 
   return (
     <PageLayout

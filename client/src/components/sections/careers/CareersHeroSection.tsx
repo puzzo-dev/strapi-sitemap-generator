@@ -24,16 +24,12 @@ const CareersHeroSection: React.FC<CareersHeroSectionProps> = ({
     // Get hero section from page content
     const heroSection = pageContent?.sections?.find(s => s.type === 'hero');
 
-    // If no page content or hero section, don't render anything
-    if (!pageContent || !heroSection) {
-        return null;
-    }
-
-    const title = heroSection.title;
-    const subtitle = heroSection.subtitle;
-    const primaryButton = heroSection.settings?.primaryButton;
-    const secondaryButton = heroSection.settings?.secondaryButton;
-    const backgroundColor = heroSection.backgroundColor;
+    const title = heroSection?.title || 'Join Our Team';
+    const subtitle = heroSection?.subtitle || 'Be part of something extraordinary';
+    const badge = heroSection?.settings?.badge || '💼 Careers';
+    const primaryButton = heroSection?.settings?.primaryButton;
+    const secondaryButton = heroSection?.settings?.secondaryButton;
+    const backgroundColor = heroSection?.backgroundColor;
 
     return (
         <motion.section
@@ -76,8 +72,7 @@ const CareersHeroSection: React.FC<CareersHeroSectionProps> = ({
                     ) : (
                         <>
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
-                                {/*  */}
-                                {heroSection.settings?.badge || "Join Our Team"}
+                                {badge}
                             </div>
 
                             <h1 className="heading-xl mb-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
@@ -100,7 +95,7 @@ const CareersHeroSection: React.FC<CareersHeroSectionProps> = ({
                             </h1>
 
                             <p className="text-xl text-blue-700 dark:text-blue-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                                {subtitle || heroSection.settings?.defaultSubtitle}
+                                {subtitle}
                             </p>
 
                             <motion.div

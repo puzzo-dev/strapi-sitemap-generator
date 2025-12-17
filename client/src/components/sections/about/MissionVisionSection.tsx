@@ -45,10 +45,18 @@ const MissionVisionSection: React.FC<MissionVisionSectionProps> = ({
         );
     }
 
-    // Don't render if no settings are available
-    if (!settings) {
-        return null;
-    }
+    // Don't render if no settings are available - use fallback defaults
+    const displaySettings = settings || {
+        missionLabel: '🚩 Our Mission',
+        missionTitle: 'Empowering Digital Transformation',
+        missionText: 'At I-VARSE, our mission is to empower businesses through innovative technology solutions that drive growth and efficiency. We strive to be the trusted partner that helps organizations navigate their digital transformation journey.',
+        visionLabel: '🌍 Our Vision',
+        visionTitle: 'Leading Digital Innovation',
+        visionText: 'To be the leading digital innovation partner for businesses across Africa, known for delivering cutting-edge solutions that drive real business value and sustainable growth.',
+        image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80'
+    };
+    const displayTitle = title || 'Our Mission & Vision';
+    const displaySubtitle = subtitle || 'Driving innovation through technology';
 
     return (
         <motion.section
@@ -71,10 +79,10 @@ const MissionVisionSection: React.FC<MissionVisionSectionProps> = ({
                     className="text-center mb-16"
                 >
                     <h2 className="section-title text-blue-900 dark:text-blue-200">
-                        {title}
+                        {displayTitle}
                     </h2>
                     <p className="section-subtitle">
-                        {subtitle}
+                        {displaySubtitle}
                     </p>
                 </motion.div>
 
@@ -85,8 +93,7 @@ const MissionVisionSection: React.FC<MissionVisionSectionProps> = ({
                     >
                         <div className="relative rounded-xl overflow-hidden shadow-xl border border-blue-100 dark:border-blue-800/50 h-[500px]">
                             <img
-                                src={settings?.image ||
-                                    "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"}
+                                src={displaySettings.image}
                                 alt="I-VARSE Team"
                                 className="object-cover w-full h-full"
                             />
@@ -107,25 +114,25 @@ const MissionVisionSection: React.FC<MissionVisionSectionProps> = ({
                     >
                         <div className="space-y-4">
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                                {settings?.missionLabel}
+                                {displaySettings.missionLabel}
                             </div>
                             <h2 className="heading-md text-blue-900 dark:text-blue-200">
-                                {settings?.missionTitle}
+                                {displaySettings.missionTitle}
                             </h2>
                             <p className="text-gray-600 dark:text-gray-300">
-                                {settings?.missionText}
+                                {displaySettings.missionText}
                             </p>
                         </div>
 
                         <div className="space-y-4">
                             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
-                                {settings?.visionLabel || "🌍 Our Vision"}
+                                {displaySettings.visionLabel}
                             </div>
                             <h2 className="heading-md text-blue-900 dark:text-blue-200">
-                                {settings?.visionTitle}
+                                {displaySettings.visionTitle}
                             </h2>
                             <p className="text-gray-600 dark:text-gray-300">
-                                {settings?.visionText}
+                                {displaySettings.visionText}
                             </p>
                         </div>
                     </motion.div>

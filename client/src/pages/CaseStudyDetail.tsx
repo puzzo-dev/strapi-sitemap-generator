@@ -1,22 +1,35 @@
 import React, { useMemo } from 'react';
-import { useLocation } from 'wouter';
+import { useLocation, useParams } from 'wouter';
 import { caseStudies } from '@/lib/data/case-studies';
 import { CaseStudyProps } from '@/lib/types/content';
+import { usePageContent } from '@/hooks/useContent';
 import PageLayout from '@/components/layout/PageLayout';
 import AppLink from '@/components/ui/AppLink';
 import { ArrowLeft, Calendar, Users, Clock, CheckCircle } from 'lucide-react';
 
 const CaseStudyDetail: React.FC = () => {
   const [, setLocation] = useLocation();
+  const { slug } = useParams();
 
-  // Get the slug from the URL
-  const pathParts = window.location.pathname.split('/');
-  const slug = pathParts[pathParts.length - 1];
+  // Fetch case study from CMS (when available)
+  // For now, use local data as fallback
+  const { data: cmsPageContent } = usePageContent('case-studies');
 
-  // Find the case study by slug
+  // Find the case study by slug with CMS fallback
   const caseStudy = useMemo((): CaseStudyProps | null => {
+    // Try to get from CMS first
+    if (cmsPageContent?.sections) {
+      const caseStudiesSection = cmsPageContent.sections.find(s => s.type === 'case-studies');
+      const cmsCaseStudies = caseStudiesSection?.settings?.featured;
+      if (cmsCaseStudies && Array.isArray(cmsCaseStudies)) {
+        const found = cmsCaseStudies.find((cs: any) => cs.slug === slug);
+        if (found) return found as CaseStudyProps;
+      }
+    }
+
+    // Fallback to local data
     return caseStudies.find(cs => cs.slug === slug) || null;
-  }, [slug]);
+  }, [slug, cmsPageContent]);
 
   // Redirect to 404 if case study not found
   React.useEffect(() => {

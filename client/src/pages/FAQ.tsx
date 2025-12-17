@@ -34,9 +34,12 @@ const FAQ: React.FC = () => {
     const structuredData = generateOrganizationSchema();
 
     // Extract sections with fallback to local data
-    const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero') || { id: 0 };
-    const categoriesSection = displayPageContent?.sections?.find(s => s.type === 'custom') || { id: 0 };
-    const contactSection = displayPageContent?.sections?.find(s => s.type === 'contact') || { id: 0 };
+    const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero')
+        || localFAQPageContent.sections.find(s => s.type === 'hero');
+    const categoriesSection = displayPageContent?.sections?.find(s => s.type === 'custom')
+        || localFAQPageContent.sections.find(s => s.type === 'custom');
+    const contactSection = displayPageContent?.sections?.find(s => s.type === 'contact')
+        || localFAQPageContent.sections.find(s => s.type === 'contact');
 
     // Handle FAQ item expansion
     const toggleItem = (id: number) => {
@@ -59,8 +62,8 @@ const FAQ: React.FC = () => {
         >
             {/* Hero Section */}
             <FAQHeroSection
-                title={heroSection.title || "Frequently Asked Questions"}
-                description={heroSection.content || "Find answers to common questions about our services and solutions."}
+                title={heroSection?.title || "Frequently Asked Questions"}
+                description={heroSection?.content || "Find answers to common questions about our services and solutions."}
                 isLoading={isPageLoading}
             />
 

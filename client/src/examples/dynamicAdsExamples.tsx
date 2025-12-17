@@ -12,7 +12,7 @@ export const sampleAdSlides: AdSlide[] = [
         bgColor: "from-blue-600 to-blue-800",
         icon: Star,
         cta: "Learn More",
-        ctaUrl: "/services/erp-solutions",
+        ctaUrl: "/services/custom-erp-solutions",
         priority: 1,
         targetAudience: ['business-owners', 'managers'],
         clickTrackingId: 'sidebar-erp-banner'
@@ -25,7 +25,7 @@ export const sampleAdSlides: AdSlide[] = [
         bgColor: "from-green-600 to-green-800",
         icon: Cloud,
         cta: "Get Started",
-        ctaUrl: "/services/cloud-services",
+        ctaUrl: "/services/cloud-infrastructure-management",
         priority: 2,
         targetAudience: ['developers', 'startups'],
         clickTrackingId: 'sidebar-cloud-banner'
@@ -51,7 +51,7 @@ export const sampleAdSlides: AdSlide[] = [
         bgColor: "from-red-600 to-red-800",
         icon: Shield,
         cta: "Secure Now",
-        ctaUrl: "/services/cybersecurity",
+        ctaUrl: "/services/cybersecurity-and-compliance",
         priority: 4,
         targetAudience: ['security-managers', 'it-professionals'],
         clickTrackingId: 'sidebar-security-banner'
@@ -64,7 +64,7 @@ export const sampleAdSlides: AdSlide[] = [
         bgColor: "from-indigo-600 to-indigo-800",
         icon: Smartphone,
         cta: "Build App",
-        ctaUrl: "/services/mobile-development",
+        ctaUrl: "/services/custom-applications-development",
         priority: 5,
         targetAudience: ['entrepreneurs', 'marketers'],
         clickTrackingId: 'sidebar-mobile-banner'

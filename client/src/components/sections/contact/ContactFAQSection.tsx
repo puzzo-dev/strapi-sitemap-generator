@@ -17,9 +17,16 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
     isLoading,
     isPageLoading,
 }) => {
-    // Determine which data to use and loading state
-    const displayFAQItems = faqItems || faqSection?.settings?.items || faqSection?.settings?.featured || [];
-    const isDataLoading = isLoading || isPageLoading;
+    // Determine which data to use - we always have fallback data, so only show loading if explicitly no data
+    const fallbackFAQs = [
+        { id: 1, question: "What services do you offer?", answer: "We offer a comprehensive range of digital solutions including web development, mobile app development, cloud services, AI/ML solutions, and digital transformation consulting." },
+        { id: 2, question: "How long does a typical project take?", answer: "Project timelines vary based on complexity and scope. A standard website takes 4-6 weeks, while enterprise applications can take 3-6 months. We'll provide a detailed timeline during our initial consultation." },
+        { id: 3, question: "What is your pricing model?", answer: "We offer flexible pricing models including fixed-price projects, time and materials, and retainer-based engagements. Contact us for a customized quote based on your specific requirements." },
+        { id: 4, question: "Do you provide ongoing support and maintenance?", answer: "Yes, we offer comprehensive support and maintenance packages to ensure your digital solutions continue to perform optimally. Our support includes bug fixes, updates, security patches, and feature enhancements." }
+    ];
+    const displayFAQItems = faqItems || faqSection?.settings?.items || faqSection?.settings?.featured || fallbackFAQs;
+    // Only show loading if we truly don't have any data (which shouldn't happen with fallbacks)
+    const isDataLoading = !displayFAQItems || displayFAQItems.length === 0;
 
     return (
         <section className="bg-gradient-to-b from-white to-gray-50 dark:from-[#0a1929] dark:to-[#0d1f33] py-24 relative overflow-hidden">
@@ -34,10 +41,10 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
                         <HelpCircle className="w-8 h-8 text-white" />
                     </div>
                     <h2 className="text-4xl md:text-5xl font-bold text-blue-800 dark:text-blue-200">
-                        Frequently Asked Questions
+                        {faqSection?.title || 'Frequently Asked Questions'}
                     </h2>
                     <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        Find answers to common questions about our services and how we can help your business.
+                        {faqSection?.subtitle || 'Find answers to common questions about our services and how we can help your business.'}
                     </p>
                 </div>
 
@@ -58,7 +65,7 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
                                 </div>
                             ))}
                         </div>
-                    ) : (
+                    ) : displayFAQItems.length > 0 ? (
                         <Accordion
                             type="single"
                             collapsible
@@ -93,6 +100,12 @@ const ContactFAQSection: React.FC<ContactFAQSectionProps> = ({
                                 </AccordionItem>
                             ))}
                         </Accordion>
+                    ) : (
+                        <div className="text-center py-12">
+                            <p className="text-gray-500 dark:text-gray-400 text-lg">
+                                No FAQ items available. Please contact us directly for any questions.
+                            </p>
+                        </div>
                     )}
 
                     {!isDataLoading && displayFAQItems.length > 8 && (

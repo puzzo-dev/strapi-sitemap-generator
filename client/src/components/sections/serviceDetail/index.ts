@@ -8,3 +8,4 @@ export { default as ServiceDetailOtherServicesSection } from './ServiceDetailOth
 export { default as ServiceDetailCTASection } from './ServiceDetailCTASection';
 export { default as ServiceDetailLoadingSection } from './ServiceDetailLoadingSection';
 export { default as ServiceDetailErrorSection } from './ServiceDetailErrorSection';
+export { default as DynamicBlockRenderer } from './DynamicBlockRenderer';

@@ -186,9 +186,7 @@ export interface CardsNewsletterCard extends Struct.ComponentSchema {
     displayName: 'newsletterCard';
   };
   attributes: {
-    description: Schema.Attribute.Text;
     newsletterForm: Schema.Attribute.Component<'cards.form', false>;
-    title: Schema.Attribute.String;
   };
 }
 
@@ -330,7 +328,12 @@ export interface SharedButton extends Struct.ComponentSchema {
   info: {
     displayName: 'button';
   };
-  attributes: {};
+  attributes: {
+    label: Schema.Attribute.String;
+    variant: Schema.Attribute.Enumeration<
+      ['primary', 'secondary', 'outline', 'ghost']
+    >;
+  };
 }
 
 export interface SharedFilterPill extends Struct.ComponentSchema {
