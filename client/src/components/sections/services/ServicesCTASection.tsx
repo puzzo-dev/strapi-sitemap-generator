@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import GradientButton from '@/components/ui/GradientButton';
 import { PageContent } from '@/lib/types/core';
+import { Sparkles, Zap, Rocket } from 'lucide-react';
 
 interface ServicesCTASectionProps {
   pageContent?: PageContent | null;
@@ -33,8 +34,20 @@ const ServicesCTASection: React.FC<ServicesCTASectionProps> = ({
   }
 
   return (
-    <section className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c]">
-      <div className="container-custom max-w-8xl">
+    <section className="py-16 bg-gradient-to-b from-blue-50/60 to-white dark:from-[#0a192f] dark:to-[#132f4c] relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 opacity-8">
+          <div className="absolute top-0 left-1/3 w-px h-full bg-blue-500/16"></div>
+          <div className="absolute top-0 left-2/3 w-px h-full bg-blue-500/10"></div>
+        </div>
+        <div className="absolute inset-0 opacity-5 dark:opacity-10">
+          <Sparkles className="absolute left-10 top-10 h-32 w-32 text-blue-400 dark:text-blue-600" />
+          <Rocket className="absolute right-10 top-1/4 h-28 w-28 text-indigo-400 dark:text-indigo-600" />
+          <Zap className="absolute left-1/3 bottom-10 h-24 w-24 text-cyan-400 dark:text-cyan-600" />
+        </div>
+      </div>
+      <div className="container-custom max-w-8xl relative z-10">
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4 animate-fade-in">
             {ctaSection?.badge || '✨ Get Started'}

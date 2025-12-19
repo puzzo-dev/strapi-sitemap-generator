@@ -72,8 +72,8 @@ const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePag
                 </div>
             </div>
 
-            <div className="container-custom relative z-10 max-w-[1400px] px-4 sm:px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr,1.3fr] gap-4 sm:gap-6 lg:gap-8 items-start">
+            <div className="container-custom relative z-10 max-w-[1400px] px-6 sm:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr,1.3fr] gap-4 sm:gap-6 lg:gap-8 items-start py-4">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -122,7 +122,7 @@ const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePag
                         </div>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 p-2">
                         {isLoading ? (
                             Array(6).fill(0).map((_, index) => (
                                 <div key={index} className="h-full rounded-2xl border border-blue-100/60 dark:border-blue-900/40 bg-white/70 dark:bg-white/5 backdrop-blur shadow-lg animate-pulse p-6 space-y-3">
@@ -140,7 +140,7 @@ const SpecializationsSection: React.FC<SpecializationsSectionProps> = ({ homePag
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, margin: '-80px' }}
                                     transition={{ duration: 0.45, delay: index * 0.05 }}
-                                    className="group relative h-full overflow-hidden rounded-2xl border border-blue-100/60 dark:border-blue-900/40 bg-white/80 dark:bg-white/5 backdrop-blur shadow-lg hover:border-blue-500/60 dark:hover:border-blue-400/60 hover:shadow-xl transition-all duration-300"
+                                    className="group relative h-full overflow-hidden rounded-2xl border border-blue-100/60 dark:border-blue-900/40 bg-white/80 dark:bg-white/5 backdrop-blur shadow-[0_4px_24px_-2px_rgba(0,0,0,0.08),0_8px_48px_-4px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_16px_64px_-8px_rgba(0,0,0,0.08)] hover:border-blue-500/60 dark:hover:border-blue-400/60 transition-all duration-300"
                                 >
                                     <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] rounded-t-2xl" />
                                     <div className="p-5 relative z-10 h-full flex flex-col gap-3">

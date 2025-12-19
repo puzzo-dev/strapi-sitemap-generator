@@ -13,6 +13,7 @@ import {
     Star
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { servicesPageContent } from '@/lib/data/pages';
 
 interface ProcessItem {
     id: number;
@@ -27,9 +28,11 @@ interface ProcessSectionProps {
 }
 
 const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading = false }) => {
-    // Get process section from page content - look for custom section with "Process" in title
+    // Get process section from page content or fallback data
     const processSection = pageContent?.sections?.find(s =>
-        s.type === 'custom' && (s.title?.includes('Process') || s.badge?.includes('Process'))
+        s.type === 'custom' && s.settings?.items && Array.isArray(s.settings.items)
+    ) || servicesPageContent.sections.find(s =>
+        s.type === 'custom' && s.settings?.items && Array.isArray(s.settings.items)
     );
     const processItems = (processSection?.settings?.items as ProcessItem[]) || [];
 
@@ -97,8 +100,18 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading 
         );
     }
 
-    // If no process steps, render nothing
-    if (!processItems.length) return null;
+    // If no process steps, show empty state but still render the section
+    if (!processItems.length) {
+        return (
+            <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f] relative overflow-hidden">
+                <div className="container-custom max-w-8xl relative z-10">
+                    <div className="text-center">
+                        <p className="text-gray-500 dark:text-gray-400">Process steps coming soon...</p>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f] relative overflow-hidden">
