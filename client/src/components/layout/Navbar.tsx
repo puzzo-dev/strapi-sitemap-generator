@@ -141,17 +141,47 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => { } }) => {
             <div className="flex-shrink-0 flex items-center">
               <Link href="/">
                 <div className="flex items-center cursor-pointer">
-                  <IVarseLogo
-                    size={50}
-                    className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-auto lg:h-auto"
-                    variant={actualTheme === 'dark' ? 'light' : 'dark'}
-                  />
+                  {(() => {
+                    const siteLogo = globalLayout.header?.siteLogo;
+                    const strapiBase = import.meta.env.VITE_STRAPI_API_URL;
+                    const resolveUrl = (url?: string) => {
+                      if (!url) return undefined;
+                      return url.startsWith('http') ? url : `${strapiBase}${url}`;
+                    };
+
+                    const lightLogo = resolveUrl(siteLogo?.logoImageLight?.url);
+                    const darkLogo = resolveUrl(siteLogo?.logoImageDark?.url);
+
+                    // Use CMS logos when available, otherwise fallback to static logo component
+                    if (lightLogo || darkLogo) {
+                      const isDark = actualTheme === 'dark';
+                      const logoSrc = isDark ? (lightLogo || darkLogo) : (darkLogo || lightLogo);
+                      const altText = siteLogo?.logoText || 'I-VARSE';
+
+                      return (
+                        <img
+                          src={logoSrc}
+                          alt={altText}
+                          className="h-10 w-auto sm:h-11 md:h-12"
+                          loading="lazy"
+                        />
+                      );
+                    }
+
+                    return (
+                      <IVarseLogo
+                        size={50}
+                        className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-auto lg:h-auto"
+                        variant={actualTheme === 'dark' ? 'light' : 'dark'}
+                      />
+                    );
+                  })()}
                 </div>
               </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex md:items-center md:space-x-1 lg:space-x-2">
+            <div className="hidden md:flex md:items-center md:space-x-0.5 lg:space-x-1 xl:space-x-2">
               {navLinks.filter(item => !item.isButton).map((item) => {
                 const hasChildren = item.children && item.children.length > 0;
 
@@ -167,7 +197,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => { } }) => {
                       <>
                         <Link href={item.path}>
                           <div className={`
-                            flex items-center gap-1 px-3 py-2 text-sm lg:text-base font-semibold transition-colors duration-200 rounded-md cursor-pointer
+                            flex items-center gap-1 px-2 py-2 text-xs md:text-sm lg:text-base font-semibold transition-colors duration-200 rounded-md cursor-pointer whitespace-nowrap
                             ${isActive(item.path)
                               ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
                               : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
@@ -207,7 +237,7 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => { } }) => {
                       // Regular Menu Item
                       <Link href={item.path}>
                         <div className={`
-                          px-3 py-2 text-sm lg:text-base font-semibold transition-colors duration-200 rounded-md cursor-pointer
+                          px-2 py-2 text-xs md:text-sm lg:text-base font-semibold transition-colors duration-200 rounded-md cursor-pointer whitespace-nowrap
                           ${isActive(item.path)
                             ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
                             : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
@@ -222,41 +252,37 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuToggle = () => { } }) => {
               })}
 
               {/* Contact Button */}
-              <div className="ml-4">
+              <div className="ml-2 lg:ml-3 xl:ml-4">
                 {navLinks.find(item => item.isButton) ? (
                   <GradientButton
                     href={navLinks.find(item => item.isButton)?.path || "/contact-us"}
                     size="sm"
-                    className="text-xs md:text-sm"
+                    className="text-xs lg:text-sm whitespace-nowrap"
                   >
                     {navLinks.find(item => item.isButton)?.name || t('button.contactUs', 'Contact Us')}
                   </GradientButton>
                 ) : (
-                  <GradientButton href="/contact-us" size="sm" className="text-xs md:text-sm">
+                  <GradientButton href="/contact-us" size="sm" className="text-xs lg:text-sm whitespace-nowrap">
                     {t('button.contactUs', 'Contact Us')}
                   </GradientButton>
                 )}
               </div>
 
               {/* Language Selector */}
-              <div className="ml-3">
+              <div className="ml-1.5 lg:ml-2 xl:ml-3">
                 <LanguageSelector />
               </div>
 
               {/* Theme Selector */}
-              <div className="ml-2">
+              <div className="ml-1 lg:ml-1.5 xl:ml-2">
                 <ThemeSelector />
               </div>
             </div>
 
             {/* Mobile Controls */}
-            <div className="flex items-center gap-2 sm:gap-3 md:hidden">
-              <div className="mr-1 sm:mr-2">
-                <LanguageSelector compact={true} />
-              </div>
-              <div className="mr-1">
-                <ThemeSelector compact={true} />
-              </div>
+            <div className="flex items-center gap-2 sm:gap-3 md:hidden ml-auto">
+              <LanguageSelector compact={true} />
+              <ThemeSelector compact={true} />
               <Button
                 variant="ghost"
                 size="sm"

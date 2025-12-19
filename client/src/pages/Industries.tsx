@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import { usePageContent } from '@/hooks/useContent';
 import { industriesPageContent as localIndustriesPageContent } from '@/lib/data/pages';
 import { industries } from '@/lib/data/industries';
-import { testimonials } from '@/lib/data/testimonials';
-import { IndustryProps, TestimonialProps } from '@/lib/types/content';
+import { IndustryProps } from '@/lib/types/content';
 import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { defaultSiteConfig } from '@/lib/data/config';
@@ -13,7 +12,6 @@ import {
   IndustriesHeroSection,
   IndustriesGridSection,
   IndustriesSolutionsSection,
-  IndustriesTestimonialsSection,
   IndustriesCTASection,
   IndustriesContentSection
 } from '@/components/sections/industries';
@@ -36,21 +34,6 @@ const Industries: React.FC = () => {
     return industries;
   }, [displayPageContent]);
 
-  // Get testimonials from page content
-  const testimonialsSection = displayPageContent.sections?.find(s => s.type === 'testimonials');
-  const displayTestimonials = useMemo((): TestimonialProps[] => {
-    if (testimonialsSection?.settings?.featured) {
-      const featured = testimonialsSection.settings.featured;
-      if (Array.isArray(featured) && featured.length > 0) {
-        return featured as TestimonialProps[];
-      } else if (typeof featured === 'object' && featured !== null && !Array.isArray(featured)) {
-        return [featured as TestimonialProps];
-      }
-    }
-    // Fallback to direct import if extraction fails
-    return testimonials;
-  }, [testimonialsSection]);
-
   // Generate SEO metadata
   const structuredData = generateOrganizationSchema();
 
@@ -59,7 +42,6 @@ const Industries: React.FC = () => {
   const contentSection = displayPageContent?.sections?.find(s => s.type === 'custom' && s.id === 2) || { id: 0 };
   const industriesSection = displayPageContent?.sections?.find(s => s.type === 'industries') || { id: 0 };
   const solutionsSection = displayPageContent?.sections?.find(s => s.type === 'custom' && s.id === 4) || { id: 0 };
-  const testimonialsSectionData = displayPageContent?.sections?.find(s => s.type === 'testimonials') || { id: 0 };
   const ctaSection = displayPageContent?.sections?.find(s => s.type === 'cta') || { id: 0 };
 
   return (
@@ -94,13 +76,6 @@ const Industries: React.FC = () => {
       {/* Solutions Section */}
       <IndustriesSolutionsSection
         {...solutionsSection}
-        isLoading={isPageLoading}
-      />
-
-      {/* Testimonials Section */}
-      <IndustriesTestimonialsSection
-        {...testimonialsSectionData}
-        testimonials={displayTestimonials}
         isLoading={isPageLoading}
       />
 

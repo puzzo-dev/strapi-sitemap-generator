@@ -139,9 +139,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({
     return (
         <section
             className={cn(
-                "h-fit md:h-full relative overflow-hidden py-25 md:pt-24 md:pb-16 hero-section w-full",
-                getThemeColors('background', 'gradient'),
-                getThemeColors('border', 'muted')
+                "h-fit md:h-full relative overflow-hidden py-25 md:pt-24 md:pb-16 hero-section w-full bg-gradient-to-b from-white via-blue-50/10 to-white dark:from-[#0a192f] dark:via-blue-950/20 dark:to-[#0a192f]"
             )}
             style={{
                 /* 4K optimization */

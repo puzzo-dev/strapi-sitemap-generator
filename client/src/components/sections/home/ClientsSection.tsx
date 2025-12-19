@@ -34,17 +34,19 @@ const ClientsSection: React.FC<ClientsSectionProps> = ({ homePageContent, client
 
   return (
     <section className="py-16 bg-white dark:bg-[#0a192f] relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10 pointer-events-none overflow-hidden">
-        <Sparkles className="absolute left-10 top-10 h-32 w-32 text-blue-400 dark:text-blue-600 opacity-30 animate-pulse-light" />
-        <CircuitBoard className="absolute right-10 bottom-10 h-40 w-40 text-indigo-400 dark:text-indigo-600 opacity-20 animate-float" style={{ animationDelay: '1.5s' }} />
+      {/* Background decoration - matching Hero section */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 opacity-5 dark:opacity-10">
+          <Sparkles className="absolute left-10 top-10 h-32 w-32 text-blue-400 dark:text-blue-600" />
+          <CircuitBoard className="absolute right-10 bottom-10 h-40 w-40 text-blue-400 dark:text-blue-600" />
+        </div>
 
         {/* Subtle grid pattern */}
-        <div className="absolute inset-0 grid grid-cols-8 grid-rows-8">
+        <div className="absolute inset-0 opacity-5 grid grid-cols-8 grid-rows-8">
           {[...Array(16)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-0.5 h-0.5 rounded-full bg-blue-500/10 dark:bg-blue-400/5 animate-pulse-light"
+              className="absolute w-0.5 h-0.5 rounded-full bg-blue-500/20 dark:bg-blue-400/20 animate-pulse-light"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,

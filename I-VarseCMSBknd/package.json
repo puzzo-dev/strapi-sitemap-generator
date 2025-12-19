@@ -1,5 +1,5 @@
 {
-  "name": "i-varse-cms-backend",
+  "name": "i-varse-cms-bknd",
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",
@@ -15,10 +15,9 @@
     "upgrade:dry": "npx @strapi/upgrade latest --dry"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "5.32.0",
-    "@strapi/plugin-users-permissions": "5.32.0",
-    "@strapi/provider-email-nodemailer": "^5.31.2",
-    "@strapi/strapi": "5.32.0",
+    "@strapi/plugin-cloud": "5.33.0",
+    "@strapi/plugin-users-permissions": "5.33.0",
+    "@strapi/strapi": "5.33.0",
     "better-sqlite3": "12.4.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -36,7 +35,7 @@
     "npm": ">=6.0.0"
   },
   "strapi": {
-    "uuid": "8cee0de2-134a-4838-9bf7-dd6346e6880f",
-    "installId": "e58b3c35e33c71a9d8f0587041cd27ba30a574d4edfa967147114bedd9bac316"
+    "uuid": "aed32b7f-db13-4897-ac5b-d001bcf88f0a",
+    "installId": "9bf77aacc2bae73575ba65f4cdd4303855d5ab75b5c081d14aae316f1423cd68"
   }
 }

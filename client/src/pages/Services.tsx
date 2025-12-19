@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import { usePageContent } from '@/hooks/useContent';
 import { servicesPageContent as localServicesPageContent } from '@/lib/data/pages';
 import { services as fallbackServices } from '@/lib/data';
-import { testimonials } from '@/lib/data/testimonials';
-import { ServiceProps, TestimonialProps } from '@/lib/types/content';
+import { ServiceProps } from '@/lib/types/content';
 
 // Import section components
 import {
@@ -12,7 +11,6 @@ import {
   ServicesGridSection,
   ProcessSection,
   ServicesCaseStudiesSection,
-  ServicesTestimonialsSection,
   ServicesCTASection
 } from '@/components/sections/services';
 
@@ -26,21 +24,6 @@ const Services: React.FC = () => {
 
   // Use fallback services data
   const displayServices = fallbackServices;
-
-  // Get testimonials from page content with fallback to direct import
-  const testimonialsSection = displayPageContent.sections?.find(s => s.type === 'testimonials');
-  const displayTestimonials = useMemo((): TestimonialProps[] => {
-    if (testimonialsSection?.settings?.featured) {
-      const featured = testimonialsSection.settings.featured;
-      if (Array.isArray(featured) && featured.length > 0) {
-        return featured as TestimonialProps[];
-      } else if (typeof featured === 'object' && featured !== null && !Array.isArray(featured)) {
-        return [featured as TestimonialProps];
-      }
-    }
-    // Fallback to direct import if extraction fails
-    return testimonials;
-  }, [testimonialsSection]);
 
   // Generate structured data for services
   const structuredData = {
@@ -98,13 +81,6 @@ const Services: React.FC = () => {
 
       {/* Case Studies Section */}
       <ServicesCaseStudiesSection
-        pageContent={displayPageContent}
-        isLoading={isPageLoading}
-      />
-
-      {/* Testimonials Section */}
-      <ServicesTestimonialsSection
-        testimonials={displayTestimonials}
         pageContent={displayPageContent}
         isLoading={isPageLoading}
       />

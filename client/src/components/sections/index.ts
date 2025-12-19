@@ -1,7 +1,6 @@
 // Home page sections
 export { default as ModernHero } from './home/ModernHero';
 export { default as OriginalHero } from './home/OriginalHero';
-export { default as TestimonialsSection } from './home/TestimonialsSection';
 export { default as CaseStudiesSection } from './home/CaseStudiesSection';
 export { default as IndustriesSection } from './home/IndustriesSection';
 export { default as ProductsSection } from './home/ProductsSection';
@@ -34,5 +33,4 @@ export { default as ProductsCTASection } from './solutions/ProductsCTASection';
 // Services sections
 export { default as ServicesHeroSection } from './services/ServicesHeroSection';
 export { default as ServicesGridSection } from './services/ServicesGridSection';
-export { default as ServicesTestimonialsSection } from './services/ServicesTestimonialsSection';
 export { default as ServicesCTASection } from './services/ServicesCTASection';

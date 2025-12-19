@@ -2,9 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { usePageContent } from '@/hooks/useContent';
 import { caseStudiesPageContent as localCaseStudiesPageContent } from '@/lib/data/pages';
 import { caseStudies } from '@/lib/data/case-studies';
-import { testimonials } from '@/lib/data/testimonials';
 import { CaseStudiesContentSection } from '@/components/sections/case-studies';
-import { TestimonialProps } from '@/lib/types/content';
 import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { defaultSiteConfig } from '@/lib/data/config';
@@ -12,7 +10,6 @@ import {
   CaseStudiesHeroSection,
   CaseStudiesGridSection,
   CaseStudiesFilterSection,
-  CaseStudiesTestimonialsSection,
   CaseStudiesCTASection
 } from '@/components/sections/case-studies';
 
@@ -94,21 +91,6 @@ const CaseStudies: React.FC = () => {
     setActiveFilter(filters.industry);
   };
 
-  // Get testimonials from page content
-  const testimonialsSection = displayPageContent.sections?.find(s => s.type === 'testimonials');
-  const displayTestimonials = useMemo((): TestimonialProps[] => {
-    if (testimonialsSection?.settings?.featured) {
-      const featured = testimonialsSection.settings.featured;
-      if (Array.isArray(featured) && featured.length > 0) {
-        return featured as TestimonialProps[];
-      } else if (typeof featured === 'object' && featured !== null && !Array.isArray(featured)) {
-        return [featured as TestimonialProps];
-      }
-    }
-    // Fallback to direct import if extraction fails
-    return testimonials;
-  }, [testimonialsSection]);
-
   const structuredData = generateOrganizationSchema();
 
   return (
@@ -145,13 +127,6 @@ const CaseStudies: React.FC = () => {
       {/* Case Studies Grid Section */}
       <CaseStudiesGridSection
         caseStudies={displayCaseStudies}
-        pageContent={displayPageContent}
-        isLoading={isPageLoading}
-      />
-
-      {/* Testimonials Section */}
-      <CaseStudiesTestimonialsSection
-        testimonials={displayTestimonials}
         pageContent={displayPageContent}
         isLoading={isPageLoading}
       />

@@ -60,35 +60,33 @@ const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ services, isL
                         <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-blue-500 dark:border-blue-400"></div>
                     </div>
 
-                    <Link href={service.slug ? `/services/${service.slug}` : '#'}>
-                        <a className="block space-y-4">
-                            {/* Icon with glow */}
-                            <div className="relative inline-block">
-                                <div className="absolute inset-0 bg-blue-500/20 dark:bg-blue-400/20 blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                                <div className="relative h-16 w-16 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 dark:from-blue-400/10 dark:to-purple-400/10 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300">
-                                    {getServiceIcon(service.icon)}
-                                </div>
+                    <Link href={service.slug ? `/services/${service.slug}` : '#'} className="block space-y-4">
+                        {/* Icon with glow */}
+                        <div className="relative inline-block">
+                            <div className="absolute inset-0 bg-blue-500/20 dark:bg-blue-400/20 blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                            <div className="relative h-16 w-16 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 dark:from-blue-400/10 dark:to-purple-400/10 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300">
+                                {getServiceIcon(service.icon)}
                             </div>
+                        </div>
 
-                            {/* Title */}
-                            <h3 className="text-xl font-extrabold text-blue-900 dark:text-blue-200 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
-                                {service.title}
-                            </h3>
+                        {/* Title */}
+                        <h3 className="text-xl font-extrabold text-blue-900 dark:text-blue-200 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
+                            {service.title}
+                        </h3>
 
-                            {/* Description */}
-                            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-3">
-                                {service.description}
-                            </p>
+                        {/* Description */}
+                        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-3">
+                            {service.description}
+                        </p>
 
-                            {/* Bottom indicator */}
-                            <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 font-medium text-sm group-hover:text-blue-700 dark:group-hover:text-blue-300">
-                                <span>Learn More</span>
-                                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                            </div>
+                        {/* Bottom indicator */}
+                        <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 font-medium text-sm group-hover:text-blue-700 dark:group-hover:text-blue-300">
+                            <span>Learn More</span>
+                            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </div>
 
-                            {/* Expanding line */}
-                            <div className="h-0.5 w-12 bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] dark:from-[#2FB8FF] dark:to-[#0047AB] group-hover:w-full transition-all duration-500"></div>
-                        </a>
+                        {/* Expanding line */}
+                        <div className="h-0.5 w-12 bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] dark:from-[#2FB8FF] dark:to-[#0047AB] group-hover:w-full transition-all duration-500"></div>
                     </Link>
                 </motion.div>
             ))}
@@ -96,8 +94,22 @@ const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ services, isL
     );
 
     return (
-        <section id="services" className="py-24 bg-gradient-to-b from-white via-blue-50/20 to-white dark:from-[#0a192f] dark:via-blue-950/30 dark:to-[#0a192f]">
-            <div className="container-custom max-w-8xl">
+        <section id="services" className="py-24 bg-gradient-to-b from-white via-blue-50/20 to-white dark:from-[#0a192f] dark:via-blue-950/30 dark:to-[#0a192f] relative overflow-hidden">
+            {/* Background decoration like homepage */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 opacity-8">
+                    <div className="absolute top-0 left-1/4 w-px h-full bg-blue-500/22"></div>
+                    <div className="absolute top-0 left-1/2 w-px h-full bg-blue-500/16"></div>
+                    <div className="absolute top-0 left-3/4 w-px h-full bg-blue-500/10"></div>
+                </div>
+                <div className="absolute inset-0 opacity-5 dark:opacity-10">
+                    <Code className="absolute left-10 top-20 h-32 w-32 text-blue-400 dark:text-blue-600" />
+                    <Server className="absolute right-10 top-40 h-28 w-28 text-indigo-400 dark:text-indigo-600" />
+                    <Database className="absolute left-1/4 bottom-20 h-24 w-24 text-cyan-400 dark:text-cyan-600" />
+                    <Cloud className="absolute right-1/4 bottom-40 h-32 w-32 text-purple-400 dark:text-purple-600" />
+                </div>
+            </div>
+            <div className="container-custom max-w-8xl relative z-10">
                 <div className="text-center mb-16">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

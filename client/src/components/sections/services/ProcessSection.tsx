@@ -101,8 +101,21 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading 
     if (!processItems.length) return null;
 
     return (
-        <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f]">
-            <div className="container-custom max-w-8xl">
+        <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f] relative overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 opacity-8">
+                    <div className="absolute top-0 left-1/4 w-px h-full bg-blue-500/22"></div>
+                    <div className="absolute top-0 left-1/2 w-px h-full bg-blue-500/16"></div>
+                    <div className="absolute top-0 left-3/4 w-px h-full bg-blue-500/10"></div>
+                </div>
+                <div className="absolute inset-0 opacity-5 dark:opacity-10">
+                    <Settings className="absolute left-10 top-20 h-28 w-28 text-blue-400 dark:text-blue-600" />
+                    <Zap className="absolute right-10 bottom-20 h-32 w-32 text-indigo-400 dark:text-indigo-600" />
+                    <Target className="absolute right-1/4 top-1/3 h-24 w-24 text-cyan-400 dark:text-cyan-600" />
+                </div>
+            </div>
+            <div className="container-custom max-w-8xl relative z-10">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                         {processSection?.badge}

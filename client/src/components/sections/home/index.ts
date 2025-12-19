@@ -6,5 +6,4 @@ export { default as ProductsSection } from './ProductsSection';
 export { default as CaseStudiesSection } from './CaseStudiesSection';
 export { default as IndustriesSection } from './IndustriesSection';
 export { default as ClientsSection } from './ClientsSection';
-export { default as TestimonialsSection } from './TestimonialsSection';
 export { default as BlogPostsSection } from './BlogPostsSection';

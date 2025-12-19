@@ -30,8 +30,7 @@ const AboutHero: React.FC<AboutHeroProps> = ({
             variants={staggerChildren()}
             className={cn(
                 "relative overflow-hidden py-16 md:pt-24 md:pb-16 hero-section",
-                getThemeColors('background', 'gradient'),
-                getThemeColors('border', 'muted')
+                getThemeColors('background', 'gradient')
             )}
         >
             {/* Use unified background decoration */}

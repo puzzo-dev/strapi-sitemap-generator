@@ -87,12 +87,12 @@ export const services: ServiceProps[] = [
   },
   {
     id: 6,
-    title: "NeuralCore Private AI Cloud",
+    title: "NeuroCore Private AI Cloud",
     slug: "private-ai-solutions",
     subtitle: "Intelligence Without Compromise",
     description:
       "Deploy transformative AI capabilities while maintaining absolute control over your data. Our sovereign AI infrastructure delivers enterprise-grade security, regulatory compliance, and the performance to scale intelligent automation across your organization.",
-    fullDescription: "NeuralCore Private AI Cloud redefines what's possible when security meets innovation. Built for industries where data governance isn't optional—healthcare, financial services, government—our platform provides isolated, compliant environments where organizations can harness the full potential of artificial intelligence without sacrificing control. From advanced model training to production-scale inference, every workload runs within your security perimeter, subject to your governance policies. With automated compliance monitoring, granular access controls, and enterprise-grade observability, you gain both the agility to innovate and the assurance to operate in even the most regulated environments. This is AI infrastructure engineered for the real world.",
+    fullDescription: "NeuroCore Private AI Cloud redefines what's possible when security meets innovation. Built for industries where data governance isn't optional—healthcare, financial services, government—our platform provides isolated, compliant environments where organizations can harness the full potential of artificial intelligence without sacrificing control. From advanced model training to production-scale inference, every workload runs within your security perimeter, subject to your governance policies. With automated compliance monitoring, granular access controls, and enterprise-grade observability, you gain both the agility to innovate and the assurance to operate in even the most regulated environments. This is AI infrastructure engineered for the real world.",
     benefits: {
       id: 2,
       title: "Security Meets Innovation",

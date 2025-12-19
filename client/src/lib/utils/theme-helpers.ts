@@ -53,14 +53,14 @@ export const typography = {
   '4xl': 'text-4xl',  // 36px
   '5xl': 'text-5xl',  // 48px
   '6xl': 'text-6xl',  // 60px
-  
+
   // Font weights
   light: 'font-light',     // 300
   normal: 'font-normal',   // 400
   medium: 'font-medium',   // 500
   semibold: 'font-semibold', // 600
   bold: 'font-bold',       // 700
-  
+
   // Line heights
   tight: 'leading-tight',   // 1.25
   snug: 'leading-snug',     // 1.375
@@ -251,7 +251,7 @@ export const getThemeColors = (
       default: darkMode.bg.primary,
       muted: darkMode.bg.secondary,
       accent: darkMode.bg.accent,
-      gradient: 'bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]',
+      gradient: 'bg-gradient-to-b from-blue-50/20 via-blue-50/10 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]',
     },
     text: {
       default: darkMode.text.primary,

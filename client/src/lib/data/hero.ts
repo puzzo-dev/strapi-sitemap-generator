@@ -83,11 +83,11 @@ export const heroSlides: HeroSlide[] = [
     title: "Intelligent Automation for Tomorrow",
     subtitle: "Harness the power of private AI to automate workflows, enhance decision-making, and unlock unprecedented operational efficiency",
     primaryButton: {
-      title: "Explore NeuralCore AI",
+      title: "Explore NeuroCore AI",
       href: "/services/neuralcore-private-ai-cloud",
       variant: "default",
       startIcon: "code",
-      children: "Explore NeuralCore AI"
+      children: "Explore NeuroCore AI"
     },
     secondaryButton: {
       title: "Connect With Specialists",

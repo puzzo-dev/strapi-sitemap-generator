@@ -4,6 +4,7 @@ import IVarseLogo from '@/components/ui/IVarseLogo';
 import NewsletterForm from '@/components/ui/NewsletterForm';
 import { useGlobalLayout } from '@/hooks/useContent';
 import AppLink from '@/components/ui/AppLink';
+import { useTheme } from '@/components/ui/theme-provider';
 import { FooterProps, GlobalLayoutData, CMSFooterMenu, CMSSocialLink, CMSLink, TransformedFooterLink, TransformedSocialLink, TransformedFooterColumn } from '@/lib/types/';
 
 // Import icons
@@ -12,6 +13,7 @@ import { MapPin, Phone, Mail, Twitter, Facebook, Instagram, Linkedin } from 'luc
 const Footer: React.FC<FooterProps> = () => {
   // Fetch global layout from CMS
   const { data: globalLayout } = useGlobalLayout();
+  const { actualTheme } = useTheme();
 
   if (!globalLayout) {
     throw new Error('CMS unavailable - global layout not found');
@@ -19,6 +21,17 @@ const Footer: React.FC<FooterProps> = () => {
 
   const footer = globalLayout.footer;
   const contactInfo = footer.companyContactInfo;
+  const strapiBase = import.meta.env.VITE_STRAPI_API_URL || '';
+  const resolveUrl = (url?: string) => {
+    if (!url) return undefined;
+    return url.startsWith('http') ? url : `${strapiBase}${url}`;
+  };
+
+  const footerLogo = footer.footerLogo;
+  const lightLogo = resolveUrl(footerLogo?.logoImageLight?.url);
+  const darkLogo = resolveUrl(footerLogo?.logoImageDark?.url);
+  const footerLogoSrc = actualTheme === 'dark' ? (lightLogo || darkLogo) : (darkLogo || lightLogo);
+  const footerLogoAlt = footerLogo?.logoText || 'I-Varse';
 
   // Transform CMS footer menu structure to component format
   const footerColumns: TransformedFooterColumn[] = footer.FooterMenu.map((menuSection: CMSFooterMenu) => ({
@@ -77,14 +90,27 @@ const Footer: React.FC<FooterProps> = () => {
       <div className="container-custom max-w-8xl mx-auto">
         {/* Footer top section with columns */}
         <div className="mb-16 pb-16 border-b border-gray-200 dark:border-gray-800">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 lg:gap-x-8 gap-y-12">
             {/* Company Info & Address - Takes 6 cols on medium screens */}
-            <div className="md:col-span-6 lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+            <div className="md:col-span-6 lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-x-4 lg:gap-x-6 gap-y-8">
               {/* Logo and Description */}
               <div className="space-y-4">
                 <Link href="/">
                   <div className="inline-block">
-                    <IVarseLogo size={36} className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-auto lg:h-auto" />
+                    {footerLogoSrc ? (
+                      <img
+                        src={footerLogoSrc}
+                        alt={footerLogoAlt}
+                        className="h-10 w-auto md:h-12 lg:h-14"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <IVarseLogo
+                        size={40}
+                        className="h-10 w-auto md:h-12 lg:h-14"
+                        variant={actualTheme === 'dark' ? 'light' : 'dark'}
+                      />
+                    )}
                   </div>
                 </Link>
                 <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 max-w-md">

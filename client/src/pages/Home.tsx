@@ -1,6 +1,7 @@
 import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import { generateWebsiteSchema, generateOrganizationSchema } from '@/components/seo/StructuredData';
+import ScrollProgress from '@/components/ui/ScrollProgress';
 
 // Import section components
 import OriginalHero from '@/components/sections/home/OriginalHero';
@@ -10,7 +11,6 @@ import AboutSection from '@/components/sections/home/AboutSection';
 import ProductsSection from '@/components/sections/home/ProductsSection';
 import CaseStudiesSection from '@/components/sections/home/CaseStudiesSection';
 import ClientsSection from '@/components/sections/home/ClientsSection';
-import TestimonialsSection from '@/components/sections/home/TestimonialsSection';
 import BlogPostsSection from '@/components/sections/home/BlogPostsSection';
 import IndustriesSection from '@/components/sections/home/IndustriesSection';
 
@@ -29,7 +29,6 @@ import {
     products as fallbackProducts,
     caseStudies as fallbackCaseStudies,
     clients as fallbackClients,
-    testimonials as fallbackTestimonials,
     blogPosts as fallbackBlogPosts,
     socialLinks
 } from '@/lib/data';
@@ -85,17 +84,6 @@ const Home: React.FC = () => {
         isEmpty: false,
         hasData: true,
         count: fallbackCaseStudies.length
-    };
-
-    const testimonialsQuery = {
-        data: fallbackTestimonials,
-        isLoading: false,
-        error: null,
-        isSuccess: true,
-        isError: false,
-        isEmpty: false,
-        hasData: true,
-        count: fallbackTestimonials.length
     };
 
     const clientsQuery = {
@@ -158,6 +146,7 @@ const Home: React.FC = () => {
             structuredData={structuredData}
             animationType="fade"
         >
+            <ScrollProgress />
             <main className="min-h-screen">
                 {/* Hero Section */}
                 {/* <OriginalHero /> */}
@@ -195,17 +184,10 @@ const Home: React.FC = () => {
                     isLoading={isLoading}
                 />
 
-                {/* Case Studies Section */}
+                {/* Case Studies Section (replaces testimonials) */}
                 <CaseStudiesSection
                     homePageContent={displayHomePageContent}
                     caseStudies={caseStudiesQuery.data}
-                    isLoading={isLoading}
-                />
-
-                {/* Testimonials Section */}
-                <TestimonialsSection
-                    homePageContent={displayHomePageContent}
-                    testimonials={testimonialsQuery.data}
                     isLoading={isLoading}
                 />
 

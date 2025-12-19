@@ -54,9 +54,9 @@ export const homePageContent: PageContent = {
     {
       id: 2,
       type: "services",
-      title: "Our Services",
-      subtitle: "Comprehensive Digital Solutions for Modern Businesses",
-      content: "We provide a wide range of digital services to help your business grow and succeed in the digital economy.",
+      title: "Services That Transform",
+      subtitle: "Strategy. Cloud. AI. Experience.",
+      content: "Solutions architected for competitive advantage.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       badge: "🛠️ Our Services",
       isVisible: true,
@@ -81,9 +81,9 @@ export const homePageContent: PageContent = {
     {
       id: 3,
       type: "products",
-      title: "Our Projects",
-      subtitle: "Innovative digital solutions for modern businesses",
-      content: "Discover our cutting-edge digital projects designed to transform your business operations and drive growth.",
+      title: "Solutions That Scale",
+      subtitle: "Enterprise platforms driving growth",
+      content: "Digital ecosystems engineered for measurable impact.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       badge: "🚀 Our Projects",
       settings: {
@@ -108,9 +108,9 @@ export const homePageContent: PageContent = {
     {
       id: 5,
       type: "clients",
-      title: "Trusted by Industry Leaders",
-      subtitle: "Partnering with innovative companies worldwide",
-      content: "We're proud to work with leading companies across various industries, helping them achieve their digital transformation goals.",
+      title: "Partners in Transformation",
+      subtitle: "Trusted across industries",
+      content: "Powering innovation for leading organizations.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       badge: "🏢 Our Clients",
       settings: {
@@ -129,18 +129,16 @@ export const homePageContent: PageContent = {
     {
       id: 6,
       type: "about",
-      title: "About I-Varse Technologies",
-      subtitle: "Your trusted partner in digital transformation",
-      content: "Founded in 2018, I-VARSE Technologies has been at the forefront of digital innovation in Nigeria, providing cutting-edge technology solutions to businesses across various sectors.\n\nOur mission is to empower businesses through innovative technology solutions that drive growth and efficiency. We strive to be the trusted partner that helps organizations navigate their digital transformation journey.",
+      title: "Engineering Tomorrow's Enterprises",
+      subtitle: "Strategy meets execution",
+      content: "We architect intelligent solutions that create lasting competitive advantage. Since 2018, we've partnered with organizations to reinvent how they compete, deliver value, and scale.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       badge: "ℹ️ About Us",
       settings: {
         image: "/src/assets/images/IMG_2253.JPG",
         stats: [
-          { value: "5+", label: "Years Experience" },
           { value: "100+", label: "Projects Completed" },
-          { value: "50+", label: "Happy Clients" },
-          { value: "24/7", label: "Support Available" }
+          { value: "50+", label: "Happy Clients" }
         ],
         video: {
           title: "I-VARSE Technologies Introduction",
@@ -157,9 +155,9 @@ export const homePageContent: PageContent = {
     {
       id: 7,
       type: "testimonials",
-      title: "What Our Clients Say",
-      subtitle: "Trusted by businesses across Nigeria",
-      content: "Our clients trust us to deliver exceptional results. Here's what they have to say about working with I-VARSE Technologies.",
+      title: "Client Success Stories",
+      subtitle: "Results that matter",
+      content: "Organizations trust us to deliver measurable outcomes.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       badge: "💬 Testimonials",
       settings: {
@@ -176,9 +174,9 @@ export const homePageContent: PageContent = {
     {
       id: 8,
       type: "blog",
-      title: "Latest Insights",
-      subtitle: "Stay updated with our latest articles and insights",
-      content: "Explore our latest articles on technology trends, best practices, and industry insights.",
+      title: "Insights That Matter",
+      subtitle: "Trends shaping tomorrow",
+      content: "Expert perspectives on technology and transformation.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       badge: "📝 Latest Insights",
       settings: {
@@ -384,9 +382,9 @@ export const aboutPageContent: PageContent = {
     {
       id: 3,
       type: "features",
-      title: "Our Core Values",
-      subtitle: "The principles that guide everything we do",
-      content: "Our core values shape our culture and drive our commitment to excellence in everything we do.",
+      title: "Values That Drive Us",
+      subtitle: "Principles shaping performance",
+      content: "Excellence, innovation, and collaboration power our work.",
       backgroundColor: "bg-gradient-to-b from-blue-50/80 via-blue-50/40 to-white dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
         label: "Our Core Values",
@@ -1001,9 +999,9 @@ export const careersPageContent: PageContent = {
     {
       id: 1,
       type: "hero",
-      title: "Join Our Team",
-      subtitle: "Be part of something extraordinary",
-      content: "At I-VARSE, we're more than just a technology company – we're a community of passionate innovators dedicated to creating solutions that make a difference.",
+      title: "Careers at the Heart of Change",
+      subtitle: "Shape the future of technology",
+      content: "Join a team architecting tomorrow's solutions.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
         badge: "💼 Careers",
@@ -1628,8 +1626,8 @@ export const caseStudiesPageContent: PageContent = {
       id: 1,
       type: "hero",
       title: "Success Stories That Drive Innovation",
-      subtitle: "Discover how we've helped businesses transform their operations and achieve remarkable results through innovative technology solutions.",
-      content: "Our case studies showcase real-world examples of how our technology solutions have delivered measurable results for businesses across various industries. From digital transformation projects to custom software development, each case study demonstrates our commitment to excellence and our ability to deliver solutions that drive real business value.",
+      subtitle: "Client success stories",
+      content: "Real results from strategic partnerships. Discover how organizations achieve measurable outcomes with our solutions.",
       backgroundColor: "bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       badge: "📊 Case Studies",
       settings: {
@@ -1753,9 +1751,9 @@ export const industriesPageContent: PageContent = {
     {
       id: 1,
       type: "hero",
-      title: "Industry Solutions for Every Sector",
-      subtitle: "Explore how our technology expertise empowers organizations across diverse industries to achieve their goals.",
-      content: "Innovative Solutions across diverse Industries and Sectors",
+      title: "Industry Expertise",
+      subtitle: "Solutions across sectors",
+      content: "Deep domain knowledge driving results.",
       backgroundColor: "bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-[#0a192f] dark:via-[#0c1e3a] dark:to-[#132f4c]",
       settings: {
         badge: "🏭 Industries",
@@ -1803,9 +1801,9 @@ export const industriesPageContent: PageContent = {
     {
       id: 3,
       type: "industries",
-      title: "Industries We Serve",
-      subtitle: "Sector-specific solutions",
-      content: "Innovative Solutions across diverse Industries and Sectors",
+      title: "Our Industry Focus",
+      subtitle: "Expertise across sectors",
+      content: "Solutions delivering competitive advantage.",
       backgroundColor: "bg-white dark:bg-[#0a192f]",
       settings: {
         featured: industries,

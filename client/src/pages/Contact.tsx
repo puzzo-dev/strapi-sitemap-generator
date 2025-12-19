@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
-import { usePageContent, useTestimonials, useFAQItems } from '@/hooks/useContent';
+import { usePageContent, useFAQItems } from '@/hooks/useContent';
 import { usePageTracking } from '@/contexts/AnalyticsContext';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { contactPageContent as localContactPageContent } from '@/lib/data/pages';
-import { testimonials } from '@/lib/data/testimonials';
 import { faqContent } from '@/lib/data/faq';
 import { defaultSiteConfig } from '@/lib/data/config';
-import { PageContent } from '@/lib/types/core';
 
 // Import section components
 import {
   ContactHeroSection,
   ContactFormSection,
-  ContactTestimonialsSection,
   ContactFAQSection
 } from '@/components/sections/contact';
 
@@ -37,8 +34,7 @@ const Contact: React.FC = () => {
   // Fetch page content from Strapi or use local data
   const { data: pageContent, isLoading: isPageLoading } = usePageContent('contact-us');
 
-  // Fetch testimonials and FAQ items from Strapi
-  const { data: apiTestimonials, isLoading: isTestimonialsLoading } = useTestimonials();
+  // Fetch FAQ items from Strapi
   const { data: apiFAQItems, isLoading: isFAQLoading } = useFAQItems();
 
   // Use local page content if Strapi data is not available
@@ -50,15 +46,7 @@ const Contact: React.FC = () => {
   // Extract sections with fallback to local data
   const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero');
   const contactSection = displayPageContent?.sections?.find(s => s.type === 'contact');
-  const testimonialsSection = displayPageContent?.sections?.find(s => s.type === 'testimonials');
   const faqSection = displayPageContent?.sections?.find(s => s.type === 'faq');
-
-  // Use API data if available, otherwise fall back to section data from local content, then direct imports
-  const displayTestimonials = (apiTestimonials && apiTestimonials.length > 0)
-    ? apiTestimonials
-    : (testimonialsSection?.settings?.featured && Array.isArray(testimonialsSection.settings.featured) && testimonialsSection.settings.featured.length > 0)
-      ? testimonialsSection.settings.featured
-      : testimonials;
 
   const displayFAQItems = (apiFAQItems && apiFAQItems.length > 0)
     ? apiFAQItems
@@ -92,13 +80,6 @@ const Contact: React.FC = () => {
         siteConfig={defaultSiteConfig}
         isLoading={isPageLoading}
         isDemoRequest={isDemoRequest}
-      />
-
-      {/* Testimonials Section */}
-      <ContactTestimonialsSection
-        testimonialSection={testimonialsSection}
-        testimonials={displayTestimonials}
-        isLoading={isTestimonialsLoading}
       />
 
       {/* FAQ Section */}
