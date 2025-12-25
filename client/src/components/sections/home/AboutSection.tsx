@@ -159,13 +159,13 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                 </div>
             </div>
 
-            <div className="container-custom relative z-10 max-w-[1400px] px-6 sm:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-[1.1fr,0.9fr] gap-4 sm:gap-4 lg:gap-6 items-stretch py-4">
+            <div className="container-custom relative z-10 max-w-[1400px] px-4 sm:px-6">
+                <div className="grid grid-cols-1 lg:grid-cols-[1.1fr,0.9fr] gap-4 sm:gap-4 lg:gap-6 items-stretch">
                     <motion.div
                         variants={fadeInUp()}
                         initial="initial"
                         animate={isVisible ? 'animate' : 'initial'}
-                        className="relative overflow-hidden rounded-2xl border border-blue-100/60 dark:border-blue-900/50 bg-white/80 dark:bg-white/5 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.08),0_8px_48px_-4px_rgba(0,0,0,0.06)] backdrop-blur flex flex-col"
+                        className="relative overflow-hidden rounded-2xl border border-blue-100/60 dark:border-blue-900/50 bg-white/80 dark:bg-white/5 shadow-2xl backdrop-blur flex flex-col"
                     >
                         <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] rounded-t-2xl" />
                         <div className="p-6 sm:p-8 md:p-10 space-y-4 sm:space-y-6 flex-1 flex flex-col">
@@ -215,7 +215,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ homePageContent }) => {
                         animate={isVisible ? 'animate' : 'initial'}
                         className="flex flex-col gap-6"
                     >
-                        <div className="relative overflow-hidden rounded-2xl border border-blue-100/60 dark:border-blue-900/50 bg-white/85 dark:bg-white/5 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.08),0_8px_48px_-4px_rgba(0,0,0,0.06)] backdrop-blur flex-1 flex flex-col">
+                        <div className="relative overflow-hidden rounded-2xl border border-blue-100/60 dark:border-blue-900/50 bg-white/85 dark:bg-white/5 shadow-2xl backdrop-blur flex-1 flex flex-col">
                             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-500/10" />
                             <div className="relative p-3 sm:p-4 flex-1 flex flex-col">
                                 <div className="relative rounded-xl overflow-hidden aspect-video border border-blue-100/60 dark:border-blue-900/40 bg-slate-900">

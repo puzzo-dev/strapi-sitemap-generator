@@ -13,7 +13,6 @@ import {
     Star
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { servicesPageContent } from '@/lib/data/pages';
 
 interface ProcessItem {
     id: number;
@@ -28,13 +27,20 @@ interface ProcessSectionProps {
 }
 
 const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading = false }) => {
-    // Get process section from page content or fallback data
+    // Fallback process items
+    const fallbackProcessItems: ProcessItem[] = [
+        { id: 1, title: "Discover", description: "We start by understanding your business goals, target audience, and specific requirements.", icon: "Search" },
+        { id: 2, title: "Plan", description: "We develop a comprehensive strategy and project plan tailored to your needs.", icon: "Map" },
+        { id: 3, title: "Develop", description: "Our expert team builds your solution using the latest technologies and best practices.", icon: "Code" },
+        { id: 4, title: "Test", description: "We thoroughly test your solution to ensure it meets all requirements and performs flawlessly.", icon: "CheckCircle" },
+        { id: 5, title: "Deploy", description: "We launch your solution and provide ongoing support to ensure continued success.", icon: "Rocket" }
+    ];
+
+    // Get process section from page content - look for custom section with "Process" in title
     const processSection = pageContent?.sections?.find(s =>
-        s.type === 'custom' && s.settings?.items && Array.isArray(s.settings.items)
-    ) || servicesPageContent.sections.find(s =>
-        s.type === 'custom' && s.settings?.items && Array.isArray(s.settings.items)
+        s.type === 'custom' && (s.title?.includes('Process') || s.badge?.includes('Process'))
     );
-    const processItems = (processSection?.settings?.items as ProcessItem[]) || [];
+    const processItems = (processSection?.settings?.items as ProcessItem[]) || fallbackProcessItems;
 
     const gradients = [
         'from-blue-400 to-blue-600',
@@ -100,21 +106,8 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading 
         );
     }
 
-    // If no process steps, show empty state but still render the section
-    if (!processItems.length) {
-        return (
-            <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f] relative overflow-hidden">
-                <div className="container-custom max-w-8xl relative z-10">
-                    <div className="text-center">
-                        <p className="text-gray-500 dark:text-gray-400">Process steps coming soon...</p>
-                    </div>
-                </div>
-            </section>
-        );
-    }
-
     return (
-        <section className="py-24 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f] relative overflow-hidden">
+        <section className="py-20 bg-gradient-to-b from-white to-blue-50/60 dark:from-[#132f4c] dark:to-[#0a192f] relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 opacity-8">
@@ -129,25 +122,25 @@ const ProcessSection: React.FC<ProcessSectionProps> = ({ pageContent, isLoading 
                 </div>
             </div>
             <div className="container-custom max-w-8xl relative z-10">
-                <div className="text-center mb-16">
+                <div className="text-center mb-12">
                     <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
                         {processSection?.badge}
                     </div>
-                    <h2 className="section-title text-blue-900 dark:text-blue-200">{processSection?.title}</h2>
-                    <p className="section-subtitle">
+                    <h2 className="text-3xl md:text-4xl font-bold text-blue-900 dark:text-blue-200 mb-3">{processSection?.title}</h2>
+                    <p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                         {processSection?.subtitle}
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
                     {processItems.map((step, index) => (
-                        <Card key={step.id} className="p-3 border border-blue-100 dark:border-blue-800/50 relative group hover:shadow-md transition-all">
-                            <CardContent>
-                                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${gradients[index % gradients.length]} flex items-center justify-center mb-6 text-white font-bold group-hover:scale-110 transition-transform`}>
+                        <Card key={step.id} className="p-3 border border-blue-100 dark:border-blue-800/50 relative group hover:shadow-lg hover:border-blue-500/60 dark:hover:border-blue-400/60 transition-all bg-white/80 dark:bg-white/5 backdrop-blur">
+                            <CardContent className="p-0">
+                                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${gradients[index % gradients.length]} flex items-center justify-center mb-4 text-white font-bold group-hover:scale-110 transition-transform`}>
                                     {getIcon(step.icon, step.id)}
                                 </div>
-                                <h3 className="text-md font-semibold mb-3 text-blue-900 dark:text-blue-200">{step.title}</h3>
-                                <p className="text-gray-600 dark:text-gray-300">
+                                <h3 className="text-sm font-bold mb-2 text-blue-900 dark:text-blue-200">{step.title}</h3>
+                                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
                                     {step.description}
                                 </p>
                             </CardContent>

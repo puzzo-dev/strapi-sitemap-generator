@@ -61,6 +61,12 @@
         "blocks.cta-section",
         "blocks.base-row"
       ]
+    },
+    "case_study": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::case-study.case-study",
+      "inversedBy": "industries"
     }
   }
 }

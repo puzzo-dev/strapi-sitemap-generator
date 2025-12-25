@@ -5,14 +5,14 @@ import { Card, CardContent } from '@/components/ui/card';
 
 interface ServiceDetailCaseStudiesSectionProps {
   service: ServiceProps & {
-    casestudies?: { title: string; description: string; result: string }[];
+    casestudies?: Array<{ id?: number; title: string; description: string; result?: string }>;
   };
   blockTitle?: string;
   blockDescription?: string;
 }
 
 const ServiceDetailCaseStudiesSection: React.FC<ServiceDetailCaseStudiesSectionProps> = ({ service, blockTitle, blockDescription }) => {
-  if (!service.casestudies) return null;
+  if (!service.casestudies || service.casestudies.length === 0) return null;
 
   return (
     <section className="content-section bg-gray-50 dark:bg-[#0a1929]">
@@ -35,48 +35,19 @@ const ServiceDetailCaseStudiesSection: React.FC<ServiceDetailCaseStudiesSectionP
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {service.casestudies.map((casestudy, index) => (
-            <Card key={index} className="hover-lift">
+            <Card key={casestudy.id || index} className="hover-lift">
               <CardContent className="p-6 md:p-8">
                 <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">{casestudy.title}</h3>
-                <div className="prose prose-sm dark:prose-invert max-w-none space-y-4">
-                  {/* Render Overview (description field) */}
-                  {casestudy.description && casestudy.description.split('\n').map((line, idx) => {
-                    if (!line.trim()) return null;
-                    const boldRegex = /\*\*(.*?)\*\*/g;
-                    const parts = line.split(boldRegex);
-                    return (
-                      <div key={`desc-${idx}`}>
-                        {parts.map((part, i) => {
-                          if (i % 2 === 1) {
-                            return <div key={i} className="font-bold text-gray-900 dark:text-white text-base mb-2">{part}</div>;
-                          } else if (part.trim()) {
-                            return <p key={i} className="text-gray-600 dark:text-gray-300 leading-relaxed">{part}</p>;
-                          }
-                          return null;
-                        })}
-                      </div>
-                    );
-                  })}
-
-                  {/* Render Results (result field) */}
-                  {casestudy.result && casestudy.result.split('\n').map((line, idx) => {
-                    if (!line.trim()) return null;
-                    const boldRegex = /\*\*(.*?)\*\*/g;
-                    const parts = line.split(boldRegex);
-                    return (
-                      <div key={`result-${idx}`}>
-                        {parts.map((part, i) => {
-                          if (i % 2 === 1) {
-                            return <div key={i} className="font-bold text-gray-900 dark:text-white text-base mb-2 mt-4">{part}</div>;
-                          } else if (part.trim()) {
-                            return <p key={i} className="text-gray-600 dark:text-gray-300 leading-relaxed">{part}</p>;
-                          }
-                          return null;
-                        })}
-                      </div>
-                    );
-                  })}
-                </div>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {casestudy.description}
+                </p>
+                {casestudy.result && (
+                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {casestudy.result}
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}

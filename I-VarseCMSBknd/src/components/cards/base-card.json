@@ -29,6 +29,11 @@
       "type": "component",
       "component": "shared.link",
       "repeatable": true
+    },
+    "Stats": {
+      "type": "component",
+      "component": "cards.stat",
+      "repeatable": true
     }
   },
   "config": {}

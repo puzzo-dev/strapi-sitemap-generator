@@ -1,11 +1,15 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import AppLink from '@/components/ui/AppLink';
-import { Card, CardContent } from '@/components/ui/card'; 
-import { ArrowRight } from 'lucide-react';
+import GradientButton from '@/components/ui/GradientButton';
+import { fadeInUp } from '@/lib/animations';
+import { ArrowRight, TrendingUp, Users, Calendar, Award } from 'lucide-react';
+import { caseStudies as allCaseStudies } from '@/lib/data/case-studies';
+import { PageContent } from '@/lib/types/core';
+import { uiLabels } from '@/lib/data';
 
 interface ProductsCaseStudiesSectionProps {
-  pageContent: any;
+  pageContent?: PageContent | null;
   isLoading?: boolean;
 }
 
@@ -15,34 +19,18 @@ const ProductsCaseStudiesSection: React.FC<ProductsCaseStudiesSectionProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const caseStudies = [
-    {
-      id: 1,
-      title: 'Enterprise Software Implementation',
-      description: 'Large-scale software deployment for manufacturing company',
-      image: '/src/assets/images/case-study-manufacturing.jpg',
-      product: 'ERP System',
-      results: ['25% increase in productivity', '30% reduction in operational costs']
-    },
-    {
-      id: 2,
-      title: 'Cloud Migration Success',
-      description: 'Seamless cloud migration for financial services firm',
-      image: '/src/assets/images/case-study-cloud.jpg',
-      product: 'Cloud Platform',
-      results: ['99.9% uptime achieved', '50% reduction in infrastructure costs']
-    }
-  ];
+  // Get featured case studies (first 3)
+  const featuredCaseStudies = allCaseStudies.filter(cs => cs.featured).slice(0, 3);
 
   if (isLoading) {
     return (
-      <section className="py-16">
-        <div className="container mx-auto px-4 max-w-8xl">
+      <section className="content-section bg-white dark:bg-[#0f1f2e]">
+        <div className="container-custom max-w-7xl">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[...Array(2)].map((_, i) => (
-                <div key={i} className="h-64 bg-gray-300 dark:bg-gray-600 rounded-lg"></div>
+            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mx-auto mb-12"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-96 bg-gray-300 dark:bg-gray-600 rounded-2xl"></div>
               ))}
             </div>
           </div>
@@ -52,39 +40,116 @@ const ProductsCaseStudiesSection: React.FC<ProductsCaseStudiesSectionProps> = ({
   }
 
   return (
-    <section className="py-16">
-      <div className="container mx-auto px-4 max-w-8xl">
-        <h2 className="text-3xl font-bold text-blue-900 dark:text-blue-200 mb-10 text-center">
-          {t('products.caseStudies.title', 'Product Success Stories')}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {caseStudies.map(cs => (
-            <Card key={cs.id} className="shadow-lg overflow-hidden">
-              <img src={cs.image} alt={cs.title} className="w-full h-48 object-cover" />
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2 text-blue-800 dark:text-blue-100">{cs.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{cs.description}</p>
-                <div className="mb-4">
-                  <span className="inline-block bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 text-sm px-3 py-1 rounded-full">
-                    {cs.product}
-                  </span>
+    <section className="content-section bg-white dark:bg-[#0f1f2e]">
+      <div className="container-custom max-w-8xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300 mb-4">
+            🏆 Success Stories
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            {t('products.caseStudies.title') || 'Real Results, Real Impact'}
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            See how our solutions drive measurable business outcomes for organizations across industries
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          {featuredCaseStudies.map((caseStudy, index) => (
+            <motion.div
+              key={caseStudy.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              whileHover={{ y: -8 }}
+              className="group"
+            >
+              <div className="h-full bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-800/50 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all shadow-sm hover:shadow-xl">
+                {/* Image Section */}
+                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-500 to-cyan-500">
+                  <div className="absolute inset-0 bg-black/20" />
+                  <img
+                    src={caseStudy.image}
+                    alt={caseStudy.title}
+                    className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-xs font-semibold text-gray-900 dark:text-white rounded-full">
+                      {caseStudy.industry}
+                    </span>
+                  </div>
                 </div>
-                <ul className="space-y-1 mb-4">
-                  {cs.results.map((result, index) => (
-                    <li key={index} className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
-                      <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                      {result}
-                    </li>
-                  ))}
-                </ul>
-                <AppLink href="/case-studies" className="flex items-center text-blue-600 dark:text-blue-300 hover:underline font-medium">
-                  View More Case Studies
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </AppLink>
-              </CardContent>
-            </Card>
+
+                {/* Content Section */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {caseStudy.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                    {caseStudy.description}
+                  </p>
+
+                  {/* Meta Info */}
+                  <div className="grid grid-cols-2 gap-3 mb-5 pb-5 border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                      <Calendar className="h-3.5 w-3.5" />
+                      <span>{caseStudy.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                      <Users className="h-3.5 w-3.5" />
+                      <span>{caseStudy.teamSize} experts</span>
+                    </div>
+                  </div>
+
+                  {/* Key Results - Show top 2 */}
+                  <div className="space-y-2 mb-5">
+                    {caseStudy.results.slice(0, 2).map((result, idx) => (
+                      <div key={idx} className="flex items-start gap-2">
+                        <TrendingUp className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-gray-700 dark:text-gray-200 line-clamp-1">
+                          {result}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <a
+                    href={`/case-studies/${caseStudy.slug}`}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:gap-3 transition-all group/link"
+                  >
+                    Read Full Story
+                    <ArrowRight className="h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
           ))}
         </div>
+
+        {/* View All CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center"
+        >
+          <GradientButton
+            href="/case-studies"
+            size="default"
+            endIcon={<ArrowRight className="h-4 w-4 ml-1" />}
+          >
+            View All Case Studies
+          </GradientButton>
+        </motion.div>
       </div>
     </section>
   );

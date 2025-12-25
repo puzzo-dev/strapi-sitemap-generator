@@ -65,6 +65,16 @@
       "type": "component",
       "component": "shared.link",
       "repeatable": true
+    },
+    "form": {
+      "type": "component",
+      "component": "cards.form",
+      "repeatable": true
+    },
+    "address": {
+      "type": "component",
+      "component": "cards.contact-info",
+      "repeatable": false
     }
   },
   "config": {}

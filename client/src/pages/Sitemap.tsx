@@ -7,6 +7,10 @@ import { usePageContent } from "@/hooks/useContent";
 import LoadingSkeleton from "@/components/ui/LoadingSkeleton";
 import { sitemapContent } from "@/lib/data/";
 import { SitemapLink, PageSection } from '@/lib/types/';
+import { services } from '@/lib/data/services';
+import { products } from '@/lib/data/solutions';
+import { caseStudies } from '@/lib/data/case-studies';
+import { blogPosts } from '@/lib/data/blog';
 
 const Sitemap: React.FC = () => {
   // Fetch page content from Strapi if available
@@ -18,56 +22,80 @@ const Sitemap: React.FC = () => {
   const metaTitle = pageContent?.metaTitle || `${sitemapContent.title} | I-Varse Technologies`;
   const metaDescription = pageContent?.metaDescription || sitemapContent.description;
 
-  // Create sitemap sections from page content or fallback to default
+  // Create organized sitemap sections
   const sitemapSections = useMemo(() => {
-    // If we have valid page content with sections, use it
-    if (
-      pageContent?.sections &&
-      Array.isArray(pageContent.sections) &&
-      pageContent.sections.length > 0
-    ) {
-      return pageContent.sections
-        .filter(section => section.type === 'links')
-        .map((section: PageSection) => ({
-          id: section.id,
-          type: section.type,
-          title: section.title || "Section",
-          // Access links from settings.links
-          links: (section.settings?.links || []).map((link: any) => ({
-            title: link.title || "Link",
-            // Handle different URL structures and ensure proper href
-            href: typeof link.url === 'string' ? link.url :
-              link.url?.url ? link.url.url :
-                link.path ? (typeof link.path === 'string' ? link.path : link.path.url) :
-                  "#",
-            description: link.description,
-            openInNewTab: link.openInNewTab,
-            isExternal: link.isExternal
-          })),
-        }));
-    }
-
-    // Otherwise use the default data from sitemap.ts
-    return sitemapContent.sections
-      .filter(section => section.type === 'links')
-      .map((section) => ({
-        id: section.id,
-        type: section.type,
-        title: section.title || "Section",
-        // Access links from settings.links in the fallback data
-        links: (section.settings?.links || []).map((link: any) => ({
-          title: link.title || "Link",
-          // Handle different URL structures from fallback data and ensure proper href
-          href: typeof link.path === 'string' ? link.path :
-            link.path?.url ? link.path.url :
-              link.url ? (typeof link.url === 'string' ? link.url : link.url.url) :
-                "#",
-          description: link.description,
-          openInNewTab: link.openInNewTab,
-          isExternal: link.isExternal
-        })),
-      }));
-  }, [pageContent]);
+    return [
+      {
+        id: 1,
+        type: 'links',
+        title: 'Main Pages',
+        links: [
+          { title: 'Home', href: '/', description: 'Navigate to homepage' },
+          { title: 'About Us', href: '/about-us', description: 'Learn about our company' },
+          { title: 'Team', href: '/team', description: 'Meet our team' },
+          { title: 'Services', href: '/services', description: 'View our services' },
+          { title: 'Solutions', href: '/solutions', description: 'Explore our solutions' },
+          { title: 'Industries', href: '/industries', description: 'Industries we serve' },
+          { title: 'Case Studies', href: '/case-studies', description: 'Success stories' },
+          { title: 'Blog', href: '/blog', description: 'Latest news and insights' },
+          { title: 'Careers', href: '/careers', description: 'Join our team' },
+          { title: 'Contact', href: '/contact', description: 'Get in touch' },
+          { title: 'FAQ', href: '/faq', description: 'Frequently asked questions' },
+        ]
+      },
+      {
+        id: 2,
+        type: 'links',
+        title: 'Services',
+        links: services.slice(0, 12).map(service => ({
+          title: service.title,
+          href: `/services/${service.slug}`,
+          description: service.shortDescription || service.description
+        }))
+      },
+      {
+        id: 3,
+        type: 'links',
+        title: 'Solutions',
+        links: products.slice(0, 10).map(product => ({
+          title: product.title,
+          href: `/solutions/${product.slug}`,
+          description: product.shortDescription || product.description
+        }))
+      },
+      {
+        id: 4,
+        type: 'links',
+        title: 'Case Studies',
+        links: caseStudies.slice(0, 10).map(caseStudy => ({
+          title: caseStudy.title,
+          href: `/case-studies/${caseStudy.slug}`,
+          description: caseStudy.description
+        }))
+      },
+      {
+        id: 5,
+        type: 'links',
+        title: 'Legal Pages',
+        links: [
+          { title: 'Terms of Service', href: '/terms', description: 'Terms and conditions' },
+          { title: 'Privacy Policy', href: '/privacy', description: 'Privacy information' },
+          { title: 'Cookies Policy', href: '/cookies', description: 'Cookie usage policy' },
+          { title: 'Accessibility', href: '/accessibility', description: 'Accessibility statement' },
+        ]
+      },
+      {
+        id: 6,
+        type: 'links',
+        title: 'News & Blog',
+        links: blogPosts.slice(0, 10).map(post => ({
+          title: post.title,
+          href: `/blog/${post.slug}`,
+          description: post.excerpt || post.description
+        }))
+      }
+    ];
+  }, []);
 
   return (
     <>
@@ -155,28 +183,15 @@ const Sitemap: React.FC = () => {
                         {section.title}
                       </h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {section.links && section.links.map(
-                          (link: SitemapLink, linkIndex: number) => (
-                            <div key={linkIndex} className="group">
-                              {link.isExternal || link.openInNewTab ? (
-                                <a
-                                  href={link.href}
-                                  target={link.openInNewTab ? "_blank" : undefined}
-                                  rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-                                  className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline font-medium block py-2 px-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
-                                >
-                                  {link.title}
-                                </a>
-                              ) : (
-                                <Link href={link.href}>
-                                  <div className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline font-medium cursor-pointer block py-2 px-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200">
-                                    {link.title}
-                                  </div>
-                                </Link>
-                              )}
-                            </div>
-                          )
-                        )}
+                        {section.links && section.links.map((link: any, linkIndex: number) => (
+                          <div key={linkIndex} className="group">
+                            <Link href={link.href}>
+                              <div className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline font-medium cursor-pointer block py-2 px-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200">
+                                {link.title}
+                              </div>
+                            </Link>
+                          </div>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>

@@ -14,6 +14,7 @@ import BlogCTASection from '@/components/sections/blog/BlogCTASection';
 // Import hooks and data
 import { usePageContent } from '@/hooks/useContent';
 import { blogPageContent as localBlogPageContent } from '@/lib/data/pages';
+import { blogPosts as localBlogPosts, blogCategories as localBlogCategories } from '@/lib/data/blog';
 
 const BlogPage: React.FC = () => {
     const [search, setSearch] = useState('');
@@ -24,27 +25,31 @@ const BlogPage: React.FC = () => {
     const { data: pageContent, isLoading: isPageLoading } = usePageContent('blog');
     const displayPageContent = pageContent || localBlogPageContent;
 
-    // Get blog posts from page content settings
+    // Get blog posts from page content settings with fallback to local data
     const blogPosts = useMemo(() => {
         const blogSection = displayPageContent?.sections?.find(s => s.type === 'blog');
-        return blogSection?.settings?.featured || [];
+        const posts = blogSection?.settings?.featured || [];
+        // If no posts from Strapi, use local fallback
+        return posts.length > 0 ? posts : localBlogPosts;
     }, [displayPageContent]);
 
-    // Get blog categories from page content settings
+    // Get blog categories from page content settings with fallback to local data
     const blogCategories = useMemo(() => {
         const blogSection = displayPageContent?.sections?.find(s => s.type === 'blog');
-        return blogSection?.settings?.categories || [];
+        const categories = blogSection?.settings?.categories || [];
+        // If no categories from Strapi, use local fallback
+        return categories.length > 0 ? categories : localBlogCategories;
     }, [displayPageContent]);
 
     // Generate structured data
     const structuredData = generateOrganizationSchema();
 
     // Get sections with fallbacks (memoized to prevent re-computation)
-    const heroSection = useMemo(() => 
+    const heroSection = useMemo(() =>
         displayPageContent?.sections?.find(s => s.type === 'hero'),
         [displayPageContent]
     );
-    const blogSection = useMemo(() => 
+    const blogSection = useMemo(() =>
         displayPageContent?.sections?.find(s => s.type === 'blog'),
         [displayPageContent]
     );

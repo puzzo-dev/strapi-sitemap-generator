@@ -6,6 +6,7 @@ export interface BlocksBaseRow extends Struct.ComponentSchema {
     displayName: 'baseRow';
   };
   attributes: {
+    address: Schema.Attribute.Component<'cards.contact-info', false>;
     badge: Schema.Attribute.Component<'shared.badge', false>;
     baseCards: Schema.Attribute.Component<'cards.base-card', true>;
     button: Schema.Attribute.Component<'shared.button', true>;
@@ -13,6 +14,7 @@ export interface BlocksBaseRow extends Struct.ComponentSchema {
     cta: Schema.Attribute.Component<'blocks.cta-section', false>;
     description: Schema.Attribute.Text;
     Faqs: Schema.Attribute.Component<'cards.faq-card', true>;
+    form: Schema.Attribute.Component<'cards.form', true>;
     gallery: Schema.Attribute.Component<'blocks.gallery-section', false>;
     link: Schema.Attribute.Component<'shared.link', true>;
     socialLinks: Schema.Attribute.Component<'cards.social-link', true>;
@@ -84,6 +86,7 @@ export interface CardsBaseCard extends Struct.ComponentSchema {
     cardContent: Schema.Attribute.RichText;
     cardLink: Schema.Attribute.Component<'shared.link', true>;
     cardMedia: Schema.Attribute.Media<'images' | 'files' | 'videos', true>;
+    Stats: Schema.Attribute.Component<'cards.stat', true>;
     title: Schema.Attribute.String;
   };
 }
@@ -342,11 +345,15 @@ export interface SharedFilterPill extends Struct.ComponentSchema {
     displayName: 'filterPill';
   };
   attributes: {
-    case_study: Schema.Attribute.Relation<
-      'oneToOne',
+    case_studies: Schema.Attribute.Relation<
+      'oneToMany',
       'api::case-study.case-study'
     >;
     Icon: Schema.Attribute.Media<'images' | 'files'>;
+    industries: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::industry.industry'
+    >;
     isActive: Schema.Attribute.Boolean;
     label: Schema.Attribute.String;
   };
@@ -387,12 +394,18 @@ export interface SharedLink extends Struct.ComponentSchema {
     displayName: 'link';
   };
   attributes: {
+    case_study: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::case-study.case-study'
+    >;
     externalUrl: Schema.Attribute.String;
+    industry: Schema.Attribute.Relation<'oneToOne', 'api::industry.industry'>;
     label: Schema.Attribute.String;
     linkType: Schema.Attribute.Enumeration<['internal', 'external']>;
     page: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
     service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'>;
     solution: Schema.Attribute.Relation<'oneToOne', 'api::project.project'>;
+    team: Schema.Attribute.Relation<'oneToOne', 'api::team.team'>;
   };
 }
 

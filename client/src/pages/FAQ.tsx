@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { usePageContent, useFAQItems } from '@/hooks/useContent';
+import { usePageContent } from '@/hooks/useContent';
 import PageLayout from '@/components/layout/PageLayout';
 import { generateOrganizationSchema } from '@/components/seo/StructuredData';
 import { faqPageContent as localFAQPageContent } from '@/lib/data/pages';
+import { faqContent } from '@/lib/data/faq';
 
 // Import section components
 import {
     FAQHeroSection,
     FAQCategoriesSection,
     FAQContactSection,
-    FAQStatsSection,
-    FAQPopularSection
+    FAQStatsSection
 } from "@/components/sections/faq";
 
 const FAQ: React.FC = () => {
@@ -21,23 +21,18 @@ const FAQ: React.FC = () => {
     // Fetch page content from Strapi or use local data
     const { data: pageContent, isLoading: isPageLoading } = usePageContent('faq');
 
-    // Fetch FAQ items from Strapi
-    const { data: apiFAQItems, isLoading: isFAQLoading } = useFAQItems();
-
     // Use local page content if Strapi data is not available
     const displayPageContent = pageContent || localFAQPageContent;
 
-    // Use API FAQ items if available, otherwise fall back to local data from faqPageContent
-    const displayFAQItems = apiFAQItems || localFAQPageContent.sections?.find(s => s.type === 'custom')?.settings?.faqItems || [];
-    const displayCategories = localFAQPageContent.sections?.find(s => s.type === 'custom')?.settings?.faqCategories || [];
+    // Use local FAQ data (always, since we have complete fallback)
+    const displayFAQItems = faqContent.items || [];
+    const displayCategories = faqContent.categories || [];
 
     const structuredData = generateOrganizationSchema();
 
     // Extract sections with fallback to local data
     const heroSection = displayPageContent?.sections?.find(s => s.type === 'hero')
         || localFAQPageContent.sections.find(s => s.type === 'hero');
-    const categoriesSection = displayPageContent?.sections?.find(s => s.type === 'custom')
-        || localFAQPageContent.sections.find(s => s.type === 'custom');
     const contactSection = displayPageContent?.sections?.find(s => s.type === 'contact')
         || localFAQPageContent.sections.find(s => s.type === 'contact');
 
@@ -81,13 +76,7 @@ const FAQ: React.FC = () => {
                 setActiveCategory={setActiveCategory}
                 expandedItems={expandedItems}
                 toggleItem={toggleItem}
-                isLoading={isFAQLoading}
-            />
-
-            {/* FAQ Popular Section */}
-            <FAQPopularSection
-                faqItems={displayFAQItems}
-                onQuestionClick={() => { }}
+                isLoading={isPageLoading}
             />
 
             {/* Contact Section */}

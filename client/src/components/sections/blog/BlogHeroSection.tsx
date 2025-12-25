@@ -158,34 +158,18 @@ const BlogHeroSection: React.FC<BlogHeroSectionProps> = ({
                         </motion.h1>
                         <motion.p
                             variants={fadeInUp(20, 0.7, 0.3)}
-                            className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl"
+                            className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-4 max-w-2xl"
                         >
                             {heroSection?.subtitle || pageContent?.description}
                         </motion.p>
-                        <motion.div variants={fadeInUp(20, 0.7, 0.5)} className="flex flex-wrap justify-center md:justify-start gap-4">
-                            <Input
-                                placeholder={t('ui.searchPlaceholder')}
-                                value={search}
-                                onChange={(e: { target: { value: string; }; }) => setSearch(e.target.value)}
-                                className="w-full max-w-xs"
-                            />
-                            {heroSection?.settings?.primaryButton && (
-                                <Button
-                                    variant="default"
-                                    size="lg"
-                                >
-                                    {heroSection.settings.primaryButton.children}
-                                </Button>
-                            )}
-                            {heroSection?.settings?.secondaryButton && (
-                                <Button
-                                    variant="secondary"
-                                    size="lg"
-                                >
-                                    {heroSection.settings.secondaryButton.children}
-                                </Button>
-                            )}
-                        </motion.div>
+                        <motion.p
+                            variants={fadeInUp(20, 0.7, 0.4)}
+                            className="text-base md:text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-3xl leading-relaxed"
+                        >
+                            Dive into expert perspectives on cloud computing, AI, cybersecurity, and digital transformation.
+                            Our team shares actionable insights, best practices, and real-world case studies to help your
+                            organization navigate the evolving technology landscape and achieve measurable business outcomes.
+                        </motion.p>
                     </motion.div>
 
                     {/* Hero Illustration */}

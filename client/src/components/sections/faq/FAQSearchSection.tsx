@@ -40,15 +40,15 @@ const FAQSearchSection: React.FC<FAQSearchSectionProps> = ({
     };
 
     return (
-        <div className={`bg-white dark:bg-gray-900/50 rounded-lg p-6 shadow-sm ${className} max-w-8xl mx-auto`}>
+        <div className={className}>
             <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Search className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </div>
                 <Input
                     type="text"
-                    className="pl-10 pr-10"
-                    placeholder="Search frequently asked questions..."
+                    className="pl-12 pr-12 h-12 text-base border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 rounded-xl"
+                    placeholder="Search questions..."
                     value={searchQuery}
                     onChange={(e) => handleSearch(e.target.value)}
                 />
@@ -58,24 +58,14 @@ const FAQSearchSection: React.FC<FAQSearchSectionProps> = ({
                             type="button"
                             variant="ghost"
                             size="sm"
-                            className="h-auto p-0 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+                            className="h-8 w-8 p-0 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
                             onClick={clearSearch}
                         >
-                            <X className="h-5 w-5" aria-hidden="true" />
+                            <X className="h-4 w-4 text-gray-500" aria-hidden="true" />
                         </Button>
                     </div>
                 )}
             </div>
-
-            {searchQuery && (
-                <div className="mt-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {searchResults.length > 0
-                            ? `Found ${searchResults.length} result${searchResults.length === 1 ? '' : 's'} for "${searchQuery}"`
-                            : `No results found for "${searchQuery}"`}
-                    </p>
-                </div>
-            )}
         </div>
     );
 };

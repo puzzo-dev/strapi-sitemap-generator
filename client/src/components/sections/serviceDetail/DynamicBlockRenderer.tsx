@@ -67,19 +67,25 @@ const DynamicBlockRenderer: React.FC<DynamicBlockRendererProps> = ({
             whyChooseUs: serviceData.whyChooseUs
         };
 
+        // Transform benefits object to array format
         const benefitsService = {
             ...serviceData,
-            benefits: serviceData.benefits || []
+            benefits: serviceData.benefits?.items || []
         };
 
+        // Transform casestudies object to array format
         const caseStudiesService = {
             ...serviceData,
-            casestudies: serviceData.casestudies || []
+            casestudies: serviceData.casestudies?.items || []
         };
 
+        // Transform faqs object to array format with question/answer keys
         const faqsService = {
             ...serviceData,
-            faqs: serviceData.faqs || []
+            faqs: serviceData.faqs?.items?.map((item: any) => ({
+                question: item.title,
+                answer: item.description
+            })) || []
         };
 
         const fallbackCTA = {
@@ -99,17 +105,17 @@ const DynamicBlockRenderer: React.FC<DynamicBlockRendererProps> = ({
                 {(benefitsService.benefits?.length ?? 0) > 0 && (
                     <ServiceDetailBenefitsSection
                         service={benefitsService as any}
-                        badgeText="Key Benefits"
-                        blockTitle="Key Benefits"
-                        blockDescription="Outcomes we deliver with this capability"
+                        badgeText={serviceData.benefits?.title || "Key Benefits"}
+                        blockTitle={serviceData.benefits?.title || "Key Benefits"}
+                        blockDescription={serviceData.benefits?.content || "Outcomes we deliver with this capability"}
                     />
                 )}
 
                 {(caseStudiesService.casestudies?.length ?? 0) > 0 && (
                     <ServiceDetailCaseStudiesSection
                         service={caseStudiesService as any}
-                        blockTitle="Success Stories"
-                        blockDescription="Real-world impact from recent engagements"
+                        blockTitle={serviceData.casestudies?.title || "Success Stories"}
+                        blockDescription={serviceData.casestudies?.content || "Real-world impact from recent engagements"}
                     />
                 )}
 

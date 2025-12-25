@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 interface ServiceDetailBenefitsSectionProps {
   service: ServiceProps & {
-    benefits?: string[];
+    benefits?: Array<{ id?: number; title: string; description: string }>;
   };
   badgeText?: string;
   blockTitle?: string;
@@ -15,6 +15,8 @@ interface ServiceDetailBenefitsSectionProps {
 const ServiceDetailBenefitsSection: React.FC<ServiceDetailBenefitsSectionProps> = ({ service, badgeText, blockTitle, blockDescription }) => {
 
   const benefits = service.benefits;
+
+  if (!benefits || benefits.length === 0) return null;
 
   // Generate dynamic ID from badge text (lowercase, hyphenated)
   const sectionId = badgeText ? badgeText.toLowerCase().replace(/\s+/g, '-') : 'benefits';
@@ -39,18 +41,16 @@ const ServiceDetailBenefitsSection: React.FC<ServiceDetailBenefitsSectionProps> 
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {benefits?.map((benefit, index) => (
-            <Card key={index} className="hover-lift">
+          {benefits.map((benefit, index) => (
+            <Card key={benefit.id || index} className="hover-lift">
               <CardContent className="p-6">
                 <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4">
                   <Check className="h-5 w-5" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{benefit.split(':')[0]}</h3>
-                {benefit.includes(':') && (
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {benefit.split(':')[1].trim()}
-                  </p>
-                )}
+                <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{benefit.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {benefit.description}
+                </p>
               </CardContent>
             </Card>
           ))}

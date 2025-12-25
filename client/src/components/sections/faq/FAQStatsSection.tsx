@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { motion } from 'framer-motion';
 import { FAQItem, FAQCategory } from '@/lib/types/content';
-import { HelpCircle, Users, Clock, CheckCircle } from 'lucide-react';
+import { MessageCircle, FolderOpen, Sparkles } from 'lucide-react';
 import { FAQStatsSectionProps } from '@/lib/types/components';
 
 const FAQStatsSection: React.FC<FAQStatsSectionProps> = ({
@@ -11,59 +11,56 @@ const FAQStatsSection: React.FC<FAQStatsSectionProps> = ({
 }) => {
     const stats = [
         {
-            name: 'Total Questions',
+            label: 'Questions Answered',
             value: faqItems.length,
-            icon: HelpCircle,
-            color: 'text-blue-600 dark:text-blue-400',
-            bgColor: 'bg-blue-100 dark:bg-blue-900/30',
+            icon: MessageCircle,
+            gradient: 'from-blue-500 to-cyan-500',
         },
         {
-            name: 'Categories',
+            label: 'Topic Categories',
             value: categories.length,
-            icon: Users,
-            color: 'text-green-600 dark:text-green-400',
-            bgColor: 'bg-green-100 dark:bg-green-900/30',
+            icon: FolderOpen,
+            gradient: 'from-purple-500 to-pink-500',
         },
         {
-            name: 'Avg. Response Time',
-            value: '< 24h',
-            icon: Clock,
-            color: 'text-yellow-600 dark:text-yellow-400',
-            bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
-        },
-        {
-            name: 'Resolution Rate',
-            value: '98%',
-            icon: CheckCircle,
-            color: 'text-purple-600 dark:text-purple-400',
-            bgColor: 'bg-purple-100 dark:bg-purple-900/30',
+            label: 'Solutions Delivered',
+            value: '500+',
+            icon: Sparkles,
+            gradient: 'from-orange-500 to-red-500',
         },
     ];
 
     return (
-        <section className={`py-12 bg-gray-50 dark:bg-gray-900/50 ${className}`}>
-            <div className="container-custom max-w-8xl">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {stats.map((stat) => {
+        <section className={`py-8 ${className}`}>
+            <div className="container-custom max-w-6xl">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {stats.map((stat, index) => {
                         const IconComponent = stat.icon;
                         return (
-                            <Card key={stat.name}>
-                                <CardContent className="p-6">
-                                    <div className="flex items-center">
-                                        <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                                            <IconComponent className={`h-6 w-6 ${stat.color}`} />
-                                        </div>
-                                        <div className="ml-4">
-                                            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                                {stat.name}
+                            <motion.div
+                                key={stat.label}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1, duration: 0.5 }}
+                                className="relative group"
+                            >
+                                <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl blur-xl`} />
+                                <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex-1">
+                                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                                                {stat.label}
                                             </p>
-                                            <p className="text-2xl font-semibold text-gray-900 dark:text-white">
+                                            <p className={`text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent`}>
                                                 {stat.value}
                                             </p>
                                         </div>
+                                        <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient}`}>
+                                            <IconComponent className="h-6 w-6 text-white" />
+                                        </div>
                                     </div>
-                                </CardContent>
-                            </Card>
+                                </div>
+                            </motion.div>
                         );
                     })}
                 </div>

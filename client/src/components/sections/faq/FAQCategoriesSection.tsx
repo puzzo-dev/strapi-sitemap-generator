@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, Search as SearchIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FAQSearchSection from './FAQSearchSection';
 import { FAQItem, FAQCategory, FAQCategoriesSectionProps } from '@/lib/types/content';
@@ -44,130 +44,107 @@ const FAQCategoriesSection: React.FC<FAQCategoriesSectionProps> = ({
         : categories.find((c: FAQCategory) => c.id === activeCategory)?.description;
 
     return (
-        <section className="py-16 bg-white dark:bg-[#0a192f]">
-            <div className="container-custom max-w-8xl">
-                {isLoading ? (
-                    <div className="max-w-4xl mx-auto">
-                        <div className="animate-pulse space-y-8">
-                            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mx-auto"></div>
-                            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mx-auto"></div>
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                                <div className="lg:col-span-3">
-                                    <div className="h-64 bg-gray-100 dark:bg-gray-800 rounded"></div>
-                                </div>
-                                <div className="lg:col-span-9">
-                                    <div className="space-y-4">
-                                        {Array(5)
-                                            .fill(0)
-                                            .map((_, i) => (
-                                                <div key={i}>
-                                                    <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                                                    <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded"></div>
-                                                </div>
-                                            ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        <div className="lg:col-span-3">
-                            <div className="sticky top-24 space-y-6">
-                                {/* Search Section */}
-                                <FAQSearchSection
-                                    faqItems={faqItems}
-                                    onSearchResults={handleSearchResults}
-                                />
+        <section className="py-16 bg-gradient-to-b from-white to-gray-50 dark:from-[#0a192f] dark:to-[#0c1e3a]">
+            <div className="container-custom max-w-6xl">
+                {/* Search Bar */}
+                <div className="mb-12">
+                    <FAQSearchSection
+                        faqItems={faqItems}
+                        onSearchResults={handleSearchResults}
+                    />
+                </div>
 
-                                {/* Categories */}
-                                <Card>
-                                    <CardContent className="p-4">
-                                        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
-                                            Categories
-                                        </h3>
-                                        <ul className="space-y-2">
-                                            {categories.map((category: FAQCategory) => (
-                                                <li key={category.id}>
-                                                    <Button
-                                                        variant={activeCategory === category.id && !isSearching ? "default" : "ghost"}
-                                                        onClick={() => {
-                                                            setActiveCategory(category.id);
-                                                            setIsSearching(false);
-                                                            setSearchResults([]);
-                                                        }}
-                                                        className="w-full justify-start"
-                                                    >
-                                                        {category.title}
-                                                    </Button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </div>
-
-                        <div className="lg:col-span-9">
-                            <Card>
-                                <CardContent className="p-6">
-                                    <h2 className="text-xl font-bold mb-6 text-blue-900 dark:text-blue-200">
-                                        {displayTitle}
-                                    </h2>
-                                    {displayDescription && (
-                                        <p className="text-gray-600 dark:text-gray-300 mb-8">
-                                            {displayDescription}
-                                        </p>
-                                    )}
-
-                                    <div className="space-y-4">
-                                        {filteredItems.length > 0 ? (
-                                            filteredItems.map((item: FAQItem) => (
-                                                <Card key={item.id}>
-                                                    <Button
-                                                        variant="ghost"
-                                                        onClick={() => toggleItem(item.id)}
-                                                        aria-expanded={expandedItems.has(item.id)}
-                                                        aria-controls={`faq-content-${item.id}`}
-                                                        className="w-full flex justify-between items-center p-4 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                                                    >
-                                                        <h3 className="text-base font-medium text-gray-900 dark:text-white">
-                                                            {item.question}
-                                                        </h3>
-                                                        {expandedItems.has(item.id) ? (
-                                                            <ChevronUp className="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
-                                                        ) : (
-                                                            <ChevronDown className="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
-                                                        )}
-                                                    </Button>
-
-                                                    <div
-                                                        id={`faq-content-${item.id}`}
-                                                        className={`transition-all duration-200 overflow-hidden ${expandedItems.has(item.id) ? 'max-h-96' : 'max-h-0'
-                                                            }`}
-                                                    >
-                                                        <div className="p-4 text-gray-700 dark:text-gray-300">
-                                                            <p>{item.answer}</p>
-                                                        </div>
-                                                    </div>
-                                                </Card>
-                                            ))
-                                        ) : (
-                                            <div className="text-center py-8">
-                                                <p className="text-gray-600 dark:text-gray-400">
-                                                    {isSearching
-                                                        ? "No questions found matching your search."
-                                                        : "No questions found in this category."
-                                                    }
-                                                </p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
+                {/* Category Tabs */}
+                {!isSearching && (
+                    <div className="mb-8">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                            {categories.map((category: FAQCategory) => (
+                                <Button
+                                    key={category.id}
+                                    onClick={() => setActiveCategory(category.id)}
+                                    variant={activeCategory === category.id ? "default" : "outline"}
+                                    className={`rounded-full px-6 py-3 transition-all duration-200 ${activeCategory === category.id
+                                            ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg'
+                                            : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                                        }`}
+                                >
+                                    {category.title}
+                                </Button>
+                            ))}
                         </div>
                     </div>
                 )}
+
+                {/* Questions List */}
+                <div className="space-y-4">
+                    {isSearching && (
+                        <div className="mb-6 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                            <SearchIcon className="h-4 w-4" />
+                            <span>
+                                {filteredItems.length} result{filteredItems.length !== 1 ? 's' : ''} found
+                            </span>
+                        </div>
+                    )}
+
+                    {filteredItems.length > 0 ? (
+                        filteredItems.map((item: FAQItem, index: number) => (
+                            <motion.div
+                                key={item.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.05, duration: 0.3 }}
+                                className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                            >
+                                <button
+                                    onClick={() => toggleItem(item.id)}
+                                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                                    aria-expanded={expandedItems.has(item.id)}
+                                >
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white pr-4">
+                                        {item.question}
+                                    </h3>
+                                    <motion.div
+                                        animate={{ rotate: expandedItems.has(item.id) ? 180 : 0 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <ChevronDown className="h-5 w-5 text-gray-500 flex-shrink-0" />
+                                    </motion.div>
+                                </button>
+
+                                <AnimatePresence>
+                                    {expandedItems.has(item.id) && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                        >
+                                            <div className="px-6 pb-6 pt-2">
+                                                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                                                    <p className="text-base leading-relaxed text-gray-600 dark:text-gray-300">
+                                                        {item.answer}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+                        ))
+                    ) : (
+                        <div className="text-center py-16">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                                <SearchIcon className="h-8 w-8 text-gray-400" />
+                            </div>
+                            <p className="text-lg font-medium text-gray-600 dark:text-gray-400">
+                                {isSearching
+                                    ? "No questions found matching your search."
+                                    : "No questions found in this category."
+                                }
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
         </section>
     );

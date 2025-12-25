@@ -629,25 +629,6 @@ export const servicesPageContent: PageContent = {
     },
     {
       id: 5,
-      type: "testimonials",
-      title: "What Our Clients Say",
-      subtitle: "Trusted by businesses across Nigeria",
-      content: "Our clients trust us to deliver exceptional results. Here's what they have to say about working with I-VARSE Technologies.",
-      backgroundColor: "bg-white dark:bg-[#0a192f]",
-      badge: "💬 Testimonials",
-      settings: {
-        featured: testimonials,
-        layout: "carousel",
-        testimonialCount: 3,
-        animation: {
-          type: "fade" as const,
-          duration: 0.5,
-          delay: 0.1
-        }
-      }
-    },
-    {
-      id: 6,
       type: "cta",
       title: "Ready to Transform Your Business?",
       subtitle: "Let's discuss how we can help you achieve your digital goals",

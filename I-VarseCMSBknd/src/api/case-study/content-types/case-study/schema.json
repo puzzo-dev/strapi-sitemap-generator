@@ -42,22 +42,11 @@
       "component": "shared.seo",
       "repeatable": false
     },
-    "industry": {
-      "type": "enumeration",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "enum": [
-        "all",
-        "banking-financial-services",
-        "healthcare-telemedicine",
-        "retail-ecommerce",
-        "education-elearning",
-        "real-estate-property",
-        "manufacturing-logistics"
-      ]
+    "industries": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::industry.industry",
+      "mappedBy": "case_study"
     },
     "block": {
       "type": "dynamiczone",
