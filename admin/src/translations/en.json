@@ -1,0 +1,4 @@
+{
+    "plugin.name": "Sitemap Generator",
+    "plugin.description": "Generate XML sitemaps from your Strapi content"
+}
