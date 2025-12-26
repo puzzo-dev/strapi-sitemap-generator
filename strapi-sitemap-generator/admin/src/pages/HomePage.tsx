@@ -195,47 +195,41 @@ const HomePage = () => {
         {/* Statistics Cards */}
         {sitemapStats && (
           <Box marginBottom={8}>
-            <Grid.Root gap={5}>
-              <Grid.Item col={4}>
-                <Box background="primary100" padding={6} hasRadius>
-                  <Flex direction="column" gap={2}>
-                    <Typography variant="pi" textColor="primary600" fontWeight="bold">TOTAL URLS</Typography>
-                    <Typography variant="alpha" fontWeight="bold" textColor="primary600">
-                      {sitemapStats.totalUrls}
-                    </Typography>
-                    <Typography variant="omega" textColor="primary700">
-                      Indexed pages
-                    </Typography>
-                  </Flex>
-                </Box>
-              </Grid.Item>
-              <Grid.Item col={4}>
-                <Box background="success100" padding={6} hasRadius>
-                  <Flex direction="column" gap={2}>
-                    <Typography variant="pi" textColor="success600" fontWeight="bold">CONTENT TYPES</Typography>
-                    <Typography variant="alpha" fontWeight="bold" textColor="success600">
-                      {sitemapStats.contentTypes?.length || 0}
-                    </Typography>
-                    <Typography variant="omega" textColor="success700">
-                      Active collections
-                    </Typography>
-                  </Flex>
-                </Box>
-              </Grid.Item>
-              <Grid.Item col={4}>
-                <Box background="secondary100" padding={6} hasRadius>
-                  <Flex direction="column" gap={2}>
-                    <Typography variant="pi" textColor="secondary600" fontWeight="bold">LAST UPDATED</Typography>
-                    <Typography variant="epsilon" fontWeight="semiBold" textColor="secondary700">
-                      {new Date(sitemapStats.lastGenerated).toLocaleDateString()}
-                    </Typography>
-                    <Typography variant="omega" textColor="secondary700">
-                      {new Date(sitemapStats.lastGenerated).toLocaleTimeString()}
-                    </Typography>
-                  </Flex>
-                </Box>
-              </Grid.Item>
-            </Grid.Root>
+            <Grid gap={5}>
+              <Box col={4} background="primary100" padding={6} hasRadius>
+                <Flex direction="column" gap={2}>
+                  <Typography variant="pi" textColor="primary600" fontWeight="bold">TOTAL URLS</Typography>
+                  <Typography variant="alpha" fontWeight="bold" textColor="primary600">
+                    {sitemapStats.totalUrls}
+                  </Typography>
+                  <Typography variant="omega" textColor="primary700">
+                    Indexed pages
+                  </Typography>
+                </Flex>
+              </Box>
+              <Box col={4} background="success100" padding={6} hasRadius>
+                <Flex direction="column" gap={2}>
+                  <Typography variant="pi" textColor="success600" fontWeight="bold">CONTENT TYPES</Typography>
+                  <Typography variant="alpha" fontWeight="bold" textColor="success600">
+                    {sitemapStats.contentTypes?.length || 0}
+                  </Typography>
+                  <Typography variant="omega" textColor="success700">
+                    Active collections
+                  </Typography>
+                </Flex>
+              </Box>
+              <Box col={4} background="secondary100" padding={6} hasRadius>
+                <Flex direction="column" gap={2}>
+                  <Typography variant="pi" textColor="secondary600" fontWeight="bold">LAST UPDATED</Typography>
+                  <Typography variant="epsilon" fontWeight="semiBold" textColor="secondary700">
+                    {new Date(sitemapStats.lastGenerated).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="omega" textColor="secondary700">
+                    {new Date(sitemapStats.lastGenerated).toLocaleTimeString()}
+                  </Typography>
+                </Flex>
+              </Box>
+            </Grid>
           </Box>
         )}
 
@@ -336,8 +330,8 @@ const HomePage = () => {
                         borderColor="neutral200"
                         onClick={(e: React.MouseEvent) => e.stopPropagation()}
                       >
-                        <Grid.Root gap={4}>
-                          <Grid.Item col={12}>
+                        <Grid gap={4}>
+                          <Box col={12}>
                             <Field name={`customPath-${ct.uid}`}>
                               <Flex direction="column" gap={1}>
                                 <Typography variant="pi" fontWeight="bold">URL Path Pattern</Typography>
@@ -352,8 +346,8 @@ const HomePage = () => {
                                 <Typography variant="pi" textColor="neutral600">Leave empty to use default pattern: /{ct.pluralName}/:slug</Typography>
                               </Flex>
                             </Field>
-                          </Grid.Item>
-                          <Grid.Item col={6}>
+                          </Box>
+                          <Box col={6}>
                             <Field name={`priority-${ct.uid}`}>
                               <Flex direction="column" gap={1}>
                                 <Typography variant="pi" fontWeight="bold">SEO Priority</Typography>
@@ -368,8 +362,8 @@ const HomePage = () => {
                                 <Typography variant="pi" textColor="neutral600">Value between 0.0 and 1.0</Typography>
                               </Flex>
                             </Field>
-                          </Grid.Item>
-                          <Grid.Item col={6}>
+                          </Box>
+                          <Box col={6}>
                             <Field name={`changefreq-${ct.uid}`}>
                               <Flex direction="column" gap={1}>
                                 <Typography variant="pi" fontWeight="bold">Update Frequency</Typography>
@@ -389,8 +383,8 @@ const HomePage = () => {
                                 <Typography variant="pi" textColor="neutral600">How often this content changes</Typography>
                               </Flex>
                             </Field>
-                          </Grid.Item>
-                        </Grid.Root>
+                          </Box>
+                        </Grid>
                       </Box>
                     )}
                   </Flex>
@@ -418,8 +412,8 @@ const HomePage = () => {
             </Flex>
           </Flex>
         </Box>
-      </Box>
-    </Main>
+      </Box >
+    </Main >
   );
 };
 
