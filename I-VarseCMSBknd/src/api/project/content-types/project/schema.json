@@ -12,6 +12,9 @@
   "pluginOptions": {
     "i18n": {
       "localized": true
+    },
+    "webtools": {
+      "enabled": true
     }
   },
   "attributes": {

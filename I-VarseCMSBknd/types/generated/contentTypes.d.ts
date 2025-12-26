@@ -444,6 +444,9 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
     i18n: {
       localized: true;
     };
+    webtools: {
+      enabled: true;
+    };
   };
   attributes: {
     block: Schema.Attribute.DynamicZone<
@@ -515,6 +518,9 @@ export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
   pluginOptions: {
     i18n: {
       localized: true;
+    };
+    webtools: {
+      enabled: true;
     };
   };
   attributes: {
@@ -707,6 +713,9 @@ export interface ApiIndustryIndustry extends Struct.CollectionTypeSchema {
     i18n: {
       localized: true;
     };
+    webtools: {
+      enabled: true;
+    };
   };
   attributes: {
     block: Schema.Attribute.DynamicZone<
@@ -832,6 +841,9 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     i18n: {
       localized: true;
     };
+    webtools: {
+      enabled: true;
+    };
   };
   attributes: {
     block: Schema.Attribute.DynamicZone<
@@ -913,6 +925,9 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     i18n: {
       localized: true;
     };
+    webtools: {
+      enabled: true;
+    };
   };
   attributes: {
     block: Schema.Attribute.DynamicZone<
@@ -980,6 +995,9 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
   pluginOptions: {
     i18n: {
       localized: true;
+    };
+    webtools: {
+      enabled: true;
     };
   };
   attributes: {
@@ -1049,6 +1067,9 @@ export interface ApiTeamTeam extends Struct.CollectionTypeSchema {
   pluginOptions: {
     i18n: {
       localized: true;
+    };
+    webtools: {
+      enabled: true;
     };
   };
   attributes: {
