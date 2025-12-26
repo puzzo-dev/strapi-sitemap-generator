@@ -7,17 +7,13 @@ const service = ({ strapi }: { strapi: Core.Strapi }) => ({
   async discoverContentTypes() {
     const contentTypes = [];
     const allContentTypes = strapi.contentTypes;
-
     for (const [uid, contentType] of Object.entries(allContentTypes)) {
       // Only include API content types (exclude admin, plugin types)
       if (!uid.startsWith('api::')) continue;
-
       const schema = contentType as any;
       const attributes = schema.attributes || {};
-
       // Only content types with slug field
       const hasSlug = 'slug' in attributes;
-
       if (hasSlug) {
         contentTypes.push({
           uid,
@@ -61,48 +57,55 @@ const service = ({ strapi }: { strapi: Core.Strapi }) => ({
       customChangefreq = {},
     } = config;
 
+    strapi.log.info(`[Sitemap] Generating sitemap with ${selectedContentTypes.length} selected content types`);
+    strapi.log.info(`[Sitemap] Selected types:`, selectedContentTypes);
+
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+    if (selectedContentTypes.length === 0) {
+      strapi.log.warn('[Sitemap] No content types selected for sitemap generation');
+      xml += '</urlset>';
+      return xml;
+    }
 
     // Process ONLY selected content types
     for (const uid of selectedContentTypes) {
       try {
         const contentType = await this.getContentTypeInfo(uid);
+        strapi.log.info(`[Sitemap] Processing content type: ${uid}`);
 
-        // Build query - only filter by publishedAt if field exists
-        const query: any = {
-          fields: ['slug', 'updatedAt'],
-        };
+        // Fetch all entries - let Strapi handle draft/published state
+        const entries = await strapi.entityService.findMany(uid);
 
-        if (contentType.hasPublishedAt) {
-          query.filters = { publishedAt: { $notNull: true } };
-          query.publicationState = 'live';
-        }
+        strapi.log.info(`[Sitemap] Found ${entries?.length || 0} entries for ${uid}`);
 
-        const entries = await strapi.entityService.findMany(uid, query);
-
-        if (entries && Array.isArray(entries)) {
+        if (entries && Array.isArray(entries) && entries.length > 0) {
           const basePath = customPaths[uid] || `/${contentType.pluralName}`;
           const priority = customPriorities[uid] || 0.7;
           const changefreq = customChangefreq[uid] || 'monthly';
 
           entries.forEach((entry) => {
-            xml += this.generateUrlEntry({
-              loc: `${baseUrl}${basePath}/${entry.slug}`,
-              lastmod: entry.updatedAt
-                ? new Date(entry.updatedAt).toISOString().split('T')[0]
-                : new Date().toISOString().split('T')[0],
-              priority,
-              changefreq,
-            });
+            if (entry.slug) {
+              xml += this.generateUrlEntry({
+                loc: `${baseUrl}${basePath}/${entry.slug}`,
+                lastmod: entry.updatedAt
+                  ? new Date(entry.updatedAt).toISOString().split('T')[0]
+                  : new Date().toISOString().split('T')[0],
+                priority,
+                changefreq,
+              });
+            }
           });
         }
       } catch (error: any) {
-        strapi.log.warn(`Failed to fetch entries for ${uid}:`, error.message);
+        strapi.log.error(`[Sitemap] Failed to fetch entries for ${uid}:`, error.message);
+        strapi.log.error(`[Sitemap] Error details:`, error);
       }
     }
 
     xml += '</urlset>';
+    strapi.log.info(`[Sitemap] Sitemap generation complete`);
     return xml;
   },
 
@@ -137,6 +140,8 @@ const service = ({ strapi }: { strapi: Core.Strapi }) => ({
       customPaths = {},
     } = config;
 
+    strapi.log.info(`[Sitemap] Getting sitemap data for ${selectedContentTypes.length} content types`);
+
     const data = {
       entries: {} as Record<string, any[]>,
       meta: {
@@ -146,43 +151,47 @@ const service = ({ strapi }: { strapi: Core.Strapi }) => ({
       },
     };
 
+    if (selectedContentTypes.length === 0) {
+      strapi.log.warn('[Sitemap] No content types selected - returning empty sitemap data');
+      return data;
+    }
+
     for (const uid of selectedContentTypes) {
       try {
         const contentType = await this.getContentTypeInfo(uid);
+        strapi.log.info(`[Sitemap] Fetching data for ${uid}`);
 
-        const query: any = {
-          fields: ['slug', 'title', 'name', 'updatedAt'],
-        };
+        // Fetch all entries without filters
+        const entries = await strapi.entityService.findMany(uid);
 
-        if (contentType.hasPublishedAt) {
-          query.filters = { publishedAt: { $notNull: true } };
-          query.publicationState = 'live';
-        }
+        strapi.log.info(`[Sitemap] Found ${entries?.length || 0} entries for ${uid}`);
 
-        const entries = await strapi.entityService.findMany(uid, query);
-
-        if (entries && Array.isArray(entries)) {
+        if (entries && Array.isArray(entries) && entries.length > 0) {
           const basePath = customPaths[uid] || `/${contentType.pluralName}`;
 
-          data.entries[uid] = entries.map((entry) => ({
-            url: `${baseUrl}${basePath}/${entry.slug}`,
-            title: entry.title || entry.name || entry.slug,
-            lastmod: entry.updatedAt,
-          }));
+          data.entries[uid] = entries
+            .filter((entry) => entry.slug) // Only include entries with slug
+            .map((entry) => ({
+              url: `${baseUrl}${basePath}/${entry.slug}`,
+              title: entry.title || entry.name || entry.slug,
+              lastmod: entry.updatedAt,
+            }));
 
           data.meta.contentTypes.push({
             uid,
             displayName: contentType.displayName,
-            count: entries.length,
+            count: data.entries[uid].length,
           });
 
-          data.meta.totalUrls += entries.length;
+          data.meta.totalUrls += data.entries[uid].length;
         }
       } catch (error: any) {
-        strapi.log.warn(`Failed to fetch ${uid}:`, error.message);
+        strapi.log.error(`[Sitemap] Failed to fetch ${uid}:`, error.message);
+        strapi.log.error(`[Sitemap] Error details:`, error);
       }
     }
 
+    strapi.log.info(`[Sitemap] Total URLs in sitemap: ${data.meta.totalUrls}`);
     return data;
   },
 

@@ -4,19 +4,17 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
   Typography,
   TextInput,
   NumberInput,
   SingleSelect,
   SingleSelectOption,
-  Field,
   Divider,
   Badge,
   IconButton,
 } from '@strapi/design-system';
 import { Check, Download, Eye, ArrowClockwise, Information } from '@strapi/icons';
-import { useNotification, useFetchClient, Page } from '@strapi/admin/strapi-admin';
+import { useNotification, useFetchClient } from '@strapi/admin/strapi-admin';
 
 const HomePage = () => {
   const { get, put } = useFetchClient();
@@ -94,8 +92,26 @@ const HomePage = () => {
   };
 
   const handleGenerateSitemap = async () => {
+    if (selectedTypes.size === 0) {
+      toggleNotification({
+        type: 'warning',
+        message: 'Please select at least one content type before generating',
+      });
+      return;
+    }
+
     setGenerating(true);
     try {
+      // First save the config with selected types
+      await put('/strapi-sitemap-generator/config', {
+        baseUrl: config.baseUrl || 'https://example.com',
+        selectedContentTypes: Array.from(selectedTypes),
+        customPaths: config.customPaths || {},
+        customPriorities: config.customPriorities || {},
+        customChangefreq: config.customChangefreq || {},
+      });
+
+      // Then generate sitemap
       const { data } = await get('/strapi-sitemap-generator/data');
       setSitemapStats(data.meta);
 
@@ -104,9 +120,10 @@ const HomePage = () => {
         message: `Sitemap generated! Total URLs: ${data.meta.totalUrls}`,
       });
     } catch (error) {
+      console.error('Generation error:', error);
       toggleNotification({
         type: 'danger',
-        message: 'Failed to generate sitemap',
+        message: 'Failed to generate sitemap - check console for details',
       });
     } finally {
       setGenerating(false);
@@ -114,10 +131,18 @@ const HomePage = () => {
   };
 
   const handleViewSitemap = () => {
+    toggleNotification({
+      type: 'info',
+      message: 'Opening sitemap in new tab...',
+    });
     window.open('/api/strapi-sitemap-generator/sitemap.xml', '_blank');
   };
 
   const handleDownloadSitemap = () => {
+    toggleNotification({
+      type: 'info',
+      message: 'Downloading sitemap...',
+    });
     window.open('/api/strapi-sitemap-generator/download', '_blank');
   };
 
@@ -152,153 +177,128 @@ const HomePage = () => {
   };
 
   return (
-    <Main>
-      <Page.Title>Sitemap Generator</Page.Title>
-
-      <Box background="neutral0" paddingTop={6} paddingBottom={6} paddingLeft={10} paddingRight={10}>
-        {/* Page Header */}
-        <Box marginBottom={6}>
-          <Typography variant="alpha" fontWeight="bold">Sitemap Generator</Typography>
-          <Box marginTop={2}>
-            <Typography variant="omega" textColor="neutral600">
-              Generate and configure XML sitemaps for your content
-            </Typography>
-          </Box>
+    <Box background="neutral100">
+      <Box paddingTop={6} paddingBottom={10} paddingLeft={7} paddingRight={7}>
+        {/* Header */}
+        <Box marginBottom={8}>
+          <Typography variant="alpha" fontWeight="bold" style={{ display: 'block' }}>Sitemap Generator</Typography>
+          <Typography variant="omega" textColor="neutral600" marginTop={2} style={{ display: 'block' }}>
+            Generate and manage XML sitemaps for your content
+          </Typography>
         </Box>
 
         {/* Quick Actions */}
-        <Box marginBottom={8} background="neutral100" padding={6} hasRadius>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Box>
-              <Typography variant="delta" fontWeight="semiBold" marginBottom={1}>Quick Actions</Typography>
-              <Typography variant="omega" textColor="neutral600">Generate, preview, or download your sitemap</Typography>
-            </Box>
-            <Flex gap={2}>
-              <Button
-                onClick={handleGenerateSitemap}
-                loading={generating}
-                startIcon={<ArrowClockwise />}
-                variant="default"
-              >
-                Generate
-              </Button>
-              <Button onClick={handleViewSitemap} startIcon={<Eye />} variant="secondary">
-                Preview
-              </Button>
-              <Button onClick={handleDownloadSitemap} startIcon={<Download />} variant="tertiary">
-                Download
-              </Button>
-            </Flex>
+        <Box marginBottom={8} background="neutral0" padding={6} hasRadius shadow="tableShadow">
+          <Typography variant="delta" fontWeight="semiBold" marginBottom={4}>Quick Actions</Typography>
+          <Flex gap={3} paddingBottom={2} marginTop={3} style={{ flexWrap: 'nowrap', minHeight: '44px' }}>
+            <Button
+              onClick={handleGenerateSitemap}
+              loading={generating}
+              startIcon={<ArrowClockwise />}
+              style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
+              Generate Sitemap
+            </Button>
+            <Button
+              onClick={handleViewSitemap}
+              startIcon={<Eye />}
+              variant="secondary"
+              style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
+              Preview XML
+            </Button>
+            <Button
+              onClick={handleDownloadSitemap}
+              startIcon={<Download />}
+              variant="tertiary"
+              style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
+              Download
+            </Button>
           </Flex>
         </Box>
 
-        {/* Statistics Cards */}
+        {/* Statistics */}
         {sitemapStats && (
-          <Box marginBottom={8}>
-            <Grid gap={5}>
-              <Box col={4} background="primary100" padding={6} hasRadius>
-                <Flex direction="column" gap={2}>
-                  <Typography variant="pi" textColor="primary600" fontWeight="bold">TOTAL URLS</Typography>
-                  <Typography variant="alpha" fontWeight="bold" textColor="primary600">
-                    {sitemapStats.totalUrls}
-                  </Typography>
-                  <Typography variant="omega" textColor="primary700">
-                    Indexed pages
-                  </Typography>
-                </Flex>
-              </Box>
-              <Box col={4} background="success100" padding={6} hasRadius>
-                <Flex direction="column" gap={2}>
-                  <Typography variant="pi" textColor="success600" fontWeight="bold">CONTENT TYPES</Typography>
-                  <Typography variant="alpha" fontWeight="bold" textColor="success600">
-                    {sitemapStats.contentTypes?.length || 0}
-                  </Typography>
-                  <Typography variant="omega" textColor="success700">
-                    Active collections
-                  </Typography>
-                </Flex>
-              </Box>
-              <Box col={4} background="secondary100" padding={6} hasRadius>
-                <Flex direction="column" gap={2}>
-                  <Typography variant="pi" textColor="secondary600" fontWeight="bold">LAST UPDATED</Typography>
-                  <Typography variant="epsilon" fontWeight="semiBold" textColor="secondary700">
-                    {new Date(sitemapStats.lastGenerated).toLocaleDateString()}
-                  </Typography>
-                  <Typography variant="omega" textColor="secondary700">
-                    {new Date(sitemapStats.lastGenerated).toLocaleTimeString()}
-                  </Typography>
-                </Flex>
-              </Box>
-            </Grid>
-          </Box>
+          <Flex gap={4} marginBottom={8}>
+            <Box style={{ flex: 1 }} background="neutral0" padding={6} hasRadius shadow="tableShadow">
+              <Flex direction="column" gap={4}>
+                <Typography variant="sigma" textColor="neutral600" fontWeight="bold">TOTAL URLS</Typography>
+                <Typography variant="alpha" fontWeight="bold">
+                  {sitemapStats.totalUrls}
+                </Typography>
+              </Flex>
+            </Box>
+            <Box style={{ flex: 1 }} background="neutral0" padding={6} hasRadius shadow="tableShadow">
+              <Flex direction="column" gap={4}>
+                <Typography variant="sigma" textColor="neutral600" fontWeight="bold">CONTENT TYPES</Typography>
+                <Typography variant="alpha" fontWeight="bold">
+                  {sitemapStats.contentTypes?.length || 0}
+                </Typography>
+              </Flex>
+            </Box>
+            <Box style={{ flex: 1 }} background="neutral0" padding={6} hasRadius shadow="tableShadow">
+              <Flex direction="column" gap={4}>
+                <Typography variant="sigma" textColor="neutral600" fontWeight="bold">LAST UPDATED</Typography>
+                <Typography variant="alpha" fontWeight="bold">
+                  {new Date(sitemapStats.lastGenerated).toLocaleDateString()}
+                </Typography>
+              </Flex>
+            </Box>
+          </Flex>
         )}
 
-        <Divider marginBottom={6} />
-
-        {/* Base Configuration */}
-        <Box marginBottom={8}>
-          <Typography variant="beta" fontWeight="semiBold" marginBottom={4}>
-            Base Configuration
+        {/* Configuration */}
+        <Box marginBottom={8} background="neutral0" padding={6} hasRadius shadow="tableShadow">
+          <Typography variant="omega" fontWeight="semiBold" marginBottom={6} style={{ display: 'block' }}>
+            Base URL Configuration
           </Typography>
-          <Box background="neutral0" padding={6} hasRadius borderColor="neutral200">
-            <Field name="baseUrl" required>
-              <Flex direction="column" gap={1}>
-                <Typography variant="pi" fontWeight="bold">Website Base URL</Typography>
-                <TextInput
-                  type="text"
-                  placeholder="https://example.com"
-                  value={config.baseUrl || ''}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setConfig({ ...config, baseUrl: e.target.value })
-                  }
-                />
-                <Typography variant="pi" textColor="neutral600">Enter your website's base URL without trailing slash</Typography>
-              </Flex>
-            </Field>
-          </Box>
+          <Typography variant="sigma" fontWeight="bold" marginBottom={3}>Website Base URL</Typography>
+          <Flex direction="column" gap={3} marginTop={3} style={{ width: '100%' }}>
+            <Box style={{ width: '100%' }}>
+              <TextInput
+                placeholder="https://example.com"
+                value={config.baseUrl || ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setConfig({ ...config, baseUrl: e.target.value })
+                }
+              />
+            </Box>
+          </Flex>
         </Box>
 
-        <Divider marginBottom={6} />
-
         {/* Content Types */}
-        <Box marginBottom={8}>
+        <Box marginBottom={8} background="neutral0" padding={6} hasRadius shadow="tableShadow">
           <Flex justifyContent="space-between" alignItems="center" marginBottom={4}>
-            <Box>
-              <Typography variant="beta" fontWeight="semiBold">Content Types</Typography>
-              <Typography variant="omega" textColor="neutral600" marginTop={1}>
-                Select which content types to include in your sitemap
-              </Typography>
-            </Box>
+            <Typography variant="delta" fontWeight="semiBold">Content Types</Typography>
             <Badge>{selectedTypes.size} selected</Badge>
           </Flex>
 
           {contentTypes.length === 0 ? (
-            <Box padding={10} background="neutral100" hasRadius>
+            <Box padding={8} background="neutral100" hasRadius>
               <Flex direction="column" alignItems="center" gap={3}>
-                <Information width="48px" height="48px" color="neutral500" />
-                <Typography variant="delta" textColor="neutral600">No eligible content types found</Typography>
-                <Typography variant="omega" textColor="neutral500" textAlign="center">
-                  Content types must have a 'slug' field to be included in sitemaps
+                <Information width="32px" height="32px" />
+                <Typography variant="delta" textColor="neutral600">No content types available</Typography>
+                <Typography variant="pi" textColor="neutral500">
+                  Content types must have a 'slug' field
                 </Typography>
               </Flex>
             </Box>
           ) : (
-            <Flex direction="column" gap={3}>
-              {contentTypes.map((ct, index) => (
+            <Flex direction="column" gap={2} alignItems="stretch" style={{ width: '100%' }}>
+              {contentTypes.map((ct) => (
                 <Box
                   key={ct.uid}
                   background={selectedTypes.has(ct.uid) ? "primary100" : "neutral0"}
-                  padding={5}
+                  padding={4}
                   hasRadius
-                  borderColor={selectedTypes.has(ct.uid) ? "primary200" : "neutral200"}
-                  borderWidth="1px"
-                  style={{ cursor: 'pointer' }}
+                  shadow="filterShadow"
+                  style={{ cursor: 'pointer', transition: 'all 0.2s', width: '100%' }}
                   onClick={() => handleToggleContentType(ct.uid)}
                 >
-                  <Flex direction="column" gap={4}>
-                    {/* Header */}
-                    <Flex justifyContent="space-between" alignItems="center">
-                      <Flex gap={3} alignItems="center">
+                  <Flex direction="column" gap={3} alignItems="flex-start" style={{ width: '100%' }}>
+                    <Flex justifyContent="space-between" alignItems="center" wrap="wrap" gap={2} style={{ width: '100%' }}>
+                      <Flex gap={2} alignItems="center">
                         <input
                           type="checkbox"
                           checked={selectedTypes.has(ct.uid)}
@@ -306,7 +306,7 @@ const HomePage = () => {
                             e.stopPropagation();
                             handleToggleContentType(ct.uid);
                           }}
-                          style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                          style={{ width: '18px', height: '18px', cursor: 'pointer' }}
                         />
                         <Box>
                           <Typography variant="delta" fontWeight="semiBold">
@@ -318,73 +318,65 @@ const HomePage = () => {
                         </Box>
                       </Flex>
                       {ct.hasPublishedAt && (
-                        <Badge backgroundColor="success100" textColor="success700">Published Content</Badge>
+                        <Badge backgroundColor="success100" textColor="success700">Published</Badge>
                       )}
                     </Flex>
 
-                    {/* Expanded Settings */}
                     {selectedTypes.has(ct.uid) && (
                       <Box
-                        marginTop={2}
-                        paddingTop={4}
-                        borderColor="neutral200"
+                        paddingTop={3}
                         onClick={(e: React.MouseEvent) => e.stopPropagation()}
                       >
-                        <Grid gap={4}>
-                          <Box col={12}>
-                            <Field name={`customPath-${ct.uid}`}>
-                              <Flex direction="column" gap={1}>
-                                <Typography variant="pi" fontWeight="bold">URL Path Pattern</Typography>
-                                <TextInput
-                                  type="text"
-                                  placeholder={`/${ct.pluralName}/:slug`}
-                                  value={config.customPaths?.[ct.uid] || ''}
-                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    updateCustomPath(ct.uid, e.target.value)
-                                  }
-                                />
-                                <Typography variant="pi" textColor="neutral600">Leave empty to use default pattern: /{ct.pluralName}/:slug</Typography>
-                              </Flex>
-                            </Field>
-                          </Box>
-                          <Box col={6}>
-                            <Field name={`priority-${ct.uid}`}>
-                              <Flex direction="column" gap={1}>
-                                <Typography variant="pi" fontWeight="bold">SEO Priority</Typography>
-                                <NumberInput
-                                  placeholder="0.7"
-                                  min={0}
-                                  max={1}
-                                  step={0.1}
-                                  value={config.customPriorities?.[ct.uid] || 0.7}
-                                  onValueChange={(value: number) => updateCustomPriority(ct.uid, value)}
-                                />
-                                <Typography variant="pi" textColor="neutral600">Value between 0.0 and 1.0</Typography>
-                              </Flex>
-                            </Field>
-                          </Box>
-                          <Box col={6}>
-                            <Field name={`changefreq-${ct.uid}`}>
-                              <Flex direction="column" gap={1}>
-                                <Typography variant="pi" fontWeight="bold">Update Frequency</Typography>
-                                <SingleSelect
-                                  placeholder="Select frequency"
-                                  value={config.customChangefreq?.[ct.uid] || 'monthly'}
-                                  onChange={(value: string) => updateCustomChangefreq(ct.uid, value)}
-                                >
-                                  <SingleSelectOption value="always">Always</SingleSelectOption>
-                                  <SingleSelectOption value="hourly">Hourly</SingleSelectOption>
-                                  <SingleSelectOption value="daily">Daily</SingleSelectOption>
-                                  <SingleSelectOption value="weekly">Weekly</SingleSelectOption>
-                                  <SingleSelectOption value="monthly">Monthly</SingleSelectOption>
-                                  <SingleSelectOption value="yearly">Yearly</SingleSelectOption>
-                                  <SingleSelectOption value="never">Never</SingleSelectOption>
-                                </SingleSelect>
-                                <Typography variant="pi" textColor="neutral600">How often this content changes</Typography>
-                              </Flex>
-                            </Field>
-                          </Box>
-                        </Grid>
+                        <Flex direction="column" gap={2}>
+                          <Flex gap={3} alignItems="center" style={{ width: '100%' }}>
+                            <Box style={{ minWidth: '120px' }}>
+                              <Typography variant="pi" fontWeight="bold">URL Pattern</Typography>
+                            </Box>
+                            <Box style={{ flex: 1 }}>
+                              <TextInput
+                                placeholder={`/${ct.pluralName}/:slug`}
+                                value={config.customPaths?.[ct.uid] || ''}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                  updateCustomPath(ct.uid, e.target.value)
+                                }
+                              />
+                            </Box>
+                          </Flex>
+
+                          <Flex gap={3} alignItems="center" style={{ width: '100%' }}>
+                            <Box style={{ minWidth: '120px' }}>
+                              <Typography variant="pi" fontWeight="bold">Priority</Typography>
+                            </Box>
+                            <Box style={{ width: '120px' }}>
+                              <NumberInput
+                                placeholder="0.7"
+                                min={0}
+                                max={1}
+                                step={0.1}
+                                value={config.customPriorities?.[ct.uid] || 0.7}
+                                onValueChange={(value: number) => updateCustomPriority(ct.uid, value)}
+                              />
+                            </Box>
+                            <Box style={{ minWidth: '120px', marginLeft: '20px' }}>
+                              <Typography variant="pi" fontWeight="bold">Frequency</Typography>
+                            </Box>
+                            <Box style={{ flex: 1 }}>
+                              <SingleSelect
+                                placeholder="Select frequency"
+                                value={config.customChangefreq?.[ct.uid] || 'monthly'}
+                                onChange={(value: string) => updateCustomChangefreq(ct.uid, value)}
+                              >
+                                <SingleSelectOption value="always">Always</SingleSelectOption>
+                                <SingleSelectOption value="hourly">Hourly</SingleSelectOption>
+                                <SingleSelectOption value="daily">Daily</SingleSelectOption>
+                                <SingleSelectOption value="weekly">Weekly</SingleSelectOption>
+                                <SingleSelectOption value="monthly">Monthly</SingleSelectOption>
+                                <SingleSelectOption value="yearly">Yearly</SingleSelectOption>
+                                <SingleSelectOption value="never">Never</SingleSelectOption>
+                              </SingleSelect>
+                            </Box>
+                          </Flex>
+                        </Flex>
                       </Box>
                     )}
                   </Flex>
@@ -394,26 +386,28 @@ const HomePage = () => {
           )}
         </Box>
 
-        <Divider marginBottom={6} />
-
-        {/* Action Footer */}
-        <Box background="neutral100" padding={5} hasRadius>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Typography variant="omega" textColor="neutral600">
-              Remember to save your configuration after making changes
-            </Typography>
-            <Flex gap={2}>
-              <Button onClick={fetchConfig} variant="tertiary">
-                Cancel
-              </Button>
-              <Button onClick={handleSaveConfig} loading={loading} startIcon={<Check />} disabled={selectedTypes.size === 0}>
-                Save Configuration
-              </Button>
-            </Flex>
-          </Flex>
-        </Box>
-      </Box >
-    </Main >
+        {/* Actions - Simplified */}
+        <Flex justifyContent="flex-end" gap={2} wrap="wrap" marginTop={6}>
+          <Button onClick={() => {
+            fetchConfig();
+            toggleNotification({
+              type: 'info',
+              message: 'Configuration reset to saved values',
+            });
+          }} variant="tertiary">
+            Reset
+          </Button>
+          <Button
+            onClick={handleSaveConfig}
+            loading={loading}
+            startIcon={<Check />}
+            disabled={selectedTypes.size === 0}
+          >
+            Save Configuration
+          </Button>
+        </Flex>
+      </Box>
+    </Box>
   );
 };
 
