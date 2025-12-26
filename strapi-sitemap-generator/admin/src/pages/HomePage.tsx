@@ -69,6 +69,10 @@ const HomePage = () => {
   const handleSaveConfig = async () => {
     setLoading(true);
     try {
+      toggleNotification({
+        type: 'info',
+        message: 'Saving configuration...',
+      });
       await put('/strapi-sitemap-generator/config', {
         baseUrl: config.baseUrl || 'https://example.com',
         selectedContentTypes: Array.from(selectedTypes),
@@ -102,6 +106,10 @@ const HomePage = () => {
 
     setGenerating(true);
     try {
+      toggleNotification({
+        type: 'info',
+        message: 'Generating sitemap...',
+      });
       // First save the config with selected types
       await put('/strapi-sitemap-generator/config', {
         baseUrl: config.baseUrl || 'https://example.com',
@@ -206,14 +214,6 @@ const HomePage = () => {
               style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
             >
               Preview XML
-            </Button>
-            <Button
-              onClick={handleDownloadSitemap}
-              startIcon={<Download />}
-              variant="tertiary"
-              style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
-            >
-              Download
             </Button>
           </Flex>
         </Box>

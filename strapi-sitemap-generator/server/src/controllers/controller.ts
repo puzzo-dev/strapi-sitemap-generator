@@ -33,21 +33,8 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   },
 
   /**
-   * Download sitemap.xml file
-   * Admin endpoint for downloading
+   * (Removed) Download sitemap.xml - not needed, engines fetch XML via public URL
    */
-  async downloadXml(ctx: any) {
-    try {
-      const service = strapi.plugin('strapi-sitemap-generator').service('service');
-      const xml = await service.generateXML();
-
-      ctx.type = 'application/xml';
-      ctx.attachment('sitemap.xml');
-      ctx.body = xml;
-    } catch (error: any) {
-      ctx.throw(500, `Failed to download sitemap: ${error.message}`);
-    }
-  },
 
   /**
    * Get all available content types
