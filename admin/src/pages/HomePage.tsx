@@ -11,8 +11,6 @@ import {
   SingleSelect,
   SingleSelectOption,
   Field,
-  FieldLabel,
-  FieldInput,
   Divider,
   Badge,
   IconButton,
@@ -251,8 +249,8 @@ const HomePage = () => {
           <Box background="neutral0" padding={6} hasRadius borderColor="neutral200">
             <Field name="baseUrl" required>
               <Flex direction="column" gap={1}>
-                <FieldLabel>Website Base URL</FieldLabel>
-                <FieldInput
+                <Typography variant="pi" fontWeight="bold">Website Base URL</Typography>
+                <TextInput
                   type="text"
                   placeholder="https://example.com"
                   value={config.baseUrl || ''}
@@ -342,8 +340,8 @@ const HomePage = () => {
                           <Grid.Item col={12}>
                             <Field name={`customPath-${ct.uid}`}>
                               <Flex direction="column" gap={1}>
-                                <FieldLabel>URL Path Pattern</FieldLabel>
-                                <FieldInput
+                                <Typography variant="pi" fontWeight="bold">URL Path Pattern</Typography>
+                                <TextInput
                                   type="text"
                                   placeholder={`/${ct.pluralName}/:slug`}
                                   value={config.customPaths?.[ct.uid] || ''}
@@ -358,7 +356,7 @@ const HomePage = () => {
                           <Grid.Item col={6}>
                             <Field name={`priority-${ct.uid}`}>
                               <Flex direction="column" gap={1}>
-                                <FieldLabel>SEO Priority</FieldLabel>
+                                <Typography variant="pi" fontWeight="bold">SEO Priority</Typography>
                                 <NumberInput
                                   placeholder="0.7"
                                   min={0}
@@ -374,7 +372,7 @@ const HomePage = () => {
                           <Grid.Item col={6}>
                             <Field name={`changefreq-${ct.uid}`}>
                               <Flex direction="column" gap={1}>
-                                <FieldLabel>Update Frequency</FieldLabel>
+                                <Typography variant="pi" fontWeight="bold">Update Frequency</Typography>
                                 <SingleSelect
                                   placeholder="Select frequency"
                                   value={config.customChangefreq?.[ct.uid] || 'monthly'}
