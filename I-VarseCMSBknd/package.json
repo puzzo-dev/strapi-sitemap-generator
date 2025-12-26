@@ -2,7 +2,7 @@
   "name": "i-varse-cms-bknd",
   "version": "0.1.0",
   "private": true,
-  "description": "A Strapi application",
+  "description": "I-Varse Technologies Corporate Website CMS Backend",
   "scripts": {
     "build": "strapi build",
     "console": "strapi console",
@@ -24,13 +24,25 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
+    "strapi-sitemap-generator": "file:../strapi-sitemap-generator",
     "styled-components": "^6.0.0",
     "webtools-addon-sitemap": "^0.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/body-parser": "^1.19.6",
+    "@types/eslint": "^9.6.1",
+    "@types/estree": "^1.0.8",
+    "@types/estree-jsx": "^1.0.5",
+    "@types/express": "^5.0.6",
+    "@types/express-serve-static-core": "^5.1.0",
+    "@types/hast": "^3.0.4",
+    "@types/mdast": "^4.0.4",
+    "@types/mime": "^3.0.4",
+    "@types/node": "^20.19.27",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/send": "^1.2.1",
+    "@types/unist": "^3.0.3",
     "typescript": "^5"
   },
   "engines": {
