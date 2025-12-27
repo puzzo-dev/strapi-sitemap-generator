@@ -68,11 +68,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com//puzzo-dev.git"
+    "url": "git+https://github.com/puzzo-dev/strapi-sitemap-generator.git"
   },
   "bugs": {
-    "url": "https://github.com//puzzo-dev/issues"
+    "url": "https://github.com/puzzo-dev/strapi-sitemap-generator/issues"
   },
-  "homepage": "https://github.com//puzzo-dev#readme",
+  "homepage": "https://github.com/puzzo-dev/strapi-sitemap-generator#readme",
   "author": "puzzo-dev <ivarseltd@gmail.com>"
 }
