@@ -10,14 +10,5 @@ export default {
         policies: [],
       },
     },
-    {
-      method: 'GET',
-      path: '/download',
-      handler: 'controller.downloadXml',
-      config: {
-        auth: false,
-        policies: [],
-      },
-    },
   ],
 };

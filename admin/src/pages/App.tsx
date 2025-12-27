@@ -1,4 +1,4 @@
-import { Page } from '@strapi/strapi/admin';
+import { Page } from '@strapi/strapi/dist/admin';
 import { Routes, Route } from 'react-router-dom';
 
 import { HomePage } from './HomePage';

@@ -1,5 +1,5 @@
 {
-  "version": "0.0.0",
+  "version": "0.1.1",
   "keywords": [],
   "type": "commonjs",
   "exports": {
@@ -23,7 +23,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "strapi-plugin build",
+    "build": "npx strapi-plugin build",
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
@@ -61,10 +61,10 @@
     "kind": "plugin",
     "name": "strapi-sitemap-generator",
     "displayName": "Strapi Sitemap Generator",
-    "description": "Working Plugin to generate sitemap in Strapi V5 Project"
+    "description": "Plugin to generate sitemap in Strapi V5 Project"
   },
   "name": "strapi-sitemap-generator",
-  "description": "Working Plugin to generate sitemap in Strapi V5 Project",
+  "description": "Plugin to generate sitemap in Strapi V5 Project",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -81,14 +81,14 @@ const service = ({ strapi }: { strapi: Core.Strapi }) => ({
         strapi.log.info(`[Sitemap] Found ${entries?.length || 0} entries for ${uid}`);
 
         if (entries && Array.isArray(entries) && entries.length > 0) {
-          const basePath = customPaths[uid] || `/${contentType.pluralName}`;
+          const customPath = customPaths[uid] || `/${contentType.pluralName}`;
           const priority = customPriorities[uid] || 0.7;
           const changefreq = customChangefreq[uid] || 'monthly';
 
           entries.forEach((entry) => {
             if (entry.slug) {
               xml += this.generateUrlEntry({
-                loc: `${baseUrl}${basePath}/${entry.slug}`,
+                loc: this.normalizeUrlPath(baseUrl, customPath, entry.slug),
                 lastmod: entry.updatedAt
                   ? new Date(entry.updatedAt).toISOString().split('T')[0]
                   : new Date().toISOString().split('T')[0],
@@ -126,6 +126,26 @@ const service = ({ strapi }: { strapi: Core.Strapi }) => ({
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&apos;');
+  },
+
+  /**
+   * Normalize URL path to prevent double slashes
+   * Handles cases like customPath="/" or customPath="/custom"
+   */
+  normalizeUrlPath(baseUrl: string, customPath: string, slug: string): string {
+    // Remove trailing slash from baseUrl if present
+    const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+
+    // Handle empty or root-only customPath
+    if (!customPath || customPath === '/') {
+      return `${cleanBaseUrl}/${slug}`;
+    }
+
+    // Ensure customPath starts with / and doesn't end with /
+    const cleanPath = customPath.startsWith('/') ? customPath : `/${customPath}`;
+    const normalizedPath = cleanPath.replace(/\/$/, '');
+
+    return `${cleanBaseUrl}${normalizedPath}/${slug}`;
   },
 
   /**
@@ -167,12 +187,12 @@ const service = ({ strapi }: { strapi: Core.Strapi }) => ({
         strapi.log.info(`[Sitemap] Found ${entries?.length || 0} entries for ${uid}`);
 
         if (entries && Array.isArray(entries) && entries.length > 0) {
-          const basePath = customPaths[uid] || `/${contentType.pluralName}`;
+          const customPath = customPaths[uid] || `/${contentType.pluralName}`;
 
           data.entries[uid] = entries
             .filter((entry) => entry.slug) // Only include entries with slug
             .map((entry) => ({
-              url: `${baseUrl}${basePath}/${entry.slug}`,
+              url: this.normalizeUrlPath(baseUrl, customPath, entry.slug),
               title: entry.title || entry.name || entry.slug,
               lastmod: entry.updatedAt,
             }));
