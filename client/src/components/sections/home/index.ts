@@ -1,9 +1,0 @@
-export { default as OriginalHero } from './OriginalHero';
-export { default as ModernHero } from './ModernHero';
-export { default as SpecializationsSection } from './SpecializationsSection';
-export { default as AboutSection } from './AboutSection';
-export { default as ProductsSection } from './ProductsSection';
-export { default as CaseStudiesSection } from './CaseStudiesSection';
-export { default as IndustriesSection } from './IndustriesSection';
-export { default as ClientsSection } from './ClientsSection';
-export { default as BlogPostsSection } from './BlogPostsSection';
