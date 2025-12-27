@@ -1,0 +1,123 @@
+{
+  "collectionName": "components_elements_links",
+  "info": {
+    "displayName": "link"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "linkType": {
+      "type": "enumeration",
+      "enum": [
+        "internal",
+        "external"
+      ]
+    },
+    "externalUrl": {
+      "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "external"
+          ]
+        }
+      }
+    },
+    "page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::page.page",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    },
+    "service": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::service.service",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    },
+    "solution": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project.project",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    },
+    "case_study": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::case-study.case-study",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    },
+    "industry": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::industry.industry",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    },
+    "team": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::team.team",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "linkType"
+            },
+            "internal"
+          ]
+        }
+      }
+    }
+  },
+  "config": {}
+}

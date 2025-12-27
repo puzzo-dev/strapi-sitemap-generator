@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_cards_contact_infos",
+  "info": {
+    "displayName": "contactInfo"
+  },
+  "options": {},
+  "attributes": {
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "socialLinks": {
+      "type": "component",
+      "component": "cards.social-link",
+      "repeatable": true
+    },
+    "address": {
+      "type": "json"
+    }
+  },
+  "config": {}
+}

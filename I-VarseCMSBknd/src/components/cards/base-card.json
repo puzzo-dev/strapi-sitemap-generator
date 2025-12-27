@@ -1,0 +1,40 @@
+{
+  "collectionName": "components_cards_base_cards",
+  "info": {
+    "displayName": "baseCard"
+  },
+  "options": {},
+  "attributes": {
+    "cardBadge": {
+      "type": "component",
+      "component": "shared.badge",
+      "repeatable": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "cardMedia": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "cardContent": {
+      "type": "richtext"
+    },
+    "cardLink": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": true
+    },
+    "Stats": {
+      "type": "component",
+      "component": "cards.stat",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,9 @@
+export { default as JobDetailHeroSection } from './JobDetailHeroSection';
+export { default as JobDetailContentSection } from './JobDetailContentSection';
+export { default as JobApplicationSidebar } from './JobApplicationSidebar';
+export { default as JobDetailMainContent } from './JobDetailMainContent';
+export { default as JobDetailErrorSection } from './JobDetailErrorSection';
+export { default as JobDetailLoadingSection } from './JobDetailLoadingSection';
+export { default as JobRelatedSection } from './JobRelatedSection';
+export { default as JobBenefitsSection } from './JobBenefitsSection';
+export { default as JobStatsSection } from './JobStatsSection';

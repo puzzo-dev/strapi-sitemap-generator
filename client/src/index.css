@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border box-border;
+  }
+
+  html,
+  body {
+    @apply overflow-x-hidden;
+    scroll-behavior: smooth;
+    /* Prevent layout shift when dropdowns appear */
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply antialiased bg-background text-foreground;
+    font-family: 'Space Grotesk', sans-serif;
+    /* Prevent layout shift from scrollbar changes */
+    overflow-x: hidden;
+    width: 100vw;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Chakra Petch', sans-serif;
+    @apply font-extrabold;
+  }
+}
+
+@layer components {
+
+  /* Prevent layout shift from dropdowns */
+  [data-radix-popper-content-wrapper] {
+    position: fixed !important;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Prevent scrollbar-induced layout shifts */
+  .dropdown-content,
+  .select-content {
+    position: fixed !important;
+    z-index: 9999;
+  }
+
+  /* Essential responsive overflow fixes */
+  .hero-section {
+    @apply relative overflow-hidden w-full;
+  }
+
+  /* Mobile-specific fixes */
+  @media (max-width: 768px) {
+    .hero-section {
+      @apply max-w-full;
+    }
+
+    .hero-section .absolute {
+      @apply max-w-full;
+      contain: layout style paint;
+    }
+
+    /* Scale down decorative elements on mobile */
+    .hero-section .absolute.w-32,
+    .hero-section .absolute.w-36,
+    .hero-section .absolute.h-32,
+    .hero-section .absolute.h-36 {
+      @apply scale-75;
+    }
+
+    .hero-section .absolute.w-16,
+    .hero-section .absolute.w-14,
+    .hero-section .absolute.w-12,
+    .hero-section .absolute.h-16,
+    .hero-section .absolute.h-14,
+    .hero-section .absolute.h-12 {
+      @apply scale-90;
+    }
+  }
+
+  /* Container with proper responsive padding */
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 max-w-full overflow-hidden;
+  }
+
+  /* Content sections with proper spacing */
+  .content-section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  /* Heading classes for consistency */
+  .heading-xl {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight;
+  }
+
+  .heading-lg {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight;
+  }
+
+  .heading-md {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight;
+  }
+
+  .section-title {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight;
+  }
+
+  .section-subtitle {
+    @apply text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto;
+  }
+
+  /* Common animation utilities */
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@layer utilities {
+
+  /* Custom gradients */
+  .gradient-text {
+    @apply bg-gradient-to-r from-[#2FB8FF] to-[#0047AB] bg-clip-text text-transparent;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-r from-[#2FB8FF] to-[#0047AB];
+  }
+}
+
+/* Essential keyframes */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* Line clamp utilities */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

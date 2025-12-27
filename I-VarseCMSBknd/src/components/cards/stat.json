@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_cards_stats",
+  "info": {
+    "displayName": "stat"
+  },
+  "options": {},
+  "attributes": {
+    "statTitle": {
+      "type": "string"
+    },
+    "statImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "statInfo": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

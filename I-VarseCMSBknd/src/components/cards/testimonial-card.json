@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_cards_testimonial_cards",
+  "info": {
+    "displayName": "testimonialCard"
+  },
+  "options": {},
+  "attributes": {
+    "rating": {
+      "type": "integer",
+      "min": 1,
+      "max": 5
+    },
+    "testimonial": {
+      "type": "text"
+    },
+    "customerImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "customerName": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

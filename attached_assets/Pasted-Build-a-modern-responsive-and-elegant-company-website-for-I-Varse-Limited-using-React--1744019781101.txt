@@ -1,0 +1,75 @@
+Build a modern, responsive, and elegant company website for **I-VARSE Technologies** using:
+
+- **React + TailwindCSS** (for the frontend UI)
+- **Strapi CMS** (to dynamically manage all page content)
+- **ERPNext** (to handle contact form submissions)
+- Use **Next.js** as the framework (for routing and SEO benefits)
+
+---
+
+### 📄 Website Pages:
+
+1. **Home Page** – Sections:
+   - Hero Section with title, subtitle, CTA button.
+   - Company overview with icons/images.
+   - Services preview.
+   - Call to action at the bottom.
+
+2. **Services Page** – Sections:
+   - List all services (from Strapi).
+   - Each service has: title, icon/image, short description.
+   - Button to contact for each service (optional).
+
+3. **Product Page** – Sections:
+   - Highlight flagship products or solutions (from Strapi).
+   - Product image, title, short description.
+   - Link to request demo or pricing (handled via ERPNext form).
+
+4. **Contact Page** – Sections:
+   - Embedded ERPNext-powered contact form (via iframe or REST API).
+   - Company contact details pulled from Strapi (address, email, phone, social links).
+
+---
+
+### 🎨 Assets:
+Use these image files:
+- Logos: `I-VARSELogo1@3x.png`, `I-VARSELogo2@3x.png`, etc.
+- Icons: `I-VARSEIcon2@3x.png`, `I-VARSEIcon3@3x.png`
+- Design inspiration from: `Home.png`, `Services.png`, `Contact.png`, `Product.png`
+
+---
+
+### 📦 Functionality Notes:
+- Use **Strapi CMS** to manage:
+  - Page content (titles, descriptions, etc.)
+  - Services and product listings
+  - Company info and social links
+- Connect to **ERPNext REST API** or embed ERPNext Web Form to handle contact submissions.
+- Ensure the site is:
+  - **Fully responsive**
+  - SEO-ready
+  - Fast-loading with lazy-loaded images and optimized assets
+
+---
+
+### 📁 Folder Structure Example:
+/frontend /components /pages /public /styles tailwind.config.js next.config.js
+
+/cms (Strapi backend) /api /config /content-types
+
+/backend (ERPNext integration if needed)
+
+yaml
+Copy
+Edit
+
+---
+
+### 🧠 Bonus:
+- Add dark mode support via Tailwind.
+- Animate elements on scroll using Framer Motion.
+- Provide reusability: Create a CMS structure in Strapi that allows easy creation of new pages.
+
+---
+
+Let me know if you'd like me to walk you through setting this up on Replit step-by-step.

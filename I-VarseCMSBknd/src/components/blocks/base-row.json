@@ -1,0 +1,81 @@
+{
+  "collectionName": "components_blocks_base_rows",
+  "info": {
+    "displayName": "baseRow"
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "component",
+      "component": "shared.badge",
+      "repeatable": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "gallery": {
+      "type": "component",
+      "component": "blocks.gallery-section",
+      "repeatable": false
+    },
+    "baseCards": {
+      "type": "component",
+      "component": "cards.base-card",
+      "repeatable": true
+    },
+    "socialLinks": {
+      "type": "component",
+      "component": "cards.social-link",
+      "repeatable": true
+    },
+    "statCards": {
+      "type": "component",
+      "component": "cards.stat",
+      "repeatable": true
+    },
+    "testimonialCards": {
+      "type": "component",
+      "component": "cards.testimonial-card",
+      "repeatable": true
+    },
+    "cta": {
+      "type": "component",
+      "component": "blocks.cta-section",
+      "repeatable": false
+    },
+    "CaseStudies": {
+      "type": "component",
+      "component": "cards.case-studies-card",
+      "repeatable": true
+    },
+    "Faqs": {
+      "type": "component",
+      "component": "cards.faq-card",
+      "repeatable": true
+    },
+    "button": {
+      "type": "component",
+      "component": "shared.button",
+      "repeatable": true
+    },
+    "link": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": true
+    },
+    "form": {
+      "type": "component",
+      "component": "cards.form",
+      "repeatable": true
+    },
+    "address": {
+      "type": "component",
+      "component": "cards.contact-info",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

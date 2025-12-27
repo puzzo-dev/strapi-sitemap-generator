@@ -1,0 +1,128 @@
+version: '3.8'
+
+services:
+  ivarse-website:
+    image: ${IMAGE_NAME:-ghcr.io/${GITHUB_USERNAME}/ivarse-website:latest}
+    container_name: ivarse-website-v1
+    restart: unless-stopped
+    build:
+      context: ../
+      dockerfile: deployment/Dockerfile
+      args:
+        - BUILD_DATE=${BUILD_DATE:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}
+        - VCS_REF=${VCS_REF:-$(git rev-parse --short HEAD)}
+        - VERSION=${VERSION:-1.0.0}
+    environment:
+      # Node Environment
+      - NODE_ENV=production
+      
+      # Strapi Configuration
+      - DATABASE_CLIENT=mysql
+      - DATABASE_HOST=${DB_HOST:-mariadb-database}
+      - DATABASE_PORT=${DB_PORT:-3306}
+      - DATABASE_NAME=${DB_NAME:-ivarse_strapi}
+      - DATABASE_USERNAME=${DB_USER:-root}
+      - DATABASE_PASSWORD=${DB_PASSWORD}
+      - DATABASE_SSL=false
+      
+      # Strapi Secrets
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_JWT_SECRET=${ADMIN_JWT_SECRET}
+      - API_TOKEN_SALT=${API_TOKEN_SALT}
+      - APP_KEYS=${APP_KEYS}
+      
+      # ERPNext Integration (stored in Strapi DB, these are fallbacks)
+      - ERPNEXT_URL=${ERPNEXT_URL}
+      - ERPNEXT_API_KEY=${ERPNEXT_API_KEY}
+      - ERPNEXT_API_SECRET=${ERPNEXT_API_SECRET}
+      
+      # Frontend URLs
+      - FRONTEND_URL=https://${DOMAIN}
+      - STRAPI_URL=https://cms.${DOMAIN}
+      
+      # CORS Settings
+      - CORS_ORIGINS=https://${DOMAIN},https://cms.${DOMAIN}
+    
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      
+      # HTTPS redirect middleware
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
+      
+      # Security headers middleware
+      - "traefik.http.middlewares.ivarse-headers.headers.customrequestheaders.X-Real-IP=%{http:${REAL_IP_HEADER:-CF-Connecting-IP}}"
+      - "traefik.http.middlewares.ivarse-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.ivarse-headers.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.ivarse-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.ivarse-headers.headers.stsPreload=true"
+      
+      # === FRONTEND ROUTES (yourdomain.com) ===
+      # Frontend HTTP Router (redirect to HTTPS)
+      - "traefik.http.routers.ivarse-frontend-http.rule=Host(`${DOMAIN}`) || Host(`www.${DOMAIN}`)"
+      - "traefik.http.routers.ivarse-frontend-http.entrypoints=http"
+      - "traefik.http.routers.ivarse-frontend-http.middlewares=https-redirect"
+      - "traefik.http.routers.ivarse-frontend-http.service=ivarse-frontend"
+      
+      # Frontend HTTPS Router
+      - "traefik.http.routers.ivarse-frontend-https.rule=Host(`${DOMAIN}`) || Host(`www.${DOMAIN}`)"
+      - "traefik.http.routers.ivarse-frontend-https.entrypoints=https"
+      - "traefik.http.routers.ivarse-frontend-https.tls=true"
+      - "traefik.http.routers.ivarse-frontend-https.tls.certresolver=${CERT_RESOLVER:-le}"
+      - "traefik.http.routers.ivarse-frontend-https.service=ivarse-frontend"
+      - "traefik.http.routers.ivarse-frontend-https.middlewares=ivarse-headers"
+      
+      # === STRAPI CMS ROUTES (cms.yourdomain.com) ===
+      # Strapi HTTP Router (redirect to HTTPS)
+      - "traefik.http.routers.ivarse-strapi-http.rule=Host(`cms.${DOMAIN}`)"
+      - "traefik.http.routers.ivarse-strapi-http.entrypoints=http"
+      - "traefik.http.routers.ivarse-strapi-http.middlewares=https-redirect"
+      - "traefik.http.routers.ivarse-strapi-http.service=ivarse-strapi"
+      
+      # Strapi HTTPS Router
+      - "traefik.http.routers.ivarse-strapi-https.rule=Host(`cms.${DOMAIN}`)"
+      - "traefik.http.routers.ivarse-strapi-https.entrypoints=https"
+      - "traefik.http.routers.ivarse-strapi-https.tls=true"
+      - "traefik.http.routers.ivarse-strapi-https.tls.certresolver=${CERT_RESOLVER:-le}"
+      - "traefik.http.routers.ivarse-strapi-https.service=ivarse-strapi"
+      - "traefik.http.routers.ivarse-strapi-https.middlewares=ivarse-headers"
+      
+      # Services
+      - "traefik.http.services.ivarse-frontend.loadbalancer.server.port=3000"
+      - "traefik.http.services.ivarse-strapi.loadbalancer.server.port=1337"
+    
+    networks:
+      - traefik-public
+      - mariadb-network  # Connect to existing MariaDB
+      - app-network
+    
+    volumes:
+      - strapi-uploads:/app/strapi/public/uploads
+      - strapi-data:/app/strapi/.tmp
+      - app-logs:/app/logs
+    
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -f http://localhost:3000/ && curl -f http://localhost:1337/_health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  traefik-public:
+    external: true
+  mariadb-network:
+    external: true  # Connect to existing MariaDB network
+  app-network:
+    name: ivarse-website-network
+    driver: bridge
+
+volumes:
+  strapi-uploads:
+    name: ivarse-strapi-uploads
+  strapi-data:
+    name: ivarse-strapi-data
+  app-logs:
+    name: ivarse-app-logs

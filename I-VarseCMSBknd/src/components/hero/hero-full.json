@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_hero_hero_fulls",
+  "info": {
+    "displayName": "heroFull"
+  },
+  "options": {},
+  "attributes": {
+    "heroBadge": {
+      "type": "component",
+      "component": "shared.badge",
+      "repeatable": false
+    },
+    "heroSlides": {
+      "type": "component",
+      "component": "hero.hero-slide",
+      "repeatable": true
+    },
+    "heroMediaCards": {
+      "type": "component",
+      "component": "cards.media-card",
+      "repeatable": true
+    },
+    "heroStat": {
+      "type": "component",
+      "component": "cards.stat",
+      "repeatable": true
+    },
+    "socialLinks": {
+      "type": "component",
+      "component": "cards.social-link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

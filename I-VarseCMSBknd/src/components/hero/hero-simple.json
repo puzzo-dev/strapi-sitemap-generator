@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_hero_hero_simples",
+  "info": {
+    "displayName": "heroSimple"
+  },
+  "options": {},
+  "attributes": {
+    "heroBadge": {
+      "type": "component",
+      "component": "shared.badge",
+      "repeatable": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "stats": {
+      "type": "component",
+      "component": "cards.stat",
+      "repeatable": true
+    },
+    "heroBtns": {
+      "type": "component",
+      "component": "cards.cta-btn-card",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

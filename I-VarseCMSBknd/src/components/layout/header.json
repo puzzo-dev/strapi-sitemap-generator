@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_layout_headers",
+  "info": {
+    "displayName": "header"
+  },
+  "options": {},
+  "attributes": {
+    "siteLogo": {
+      "type": "component",
+      "component": "shared.logo",
+      "repeatable": false
+    },
+    "menu_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::menu-item.menu-item"
+    },
+    "navCta": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}
