@@ -23,9 +23,42 @@ const HomePage = () => {
   const [contentTypes, setContentTypes] = useState<any[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
   const [config, setConfig] = useState<any>({});
+  const [initialConfig, setInitialConfig] = useState<any>(null);
+  const [initialSelectedTypes, setInitialSelectedTypes] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [sitemapStats, setSitemapStats] = useState<any>(null);
+
+  // Check if any changes have been made
+  const hasChanges = React.useMemo(() => {
+    if (!initialConfig) return false;
+
+    // Check if base URL changed
+    if ((config.baseUrl || '') !== (initialConfig.baseUrl || '')) return true;
+
+    // Check if selected types changed
+    if (selectedTypes.size !== initialSelectedTypes.size) return true;
+    for (const uid of selectedTypes) {
+      if (!initialSelectedTypes.has(uid)) return true;
+    }
+
+    // Check if custom paths changed
+    const currentPaths = JSON.stringify(config.customPaths || {});
+    const initialPaths = JSON.stringify(initialConfig.customPaths || {});
+    if (currentPaths !== initialPaths) return true;
+
+    // Check if custom priorities changed
+    const currentPriorities = JSON.stringify(config.customPriorities || {});
+    const initialPriorities = JSON.stringify(initialConfig.customPriorities || {});
+    if (currentPriorities !== initialPriorities) return true;
+
+    // Check if custom changefreq changed
+    const currentChangefreq = JSON.stringify(config.customChangefreq || {});
+    const initialChangefreq = JSON.stringify(initialConfig.customChangefreq || {});
+    if (currentChangefreq !== initialChangefreq) return true;
+
+    return false;
+  }, [config, selectedTypes, initialConfig, initialSelectedTypes]);
 
   // Fetch available content types
   useEffect(() => {
@@ -50,7 +83,10 @@ const HomePage = () => {
     try {
       const { data } = await get('/strapi-sitemap-generator/config');
       setConfig(data);
-      setSelectedTypes(new Set(data.selectedContentTypes || []));
+      setInitialConfig(data);
+      const selected = new Set<string>(data.selectedContentTypes || []);
+      setSelectedTypes(selected);
+      setInitialSelectedTypes(new Set<string>(selected));
     } catch (error) {
       console.error('Failed to fetch config:', error);
     }
@@ -69,26 +105,31 @@ const HomePage = () => {
   const handleSaveConfig = async () => {
     setLoading(true);
     try {
-      toggleNotification({
-        type: 'info',
-        message: 'Saving configuration...',
-      });
-      await put('/strapi-sitemap-generator/config', {
+      const savedConfig = {
         baseUrl: config.baseUrl || 'https://example.com',
         selectedContentTypes: Array.from(selectedTypes),
         customPaths: config.customPaths || {},
         customPriorities: config.customPriorities || {},
         customChangefreq: config.customChangefreq || {},
-      });
+      };
+
+      await put('/strapi-sitemap-generator/config', savedConfig);
+
+      // Update initial state to current state after successful save
+      setInitialConfig(config);
+      setInitialSelectedTypes(new Set(selectedTypes));
 
       toggleNotification({
         type: 'success',
-        message: 'Configuration saved successfully!',
+        message: 'Your sitemap configuration has been saved successfully',
+        timeout: 3000,
       });
     } catch (error) {
+      console.error('Save error:', error);
       toggleNotification({
         type: 'danger',
-        message: 'Failed to save configuration',
+        message: 'Failed to save configuration. Please try again.',
+        timeout: 5000,
       });
     } finally {
       setLoading(false);
@@ -100,16 +141,13 @@ const HomePage = () => {
       toggleNotification({
         type: 'warning',
         message: 'Please select at least one content type before generating',
+        timeout: 4000,
       });
       return;
     }
 
     setGenerating(true);
     try {
-      toggleNotification({
-        type: 'info',
-        message: 'Generating sitemap...',
-      });
       // First save the config with selected types
       await put('/strapi-sitemap-generator/config', {
         baseUrl: config.baseUrl || 'https://example.com',
@@ -123,15 +161,21 @@ const HomePage = () => {
       const { data } = await get('/strapi-sitemap-generator/data');
       setSitemapStats(data.meta);
 
+      // Update initial state to current state after successful generation
+      setInitialConfig(config);
+      setInitialSelectedTypes(new Set(selectedTypes));
+
       toggleNotification({
         type: 'success',
-        message: `Sitemap generated! Total URLs: ${data.meta.totalUrls}`,
+        message: `Successfully generated sitemap with ${data.meta.totalUrls} URLs`,
+        timeout: 5000,
       });
     } catch (error) {
       console.error('Generation error:', error);
       toggleNotification({
         type: 'danger',
-        message: 'Failed to generate sitemap - check console for details',
+        message: 'Failed to generate sitemap. Check browser console for details.',
+        timeout: 6000,
       });
     } finally {
       setGenerating(false);
@@ -139,18 +183,10 @@ const HomePage = () => {
   };
 
   const handleViewSitemap = () => {
-    toggleNotification({
-      type: 'info',
-      message: 'Opening sitemap in new tab...',
-    });
     window.open('/api/strapi-sitemap-generator/sitemap.xml', '_blank');
   };
 
   const handleDownloadSitemap = () => {
-    toggleNotification({
-      type: 'info',
-      message: 'Downloading sitemap...',
-    });
     window.open('/api/strapi-sitemap-generator/download', '_blank');
   };
 
@@ -202,6 +238,7 @@ const HomePage = () => {
             <Button
               onClick={handleGenerateSitemap}
               loading={generating}
+              disabled={!hasChanges || selectedTypes.size === 0}
               startIcon={<ArrowClockwise />}
               style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
             >
@@ -326,29 +363,55 @@ const HomePage = () => {
                       <Box
                         paddingTop={3}
                         onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                        background="neutral100"
+                        padding={4}
+                        hasRadius
                       >
-                        <Flex direction="column" gap={2}>
-                          <Flex gap={3} alignItems="center" style={{ width: '100%' }}>
-                            <Box style={{ minWidth: '120px' }}>
-                              <Typography variant="pi" fontWeight="bold">URL Pattern</Typography>
-                            </Box>
-                            <Box style={{ flex: 1 }}>
-                              <TextInput
-                                placeholder={`Default: /${ct.pluralName} | Use "/" for root or "/custom-path"`}
-                                value={config.customPaths?.[ct.uid] || ''}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                  updateCustomPath(ct.uid, e.target.value)
-                                }
-                                hint="Leave empty for default, use '/' for no prefix, or '/custom' for custom prefix"
-                              />
-                            </Box>
-                          </Flex>
+                        <Flex direction="column" gap={4}>
+                          <Box>
+                            <Typography variant="pi" fontWeight="bold" marginBottom={2} style={{ display: 'block' }}>URL Structure</Typography>
+                            <Typography variant="pi" textColor="neutral600" marginBottom={3} style={{ display: 'block' }}>
+                              Configure how URLs are generated for this content type
+                            </Typography>
 
-                          <Flex gap={3} alignItems="center" style={{ width: '100%' }}>
-                            <Box style={{ minWidth: '120px' }}>
-                              <Typography variant="pi" fontWeight="bold">Priority</Typography>
-                            </Box>
-                            <Box style={{ width: '120px' }}>
+                            <Flex gap={4} alignItems="flex-start" style={{ width: '100%' }}>
+                              <Box style={{ flex: 1 }}>
+                                <Typography variant="pi" textColor="neutral700" marginBottom={2} style={{ display: 'block' }}>Default:</Typography>
+                                <Typography variant="pi" fontWeight="semiBold">
+                                  {config.baseUrl || 'https://example.com'}/{ct.pluralName}/[slug]
+                                </Typography>
+                              </Box>
+
+                              <Box style={{ flex: 1 }}>
+                                <Typography variant="pi" textColor="neutral700" marginBottom={2} style={{ display: 'block' }}>Custom:</Typography>
+                                <TextInput
+                                  placeholder="Leave empty to use default"
+                                  value={config.customPaths?.[ct.uid] || ''}
+                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    updateCustomPath(ct.uid, e.target.value)
+                                  }
+                                />
+                                <Typography variant="pi" textColor="neutral600" marginTop={1} style={{ fontSize: '12px' }}>
+                                  Examples: "/" for root, "/blog" for custom
+                                </Typography>
+                              </Box>
+                            </Flex>
+
+                            {config.customPaths?.[ct.uid] && (
+                              <Box marginTop={3}>
+                                <Typography variant="pi" textColor="neutral700" marginBottom={1} style={{ display: 'block' }}>Preview:</Typography>
+                                <Typography variant="pi" fontWeight="semiBold" textColor="primary600">
+                                  {config.baseUrl || 'https://example.com'}{config.customPaths[ct.uid] === '/' ? '' : config.customPaths[ct.uid]}/[slug]
+                                </Typography>
+                              </Box>
+                            )}
+                          </Box>
+
+                          <Divider />
+
+                          <Flex gap={4} alignItems="flex-start" style={{ width: '100%' }}>
+                            <Box style={{ flex: 1 }}>
+                              <Typography variant="pi" textColor="neutral700" marginBottom={2} style={{ display: 'block' }}>Priority:</Typography>
                               <NumberInput
                                 placeholder="0.7"
                                 min={0}
@@ -357,11 +420,12 @@ const HomePage = () => {
                                 value={config.customPriorities?.[ct.uid] || 0.7}
                                 onValueChange={(value: number) => updateCustomPriority(ct.uid, value)}
                               />
-                            </Box>
-                            <Box style={{ minWidth: '120px', marginLeft: '20px' }}>
-                              <Typography variant="pi" fontWeight="bold">Frequency</Typography>
+                              <Typography variant="pi" textColor="neutral600" marginTop={1} style={{ fontSize: '12px' }}>
+                                0.0 to 1.0 (default: 0.7)
+                              </Typography>
                             </Box>
                             <Box style={{ flex: 1 }}>
+                              <Typography variant="pi" textColor="neutral700" marginBottom={2} style={{ display: 'block' }}>Change Frequency:</Typography>
                               <SingleSelect
                                 placeholder="Select frequency"
                                 value={config.customChangefreq?.[ct.uid] || 'monthly'}
@@ -393,7 +457,8 @@ const HomePage = () => {
             fetchConfig();
             toggleNotification({
               type: 'info',
-              message: 'Configuration reset to saved values',
+              message: 'Configuration has been reset to last saved values',
+              timeout: 3000,
             });
           }} variant="tertiary">
             Reset
@@ -402,7 +467,7 @@ const HomePage = () => {
             onClick={handleSaveConfig}
             loading={loading}
             startIcon={<Check />}
-            disabled={selectedTypes.size === 0}
+            disabled={!hasChanges || selectedTypes.size === 0}
           >
             Save Configuration
           </Button>
